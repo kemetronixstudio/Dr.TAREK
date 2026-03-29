@@ -359,3 +359,41 @@ body[data-lang="ar"] .permissions-grid, body[data-lang="ar"] .account-card {dire
 .teacher-question-picker[hidden]{display:none !important;}
 .teacher-question-picker-list{margin-top:8px;}
 .admin-table-head .admin-tools{gap:12px; align-items:flex-start;}
+
+
+/* v29 custom classes */
+.teacher-question-picker-list .picker-empty{
+  color: var(--ink-soft);
+  padding: 10px;
+}
+.custom-class-card{
+  border: 3px solid rgba(110,198,255,.45);
+  background: rgba(255,255,255,.92);
+}
+.custom-class-card img{
+  width:min(180px,52%);
+  height:180px;
+  margin:0 auto 14px;
+}
+.custom-class-card .main-btn{
+  align-self:flex-start;
+}
+.class-manager-meta{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:10px;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+.class-manager-meta strong{
+  color: var(--ink);
+}
+.class-chip{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  background:#f4f8ff;
+  margin-right:6px;
+  font-size:13px;
+}
