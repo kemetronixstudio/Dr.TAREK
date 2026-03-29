@@ -153,7 +153,7 @@ function applySectionPermissions(account){
     sec.classList.toggle('hidden', !show);
   });
 }
-function permissionLabel(key){ const lang=getLang(); const map={dashboard:'permissionDashboard',levelVisibility:'permissionLevelVisibility',timerSettings:'permissionTimerSettings',quizAccess:'permissionQuizAccess',teacherTest:'permissionTeacherTest',bulkQuestions:'permissionBulkQuestions',questionBank:'permissionQuestionBank',accountManager:'permissionAccountManager'}; return translations[lang][map[key]] || key; }
+function permissionLabel(key){ const lang=getLang(); const map={dashboard:'permissionDashboard',levelVisibility:'permissionLevelVisibility',timerSettings:'permissionTimerSettings',quizAccess:'permissionQuizAccess',teacherTest:'permissionTeacherTest',bulkQuestions:'permissionBulkQuestions',questionBank:'permissionQuestionBank',classManager:'classManagerTitle',accountManager:'permissionAccountManager'}; return translations[lang][map[key]] || key; }
 function renderAccessPermissions(selected){
   const wrap=document.getElementById('accessPermissionsWrap'); if(!wrap) return;
   const role=(document.getElementById('accessAccountRole')?.value||'user').trim();
@@ -180,23 +180,21 @@ function saveAccessAccountFromAdmin(){
       alert((translations[getLang()] && translations[getLang()].usernamePasswordRequired) || 'Please enter username and password.');
       return;
     }
-    const permissions = role === 'admin'
-      ? [...PERMISSIONS]
-      : Array.from(document.querySelectorAll('.perm-check:checked')).map(el => el.value);
+    const permissions = role === 'admin' ? [...PERMISSIONS] : Array.from(document.querySelectorAll('.perm-check:checked')).map(el => el.value);
     if (role !== 'admin' && permissions.length === 0){
       alert((translations[getLang()] && translations[getLang()].chooseOnePermission) || 'Please choose at least one permission for this staff account.');
       return;
     }
-    const accounts = getExtraAccounts ? getExtraAccounts() : [];
-    const idx = accounts.findIndex(acc => String(acc.username).toLowerCase() === user.toLowerCase());
-    const payload = { username:user, password:pass, role, permissions };
+    const accounts = getAccessAccounts();
+    const idx = accounts.findIndex(acc => String(acc.user||'').toLowerCase() === user.toLowerCase());
+    const payload = { user, pass, role, permissions };
     if (idx >= 0) accounts[idx] = payload; else accounts.push(payload);
-    if (setExtraAccounts) setExtraAccounts(accounts); else localStorage.setItem('kgEnglishExtraAccountsV26', JSON.stringify(accounts));
-    renderAccessAccountsList && renderAccessAccountsList();
+    setAccessAccounts(accounts);
+    renderAccessAccountsList();
     const userEl = document.getElementById('accessAccountUser'); if (userEl) userEl.value = '';
     const passEl = document.getElementById('accessAccountPass'); if (passEl) passEl.value = '';
     const roleEl = document.getElementById('accessAccountRole'); if (roleEl) roleEl.value = 'user';
-    renderAccessPermissions && renderAccessPermissions([]);
+    renderAccessPermissions([]);
     alert((translations[getLang()] && translations[getLang()].accountSaved) || 'Account saved.');
   }catch(err){
     alert((translations[getLang()] && translations[getLang()].accountSaveFailed) || 'Could not save account.');
@@ -511,7 +509,7 @@ function renderCertificate(){
   $('#downloadPdfBtn')?.addEventListener('click', async ()=>{ const blob = await makeCertificatePdfBlob(); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `${data.studentName}-certificate.pdf`; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1500); });
   $('#shareCertBtn')?.addEventListener('click', async ()=>{ const blob = await makeCertificatePdfBlob(); const file = new File([blob], `${data.studentName}-certificate.pdf`, {type:'application/pdf'}); if (navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({title:'Certificate', files:[file], text:`${data.studentName} - ${data.percent}%`}); } else { window.open(`https://wa.me/?text=${encodeURIComponent(`${data.studentName} finished ${data.grade} with ${data.percent}%`)}`,'_blank'); } });
 }
-function initAdmin(){ if (document.body.dataset.page !== 'admin') return; const loginCard = $('#adminLoginCard'); const panel = $('#adminPanel'); $('#adminLoginBtn')?.addEventListener('click', ()=>{ const user = $('#adminUser').value.trim(); const pass = $('#adminPass').value.trim(); const account = getLoginAccount(user, pass); if (!account){ alert(getLang()==='ar'?'اسم المشرف أو كلمة المرور غير صحيحة.':'Wrong admin name or password.'); return; } loginCard.classList.add('hidden'); panel.classList.remove('hidden'); applySectionPermissions(account); populateDashboardDateFilter(); renderAdminDashboard(); renderLevelVisibilityEditor(); renderTimerSettingsEditor(); renderQuizAccessEditor(); renderTeacherTestEditor(); renderAccessPermissions([]); renderAccessAccountsList(); renderTeacherQuestionPicker(); wireCollapseButtons(); wireQuestionFilterButtons(); const cm=document.querySelector('[data-section-key="classManager"]'); if(cm){ cm.classList.remove('hidden'); cm.style.display=''; } }); $('#addQuestionBtn')?.addEventListener('click', addCustomQuestion); $('#showStoredQuestionsBtn')?.addEventListener('click', renderStoredQuestions); $('#saveLevelsBtn')?.addEventListener('click', saveLevelVisibilityFromAdmin); $('#resetLevelsBtn')?.addEventListener('click', resetLevelVisibilityFromAdmin); $('#saveTimerSettingsBtn')?.addEventListener('click', saveTimerSettingsFromAdmin); $('#resetTimerSettingsBtn')?.addEventListener('click', resetTimerSettingsFromAdmin); $('#dashboardDateFilter')?.addEventListener('change', renderAdminDashboard); $('#exportDataBtn')?.addEventListener('click', ()=>{ const data = {progress:getProgress(), records:getRecords(), attemptsLog:getAttemptsLog(), analytics:getAnalytics(), customQuestions:getCustomQuestions(), questionOverrides:getQuestionOverrides(), levelVisibility:getLevelVisibility(), accessAccounts:getAccessAccounts()}; const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href=url; a.download='kg-app-data.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1500); }); $('#exportExcelBtn')?.addEventListener('click', exportDashboardExcel); $('#exportJpegBtn')?.addEventListener('click', exportDashboardJpeg); $('#resetDashboardDataBtn')?.addEventListener('click', resetDashboardData); $('#saveQuizPasswordBtn')?.addEventListener('click', saveQuizAccessFromAdmin); $('#clearQuizPasswordBtn')?.addEventListener('click', clearQuizAccessFromAdmin); $('#saveTeacherTestBtn')?.addEventListener('click', saveTeacherTestFromAdmin); $('#clearTeacherTestBtn')?.addEventListener('click', clearTeacherTestFromAdmin); $('#downloadCurrentQuestionsExcelBtn')?.addEventListener('click', downloadCurrentQuestionsExcel); $('#bulkQuestionUpload')?.addEventListener('change', (e)=>{ const file=e.target.files?.[0]; if(file) importBulkQuestionsFromWorkbook(file); e.target.value=''; }); $('#saveAccessAccountBtn')?.addEventListener('click', saveAccessAccountFromAdmin); $('#accessAccountRole')?.addEventListener('change', ()=>renderAccessPermissions(Array.from(document.querySelectorAll('.perm-check:checked')).map(el=>el.value))); $('#toggleQuestionBankEditorBtn')?.addEventListener('click', (e)=> toggleCollapse('questionBankEditorBody', e.currentTarget)); $('#toggleStoredQuestionsBtn')?.addEventListener('click', (e)=> toggleCollapse('storedQuestionsWrap', e.currentTarget)); document.getElementById('testMode')?.addEventListener('change', ()=>{ renderTeacherQuestionPicker(); });
+function initAdmin(){ if (document.body.dataset.page !== 'admin') return; const loginCard = $('#adminLoginCard'); const panel = $('#adminPanel'); $('#adminLoginBtn')?.addEventListener('click', ()=>{ const user = $('#adminUser').value.trim(); const pass = $('#adminPass').value.trim(); const account = getLoginAccount(user, pass); if (!account){ alert(getLang()==='ar'?'اسم المشرف أو كلمة المرور غير صحيحة.':'Wrong admin name or password.'); return; } loginCard.classList.add('hidden'); panel.classList.remove('hidden'); applySectionPermissions(account); populateDashboardDateFilter(); renderAdminDashboard(); renderLevelVisibilityEditor(); renderTimerSettingsEditor(); renderQuizAccessEditor(); renderTeacherTestEditor(); renderAccessPermissions([]); renderAccessAccountsList(); renderTeacherQuestionPicker(); wireCollapseButtons(); renderStoredQuestions(); wireQuestionFilterButtons(); const cm=document.querySelector('[data-section-key="classManager"]'); if(cm){ cm.classList.remove('hidden'); cm.style.display=''; } }); $('#addQuestionBtn')?.addEventListener('click', addCustomQuestion); $('#showStoredQuestionsBtn')?.addEventListener('click', renderStoredQuestions); $('#saveLevelsBtn')?.addEventListener('click', saveLevelVisibilityFromAdmin); $('#resetLevelsBtn')?.addEventListener('click', resetLevelVisibilityFromAdmin); $('#saveTimerSettingsBtn')?.addEventListener('click', saveTimerSettingsFromAdmin); $('#resetTimerSettingsBtn')?.addEventListener('click', resetTimerSettingsFromAdmin); $('#dashboardDateFilter')?.addEventListener('change', renderAdminDashboard); $('#exportDataBtn')?.addEventListener('click', ()=>{ const data = {progress:getProgress(), records:getRecords(), attemptsLog:getAttemptsLog(), analytics:getAnalytics(), customQuestions:getCustomQuestions(), questionOverrides:getQuestionOverrides(), levelVisibility:getLevelVisibility(), accessAccounts:getAccessAccounts()}; const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href=url; a.download='kg-app-data.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1500); }); $('#exportExcelBtn')?.addEventListener('click', exportDashboardExcel); $('#exportJpegBtn')?.addEventListener('click', exportDashboardJpeg); $('#resetDashboardDataBtn')?.addEventListener('click', resetDashboardData); $('#saveQuizPasswordBtn')?.addEventListener('click', saveQuizAccessFromAdmin); $('#clearQuizPasswordBtn')?.addEventListener('click', clearQuizAccessFromAdmin); $('#saveTeacherTestBtn')?.addEventListener('click', saveTeacherTestFromAdmin); $('#clearTeacherTestBtn')?.addEventListener('click', clearTeacherTestFromAdmin); $('#downloadCurrentQuestionsExcelBtn')?.addEventListener('click', downloadCurrentQuestionsExcel); $('#bulkQuestionUpload')?.addEventListener('change', (e)=>{ const file=e.target.files?.[0]; if(file) importBulkQuestionsFromWorkbook(file); e.target.value=''; }); $('#saveAccessAccountBtn')?.addEventListener('click', saveAccessAccountFromAdmin); $('#accessAccountRole')?.addEventListener('change', ()=>renderAccessPermissions(Array.from(document.querySelectorAll('.perm-check:checked')).map(el=>el.value))); $('#toggleQuestionBankEditorBtn')?.addEventListener('click', (e)=> toggleCollapse('questionBankEditorBody', e.currentTarget)); $('#toggleStoredQuestionsBtn')?.addEventListener('click', (e)=> toggleCollapse('storedQuestionsWrap', e.currentTarget)); document.getElementById('testMode')?.addEventListener('change', ()=>{ renderTeacherQuestionPicker(); });
 document.getElementById('testGrade')?.addEventListener('input', ()=>{ renderTeacherQuestionPicker(); });
 document.getElementById('testGrade')?.addEventListener('change', ()=>{ renderTeacherQuestionPicker(); });
 document.getElementById('testQuestionList')?.addEventListener('input', renderTeacherQuestionPicker); document.getElementById('teacherQuestionPickerList')?.addEventListener('change', (e)=>{ if (e.target && e.target.classList.contains('teacher-question-check')) syncTeacherQuestionTextarea(); }); document.getElementById('selectAllTeacherQuestionsBtn')?.addEventListener('click', ()=>{ document.querySelectorAll('.teacher-question-check').forEach(cb => cb.checked = true); syncTeacherQuestionTextarea(); }); document.getElementById('clearTeacherQuestionsBtn')?.addEventListener('click', ()=>{ document.querySelectorAll('.teacher-question-check').forEach(cb => cb.checked = false); syncTeacherQuestionTextarea(); }); }
@@ -708,13 +706,18 @@ function questionEditorCard(question){ const meta = question._meta; const opts =
 function bindQuestionEditorActions(){ document.querySelectorAll('[data-filter-grade]').forEach(btn => btn.onclick = ()=>{ document.querySelectorAll('[data-filter-grade]').forEach(b=>b.classList.toggle('active', b===btn)); const grade = btn.dataset.filterGrade; document.querySelectorAll('.question-edit-card').forEach(card=>{ card.style.display = grade === 'all' || card.dataset.grade === grade ? '' : 'none'; }); }); document.querySelectorAll('.save-question-btn').forEach(btn => btn.onclick = ()=> saveQuestionEdits(btn.closest('.question-edit-card'))); document.querySelectorAll('.reset-question-btn').forEach(btn => btn.onclick = ()=> resetQuestionEdits(btn.closest('.question-edit-card'))); }
 function saveQuestionEdits(card){ if (!card) return; const id = card.dataset.qid; const grade = (card.dataset.grade || 'KG1').toLowerCase(); const payload = { text: $('.qe-text',card).value.trim(), skill: $('.qe-skill',card).value.trim() || 'Vocabulary', type: $('.qe-type',card).value.trim() || 'Choice', options: $('.qe-options',card).value.split('|').map(s=>s.trim()).filter(Boolean), answer: $('.qe-answer',card).value.trim(), difficulty: clamp(Number($('.qe-difficulty',card).value || 1),1,3), image: $('.qe-image',card).value.trim() || null }; if (!payload.text || !payload.options.length || !payload.answer){ alert('Question text, options, and answer are required.'); return; } const overrides = getQuestionOverrides(); overrides[id] = payload; writeJson(storeKeys.questionOverrides, overrides); alert('Question updated.'); }
 function resetQuestionEdits(card){ if (!card) return; const id = card.dataset.qid; const overrides = getQuestionOverrides(); delete overrides[id]; writeJson(storeKeys.questionOverrides, overrides); renderStoredQuestions(); }
-function renderStoredQuestions(){ const list = $('#storedQuestionsList'); if (!list) return; const items = [...collectQuestionsWithMeta('kg1'), ...collectQuestionsWithMeta('kg2')].map(applyQuestionOverrides); list.innerHTML = items.length ? items.map(questionEditorCard).join('') : '<div class="stored-question"><h4>No questions yet.</h4><p>Add questions from the editor above.</p></div>'; bindQuestionEditorActions(); }
-document.addEventListener('change', (e)=>{ if (e.target && e.target.id === 'newQImageFile'){ const file = e.target.files?.[0]; if (!file) return; const reader = new FileReader(); reader.onload = ()=>{ e.target.dataset.savedImage = reader.result; }; reader.readAsDataURL(file); } });
-function registerPwa(){
-  if (!('serviceWorker' in navigator)) return;
-  navigator.serviceWorker.register('service-worker.js').then(reg => {
-    reg.update().catch(()=>{});
-  }).catch(()=>{});
+function renderStoredQuestions(){
+  const list = $('#storedQuestionsList'); if (!list) return;
+  let items = [...collectQuestionsWithMeta('kg1'), ...collectQuestionsWithMeta('kg2')];
+  if (typeof getCustomClasses === 'function'){
+    getCustomClasses().forEach(cls => {
+      items = items.concat(collectQuestionsWithMeta(cls.key));
+    });
+  }
+  items = items.map(applyQuestionOverrides);
+  list.innerHTML = items.length ? items.map(questionEditorCard).join('') : '<div class="stored-question"><h4>No questions yet.</h4><p>Add questions from the editor above.</p></div>';
+  bindQuestionEditorActions();
+  wireQuestionFilterButtons();
 }
 window.addEventListener('pagehide', ()=>{ try { if ('speechSynthesis' in window) speechSynthesis.cancel(); } catch(e){} });
 document.addEventListener('visibilitychange', ()=>{ if (document.hidden) { try { if ('speechSynthesis' in window) speechSynthesis.cancel(); } catch(e){} } });
@@ -741,17 +744,18 @@ function filterQuestionCards(grade){
     const show = grade === 'all' || cardGrade === String(grade).toLowerCase();
     card.style.display = show ? '' : 'none';
   });
-  document.querySelectorAll('.question-filter-btn').forEach(btn => {
-    const active = (btn.dataset.filterGrade || 'all') === grade;
+  document.querySelectorAll('[data-filter-grade]').forEach(btn => {
+    const active = (btn.dataset.filterGrade || 'all').toLowerCase() === grade;
     btn.classList.toggle('active', active);
     btn.setAttribute('aria-pressed', active ? 'true' : 'false');
   });
 }
 
 function wireQuestionFilterButtons(){
-  document.querySelectorAll('.question-filter-btn').forEach(btn => {
+  document.querySelectorAll('[data-filter-grade]').forEach(btn => {
     if (btn.dataset.wired === '1') return;
     btn.dataset.wired = '1';
+    btn.classList.add('question-filter-btn');
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();

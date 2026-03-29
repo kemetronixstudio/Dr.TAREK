@@ -276,7 +276,7 @@
     let classes = getCustomClasses();
     const existing = classes.find(c => c.key === key || c.name.toLowerCase() === name.toLowerCase());
     if (existing) key = existing.key;
-    const meta = existing || { key, name, description:'', image:'school.svg', questionCount:0 };
+    const meta = existing || { key, name, description:'', image:'school.svg', questionCount:0, hidden:false };
     meta.name = name;
     meta.description = descEl.value.trim();
     meta.questionCount = Number(countEl.value || 0) || 0;
@@ -512,3 +512,6 @@
   });
 })();
 
+
+
+/* v34 noop marker */
