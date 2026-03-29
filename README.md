@@ -6,7 +6,6 @@ A flat-file static website for GitHub upload with no folders required.
 ## Included upgrades
 - Student progress saved with `localStorage`
 - Premium certificate with PDF export and QR code
-- Teacher dashboard and simple admin panel
 - Smarter weakness analysis by skill
 - Gamification with stars and confetti
 - Read-aloud voice support and sound feedback
@@ -15,7 +14,6 @@ A flat-file static website for GitHub upload with no folders required.
 - Question editor with optional image upload saved in browser storage
 
 ## Notes
-- This is a pure front-end project. Admin passwords are not secure for production because there is no backend.
 - Added questions and uploaded images are saved in the browser that created them.
 - PDF generation uses CDN libraries, so internet access is needed the first time when deployed.
 
@@ -43,4 +41,7 @@ If you tested older versions before, clear site data once so the new service wor
 
 ## v17 updates
 - Read-aloud speech improved for better browser compatibility.
-- Admin can turn timer on or off for KG1 and KG2.
+
+
+## Version
+This package is the freeze-fix build v22. If you update from an older release, clear old browser cache/service worker once.

@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Cairo:wght@400;600;700;800&family=Noto+Naskh+Arabic:wght@600;700&display=swap" rel="stylesheet"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#ffd54f"><link rel="stylesheet" href="style.css"><title>Teacher Dashboard</title></head><body data-page="admin">
 <div class="floating-shapes"></div>
-<header class="top-shell"><div class="lang-switch"><button class="lang-btn active" data-lang="en">EN</button><button class="lang-btn" data-lang="ar">AR</button></div></header>
+<header class="top-shell"><div class="lang-switch"><button class="lang-btn active" data-lang="en">EN</button><button class="lang-btn" data-lang="ar">AR</button></div><div class="teacher-topline">Dr. TAREK ABDALAZIZ 📞 01032188008</div><div class="top-shell-spacer"></div></header>
 <main class="container page-wrap">
   <div class="nav-row"><a class="back-link" href="index.html">⬅ Home</a></div>
   <section class="card admin-login-card" id="adminLoginCard">
@@ -13,7 +13,7 @@
     <p class="muted-note">This is a client-side demo dashboard. For real security, use a backend later.</p>
   </section>
 
-  <section id="adminPanel" class="hidden">
+  <section id="adminPanel" class="hidden"><div id="adminDashboardContent">
     <div class="admin-top-grid">
       <div class="card metric-card"><span>Total Students</span><strong id="metricStudents">0</strong></div>
       <div class="card metric-card"><span>Total Attempts</span><strong id="metricAttempts">0</strong></div>
@@ -22,7 +22,7 @@
     </div>
     <div class="admin-grid">
       <section class="card admin-table-card">
-        <div class="section-head"><h2>Student Progress</h2><button class="ghost-btn" id="exportDataBtn">Export JSON</button></div>
+        <div class="section-head admin-table-head"><h2>Student Progress</h2><div class="admin-tools"><select id="dashboardDateFilter" class="date-filter-select"><option value="all">All Dates</option></select><button class="ghost-btn" id="exportJpegBtn">Export JPEG</button><button class="ghost-btn" id="exportExcelBtn">Export Excel</button><button class="ghost-btn" id="exportDataBtn">Export JSON</button><button class="ghost-btn danger-btn" id="resetDashboardDataBtn">Reset Data</button></div></div>
         <div class="table-wrap"><table><thead><tr><th>Name</th><th>Grade</th><th>Attempts</th><th>Best</th><th>Last</th><th>Weak Areas</th></tr></thead><tbody id="studentTableBody"></tbody></table></div>
       </section>
       <section class="card admin-table-card">
@@ -42,6 +42,46 @@
       <div id="adminTimerSettings" class="level-visibility-grid"></div>
       <div class="action-row"><button class="main-btn" id="saveTimerSettingsBtn">Save Timer Settings</button></div>
     </section>
+
+    <section class="card admin-level-card">
+      <div class="section-head"><h2>Quiz Access Password</h2><button class="ghost-btn" id="clearQuizPasswordBtn">No Password</button></div>
+      <p class="muted-note">Set a password for KG1 or KG2. Students will be asked for it before entering the quiz. Leave blank to disable password.</p>
+      <div id="adminQuizAccess" class="admin-quiz-access-grid">
+        <div class="level-visibility-card">
+          <h3>KG1</h3>
+          <label class="level-toggle admin-toggle-row"><input type="checkbox" id="quizPasswordEnabled_kg1"><span>Protect KG1 with password</span></label>
+          <input class="admin-text-input" id="quizPasswordValue_kg1" placeholder="KG1 password">
+        </div>
+        <div class="level-visibility-card">
+          <h3>KG2</h3>
+          <label class="level-toggle admin-toggle-row"><input type="checkbox" id="quizPasswordEnabled_kg2"><span>Protect KG2 with password</span></label>
+          <input class="admin-text-input" id="quizPasswordValue_kg2" placeholder="KG2 password">
+        </div>
+      </div>
+      <div class="action-row"><button class="main-btn" id="saveQuizPasswordBtn">Save Quiz Password</button></div>
+    </section>
+    <section class="card admin-level-card">
+      <div class="section-head"><h2>Teacher Test Builder</h2><button class="ghost-btn" id="clearTeacherTestBtn">Clear Test</button></div>
+      <p class="muted-note">Create a named test for KG1 or KG2. Choose random questions or paste exact question texts line by line.</p>
+      <div class="editor-grid">
+        <input id="testGrade" placeholder="Grade (KG1 or KG2)">
+        <input id="testName" placeholder="Test name">
+        <select id="testMode"><option value="random">Random Questions</option><option value="manual">Choose by Question Text</option></select>
+        <input id="testCount" placeholder="How many questions" type="number" min="1" max="50">
+        <textarea id="testQuestionList" class="full" placeholder="For manual mode: paste exact question texts, one per line"></textarea>
+        <div id="teacherQuestionPickerWrap" class="full teacher-question-picker hidden">
+          <div class="teacher-picker-head">
+            <strong>Choose Existing Questions</strong>
+            <div class="teacher-picker-actions">
+              <button type="button" class="ghost-btn small-btn" id="selectAllTeacherQuestionsBtn">Select All</button>
+              <button type="button" class="ghost-btn small-btn" id="clearTeacherQuestionsBtn">Clear</button>
+            </div>
+          </div>
+          <div id="teacherQuestionPickerList" class="teacher-question-picker-list"></div>
+        </div>
+      </div>
+      <div class="action-row"><button class="main-btn" id="saveTeacherTestBtn">Save Teacher Test</button></div>
+    </section>
     <section class="card admin-editor-card">
       <div class="section-head"><h2>Question Bank Editor</h2><button class="ghost-btn" id="showStoredQuestionsBtn">Refresh Question List</button></div>
       <div class="editor-grid">
@@ -60,6 +100,6 @@
       <p class="muted-note">Edit any question below, then press save. Changes are stored locally and apply directly inside the app.</p>
       <div id="storedQuestionsList" class="stored-questions question-editor-list"></div>
     </section>
-  </section>
+  </div></section>
 </main>
-<script src="script.js"></script></body></html>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script><script src="script.js"></script></body></html>
