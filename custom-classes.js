@@ -494,6 +494,7 @@
     renderTeacherQuestionPickerForClasses();
     renderCustomClassesAdmin();
     renderClassQuestionPicker();
+    const sec=document.querySelector('[data-section-key="classManager"]'); if(sec) sec.classList.remove('hidden');
 
     const saveBtn = document.getElementById('saveClassBtn');
     if (saveBtn) saveBtn.addEventListener('click', saveClassFromAdmin);
@@ -508,3 +509,4 @@
     initClassManager();
   });
 })();
+
