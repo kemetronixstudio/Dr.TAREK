@@ -494,7 +494,8 @@
     renderTeacherQuestionPickerForClasses();
     renderCustomClassesAdmin();
     renderClassQuestionPicker();
-    const sec=document.querySelector('[data-section-key="classManager"]'); if(sec){ sec.classList.remove('hidden'); sec.style.display=''; }
+    renderTeacherQuestionPickerForClasses();
+    const sec=document.querySelector('[data-section-key="classManager"]'); if(sec){ sec.classList.remove('hidden'); sec.hidden=false; sec.style.display=''; }
 
     const saveBtn = document.getElementById('saveClassBtn');
     if (saveBtn) saveBtn.addEventListener('click', saveClassFromAdmin);

@@ -402,3 +402,15 @@ body[data-lang="ar"] .permissions-grid, body[data-lang="ar"] .account-card {dire
 #downloadCurrentQuestionsExcelBtn{display:none !important;}
 #toggleStoredQuestionsBtn{display:none !important;}
 .admin-level-card{margin-bottom:20px;}
+
+
+/* v32 final cleanup */
+#toggleStoredQuestionsBtn{display:none !important;}
+[data-section-key="classManager"]{display:block;}
+.teacher-question-picker.hidden{display:none !important;}
+.teacher-question-picker:not(.hidden){display:block !important;}
+.collapsed-body{display:none !important;}
+body[data-lang="ar"] .ghost-btn,
+body[data-lang="ar"] .main-btn,
+body[data-lang="ar"] .back-link,
+body[data-lang="ar"] .lang-btn{font-family:"Cairo","Baloo 2",sans-serif;}
