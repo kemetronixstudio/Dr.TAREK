@@ -41,3 +41,7 @@ The KG2 quiz has been refreshed using the uploaded **Step Ahead KG2 Second Term*
 - If you were testing an older version before, clear old browser cache once after deployment.
 - This version includes a refreshed service worker cache (`v12`) to avoid mixed old/new files.
 - Admin login is client-side only, so it is suitable for demo/school local use, not high-security hosting.
+
+
+## Cache reset after update
+If you tested older versions before, clear site data once so the new service worker takes over.
