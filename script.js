@@ -39,7 +39,8 @@ const storeKeys = {
   cert:'kgEnglishCertificateV7',
   customQuestions:'kgEnglishCustomQuestionsV7',
   questionOverrides:'kgEnglishQuestionOverridesV7',
-  levelVisibility:'kgEnglishLevelVisibilityV7'
+  levelVisibility:'kgEnglishLevelVisibilityV7',
+  timerSettings:'kgEnglishTimerSettingsV17'
 };
 function $(sel, root=document){ return root.querySelector(sel); }
 function shuffle(arr){ return arr.map(v=>({v,s:Math.random()})).sort((a,b)=>a.s-b.s).map(x=>x.v); }
@@ -57,6 +58,9 @@ function getCustomQuestions(){ return readJson(storeKeys.customQuestions, {kg1:[
 function getQuestionOverrides(){ return readJson(storeKeys.questionOverrides, {}); }
 function getLevelVisibility(){ return readJson(storeKeys.levelVisibility, {kg1:[10,20,30,40,50], kg2:[10,20,30,40,50]}); }
 function setLevelVisibility(value){ writeJson(storeKeys.levelVisibility, value); }
+function getTimerSettings(){ return readJson(storeKeys.timerSettings, {kg1:true, kg2:true}); }
+function setTimerSettings(value){ writeJson(storeKeys.timerSettings, value); }
+function timerEnabledFor(grade){ const cfg = getTimerSettings(); return cfg[grade] !== false; }
 function visibleLevelsFor(grade){
   const defaults = [10,20,30,40,50];
   const config = getLevelVisibility();
@@ -122,7 +126,64 @@ function renderHomeProgress(){
 }
 function renderStudentHistory(name, grade){ const box = $('#studentHistory'); if (!box) return; const lang = getLang(); const progress = getProgress(); const item = progress[name.trim().toLowerCase()]; if (!item){ box.innerHTML = ''; return; } const prev = item.scores || []; const improve = prev.length >= 2 ? `${translations[lang].improvedFrom} ${prev[0]}% ${translations[lang].to} ${prev[prev.length-1]}%` : `${translations[lang].lastScore}: ${item.lastScore}%`; const weak = (item.weakTimeline?.[item.weakTimeline.length-1]?.weaknesses || []).slice(0,2).join(', '); box.innerHTML = `<span class="history-chip em">${improve}</span><span class="history-chip">${translations[lang].bestScore}: ${item.bestScore}%</span>${weak ? `<span class="history-chip">${translations[lang].historyWeak}: ${weak}</span>` : ''}`; }
 function playTone(type){ try { const AudioContext = window.AudioContext || window.webkitAudioContext; if (!AudioContext) return; const ctx = new AudioContext(); const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); osc.type = type === 'wrong' ? 'sine' : 'triangle'; osc.frequency.value = type === 'correct' ? 660 : type === 'wrong' ? 240 : 880; gain.gain.value = 0.001; osc.start(); gain.gain.exponentialRampToValueAtTime(0.14, ctx.currentTime + 0.02); gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + (type === 'finish' ? 0.6 : 0.25)); osc.stop(ctx.currentTime + (type === 'finish' ? 0.6 : 0.25)); } catch(e){} }
-function speakText(text){ try { if (!('speechSynthesis' in window)) return; const utter = new SpeechSynthesisUtterance(text); utter.lang = getLang() === 'ar' ? 'ar-EG' : 'en-US'; utter.rate = .95; speechSynthesis.cancel(); speechSynthesis.speak(utter); } catch(e){} }
+let speechReady = false;
+let speechVoices = [];
+function refreshSpeechVoices(){ try { if ('speechSynthesis' in window) speechVoices = window.speechSynthesis.getVoices() || []; } catch(e){} }
+try {
+  if ('speechSynthesis' in window) {
+    refreshSpeechVoices();
+    window.speechSynthesis.onvoiceschanged = refreshSpeechVoices;
+    ['pointerdown','keydown','touchstart'].forEach(evt => window.addEventListener(evt, () => {
+      if (speechReady) return;
+      speechReady = true;
+      try {
+        const warm = new SpeechSynthesisUtterance(' ');
+        warm.volume = 0;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(warm);
+        setTimeout(()=>window.speechSynthesis.cancel(), 30);
+      } catch(e){}
+    }, {once:true}));
+  }
+} catch(e){}
+function pickVoiceForLang(langCode){
+  const voices = speechVoices && speechVoices.length ? speechVoices : (('speechSynthesis' in window) ? window.speechSynthesis.getVoices() : []);
+  if (!voices || !voices.length) return null;
+  return voices.find(v => (v.lang || '').toLowerCase().startsWith(langCode.toLowerCase()))
+    || voices.find(v => (v.lang || '').toLowerCase().includes(langCode.split('-')[0].toLowerCase()))
+    || voices[0];
+}
+function speakText(text){
+  try {
+    if (!('speechSynthesis' in window) || !text) return;
+    refreshSpeechVoices();
+    const langCode = getLang() === 'ar' ? 'ar-EG' : 'en-US';
+    const runSpeak = ()=>{
+      try {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(String(text).replace(/\s+/g,' ').trim());
+        utter.lang = langCode;
+        utter.rate = 0.92;
+        utter.pitch = 1;
+        const picked = pickVoiceForLang(langCode);
+        if (picked) utter.voice = picked;
+        window.speechSynthesis.speak(utter);
+      } catch(e){}
+    };
+    if (!speechReady) {
+      speechReady = true;
+      try {
+        const warm = new SpeechSynthesisUtterance(' ');
+        warm.volume = 0;
+        window.speechSynthesis.speak(warm);
+        setTimeout(()=>window.speechSynthesis.cancel(), 40);
+      } catch(e){}
+      setTimeout(runSpeak, 180);
+    } else {
+      setTimeout(runSpeak, 80);
+    }
+  } catch(e){}
+}
 function confettiBurst(){ const layer = $('#confettiLayer'); if (!layer) return; const colors=['#ffd54f','#ff8fab','#6ec6ff','#a8e6a1','#ffb347']; for(let i=0;i<24;i++){ const p=document.createElement('div'); p.className='confetti-piece'; p.style.left = `${Math.random()*100}%`; p.style.background = colors[i%colors.length]; p.style.transform = `translateY(0) rotate(${Math.random()*120}deg)`; p.style.animationDuration = `${1400+Math.random()*1200}ms`; layer.appendChild(p); setTimeout(()=>p.remove(),2800); } }
 function showStars(count=3){ const wrap = $('#starBurst'); if (!wrap) return; wrap.innerHTML = '⭐'.repeat(count); wrap.classList.remove('animate'); void wrap.offsetWidth; wrap.classList.add('animate'); setTimeout(()=>wrap.innerHTML='', 1200); }
 function resultRemark(percent){ const lang = getLang(); if (percent >= 85) return translations[lang].excellent; if (percent >= 70) return translations[lang].veryGood; if (percent >= 50) return translations[lang].good; return translations[lang].keepPracticing; }
@@ -142,7 +203,7 @@ function adaptiveQuestionSet(pool, count){
 }
 function initQuiz(){
   const grade = document.body.dataset.grade; if (!grade) return; const setupCard = $('#setupCard'); const studentNameInput = $('#studentName'); const goBtn = $('#goToLevelBtn'); const levelChooser = $('#levelChooser'); applyLevelVisibilityUI(grade); const levelBtns = [...levelChooser.querySelectorAll('.level-btn[data-count]')].filter(btn => !btn.classList.contains('hidden'));
-  const quizSection = $('#quizSection'); const studentPreview = $('#studentPreview'); const quizLevelLabel = $('#quizLevelLabel'); const questionIndexEl = $('#questionIndex'); const questionTotalEl = $('#questionTotal'); const timerValueEl = $('#timerValue'); const scoreValueEl = $('#scoreValue'); const skillBadge = $('#skillBadge'); const typeBadge = $('#questionTypeBadge'); const questionText = $('#questionText'); const questionImageWrap = $('#questionImageWrap'); const questionImage = $('#questionImage'); const optionsWrap = $('#optionsWrap'); const nextBtn = $('#nextBtn'); const autoNext = $('#autoNextToggle'); const voiceBtn = $('#voiceBtn');
+  const quizSection = $('#quizSection'); const studentPreview = $('#studentPreview'); const quizLevelLabel = $('#quizLevelLabel'); const questionProgressEl = $('#questionProgress'); const timerValueEl = $('#timerValue'); const scoreValueEl = $('#scoreValue'); const skillBadge = $('#skillBadge'); const typeBadge = $('#questionTypeBadge'); const questionText = $('#questionText'); const questionImageWrap = $('#questionImageWrap'); const questionImage = $('#questionImage'); const optionsWrap = $('#optionsWrap'); const nextBtn = $('#nextBtn'); const autoNext = $('#autoNextToggle'); const voiceBtn = $('#voiceBtn');
   let selectedCount = 10, selectedLevelLabel = translations[getLang()].level1, studentName = '', questions = [], currentIndex = 0, score = 0, timer = 15, interval = null, autoAdvanceTimeout = null, answered = false, skillStats = {}, missedQuestions=[], adaptiveIndex = 0, sessionUsed = new Set();
   function clearQuizTimers(){ if (interval){ clearInterval(interval); interval = null; } if (autoAdvanceTimeout){ clearTimeout(autoAdvanceTimeout); autoAdvanceTimeout = null; } try { if ('speechSynthesis' in window) speechSynthesis.cancel(); } catch(e){} }
   function ensureSkillStat(skill, sampleText){ if (!skillStats[skill]) skillStats[skill] = {right:0, wrong:0, samples:[]}; if (sampleText && !skillStats[skill].samples.includes(sampleText)) skillStats[skill].samples.push(sampleText); }
@@ -153,11 +214,11 @@ function initQuiz(){
   nextBtn?.addEventListener('click', goNext);
   voiceBtn?.addEventListener('click', ()=> speakText(questionText.textContent));
   function startQuiz(){
-    clearQuizTimers(); const pool = sanitizedPool(grade); const safeCount = Math.min(selectedCount, pool.length || selectedCount); const baseSet = adaptiveQuestionSet(pool, safeCount); selectedCount = baseSet.length; questions = baseSet; sessionUsed = new Set(baseSet.map(questionSignature)); currentIndex = 0; score = 0; missedQuestions = []; skillStats = {}; adaptiveIndex = 0; questions.forEach(q=> ensureSkillStat(q.skill, q.text)); timer = grade === 'kg1' ? 15 : 18; setupCard.classList.add('hidden'); quizSection.classList.remove('hidden'); studentPreview.textContent = studentName; quizLevelLabel.textContent = `${selectedLevelLabel} / ${selectedCount}`; questionTotalEl.textContent = String(questions.length); scoreValueEl.textContent = '0'; try { renderQuestion(); } catch (e) { console.error('renderQuestion failed on startQuiz', e); finishQuiz(); }
+    clearQuizTimers(); const pool = sanitizedPool(grade); const safeCount = Math.min(selectedCount, pool.length || selectedCount); const baseSet = adaptiveQuestionSet(pool, safeCount); selectedCount = baseSet.length; questions = baseSet; sessionUsed = new Set(baseSet.map(questionSignature)); currentIndex = 0; score = 0; missedQuestions = []; skillStats = {}; adaptiveIndex = 0; questions.forEach(q=> ensureSkillStat(q.skill, q.text)); timer = grade === 'kg1' ? 15 : 18; speechReady = true; setupCard.classList.add('hidden'); quizSection.classList.remove('hidden'); studentPreview.textContent = studentName; quizLevelLabel.textContent = `${selectedLevelLabel} / ${selectedCount}`; scoreValueEl.textContent = '0'; try { renderQuestion(); } catch (e) { console.error('renderQuestion failed on startQuiz', e); finishQuiz(); }
   }
   function current(){ return questions[currentIndex]; }
   function renderQuestion(){
-    clearQuizTimers(); answered = false; nextBtn.classList.add('hidden'); const q = current(); if (!q) { finishQuiz(); return; } ensureSkillStat(q.skill, q.text); questionIndexEl.textContent = String(currentIndex+1); skillBadge.textContent = skillLabels[getLang()][q.skill] || q.skill; typeBadge.textContent = typeLabels[getLang()][q.type] || q.type; questionText.textContent = q.text; if (q.image){ questionImage.src = q.image; questionImage.alt = q.text; questionImageWrap.classList.remove('hidden'); } else { questionImageWrap.classList.add('hidden'); questionImage.removeAttribute('src'); } optionsWrap.innerHTML = ''; timer = grade === 'kg1' ? 15 : 18; timerValueEl.textContent = String(timer); shuffle(q.options).forEach(opt=>{ const b=document.createElement('button'); b.className='option-btn'; b.textContent = opt; b.onclick = ()=> answerQuestion(b, opt === q.answer); optionsWrap.appendChild(b); }); interval = setInterval(()=>{ timer -= 1; timerValueEl.textContent = String(timer); if (timer <= 0){ clearInterval(interval); timeoutQuestion(); } }, 1000); speakText(q.text); }
+    clearQuizTimers(); answered = false; nextBtn.classList.add('hidden'); const q = current(); if (!q) { finishQuiz(); return; } ensureSkillStat(q.skill, q.text); if (questionProgressEl) questionProgressEl.textContent = `${currentIndex+1} / ${questions.length}`; skillBadge.textContent = skillLabels[getLang()][q.skill] || q.skill; typeBadge.textContent = typeLabels[getLang()][q.type] || q.type; questionText.textContent = q.text; if (q.image){ questionImage.src = q.image; questionImage.alt = q.text; questionImageWrap.classList.remove('hidden'); } else { questionImageWrap.classList.add('hidden'); questionImage.removeAttribute('src'); } optionsWrap.innerHTML = ''; const timerEnabled = timerEnabledFor(grade); timer = grade === 'kg1' ? 15 : 18; timerValueEl.textContent = timerEnabled ? String(timer) : '∞'; timerValueEl.closest('.status-card')?.classList.toggle('timer-disabled', !timerEnabled); shuffle(q.options).forEach(opt=>{ const b=document.createElement('button'); b.className='option-btn'; b.textContent = opt; b.onclick = ()=> answerQuestion(b, opt === q.answer); optionsWrap.appendChild(b); }); if (timerEnabled) { interval = setInterval(()=>{ timer -= 1; timerValueEl.textContent = String(timer); if (timer <= 0){ clearInterval(interval); timeoutQuestion(); } }, 1000); } else { interval = null; } speakText(q.text); }
   function markCorrect(buttons, q){ buttons.forEach(btn=>{ if (btn.textContent === q.answer) btn.classList.add('correct'); }); }
   function schedule(){ if (autoNext.checked) { autoAdvanceTimeout = setTimeout(goNext, 900); } else nextBtn.classList.remove('hidden'); }
   function tuneDifficulty(wasCorrect, remaining){ if (wasCorrect && remaining > 10) adaptiveIndex = Math.min(adaptiveIndex + 1, 2); if (!wasCorrect || remaining < 4) adaptiveIndex = Math.max(adaptiveIndex - 1, 0); }
@@ -165,11 +226,11 @@ function initQuiz(){
     const pool = sanitizedPool(grade).filter(q => !questions.some(existing => questionSignature(existing) === questionSignature(q)) && !sessionUsed.has(questionSignature(q)));
     const nextSlot = currentIndex + 1; if (nextSlot >= questions.length || !pool.length) return; const desired = adaptiveIndex + 1; const found = pool.find(q => q.difficulty === desired) || pool[0]; if (found){ questions[nextSlot] = found; sessionUsed.add(questionSignature(found)); ensureSkillStat(found.skill, found.text); }
   }
-  function answerQuestion(button, isCorrect){ if (answered) return; answered = true; clearInterval(interval); const q = current(); ensureSkillStat(q.skill, q.text); const buttons=[...document.querySelectorAll('.option-btn')]; buttons.forEach(b=> b.classList.add('disabled')); if (isCorrect){ button.classList.add('correct'); const earned = 10 + timer; score += earned; scoreValueEl.textContent = String(score); skillStats[q.skill].right += 1; playTone('correct'); confettiBurst(); showStars(timer > 10 ? 3 : 2); } else { button.classList.add('wrong'); markCorrect(buttons, q); skillStats[q.skill].wrong += 1; missedQuestions.push(q.text); playTone('wrong'); showStars(1); }
+  function answerQuestion(button, isCorrect){ if (answered) return; answered = true; clearInterval(interval); const q = current(); ensureSkillStat(q.skill, q.text); const buttons=[...document.querySelectorAll('.option-btn')]; buttons.forEach(b=> b.classList.add('disabled')); if (isCorrect){ button.classList.add('correct'); const earned = timerEnabledFor(grade) ? (10 + timer) : 10; score += earned; scoreValueEl.textContent = String(score); skillStats[q.skill].right += 1; playTone('correct'); confettiBurst(); showStars(timer > 10 ? 3 : 2); } else { button.classList.add('wrong'); markCorrect(buttons, q); skillStats[q.skill].wrong += 1; missedQuestions.push(q.text); playTone('wrong'); showStars(1); }
     tuneDifficulty(isCorrect, timer); maybeSwapFutureQuestions(); schedule(); }
   function timeoutQuestion(){ if (answered) return; answered = true; const q = current(); ensureSkillStat(q.skill, q.text); const buttons=[...document.querySelectorAll('.option-btn')]; buttons.forEach(b=> b.classList.add('disabled')); markCorrect(buttons, q); skillStats[q.skill].wrong += 1; missedQuestions.push(q.text); playTone('wrong'); tuneDifficulty(false,0); maybeSwapFutureQuestions(); schedule(); }
   function goNext(){ clearQuizTimers(); if (!questions.length) return; currentIndex += 1; if (currentIndex >= questions.length) finishQuiz(); else { try { renderQuestion(); } catch (e) { console.error('renderQuestion failed on goNext', e); finishQuiz(); } } }
-  function finishQuiz(){ clearQuizTimers(); playTone('finish'); const max = questions.length * (10 + (grade === 'kg1' ? 15 : 18)); const percent = Math.round((score/max)*100); const weaknessEntries = Object.entries(skillStats).map(([skill, st])=>({skill, wrong:st.wrong, right:st.right})).sort((a,b)=> b.wrong - a.wrong); const strengthEntries = Object.entries(skillStats).map(([skill, st])=>({skill, wrong:st.wrong, right:st.right})).sort((a,b)=> b.right - a.right); const weaknesses = weaknessEntries.filter(x=>x.wrong>0).slice(0,2).map(x=>x.skill); const strengths = strengthEntries.filter(x=>x.right>0).slice(0,2).map(x=>x.skill); const data = {studentName, grade:grade.toUpperCase(), quizLevel:selectedLevelLabel, questionCount:selectedCount, score, percent, strengths: strengths.length ? strengths : ['Reading'], weaknesses, advice: smartAdvice(weaknesses), remark: resultRemark(percent), date: new Date().toLocaleDateString('en-GB'), lang:getLang(), missedQuestions}; localStorage.setItem(storeKeys.cert, JSON.stringify(data)); recordStudentAttempt(data); window.location.href = 'certificate.html'; }
+  function finishQuiz(){ clearQuizTimers(); playTone('finish'); const max = questions.length * (timerEnabledFor(grade) ? (10 + (grade === 'kg1' ? 15 : 18)) : 10); const percent = Math.round((score/max)*100); const weaknessEntries = Object.entries(skillStats).map(([skill, st])=>({skill, wrong:st.wrong, right:st.right})).sort((a,b)=> b.wrong - a.wrong); const strengthEntries = Object.entries(skillStats).map(([skill, st])=>({skill, wrong:st.wrong, right:st.right})).sort((a,b)=> b.right - a.right); const weaknesses = weaknessEntries.filter(x=>x.wrong>0).slice(0,2).map(x=>x.skill); const strengths = strengthEntries.filter(x=>x.right>0).slice(0,2).map(x=>x.skill); const data = {studentName, grade:grade.toUpperCase(), quizLevel:selectedLevelLabel, questionCount:selectedCount, score, percent, strengths: strengths.length ? strengths : ['Reading'], weaknesses, advice: smartAdvice(weaknesses), remark: resultRemark(percent), date: new Date().toLocaleDateString('en-GB'), lang:getLang(), missedQuestions}; localStorage.setItem(storeKeys.cert, JSON.stringify(data)); recordStudentAttempt(data); window.location.href = 'certificate.html'; }
   document.querySelectorAll('.lang-btn').forEach(btn=>btn.addEventListener('click', ()=>{ applyLevelVisibilityUI(grade); if (studentNameInput) updateHistory(); if (questions.length){ const levelMap = {10:'level1',20:'level2',30:'level3',40:'level4',50:'level5'}; selectedLevelLabel = translations[getLang()][levelMap[selectedCount] || 'level1']; quizLevelLabel.textContent = `${selectedLevelLabel} / ${selectedCount}`; skillBadge.textContent = skillLabels[getLang()][current().skill] || current().skill; typeBadge.textContent = typeLabels[getLang()][current().type] || current().type; nextBtn.textContent = translations[getLang()].nextQuestion; } }));
 }
 async function makeCertificatePdfBlob(){ const area = $('#certificateArea'); const canvas = await html2canvas(area, {scale:2, backgroundColor:'#fffdf4', useCORS:true}); const imgData = canvas.toDataURL('image/png'); const { jsPDF } = window.jspdf; const pdf = new jsPDF('p','pt','a4'); const pageWidth = pdf.internal.pageSize.getWidth(); const pageHeight = pdf.internal.pageSize.getHeight(); const ratio = Math.min((pageWidth-40)/canvas.width, (pageHeight-40)/canvas.height); const w = canvas.width*ratio, h = canvas.height*ratio; pdf.addImage(imgData,'PNG',(pageWidth-w)/2,20,w,h); return pdf.output('blob'); }
@@ -178,8 +239,8 @@ function renderCertificate(){
   $('#downloadPdfBtn')?.addEventListener('click', async ()=>{ const blob = await makeCertificatePdfBlob(); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `${data.studentName}-certificate.pdf`; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1500); });
   $('#shareCertBtn')?.addEventListener('click', async ()=>{ const blob = await makeCertificatePdfBlob(); const file = new File([blob], `${data.studentName}-certificate.pdf`, {type:'application/pdf'}); if (navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({title:'Certificate', files:[file], text:`${data.studentName} - ${data.percent}%`}); } else { window.open(`https://wa.me/?text=${encodeURIComponent(`${data.studentName} finished ${data.grade} with ${data.percent}%`)}`,'_blank'); } });
 }
-function initAdmin(){ if (document.body.dataset.page !== 'admin') return; const loginCard = $('#adminLoginCard'); const panel = $('#adminPanel'); $('#adminLoginBtn')?.addEventListener('click', ()=>{ const user = $('#adminUser').value.trim(); const pass = $('#adminPass').value.trim(); const ok = ADMINS.some(a => a.user.toLowerCase() === user.toLowerCase() && a.pass === pass); if (!ok){ alert('Wrong admin name or password.'); return; } loginCard.classList.add('hidden'); panel.classList.remove('hidden'); renderAdminDashboard(); renderLevelVisibilityEditor(); }); $('#addQuestionBtn')?.addEventListener('click', addCustomQuestion); $('#showStoredQuestionsBtn')?.addEventListener('click', renderStoredQuestions); $('#saveLevelsBtn')?.addEventListener('click', saveLevelVisibilityFromAdmin); $('#resetLevelsBtn')?.addEventListener('click', resetLevelVisibilityFromAdmin); $('#exportDataBtn')?.addEventListener('click', ()=>{ const data = {progress:getProgress(), records:getRecords(), analytics:getAnalytics(), customQuestions:getCustomQuestions(), questionOverrides:getQuestionOverrides(), levelVisibility:getLevelVisibility()}; const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href=url; a.download='kg-app-data.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1500); }); }
-function renderAdminDashboard(){ renderLevelVisibilityEditor(); const records = getRecords(); const analytics = getAnalytics(); const rows = Object.values(records); $('#metricStudents').textContent = String(rows.length); $('#metricAttempts').textContent = String(rows.reduce((s,r)=>s+(r.attempts||0),0)); const avg = rows.length ? Math.round(rows.reduce((s,r)=>s+(r.last||0),0)/rows.length) : 0; $('#metricAverage').textContent = `${avg}%`; const weakEntry = Object.entries(analytics.skillMisses || {}).sort((a,b)=>b[1]-a[1])[0]; $('#metricWeak').textContent = weakEntry ? weakEntry[0] : '-'; const tbody = $('#studentTableBody'); tbody.innerHTML = rows.map(r => `<tr><td>${r.name}</td><td>${r.grade || '-'}</td><td>${r.attempts || 0}</td><td>${r.best || 0}%</td><td>${r.last || 0}%</td><td>${(r.weakAreas || []).join(', ')}</td></tr>`).join('') || '<tr><td colspan="6">No student records yet.</td></tr>'; const missed = Object.entries(analytics.questionMisses || {}).sort((a,b)=>b[1]-a[1]).slice(0,10); $('#missedTableBody').innerHTML = missed.map(([q,c]) => `<tr><td>${q}</td><td>${c}</td></tr>`).join('') || '<tr><td colspan="2">No missed-question data yet.</td></tr>'; renderStoredQuestions(); }
+function initAdmin(){ if (document.body.dataset.page !== 'admin') return; const loginCard = $('#adminLoginCard'); const panel = $('#adminPanel'); $('#adminLoginBtn')?.addEventListener('click', ()=>{ const user = $('#adminUser').value.trim(); const pass = $('#adminPass').value.trim(); const ok = ADMINS.some(a => a.user.toLowerCase() === user.toLowerCase() && a.pass === pass); if (!ok){ alert('Wrong admin name or password.'); return; } loginCard.classList.add('hidden'); panel.classList.remove('hidden'); renderAdminDashboard(); renderLevelVisibilityEditor(); renderTimerSettingsEditor(); }); $('#addQuestionBtn')?.addEventListener('click', addCustomQuestion); $('#showStoredQuestionsBtn')?.addEventListener('click', renderStoredQuestions); $('#saveLevelsBtn')?.addEventListener('click', saveLevelVisibilityFromAdmin); $('#resetLevelsBtn')?.addEventListener('click', resetLevelVisibilityFromAdmin); $('#saveTimerSettingsBtn')?.addEventListener('click', saveTimerSettingsFromAdmin); $('#resetTimerSettingsBtn')?.addEventListener('click', resetTimerSettingsFromAdmin); $('#exportDataBtn')?.addEventListener('click', ()=>{ const data = {progress:getProgress(), records:getRecords(), analytics:getAnalytics(), customQuestions:getCustomQuestions(), questionOverrides:getQuestionOverrides(), levelVisibility:getLevelVisibility()}; const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href=url; a.download='kg-app-data.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1500); }); }
+function renderAdminDashboard(){ renderLevelVisibilityEditor(); renderTimerSettingsEditor(); const records = getRecords(); const analytics = getAnalytics(); const rows = Object.values(records); $('#metricStudents').textContent = String(rows.length); $('#metricAttempts').textContent = String(rows.reduce((s,r)=>s+(r.attempts||0),0)); const avg = rows.length ? Math.round(rows.reduce((s,r)=>s+(r.last||0),0)/rows.length) : 0; $('#metricAverage').textContent = `${avg}%`; const weakEntry = Object.entries(analytics.skillMisses || {}).sort((a,b)=>b[1]-a[1])[0]; $('#metricWeak').textContent = weakEntry ? weakEntry[0] : '-'; const tbody = $('#studentTableBody'); tbody.innerHTML = rows.map(r => `<tr><td>${r.name}</td><td>${r.grade || '-'}</td><td>${r.attempts || 0}</td><td>${r.best || 0}%</td><td>${r.last || 0}%</td><td>${(r.weakAreas || []).join(', ')}</td></tr>`).join('') || '<tr><td colspan="6">No student records yet.</td></tr>'; const missed = Object.entries(analytics.questionMisses || {}).sort((a,b)=>b[1]-a[1]).slice(0,10); $('#missedTableBody').innerHTML = missed.map(([q,c]) => `<tr><td>${q}</td><td>${c}</td></tr>`).join('') || '<tr><td colspan="2">No missed-question data yet.</td></tr>'; renderStoredQuestions(); }
 function renderLevelVisibilityEditor(){
   const wrap = $('#adminLevelVisibility');
   if (!wrap) return;
@@ -204,6 +265,40 @@ function resetLevelVisibilityFromAdmin(){
   const defaults = {kg1:[10,20,30,40,50], kg2:[10,20,30,40,50]};
   setLevelVisibility(defaults);
   renderLevelVisibilityEditor();
+}
+
+function renderTimerSettingsEditor(){
+  const wrap = $('#adminTimerSettings');
+  if (!wrap) return;
+  const cfg = getTimerSettings();
+  wrap.innerHTML = ['kg1','kg2'].map(grade => `
+    <div class="level-visibility-card">
+      <h3>${grade.toUpperCase()}</h3>
+      <label class="level-toggle admin-toggle-row">
+        <input type="checkbox" data-timer-grade="${grade}" ${cfg[grade] !== false ? 'checked' : ''}>
+        <span>${cfg[grade] !== false ? 'Timer enabled' : 'Timer disabled'}</span>
+      </label>
+    </div>`).join('');
+  wrap.querySelectorAll('input[data-timer-grade]').forEach(input => {
+    input.addEventListener('change', () => {
+      const span = input.closest('label')?.querySelector('span');
+      if (span) span.textContent = input.checked ? 'Timer enabled' : 'Timer disabled';
+    });
+  });
+}
+function saveTimerSettingsFromAdmin(){
+  const result = {kg1:true, kg2:true};
+  document.querySelectorAll('#adminTimerSettings input[type="checkbox"][data-timer-grade]').forEach(input => {
+    result[input.dataset.timerGrade] = !!input.checked;
+  });
+  setTimerSettings(result);
+  renderTimerSettingsEditor();
+  alert('Timer settings saved.');
+}
+function resetTimerSettingsFromAdmin(){
+  const defaults = {kg1:true, kg2:true};
+  setTimerSettings(defaults);
+  renderTimerSettingsEditor();
 }
 function addCustomQuestion(){ const grade = ($('#newQGrade').value || '').trim().toLowerCase(); const skill = $('#newQSkill').value.trim() || 'Vocabulary'; const type = $('#newQType').value.trim() || 'Choice'; const text = $('#newQText').value.trim(); const options = ($('#newQOptions').value || '').split('|').map(s=>s.trim()).filter(Boolean); const answer = $('#newQAnswer').value.trim(); const difficulty = clamp(Number($('#newQDifficulty').value || 1),1,3); const image = ($('#newQImage').value || '').trim() || $('#newQImageFile').dataset.savedImage || null; if (!['kg1','kg2'].includes(grade) || !text || !options.length || !answer){ alert('Please fill grade, question text, options, and answer.'); return; } const custom = getCustomQuestions(); custom[grade].push({grade:grade.toUpperCase(), skill, type, text, options, answer, image, difficulty}); writeJson(storeKeys.customQuestions, custom); ['#newQGrade','#newQSkill','#newQType','#newQText','#newQOptions','#newQAnswer','#newQDifficulty','#newQImage'].forEach(id=> $(id).value=''); $('#newQImageFile').value=''; $('#newQImageFile').dataset.savedImage=''; renderStoredQuestions(); alert('Question added.'); }
 function questionEditorCard(question){ const meta = question._meta; const opts = (question.options || []).join(' | '); const srcLabel = meta.source === 'base' ? 'Base' : 'Custom'; return `<div class="question-edit-card" data-qid="${meta.id}" data-grade="${question.grade || meta.grade.toUpperCase()}"><div class="meta-line"><span>${question.grade || meta.grade.toUpperCase()}</span><span>${question.skill || '-'}</span><span>${question.type || 'Choice'}</span><span>${srcLabel}</span></div><div class="question-edit-grid"><textarea class="qe-text full">${question.text || ''}</textarea><input class="qe-skill" value="${question.skill || ''}" placeholder="Skill"><input class="qe-type" value="${question.type || ''}" placeholder="Type"><textarea class="qe-options full" placeholder="Options separated by |">${opts}</textarea><input class="qe-answer" value="${question.answer || ''}" placeholder="Answer"><input class="qe-difficulty" value="${question.difficulty || 1}" placeholder="Difficulty 1-3"><input class="qe-image full" value="${question.image || ''}" placeholder="Image filename or data URL"></div><div class="question-edit-actions"><button class="main-btn save-question-btn">Save Changes</button><button class="ghost-btn reset-question-btn">Reset</button></div></div>`; }

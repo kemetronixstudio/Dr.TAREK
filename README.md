@@ -40,3 +40,7 @@ The KG2 quiz has been refreshed using the uploaded **Step Ahead KG2 Second Term*
 
 ## Cache reset after update
 If you tested older versions before, clear site data once so the new service worker takes over.
+
+## v17 updates
+- Read-aloud speech improved for better browser compatibility.
+- Admin can turn timer on or off for KG1 and KG2.
