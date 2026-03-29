@@ -88,11 +88,41 @@
       <p class="muted-note" data-i18n="bulkQuestionsInfo">Download the ready Excel form, fill it with questions, then upload it to add many questions at once.</p>
       <div class="action-row wrap-row">
         <a class="ghost-btn" id="downloadBulkTemplateBtn" href="bulk-questions-template.xlsx" download data-i18n="downloadExcelForm">Download Excel Form</a>
-        <button class="ghost-btn" id="downloadCurrentQuestionsExcelBtn" data-i18n="downloadCurrentQuestions">Download Current Questions</button>
+        
         <label class="file-label inline-file"><span data-i18n="uploadFilledForm">Upload Filled Form</span><input type="file" id="bulkQuestionUpload" accept=".xlsx,.xls"></label>
       </div>
       <div id="bulkImportStatus" class="muted-note"></div>
     </section>
+
+    
+    <section class="card admin-level-card" data-section-key="classManager">
+      <div class="section-head"><h2 data-i18n="classManagerTitle">Class Manager</h2></div>
+      <p class="muted-note" data-i18n="classManagerInfo">Create extra classes like Class 1 or Class 2. You can build them from existing questions or upload a filled question file for the class.</p>
+      <div class="editor-grid">
+        <input id="classNameInput" data-placeholder-i18n="classNamePlaceholder" placeholder="Class name (example: Class 1)">
+        <input id="classDescInput" data-placeholder-i18n="classDescPlaceholder" placeholder="Short description for home page">
+        <select id="classSourceMode">
+          <option value="existing" data-i18n="existingQuestions">Use existing questions</option>
+          <option value="upload" data-i18n="uploadQuestions">Upload question file</option>
+        </select>
+        <input id="classQuestionCount" data-placeholder-i18n="classQuestionCountPlaceholder" placeholder="Question count shown on test builder (optional)">
+      </div>
+      <div id="classExistingWrap" class="teacher-question-picker">
+        <div class="action-row wrap-row">
+          <button class="ghost-btn" id="selectAllClassQuestionsBtn" data-i18n="selectAll">Select All</button>
+          <button class="ghost-btn" id="clearClassQuestionsBtn" data-i18n="clear">Clear</button>
+        </div>
+        <div id="classQuestionPickerList" class="teacher-question-picker-list"></div>
+      </div>
+      <div id="classUploadWrap" class="hidden">
+        <label class="file-label inline-file"><span data-i18n="uploadFilledForm">Upload Filled Form</span><input type="file" id="classQuestionUpload" accept=".xlsx,.xls,.csv"></label>
+      </div>
+      <div class="action-row wrap-row">
+        <button class="main-btn" id="saveClassBtn" data-i18n="saveClass">Save Class</button>
+      </div>
+      <div id="customClassesList" class="stored-questions question-editor-list"></div>
+    </section>
+
 
     <section class="card admin-level-card" data-section-key="accountManager">
       <div class="section-head"><h2 data-i18n="accessAccounts">Access Accounts</h2></div>
@@ -122,7 +152,7 @@
         <label class="file-label"><span data-i18n="uploadImage">Upload image</span><input type="file" id="newQImageFile" accept="image/*"></label>
       </div>
       <div class="action-row"><button class="main-btn" id="addQuestionBtn" data-i18n="addQuestion">Add Question</button></div>
-      <div class="section-head sub-head"><h3 data-i18n="modifyExistingQuestions">Modify Existing Questions</h3><div class="editor-head-actions"><button class="ghost-btn" id="toggleStoredQuestionsBtn" data-i18n="collapseQuestions">Collapse Questions</button></div><div class="editor-filters"><button class="level-btn active" data-filter-grade="all">All</button><button class="level-btn" data-filter-grade="KG1">KG1</button><button class="level-btn" data-filter-grade="KG2">KG2</button></div></div>
+      <div class="section-head sub-head"><h3 data-i18n="modifyExistingQuestions">Modify Existing Questions</h3><div class="editor-filters"><button class="level-btn active" data-filter-grade="all">All</button><button class="level-btn" data-filter-grade="KG1">KG1</button><button class="level-btn" data-filter-grade="KG2">KG2</button></div></div>
       <p class="muted-note" data-i18n="editQuestionNote">Edit any question below, then press save. Changes are stored locally and apply directly inside the app.</p>
       <div id="storedQuestionsWrap"><div id="storedQuestionsList" class="stored-questions question-editor-list"></div></div>
       </div>

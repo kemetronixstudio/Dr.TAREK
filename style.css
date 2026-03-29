@@ -397,3 +397,8 @@ body[data-lang="ar"] .permissions-grid, body[data-lang="ar"] .account-card {dire
   margin-right:6px;
   font-size:13px;
 }
+
+/* v31 admin bug-fix */
+#downloadCurrentQuestionsExcelBtn{display:none !important;}
+#toggleStoredQuestionsBtn{display:none !important;}
+.admin-level-card{margin-bottom:20px;}
