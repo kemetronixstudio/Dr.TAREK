@@ -1,13 +1,13 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Cairo:wght@400;600;700;800&family=Noto+Naskh+Arabic:wght@600;700&display=swap" rel="stylesheet"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#ffd54f"><link rel="stylesheet" href="style.css"><title>KG1 English Quiz</title></head><body data-grade="kg1" data-page="quiz">
 <div class="floating-shapes"></div>
-<header class="top-shell"><div class="lang-switch"><button class="lang-btn active" data-lang="en">EN</button><button class="lang-btn" data-lang="ar">AR</button></div><div class="teacher-topline">Dr. TAREK ABDALAZIZ 📞 01032188008</div><div class="top-shell-spacer"></div></header>
+<header class="top-shell subpage-top-shell"><a class="back-link top-home-link" href="index.html" data-i18n="homeBtn">⬅ Home</a><div class="teacher-topline" data-i18n="teacherTopline">Dr. TAREK ABDALAZIZ 📞 01032188008</div><div class="lang-switch"><button class="lang-btn active" data-lang="en">EN</button><button class="lang-btn" data-lang="ar">AR</button></div></header>
 <main class="container page-wrap">
-  <div class="nav-row"><a class="back-link" href="index.html" data-i18n="homeBtn">⬅ Home</a><a class="tiny-admin-link inline" href="admin.html">Teacher Dashboard</a></div>
+  <div class="nav-row nav-row-hidden"></div>
   <section class="card setup-card" id="setupCard">
     <div class="setup-grid">
       <div>
-        <span class="badge-pill">KG1 English</span>
-        <h1>KG1 English Quiz</h1>
+        <span class="badge-pill" data-i18n="kg1Badge">KG1 English</span>
+        <h1 data-i18n="kg1Title">KG1 English Quiz</h1>
         <p data-i18n="kg1Subtitle">Easy English questions for young learners.</p>
         <div class="student-form-box">
           <span class="step-pill" data-i18n="step1">Step 1</span>
@@ -29,9 +29,9 @@
           </div>
         </div>
           <div id="testLaunchWrap" class="student-form-box test-launch hidden">
-            <span class="step-pill">Test</span>
-            <h2>Teacher Test</h2>
-            <p>A teacher test is active for this grade.</p>
+            <span class="step-pill" data-i18n="testLabel">Test</span>
+            <h2 data-i18n="teacherTestTitle">Teacher Test</h2>
+            <p data-i18n="teacherTestActive">A teacher test is active for this grade.</p>
             <button class="main-btn" id="startAssignedTestBtn">Start Teacher Test</button>
           </div>
       </div>

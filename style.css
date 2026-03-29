@@ -187,3 +187,175 @@ body[data-lang="ar"] .admin-table-card th,body[data-lang="ar"] .admin-table-card
   color:#6b7f99;
   margin-top:4px;
 }
+
+
+/* v25 alignment and Arabic polish */
+.top-shell{
+  display:grid;
+  grid-template-columns:140px minmax(0,1fr) 140px;
+  align-items:center;
+  gap:12px;
+  padding-top:14px;
+}
+.lang-switch{justify-self:start}
+.teacher-topline{
+  justify-self:center;
+  text-align:center;
+  font-weight:800;
+  color:var(--ink);
+  background:rgba(255,255,255,.86);
+  border-radius:999px;
+  padding:10px 18px;
+  box-shadow:0 8px 20px rgba(36,68,111,.10);
+  line-height:1.1;
+  white-space:nowrap;
+}
+.tiny-admin-link,.top-shell-spacer{justify-self:end}
+body[data-lang="ar"] .top-shell{grid-template-columns:140px minmax(0,1fr) 140px}
+body[data-lang="ar"] .lang-switch{justify-self:end}
+body[data-lang="ar"] .tiny-admin-link,
+body[data-lang="ar"] .top-shell-spacer{justify-self:start}
+body[data-lang="ar"] .nav-row{flex-direction:row-reverse}
+body[data-lang="ar"] .admin-table-head,
+body[data-lang="ar"] .section-head,
+body[data-lang="ar"] .action-row,
+body[data-lang="ar"] .admin-tools{direction:rtl}
+body[data-lang="ar"] table{direction:rtl}
+body[data-lang="ar"] .teacher-topline{font-family:"Cairo","Baloo 2",sans-serif}
+body[data-lang="ar"] .home-levels .level-card p,
+body[data-lang="ar"] .lead,
+body[data-lang="ar"] .muted-note,
+body[data-lang="ar"] .cert-sub,
+body[data-lang="ar"] .cert-message{line-height:1.8}
+.home-levels{
+  grid-template-columns:repeat(2,minmax(280px,460px));
+  justify-content:center;
+  align-items:stretch;
+  max-width:980px;
+  margin:24px auto 0;
+}
+.home-levels .level-card{
+  min-height:420px;
+  justify-content:space-between;
+}
+.home-levels .level-card img{
+  width:min(180px,52%);
+  height:180px;
+  margin:0 auto 14px;
+}
+@media (max-width:900px){
+  .top-shell{
+    grid-template-columns:1fr auto;
+    grid-template-areas:
+      "teacher teacher"
+      "lang star";
+  }
+  .teacher-topline{grid-area:teacher;justify-self:center}
+  .lang-switch{grid-area:lang}
+  .tiny-admin-link,.top-shell-spacer{grid-area:star}
+  .home-levels{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .teacher-topline{font-size:13px;padding:9px 14px;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+}
+
+.editor-head-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.permissions-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:12px 0 16px}
+.inline-file{display:inline-flex;align-items:center;justify-content:center}
+.wrap-row{flex-wrap:wrap}
+.account-card{padding:14px 16px;border:1px solid rgba(36,68,111,.12);border-radius:18px;background:#fff;margin-top:10px}
+.account-card .meta-line{margin-bottom:10px}
+.account-actions{display:flex;gap:10px;flex-wrap:wrap}
+.collapsed-body{display:none}
+#storedQuestionsWrap.collapsed-body{display:none}
+#questionBankEditorBody.collapsed-body{display:none}
+body[data-lang="ar"] .permissions-grid, body[data-lang="ar"] .account-card {direction:rtl}
+
+
+/* v27 fixes */
+.subpage-top-shell{
+  display:grid !important;
+  grid-template-columns:140px minmax(0,1fr) 140px !important;
+  align-items:center;
+  gap:14px;
+  width:min(1180px,calc(100% - 24px));
+  margin:0 auto;
+  padding-top:14px;
+}
+.top-home-link{
+  justify-self:start;
+  margin:0 !important;
+}
+.subpage-top-shell .teacher-topline{
+  justify-self:center;
+  margin:0 auto;
+  max-width:100%;
+}
+.subpage-top-shell .lang-switch{
+  justify-self:end;
+}
+.nav-row-hidden{
+  display:none !important;
+}
+@media (max-width:900px){
+  .subpage-top-shell{
+    grid-template-columns:1fr auto;
+    grid-template-areas:
+      "teacher teacher"
+      "home lang";
+  }
+  .subpage-top-shell .teacher-topline{grid-area:teacher;}
+  .subpage-top-shell .top-home-link{grid-area:home;}
+  .subpage-top-shell .lang-switch{grid-area:lang;}
+}
+@media (max-width:520px){
+  .subpage-top-shell .teacher-topline{
+    font-size:13px;
+    padding:9px 14px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+}
+.permissions-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:10px;
+  margin:12px 0 16px;
+}
+.permissions-grid .level-toggle{
+  background:#f7fafc;
+  border:1px solid #d9e6f5;
+  border-radius:14px;
+  padding:10px 12px;
+}
+.teacher-question-picker{display:block;}
+.teacher-question-picker.hidden{display:none;}
+.teacher-question-picker-list{
+  max-height:320px;
+  overflow:auto;
+  border:1px solid #d9e6f5;
+  border-radius:16px;
+  padding:10px;
+  background:#fff;
+}
+.teacher-question-row{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:10px;
+  border-bottom:1px solid #eef2f8;
+}
+.teacher-question-row:last-child{border-bottom:none;}
+.teacher-question-row input{margin-top:3px;}
+.collapsed-body{display:none !important;}
+.collapse-hidden{display:none !important;}
+
+
+/* v28 fixes */
+.admin-grid{margin-bottom:16px;}
+.admin-table-card,.admin-level-card,.admin-editor-card{margin-bottom:18px;}
+.teacher-question-picker{display:block !important; margin-top:8px;}
+.teacher-question-picker[hidden]{display:none !important;}
+.teacher-question-picker-list{margin-top:8px;}
+.admin-table-head .admin-tools{gap:12px; align-items:flex-start;}
