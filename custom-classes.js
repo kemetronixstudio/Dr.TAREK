@@ -161,7 +161,7 @@
     const grid = document.getElementById('homeLevelsGrid');
     if (!grid) return;
     grid.querySelectorAll('.custom-class-card').forEach(el => el.remove());
-    getCustomClasses().forEach(cls => {
+    getCustomClasses().filter(cls => !cls.hidden).forEach(cls => {
       const a = document.createElement('a');
       a.className = 'level-card custom-class-card';
       a.href = `class.html?grade=${encodeURIComponent(cls.key)}`;
@@ -280,6 +280,7 @@
     meta.name = name;
     meta.description = descEl.value.trim();
     meta.questionCount = Number(countEl.value || 0) || 0;
+    meta.hidden = !!document.getElementById('classHiddenToggle')?.checked;
     const mode = modeEl.value;
     const customQ = getCustomQuestions();
     const finalize = () => {
@@ -291,7 +292,7 @@
       renderCustomClassesAdmin();
       renderHomeCustomClasses();
       ensureTeacherGradeSelect();
-      alert(T('classSaved'));
+      const hiddenEl=document.getElementById('classHiddenToggle'); if(hiddenEl) hiddenEl.checked=false; alert(T('classSaved'));
     };
     if (mode === 'existing'){
       const selectedTexts = Array.from(document.querySelectorAll('.class-question-check:checked')).map(ch => ({
@@ -357,7 +358,7 @@
           <div class="class-manager-meta">
             <span class="class-chip"><strong>${escapeHtml(cls.name)}</strong></span>
             <span class="class-chip">${escapeHtml(cls.key)}</span>
-            <span class="class-chip">${qCount} ${T('selectedQuestions')}</span>
+            <span class="class-chip">${qCount} ${T('selectedQuestions')}</span>${cls.hidden ? '<span class="class-manager-hidden-badge">Hidden</span>' : ''}
           </div>
           <p>${escapeHtml(cls.description || '')}</p>
           <div class="question-edit-actions">

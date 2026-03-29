@@ -414,3 +414,17 @@ body[data-lang="ar"] .ghost-btn,
 body[data-lang="ar"] .main-btn,
 body[data-lang="ar"] .back-link,
 body[data-lang="ar"] .lang-btn{font-family:"Cairo","Baloo 2",sans-serif;}
+
+
+/* v33 fixes */
+.question-filter-row{display:flex;gap:10px;justify-content:flex-end;align-items:center;flex-wrap:wrap;}
+.question-filter-row .ghost-btn{position:relative;z-index:2;}
+.class-manager-hidden-badge{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  background:#fff3cd;
+  color:#8a5a00;
+  font-size:12px;
+  margin-left:8px;
+}
