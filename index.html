@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Cairo:wght@400;600;700;800&family=Noto+Naskh+Arabic:wght@600;700&display=swap" rel="stylesheet"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#ffd54f"><link rel="stylesheet" href="style.css"><title>KG English Quiz</title></head><body data-page="home">
+<div class="floating-shapes"></div>
+<header class="top-shell">
+  <div class="lang-switch"><button class="lang-btn active" data-lang="en">EN</button><button class="lang-btn" data-lang="ar">AR</button></div>
+  <a class="tiny-admin-link" href="admin.html" title="Teacher Area">★</a>
+</header>
+<main class="container home-wrap">
+  <section class="hero-card card rainbow-border">
+    <div class="hero-copy hero-copy-wide">
+      <span class="badge-pill" data-i18n="homeBadge">English Learning for KG1 & KG2</span>
+      <h1 data-i18n="homeTitle">Fun English Quiz for Kids</h1>
+      <p class="lead" data-i18n="homeText">Play, learn, and grow with colorful English questions.</p>
+      <div class="teacher-card teacher-card-home">
+        <div>
+          <p class="tiny-label" data-i18n="teacherLabel">Your Teacher</p>
+          <h2>Dr. TAREK ABDALAZIZ</h2>
+          <p>📞 01032188008</p>
+        </div>
+      </div>
+
+      <p class="source-note" data-i18n="sourceNote">Questions are revised from your old quiz and organized into a kid-friendly app.</p>
+    </div>
+    <div class="level-grid home-levels">
+      <a class="level-card kg1-card" href="kg1.html">
+        <img src="cat.svg" alt="KG1">
+        <h3>KG1</h3>
+        <p data-i18n="kg1Desc">Letters, phonics, colors, feelings, body parts, and simple picture words.</p>
+        <span class="main-btn" data-i18n="startKg1">Start KG1</span>
+      </a>
+      <a class="level-card kg2-card" href="kg2.html">
+        <img src="school.svg" alt="KG2">
+        <h3>KG2</h3>
+        <p data-i18n="kg2Desc">Alphabet, grammar, singular/plural, there is/there are, reading and vocabulary.</p>
+        <span class="main-btn alt" data-i18n="startKg2">Start KG2</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="card progress-card">
+    <div class="section-head"><h2 data-i18n="progressTitle">Progress</h2><button class="ghost-btn" id="resetProgressBtn" data-i18n="resetProgress">Reset Progress</button></div>
+    <div id="progressSummary" class="progress-grid"></div>
+  </section>
+</main>
+<script src="script.js"></script>
+</body></html>

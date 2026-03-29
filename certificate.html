@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Cairo:wght@400;600;700;800&family=Noto+Naskh+Arabic:wght@600;700&display=swap" rel="stylesheet"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#ffd54f"><link rel="stylesheet" href="style.css"><title>Certificate</title><script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script></head><body data-page="certificate">
+<div class="floating-shapes"></div>
+<header class="top-shell"><div class="lang-switch"><button class="lang-btn active" data-lang="en">EN</button><button class="lang-btn" data-lang="ar">AR</button></div></header>
+<main class="container page-wrap">
+  <div class="nav-row"><a class="back-link" href="index.html" data-i18n="homeBtn">⬅ Home</a></div>
+  <section class="certificate-shell premium-card" id="certificateArea">
+    <div class="certificate-watermark">STAR STUDENT</div>
+    <div class="certificate-header">
+      <img src="school-logo.svg" class="cert-logo" alt="Logo">
+      <div>
+        <p class="cert-kicker" id="certTopText">Certificate of Achievement</p>
+        <h1 class="cert-title" id="certTitle">Certificate of Achievement</h1>
+        <p class="cert-sub" id="certSubtitle">Proudly presented to</p>
+      </div>
+      <div class="cert-rosette" aria-hidden="true">🌟</div>
+    </div>
+    <h2 class="student-big-name" id="certStudentName">Student</h2>
+    <p class="cert-message" id="certMessage">has completed the quiz successfully.</p>
+    <div class="cert-grid">
+      <div class="cert-box"><span id="labelGrade">Grade</span><strong id="certGrade"></strong></div>
+      <div class="cert-box"><span id="labelLevel">Quiz Level</span><strong id="certLevel"></strong></div>
+      <div class="cert-box"><span id="labelScore">Score</span><strong id="certScore"></strong></div>
+      <div class="cert-box"><span id="labelDate">Date</span><strong id="certDate"></strong></div>
+      <div class="cert-box wide"><span id="labelStrengths">Strengths</span><strong id="certStrengths"></strong></div>
+      <div class="cert-box wide"><span id="labelWeak">Focus More On</span><strong id="certWeaknesses"></strong></div>
+      <div class="cert-box full"><span id="labelAdvice">Teacher Advice</span><strong id="certAdvice"></strong></div>
+    </div>
+    <div class="cert-footer">
+      <div class="signature-card"><span id="labelTeacher">Teacher</span><img src="teacher-signature.svg" alt="Signature"><strong>Dr. TAREK ABDALAZIZ</strong></div>
+      <div class="signature-card"><span id="labelResult">Result</span><strong id="certRemark"></strong><img id="certQr" alt="QR code"></div>
+    </div>
+  </section>
+  <section class="card cert-actions-card">
+    <div class="section-head"><h2 data-i18n="certificateActions">Certificate Actions</h2></div>
+    <div class="action-row"><button class="main-btn" id="downloadPdfBtn" data-i18n="downloadPdf">Download PDF</button><button class="ghost-btn" id="shareCertBtn" data-i18n="shareCertificate">Share Certificate</button></div>
+    <p class="muted-note" data-i18n="shareNote">On supported mobile browsers, the PDF can be shared directly. If file sharing is not supported, WhatsApp text sharing will open as a fallback.</p>
+  </section>
+</main>
+<script src="script.js"></script></body></html>

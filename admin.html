@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Cairo:wght@400;600;700;800&family=Noto+Naskh+Arabic:wght@600;700&display=swap" rel="stylesheet"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#ffd54f"><link rel="stylesheet" href="style.css"><title>Teacher Dashboard</title></head><body data-page="admin">
+<div class="floating-shapes"></div>
+<header class="top-shell"><div class="lang-switch"><button class="lang-btn active" data-lang="en">EN</button><button class="lang-btn" data-lang="ar">AR</button></div></header>
+<main class="container page-wrap">
+  <div class="nav-row"><a class="back-link" href="index.html">⬅ Home</a></div>
+  <section class="card admin-login-card" id="adminLoginCard">
+    <h1>Teacher Dashboard</h1>
+    <p>Use one of the admin accounts to manage records and questions.</p>
+    <div class="admin-accounts-note"><strong>Admins:</strong> Dr. Tarek / HITMAN</div>
+    <input id="adminUser" placeholder="Admin name">
+    <input id="adminPass" placeholder="Password" type="password">
+    <button class="main-btn" id="adminLoginBtn">Open Dashboard</button>
+    <p class="muted-note">This is a client-side demo dashboard. For real security, use a backend later.</p>
+  </section>
+
+  <section id="adminPanel" class="hidden">
+    <div class="admin-top-grid">
+      <div class="card metric-card"><span>Total Students</span><strong id="metricStudents">0</strong></div>
+      <div class="card metric-card"><span>Total Attempts</span><strong id="metricAttempts">0</strong></div>
+      <div class="card metric-card"><span>Average Score</span><strong id="metricAverage">0%</strong></div>
+      <div class="card metric-card"><span>Most Missed Skill</span><strong id="metricWeak">-</strong></div>
+    </div>
+    <div class="admin-grid">
+      <section class="card admin-table-card">
+        <div class="section-head"><h2>Student Progress</h2><button class="ghost-btn" id="exportDataBtn">Export JSON</button></div>
+        <div class="table-wrap"><table><thead><tr><th>Name</th><th>Grade</th><th>Attempts</th><th>Best</th><th>Last</th><th>Weak Areas</th></tr></thead><tbody id="studentTableBody"></tbody></table></div>
+      </section>
+      <section class="card admin-table-card">
+        <div class="section-head"><h2>Most Missed Questions</h2></div>
+        <div class="table-wrap"><table><thead><tr><th>Question</th><th>Misses</th></tr></thead><tbody id="missedTableBody"></tbody></table></div>
+      </section>
+    </div>
+    <section class="card admin-level-card">
+      <div class="section-head"><h2>Level Visibility</h2><button class="ghost-btn" id="resetLevelsBtn">Show All Levels</button></div>
+      <p class="muted-note">Choose which quiz levels students can see on KG1 and KG2 pages.</p>
+      <div id="adminLevelVisibility" class="level-visibility-grid"></div>
+      <div class="action-row"><button class="main-btn" id="saveLevelsBtn">Save Level Visibility</button></div>
+    </section>
+    <section class="card admin-editor-card">
+      <div class="section-head"><h2>Question Bank Editor</h2><button class="ghost-btn" id="showStoredQuestionsBtn">Refresh Question List</button></div>
+      <div class="editor-grid">
+        <input id="newQGrade" placeholder="Grade (KG1 or KG2)">
+        <input id="newQSkill" placeholder="Skill (Vocabulary, Phonics...)">
+        <input id="newQType" placeholder="Type (Choice, TrueFalse, Picture)">
+        <input id="newQText" placeholder="Question text">
+        <input id="newQOptions" placeholder="Options separated by |">
+        <input id="newQAnswer" placeholder="Correct answer">
+        <input id="newQDifficulty" placeholder="Difficulty 1-3">
+        <input id="newQImage" placeholder="Image filename or leave blank">
+        <label class="file-label">Upload image<input type="file" id="newQImageFile" accept="image/*"></label>
+      </div>
+      <div class="action-row"><button class="main-btn" id="addQuestionBtn">Add Question</button></div>
+      <div class="section-head sub-head"><h3>Modify Existing Questions</h3><div class="editor-filters"><button class="level-btn active" data-filter-grade="all">All</button><button class="level-btn" data-filter-grade="KG1">KG1</button><button class="level-btn" data-filter-grade="KG2">KG2</button></div></div>
+      <p class="muted-note">Edit any question below, then press save. Changes are stored locally and apply directly inside the app.</p>
+      <div id="storedQuestionsList" class="stored-questions question-editor-list"></div>
+    </section>
+  </section>
+</main>
+<script src="script.js"></script></body></html>
