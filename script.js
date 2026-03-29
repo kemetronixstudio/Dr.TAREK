@@ -791,3 +791,260 @@ function wireQuestionFilterButtons(){
     });
   });
 }
+
+
+/* === v36 hotfix overrides === */
+(function(){
+  function normUser(v){ return String(v||'').trim().toLowerCase(); }
+  function builtIns(){
+    return [
+      { user:'dr. tarek', pass:'T01032188008', role:'admin', permissions:[...(typeof PERMISSIONS!=='undefined'?PERMISSIONS:[])], display:'Dr. Tarek' },
+      { user:'hitman', pass:'01002439054', role:'admin', permissions:[...(typeof PERMISSIONS!=='undefined'?PERMISSIONS:[])], display:'HITMAN' }
+    ];
+  }
+  function getAccountsV36(){
+    try{
+      const old35 = JSON.parse(localStorage.getItem('kgEnglishAccessAccountsV35') || '[]');
+      const old36 = JSON.parse(localStorage.getItem('kgEnglishAccessAccountsV36') || '[]');
+      const pick = Array.isArray(old36) && old36.length ? old36 : (Array.isArray(old35) ? old35 : []);
+      return pick;
+    }catch(e){ return []; }
+  }
+  function setAccountsV36(arr){
+    localStorage.setItem('kgEnglishAccessAccountsV36', JSON.stringify(arr || []));
+    localStorage.setItem('kgEnglishAccessAccountsV35', JSON.stringify(arr || []));
+  }
+  window.getLoginAccount = function(user, pass){
+    const cleanUser = normUser(user);
+    const cleanPass = String(pass || '').trim();
+    const built = builtIns().find(a => normUser(a.user) === cleanUser || normUser(a.display) === cleanUser);
+    if (built && built.pass === cleanPass) return { ...built, builtIn:true };
+    const accounts = getAccountsV36();
+    const match = accounts.find(a => normUser(a.user) === cleanUser && String(a.pass||'').trim() === cleanPass);
+    return match ? { ...match, builtIn:false } : null;
+  };
+  window.renderAccessAccountsList = function(){
+    const box = document.getElementById('accessAccountsList');
+    if (!box) return;
+    const lang = typeof getLang === 'function' ? getLang() : 'en';
+    const all = [...builtIns().map(a=>({...a,builtIn:true})), ...getAccountsV36().map(a=>({...a,builtIn:false}))];
+    if (!all.length){
+      box.innerHTML = '<div class="stored-question"><h4>No accounts.</h4></div>';
+      return;
+    }
+    box.innerHTML = all.map(acc => {
+      const perms = acc.role === 'admin' ? 'All permissions' : ((acc.permissions||[]).map(permissionLabel).join(' • ') || '-');
+      return `<div class="question-edit-card">
+        <div class="class-manager-meta">
+          <span class="class-chip"><strong>${escapeHtml(acc.display || acc.user)}</strong></span>
+          <span class="class-chip">${acc.role === 'admin' ? 'Admin' : ((translations[lang]&&translations[lang].staffRole)||'Staff')}</span>
+          ${acc.builtIn ? '<span class="class-manager-hidden-badge">Built-in</span>' : ''}
+        </div>
+        <p>${escapeHtml(perms)}</p>
+        <div class="question-edit-actions">
+          <button class="ghost-btn access-edit-btn" data-user="${escapeHtml(acc.user)}">${(translations[lang]&&translations[lang].editAccount)||'Edit Account'}</button>
+          <button class="ghost-btn access-pass-btn" data-user="${escapeHtml(acc.user)}">${(translations[lang]&&translations[lang].changePassword)||'Change Password'}</button>
+          ${acc.builtIn ? '' : `<button class="ghost-btn danger-btn access-delete-btn" data-user="${escapeHtml(acc.user)}">${(translations[lang]&&translations[lang].deleteAccount)||'Delete Account'}</button>`}
+        </div>
+      </div>`;
+    }).join('');
+    box.querySelectorAll('.access-edit-btn').forEach(btn => btn.onclick = ()=> {
+      const u = btn.dataset.user;
+      const built = builtIns().find(a=>normUser(a.user)===normUser(u));
+      const acc = built || getAccountsV36().find(a=>normUser(a.user)===normUser(u));
+      if (!acc) return;
+      const userEl = document.getElementById('accessAccountUser'); if (userEl) userEl.value = acc.user;
+      const passEl = document.getElementById('accessAccountPass'); if (passEl) passEl.value = acc.pass || '';
+      const roleEl = document.getElementById('accessAccountRole'); if (roleEl) roleEl.value = acc.role || 'user';
+      if (typeof renderAccessPermissions === 'function') renderAccessPermissions(acc.permissions || []);
+    };
+    box.querySelectorAll('.access-pass-btn').forEach(btn => btn.onclick = ()=> {
+      const nextPass = prompt((translations[(typeof getLang==='function'?getLang():'en')]||{}).enterNewPassword || 'Enter new password');
+      if (!nextPass) return;
+      const u = btn.dataset.user;
+      const arr = getAccountsV36();
+      const idx = arr.findIndex(a=>normUser(a.user)===normUser(u));
+      const built = builtIns().find(a=>normUser(a.user)===normUser(u));
+      if (idx >= 0){
+        arr[idx].pass = nextPass;
+      } else if (built){
+        arr.push({ user: built.user, pass: nextPass, role:'admin', permissions:[...(typeof PERMISSIONS!=='undefined'?PERMISSIONS:[])] });
+      }
+      setAccountsV36(arr);
+      renderAccessAccountsList();
+      alert((translations[(typeof getLang==='function'?getLang():'en')]||{}).passwordUpdated || 'Password updated.');
+    };
+    box.querySelectorAll('.access-delete-btn').forEach(btn => btn.onclick = ()=> {
+      if (!confirm((translations[(typeof getLang==='function'?getLang():'en')]||{}).confirmDeleteAccount || 'Delete this account?')) return;
+      const arr = getAccountsV36().filter(a=>normUser(a.user)!==normUser(btn.dataset.user));
+      setAccountsV36(arr);
+      renderAccessAccountsList();
+      alert((translations[(typeof getLang==='function'?getLang():'en')]||{}).accountDeleted || 'Account deleted.');
+    });
+  };
+  window.saveAccessAccountFromAdmin = function(){
+    try{
+      const user = normUser(document.getElementById('accessAccountUser')?.value || '');
+      const pass = String(document.getElementById('accessAccountPass')?.value || '').trim();
+      const role = (document.getElementById('accessAccountRole')?.value || 'user').trim();
+      if (!user || !pass){ alert(((translations[(typeof getLang==='function'?getLang():'en')]||{}).usernamePasswordRequired)||'Please enter username and password.'); return; }
+      const permissions = role === 'admin' ? [...(typeof PERMISSIONS!=='undefined'?PERMISSIONS:[])] : Array.from(document.querySelectorAll('.perm-check:checked')).map(el=>el.value);
+      if (role !== 'admin' && permissions.length === 0){ alert(((translations[(typeof getLang==='function'?getLang():'en')]||{}).chooseOnePermission)||'Please choose at least one permission.'); return; }
+      const arr = getAccountsV36();
+      const idx = arr.findIndex(a=>normUser(a.user)===user);
+      const payload = { user, pass, role, permissions };
+      if (idx >= 0) arr[idx] = payload; else arr.push(payload);
+      setAccountsV36(arr);
+      if (document.getElementById('accessAccountUser')) document.getElementById('accessAccountUser').value = '';
+      if (document.getElementById('accessAccountPass')) document.getElementById('accessAccountPass').value = '';
+      if (document.getElementById('accessAccountRole')) document.getElementById('accessAccountRole').value = 'user';
+      if (typeof renderAccessPermissions === 'function') renderAccessPermissions([]);
+      renderAccessAccountsList();
+      alert(((translations[(typeof getLang==='function'?getLang():'en')]||{}).accountSaved)||'Account saved.');
+    }catch(err){
+      alert(((translations[(typeof getLang==='function'?getLang():'en')]||{}).accountSaveFailed)||'Could not save account.');
+    }
+  };
+  window.makeCertificatePdfBlob = async function(){
+    const area = document.getElementById('certificateArea');
+    if (!area || !window.html2canvas || !window.jspdf) throw new Error('Missing PDF libraries');
+    const imgs = Array.from(area.querySelectorAll('img'));
+    await Promise.all(imgs.map(img => img.complete ? Promise.resolve() : new Promise(res => { img.onload = img.onerror = ()=>res(); })));
+    await new Promise(res => setTimeout(res, 200));
+    const canvas = await window.html2canvas(area, {scale:2, backgroundColor:'#fffdf4', useCORS:true, logging:false});
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p','pt','a4');
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const ratio = Math.min((pageWidth-36)/canvas.width, (pageHeight-36)/canvas.height);
+    const w = canvas.width * ratio, h = canvas.height * ratio;
+    pdf.addImage(imgData, 'PNG', (pageWidth-w)/2, 18, w, h);
+    return pdf.output('blob');
+  };
+  window.renderCertificate = function(){
+    const area = document.getElementById('certificateArea');
+    const raw = localStorage.getItem(storeKeys.cert);
+    const data = raw ? JSON.parse(raw) : null;
+    if (!area || !data) return;
+    const lang = typeof getLang === 'function' ? getLang() : (data.lang || 'en');
+    document.body.dataset.lang = lang;
+    const title = lang === 'ar' ? 'شهادة تقدير' : (translations[lang]?.certificateTitle || 'Certificate of Achievement');
+    area.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+    area.setAttribute('lang', lang === 'ar' ? 'ar' : 'en');
+    const set = (id,val) => { const el=document.getElementById(id); if(el) el.textContent = val ?? ''; };
+    set('certTitle', title);
+    set('certTopText', title);
+    set('certSubtitle', translations[lang]?.presentedTo || 'Proudly presented to');
+    set('certStudentName', data.studentName || 'Student');
+    set('certMessage', translations[lang]?.completedMsg || 'has completed the quiz successfully.');
+    set('labelGrade', translations[lang]?.grade || 'Grade');
+    set('labelLevel', translations[lang]?.level || 'Quiz Level');
+    set('labelScore', translations[lang]?.score || 'Score');
+    set('labelDate', translations[lang]?.date || 'Date');
+    set('labelStrengths', translations[lang]?.strengths || 'Strengths');
+    set('labelWeak', translations[lang]?.focus || 'Focus More On');
+    set('labelAdvice', translations[lang]?.advice || 'Teacher Advice');
+    set('labelTeacher', translations[lang]?.teacher || 'Teacher');
+    set('labelResult', translations[lang]?.result || 'Result');
+    set('certGrade', data.grade || '');
+    set('certLevel', `${data.quizLevel || ''} / ${data.questionCount || ''}`);
+    set('certScore', `${data.score ?? ''} (${data.percent ?? 0}%)`);
+    set('certDate', data.date || '');
+    set('certStrengths', Array.isArray(data.strengths) ? data.strengths.join(', ') : (data.strengths || ''));
+    set('certWeaknesses', Array.isArray(data.weaknesses) ? data.weaknesses.join(', ') : (data.weaknesses || ''));
+    set('certAdvice', data.advice || '');
+    set('certRemark', data.remark || '');
+    const qrBox = document.getElementById('certQr');
+    if (qrBox){
+      qrBox.innerHTML = '';
+      const homeUrl = (location.origin && location.origin !== 'null' ? location.origin + location.pathname.replace('certificate.html','index.html') : location.href.replace('certificate.html','index.html'));
+      if (window.QRCode){
+        new QRCode(qrBox, { text: homeUrl, width:110, height:110 });
+      } else {
+        qrBox.textContent = homeUrl;
+        qrBox.style.fontSize = '11px';
+        qrBox.style.padding = '8px';
+        qrBox.style.wordBreak = 'break-all';
+      }
+    }
+    const pdfBtn = document.getElementById('downloadPdfBtn');
+    if (pdfBtn && !pdfBtn.dataset.bound){
+      pdfBtn.dataset.bound='1';
+      pdfBtn.addEventListener('click', async ()=>{
+        try{
+          const blob = await window.makeCertificatePdfBlob();
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `${data.studentName || 'student'}-certificate.pdf`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(()=>URL.revokeObjectURL(url), 1500);
+        }catch(err){
+          alert('Could not generate PDF.');
+        }
+      });
+    }
+    const shareBtn = document.getElementById('shareCertBtn');
+    if (shareBtn && !shareBtn.dataset.bound){
+      shareBtn.dataset.bound='1';
+      shareBtn.addEventListener('click', async ()=>{
+        try{
+          const blob = await window.makeCertificatePdfBlob();
+          const file = new File([blob], `${data.studentName || 'student'}-certificate.pdf`, {type:'application/pdf'});
+          if (navigator.canShare && navigator.canShare({files:[file]})){
+            await navigator.share({ files:[file], title:'Certificate', text:`${data.studentName || 'Student'} - ${data.percent || 0}%` });
+          } else {
+            window.open(`https://wa.me/?text=${encodeURIComponent(`${data.studentName || 'Student'} finished ${data.grade || ''} with ${data.percent || 0}%`)}`,'_blank');
+          }
+        }catch(err){
+          alert('Could not share certificate.');
+        }
+      });
+    }
+  };
+  function rebindAdminLogin(){
+    if (document.body.dataset.page !== 'admin') return;
+    const btn = document.getElementById('adminLoginBtn');
+    if (!btn) return;
+    const fresh = btn.cloneNode(true);
+    btn.parentNode.replaceChild(fresh, btn);
+    fresh.addEventListener('click', ()=>{
+      const user = document.getElementById('adminUser')?.value || '';
+      const pass = document.getElementById('adminPass')?.value || '';
+      const account = window.getLoginAccount(user, pass);
+      if (!account){
+        alert((typeof getLang==='function' && getLang()==='ar') ? 'اسم المشرف أو كلمة المرور غير صحيحة.' : 'Wrong admin name or password.');
+        return;
+      }
+      const loginCard = document.getElementById('adminLoginCard');
+      const panel = document.getElementById('adminPanel');
+      if (loginCard) loginCard.classList.add('hidden');
+      if (panel) panel.classList.remove('hidden');
+      if (typeof applySectionPermissions === 'function') applySectionPermissions(account);
+      if (typeof populateDashboardDateFilter === 'function') populateDashboardDateFilter();
+      if (typeof renderAdminDashboard === 'function') renderAdminDashboard();
+      if (typeof renderLevelVisibilityEditor === 'function') renderLevelVisibilityEditor();
+      if (typeof renderTimerSettingsEditor === 'function') renderTimerSettingsEditor();
+      if (typeof renderQuizAccessEditor === 'function') renderQuizAccessEditor();
+      if (typeof renderTeacherTestEditor === 'function') renderTeacherTestEditor();
+      if (typeof renderAccessPermissions === 'function') renderAccessPermissions([]);
+      if (typeof renderAccessAccountsList === 'function') renderAccessAccountsList();
+      if (typeof renderTeacherQuestionPicker === 'function') renderTeacherQuestionPicker();
+      if (typeof wireCollapseButtons === 'function') wireCollapseButtons();
+      if (typeof renderStoredQuestions === 'function') renderStoredQuestions();
+      if (typeof wireQuestionFilterButtons === 'function') wireQuestionFilterButtons();
+      const cm = document.querySelector('[data-section-key="classManager"]');
+      if (cm){ cm.classList.remove('hidden'); cm.style.display=''; }
+      const saveAccBtn = document.getElementById('saveAccessAccountBtn');
+      if (saveAccBtn && !saveAccBtn.dataset.bound){
+        saveAccBtn.dataset.bound='1';
+        saveAccBtn.addEventListener('click', function(e){ e.preventDefault(); window.saveAccessAccountFromAdmin(); });
+      }
+    });
+  }
+  setTimeout(()=>{ try{ rebindAdminLogin(); if (document.body.dataset.page === 'certificate') window.renderCertificate(); }catch(e){} }, 0);
+})();
+
