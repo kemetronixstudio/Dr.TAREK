@@ -432,24 +432,3 @@ body[data-lang="ar"] .lang-btn{font-family:"Cairo","Baloo 2",sans-serif;}
 
 /* v34 final polish */
 .editor-filters.question-filter-row .level-btn{cursor:pointer;}
-
-/* v35 premium polish */
-#accessAccountsList .question-edit-card{background:rgba(255,255,255,.78);}
-#accessAccountsList .question-edit-actions{display:flex;gap:10px;flex-wrap:wrap;}
-
-
-/* v37 hotfix */
-.cert-qr-box{
-  width:110px;
-  height:110px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#fff;
-  border-radius:16px;
-  overflow:hidden;
-}
-.cert-qr-box img, .cert-qr-box canvas{
-  width:100% !important;
-  height:100% !important;
-}
