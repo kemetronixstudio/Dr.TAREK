@@ -45,3 +45,7 @@ If you tested older versions before, clear site data once so the new service wor
 
 ## Version
 This package is the freeze-fix build v22. If you update from an older release, clear old browser cache/service worker once.
+
+
+## v38 stable
+This package restores a stable quiz flow build and bumps the cache version to avoid loading older broken cached files.
