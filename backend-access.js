@@ -150,6 +150,7 @@
     if (typeof renderTeacherQuestionPicker === 'function') try { renderTeacherQuestionPicker(); } catch (error) {}
     if (typeof wireCollapseButtons === 'function') try { wireCollapseButtons(); } catch (error) {}
     if (typeof wireQuestionFilterButtons === 'function') try { wireQuestionFilterButtons(); } catch (error) {}
+    if (typeof window.renderAccessLogs === 'function') try { window.renderAccessLogs(); } catch (error) {}
   }
   function clearForm(){
     const userEl = document.getElementById('accessAccountUser');
@@ -204,6 +205,40 @@
     }
   }
 
+
+
+  async function refreshLogs(){
+    const payload = await api('/logs?ts=' + Date.now(), { method: 'GET' });
+    return Array.isArray(payload.logs) ? payload.logs : [];
+  }
+
+  window.renderAccessLogs = async function(){
+    const box = document.getElementById('accessLogsList');
+    if (!box) return;
+    if (!currentIsAdmin()) {
+      box.innerHTML = '<div class="stored-question"><h4>' + escapeText(lang()==='ar' ? 'سجل النشاط متاح للمشرف فقط.' : 'Activity logs are available to admins only.') + '</h4></div>';
+      return;
+    }
+    box.innerHTML = '<div class="stored-question"><h4>' + escapeText(lang()==='ar' ? 'جار تحميل السجل...' : 'Loading activity logs...') + '</h4></div>';
+    try {
+      const logs = await refreshLogs();
+      if (!logs.length) {
+        box.innerHTML = '<div class="stored-question"><h4>' + escapeText(lang()==='ar' ? 'لا توجد سجلات بعد.' : 'No activity yet.') + '</h4></div>';
+        return;
+      }
+      box.innerHTML = logs.map(function(item){
+        const when = item.createdAt ? new Date(item.createdAt).toLocaleString() : '-';
+        const title = (item.detail || item.action || 'Activity') + (item.target ? ' - ' + item.target : '');
+        return '<div class="stored-question">'
+          + '<h4>' + escapeText(title) + '</h4>'
+          + '<div class="account-perms-line">' + escapeText('By: ' + (item.actor || '-') + ' | Time: ' + when) + '</div>'
+          + '</div>';
+      }).join('');
+    } catch (error) {
+      box.innerHTML = '<div class="stored-question"><h4>' + escapeText(error.message || 'Failed to load logs.') + '</h4></div>';
+    }
+  };
+
   window.renderAccessAccountsList = async function(){
     const box = document.getElementById('accessAccountsList');
     if (!box) return;
@@ -211,6 +246,7 @@
       box.innerHTML = '<div class="stored-question"><h4>' + escapeText(lang()==='ar' ? 'إدارة الحسابات متاحة للمشرف فقط.' : 'Account management is available to admins only.') + '</h4></div>';
       return;
     }
+    showStatus('', 'info');
     box.innerHTML = '<div class="stored-question"><h4>' + escapeText(lang()==='ar' ? 'جار تحميل الحسابات...' : 'Loading accounts...') + '</h4></div>';
     try {
       const accounts = await refreshAccounts();
@@ -284,6 +320,7 @@
       await api('', { method: 'DELETE', body: JSON.stringify({ user: account.user }) });
       clearForm();
       await window.renderAccessAccountsList();
+      if (typeof window.renderAccessLogs === 'function') await window.renderAccessLogs();
       showStatus(lang()==='ar' ? 'تم حذف الحساب بنجاح.' : 'Account deleted successfully.', 'success');
     } catch (error) {
       showStatus(error.message || 'Delete failed.', 'error');
@@ -303,6 +340,7 @@
       const payload = await api('/change-password', { method: 'POST', body: JSON.stringify({ user: account.user, pass: nextPass }) });
       if (payload.token && payload.currentAccount) persistSession(payload.currentAccount, payload.token);
       await window.renderAccessAccountsList();
+      if (typeof window.renderAccessLogs === 'function') await window.renderAccessLogs();
       showStatus(lang()==='ar' ? 'تم تحديث كلمة المرور بنجاح.' : 'Password updated successfully.', 'success');
     } catch (error) {
       showStatus(error.message || 'Password update failed.', 'error');
@@ -352,6 +390,7 @@
       if (payload.token && payload.currentAccount) persistSession(payload.currentAccount, payload.token);
       clearForm();
       await window.renderAccessAccountsList();
+      if (typeof window.renderAccessLogs === 'function') await window.renderAccessLogs();
       showStatus(t('accountSaved', 'Account saved.'), 'success');
       return true;
     } catch (error) {
@@ -370,6 +409,7 @@
       setPanelVisible(payload.account);
       if (typeof window.renderAccessPermissions === 'function') window.renderAccessPermissions([]);
       await window.renderAccessAccountsList();
+      if (typeof window.renderAccessLogs === 'function') await window.renderAccessLogs();
     } catch (error) {
       alert((lang()==='ar' ? 'اسم المشرف أو كلمة المرور غير صحيحة.' : 'Wrong admin name or password.') + (error && error.status >= 500 ? ' ' + (lang()==='ar' ? 'تحقق من إعدادات الـ API.' : 'Check the backend API configuration.') : ''));
     }
@@ -415,6 +455,13 @@
         window.saveAccessAccountFromAdmin();
         return;
       }
+      const collapseBtn = event.target && event.target.closest ? event.target.closest('#toggleQuestionBankEditorBtn') : null;
+      if (collapseBtn) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        if (typeof window.toggleCollapse === 'function') window.toggleCollapse('questionBankEditorBody', collapseBtn);
+        return;
+      }
       const clearBtn = event.target && event.target.closest ? event.target.closest('#clearAccessAccountBtn') : null;
       if (clearBtn) {
         event.preventDefault();
@@ -442,6 +489,12 @@
       clearForm();
       showStatus(lang()==='ar' ? 'تم مسح النموذج.' : 'Form cleared.', 'info');
     });
+
+    const refreshLogsBtn = cloneButton('refreshAccessLogsBtn');
+    if (refreshLogsBtn) refreshLogsBtn.addEventListener('click', function(event){ event.preventDefault(); if (typeof window.renderAccessLogs === 'function') window.renderAccessLogs(); });
+
+    const collapseBtn = cloneButton('toggleQuestionBankEditorBtn');
+    if (collapseBtn) collapseBtn.addEventListener('click', function(event){ event.preventDefault(); event.stopImmediatePropagation(); if (typeof window.toggleCollapse === 'function') window.toggleCollapse('questionBankEditorBody', collapseBtn); });
 
     const roleEl = cloneButton('accessAccountRole');
     if (roleEl) roleEl.addEventListener('change', function(){

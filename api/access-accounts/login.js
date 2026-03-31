@@ -21,6 +21,7 @@ module.exports = async function handler(req, res) {
       return;
     }
     const token = backend.createTokenForAccount(account);
+    await backend.appendLog({ action: 'login', actor: account.user, target: account.user, role: account.role, detail: `Logged in as ${account.role || 'admin'}`, createdAt: new Date().toISOString() });
     setAuthCookie(res, token);
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
