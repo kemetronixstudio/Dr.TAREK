@@ -244,7 +244,50 @@ function collapseAllAdminSections(){
   });
 }
 
+function ensureAdminShortcutUi(){
+  const panel = document.getElementById('adminDashboardContent');
+  if (!panel) return;
+  let sticky = document.getElementById('adminStickyShortcuts');
+  if (!sticky) {
+    sticky = document.createElement('div');
+    sticky.id = 'adminStickyShortcuts';
+    sticky.className = 'admin-shortcuts-sticky';
+    panel.insertBefore(sticky, panel.firstChild || null);
+  }
+  let gridCard = panel.querySelector('.admin-shortcuts-card');
+  if (!gridCard) {
+    gridCard = document.createElement('section');
+    gridCard.className = 'card admin-shortcuts-card';
+    gridCard.innerHTML = '<div class="section-head"><h2>Quick Access</h2></div><div class="admin-shortcuts-grid" id="adminShortcutsGrid"></div>';
+    panel.insertBefore(gridCard, sticky.nextSibling || null);
+  }
+  const grid = document.getElementById('adminShortcutsGrid') || gridCard.querySelector('.admin-shortcuts-grid');
+  const iconMap = {levelVisibilitySection:'👁️',timerSettingsSection:'⏱️',quizAccessSection:'🔐',teacherTestSection:'🧪',bulkQuestionsSection:'📥',classManagerSection:'🏫',accountManagerSection:'👥',activityLogsSection:'📝',questionBankSection:'📚'};
+  if (sticky && !sticky.children.length) {
+    ADMIN_COLLAPSIBLE_CONFIGS.forEach(cfg => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'shortcut-icon-btn';
+      btn.dataset.shortcutTarget = cfg.sectionId;
+      btn.title = cfg.sectionId;
+      btn.textContent = iconMap[cfg.sectionId] || '•';
+      sticky.appendChild(btn);
+    });
+  }
+  if (grid && !grid.children.length) {
+    ADMIN_COLLAPSIBLE_CONFIGS.forEach(cfg => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'shortcut-chip';
+      btn.dataset.shortcutTarget = cfg.sectionId;
+      btn.innerHTML = `<span class="shortcut-icon">${iconMap[cfg.sectionId] || '•'}</span><span class="shortcut-text">${cfg.sectionId}</span>`;
+      grid.appendChild(btn);
+    });
+  }
+}
+
 function wireCollapseButtons(){
+  ensureAdminShortcutUi();
   collapseAllAdminSections();
   ADMIN_COLLAPSIBLE_CONFIGS.forEach(cfg => {
     const button = document.getElementById(cfg.buttonId);
@@ -254,10 +297,11 @@ function wireCollapseButtons(){
       button.dataset.wired = '1';
       button.addEventListener('click', (event)=>{
         event.preventDefault();
+        event.stopPropagation();
         toggleCollapse(cfg.bodyId, button);
       });
     }
-    setCollapsed(cfg.bodyId, button, body.classList.contains('collapsed-body') || body.hidden || body.style.display === 'none');
+    setCollapsed(cfg.bodyId, button, true);
   });
   wireShortcutButtons();
   updateShortcutLabels();
@@ -267,8 +311,11 @@ function updateShortcutLabels(){
   document.querySelectorAll('[data-shortcut-target]').forEach(btn => {
     const target = document.getElementById(btn.dataset.shortcutTarget);
     const heading = target?.querySelector('h2');
+    const label = heading ? heading.textContent.trim() : btn.dataset.shortcutTarget;
     const text = btn.querySelector('.shortcut-text');
-    if (heading && text) text.textContent = heading.textContent.trim();
+    if (heading && text) text.textContent = label;
+    btn.setAttribute('title', label);
+    btn.setAttribute('aria-label', label);
   });
 }
 

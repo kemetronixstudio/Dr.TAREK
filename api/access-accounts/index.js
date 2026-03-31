@@ -15,9 +15,19 @@ module.exports = async function handler(req, res) {
         return;
       }
       setAuthCookie(res, auth.token);
-      const accounts = await backend.mergedAccounts();
+      const action = String((req.query && req.query.action) || '').trim().toLowerCase();
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
+      if (action === 'me') {
+        res.end(JSON.stringify({ ok: true, account: auth.account, token: auth.token }));
+        return;
+      }
+      if (action === 'logs') {
+        const logs = await backend.readLogs();
+        res.end(JSON.stringify({ ok: true, logs, token: auth.token }));
+        return;
+      }
+      const accounts = await backend.mergedAccounts();
       res.end(JSON.stringify({ ok: true, accounts: accounts.map(backend.publicAccount), token: auth.token }));
       return;
     }

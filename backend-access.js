@@ -209,7 +209,7 @@
 
 
   async function refreshLogs(){
-    const payload = await api('/logs?ts=' + Date.now(), { method: 'GET' });
+    const payload = await api('?action=logs&ts=' + Date.now(), { method: 'GET' });
     return Array.isArray(payload.logs) ? payload.logs : [];
   }
 
@@ -425,7 +425,7 @@
       return false;
     }
     try {
-      const payload = await api('/me', { method: 'GET' });
+      const payload = await api('?action=me', { method: 'GET' });
       persistSession(payload.account, payload.token || token, creds);
       setPanelVisible(payload.account);
       if (typeof window.renderAccessPermissions === 'function') window.renderAccessPermissions([]);
