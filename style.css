@@ -428,3 +428,57 @@ body[data-lang="ar"] .lang-btn{font-family:"Cairo","Baloo 2",sans-serif;}
   font-size:12px;
   margin-left:8px;
 }
+
+
+/* v38.2 admin upgrade */
+.v382-filters input,.v382-test-tools input{width:100%}
+.v382-filters,.v382-test-tools{margin-top:10px}
+.account-card .meta-line{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.account-card .account-actions{display:flex;gap:8px;flex-wrap:wrap}
+.class-edit-btn{margin-right:8px}
+
+
+/* v38.4 question search UX */
+.v384-search-tools{margin-top:10px;align-items:center}
+.search-results-note{color:#5d718d;font-size:.92rem}
+.search-results-meta{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:10px 0 14px}
+#questionNoResults{color:#e55252;font-weight:700}
+
+
+/* v38.5 bugfix */
+.cert-qr-box{
+  width:110px;
+  height:110px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#fff;
+  border-radius:16px;
+  overflow:hidden;
+}
+.cert-qr-box img,.cert-qr-box canvas{
+  width:100% !important;
+  height:100% !important;
+}
+
+
+/* v38.10 final account admin fix */
+.account-realfix-card{margin-bottom:12px}
+.account-perms-line{
+  color:#5d718d;
+  font-size:.92rem;
+  margin:8px 0 10px;
+}
+
+
+/* v38.12 pro access account manager */
+.access-account-actions{gap:10px;flex-wrap:wrap}
+.account-status-note{min-height:24px;margin:4px 0 10px;padding:0 2px;font-size:.95rem;font-weight:700;color:#5d718d}
+.account-status-note[data-state="success"]{color:#1f8f4d}
+.account-status-note[data-state="error"]{color:#cf3f3f}
+.account-status-note[data-state="info"]{color:#365b8c}
+.account-card.account-pro-card{border:1px solid rgba(36,68,111,.12);box-shadow:0 8px 20px rgba(36,68,111,.06)}
+.account-card .state-badge{display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;background:#eef5ff;color:#365b8c;font-size:.8rem;font-weight:700}
+.account-card .role-badge{display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;background:#f7f9fc;color:#24446f;font-size:.8rem;font-weight:700;text-transform:capitalize}
+.account-card .account-meta-top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.account-card .account-name{font-size:1.05rem}

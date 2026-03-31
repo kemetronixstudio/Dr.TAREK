@@ -49,3 +49,32 @@ This package is the freeze-fix build v22. If you update from an older release, c
 
 ## v38 stable
 This package restores a stable quiz flow build and bumps the cache version to avoid loading older broken cached files.
+
+
+## v38.6 recovered
+Removed a malformed injected JS block that was preventing the quiz and admin pages from opening.
+
+
+## Backend access accounts
+
+This build now includes Vercel serverless API routes for the **Access Accounts** feature:
+
+- `POST /api/access-accounts/login`
+- `GET /api/access-accounts/me`
+- `GET /api/access-accounts`
+- `POST /api/access-accounts`
+- `DELETE /api/access-accounts`
+- `POST /api/access-accounts/change-password`
+
+### Storage
+- Recommended on Vercel: configure **Vercel KV** using `KV_REST_API_URL` and `KV_REST_API_TOKEN`
+- Local/dev fallback: `data/access-accounts.json`
+- Last fallback: in-memory store (not persistent)
+
+### Security notes
+- Editable account passwords are stored hashed with PBKDF2 in the backend
+- Admin CRUD routes require a signed backend token
+- Set `ACCESS_ACCOUNTS_SESSION_SECRET` in your environment
+- You can override built-in admins with `BUILTIN_ADMINS_JSON`
+
+See `.env.example` for the expected environment variables.

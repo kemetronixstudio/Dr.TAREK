@@ -512,3 +512,41 @@
   });
 })();
 
+
+
+/* === v38.2 class manager enhancements === */
+(function(){
+  if (typeof window === 'undefined') return;
+  const _oldRenderCustomClassesAdmin = typeof renderCustomClassesAdmin === 'function' ? renderCustomClassesAdmin : null;
+  if (_oldRenderCustomClassesAdmin){
+    window.renderCustomClassesAdmin = function(){
+      _oldRenderCustomClassesAdmin();
+      const list=document.getElementById('customClassesList');
+      if(!list) return;
+      list.querySelectorAll('.question-edit-card').forEach(card=>{
+        const del = card.querySelector('.delete-class-btn');
+        if(del && !card.querySelector('.edit-class-btn')){
+          const edit=document.createElement('button');
+          edit.className='ghost-btn class-edit-btn';
+          edit.textContent=(typeof T==='function'?T('editClass'):'Edit Class');
+          edit.addEventListener('click', ()=>{
+            const key=del.dataset.classKey;
+            const cls=getCustomClasses().find(c=>c.key===key);
+            if(!cls) return;
+            const name=document.getElementById('classNameInput');
+            const desc=document.getElementById('classDescInput');
+            const count=document.getElementById('classQuestionCount');
+            const hidden=document.getElementById('classHiddenToggle');
+            if(name) name.value=cls.name || '';
+            if(desc) desc.value=cls.description || '';
+            if(count) count.value=cls.questionCount || '';
+            if(hidden) hidden.checked=!!cls.hidden;
+          });
+          del.parentNode.insertBefore(edit, del);
+        }
+      });
+    };
+  }
+  window.getCustomClasses = function(){ return getCustomClasses(); };
+  window.setCustomClasses = function(v){ return setCustomClasses(v); };
+})();

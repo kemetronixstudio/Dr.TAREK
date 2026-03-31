@@ -80,6 +80,7 @@
           <div id="teacherQuestionPickerList" class="teacher-question-picker-list"></div>
         </div>
       </div>
+      <div class="editor-grid v382-test-tools"><input id="cloneTestNameInput" placeholder="New cloned test name"><button class="ghost-btn" id="cloneTeacherTestBtn">Clone Current Test</button><button class="danger-btn" id="archiveTeacherTestBtn">Archive Current Test</button></div>
       <div class="action-row"><button class="main-btn" id="saveTeacherTestBtn" data-i18n="saveTeacherTest">Save Teacher Test</button></div>
     </section>
 
@@ -134,7 +135,8 @@
         <select id="accessAccountRole"><option value="user" data-i18n="staffRole">Staff</option><option value="admin" data-i18n="adminRole">Admin</option></select>
       </div>
       <div id="accessPermissionsWrap" class="permissions-grid"></div>
-      <div class="action-row"><button class="main-btn" id="saveAccessAccountBtn" data-i18n="saveAccessAccount">Save Account</button></div>
+      <div class="action-row access-account-actions"><button class="main-btn" id="saveAccessAccountBtn" type="button" data-i18n="saveAccessAccount">Save Account</button><button class="ghost-btn" id="clearAccessAccountBtn" type="button" data-i18n="clearAccessAccountForm">Clear Form</button></div>
+      <div id="accessAccountsStatus" class="account-status-note" aria-live="polite"></div>
       <div id="accessAccountsList" class="stored-questions"></div>
     </section>
 
@@ -154,10 +156,12 @@
       </div>
       <div class="action-row"><button class="main-btn" id="addQuestionBtn" data-i18n="addQuestion">Add Question</button></div>
       <div class="section-head sub-head"><h3 data-i18n="modifyExistingQuestions">Modify Existing Questions</h3><div class="editor-filters"><button class="level-btn active" data-filter-grade="all">All</button><button class="level-btn" data-filter-grade="KG1">KG1</button><button class="level-btn" data-filter-grade="KG2">KG2</button></div></div>
+      <div class="editor-grid v382-filters"><input id="qSearchInput" placeholder="Search questions"><input id="qSkillFilterInput" placeholder="Filter by skill"><input id="qClassFilterInput" placeholder="Filter by class e.g. KG1 or Class 1"></div>
+      <div class="toolbar v384-search-tools"><button class="main-btn" id="runQuestionSearchBtn">Search</button><button class="ghost-btn" id="clearQuestionSearchBtn">Clear Filters</button><span class="search-results-note" id="questionSearchStatus">Search results appear below automatically.</span></div>
       <p class="muted-note" data-i18n="editQuestionNote">Edit any question below, then press save. Changes are stored locally and apply directly inside the app.</p>
-      <div id="storedQuestionsWrap"><div id="storedQuestionsList" class="stored-questions question-editor-list"></div></div>
+      <div id="storedQuestionsWrap"><div class="search-results-meta"><strong id="questionResultsCount">0 questions found</strong><span id="questionNoResults" class="hidden">No questions found.</span></div><div id="storedQuestionsList" class="stored-questions question-editor-list"></div></div>
       </div>
     </section>
   </div></section>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script><script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><script src="script.js"></script><script src="custom-classes.js"></script></body></html>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script><script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><script src="script.js"></script><script src="custom-classes.js"></script><script src="backend-access.js"></script></body></html>
