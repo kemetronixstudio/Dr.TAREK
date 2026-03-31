@@ -80,6 +80,23 @@
       return raw ? JSON.parse(raw) : null;
     } catch (error) { return null; }
   }
+
+  function forceLoginView(){
+    const loginCard = document.getElementById('adminLoginCard');
+    const panel = document.getElementById('adminPanel');
+    if (panel) panel.classList.add('hidden');
+    if (loginCard) loginCard.classList.remove('hidden');
+  }
+  function clearStaleFrontendSession(){
+    try {
+      sessionStorage.removeItem(ACCOUNT_KEY);
+      sessionStorage.removeItem(CREDS_KEY);
+      sessionStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(LEGACY_TOKEN_KEY);
+    } catch (error) {}
+    window.__currentAccessAccount = null;
+  }
   function authHeaders(){
     const token = readToken();
     const creds = readCreds();
@@ -338,7 +355,11 @@
   async function restoreBackendSession(){
     const token = readToken();
     const creds = readCreds();
-    if (!token && !(creds && creds.user && creds.pass)) return false;
+    if (!token && !(creds && creds.user && creds.pass)) {
+      clearStaleFrontendSession();
+      forceLoginView();
+      return false;
+    }
     try {
       const payload = await api('/me', { method: 'GET' });
       persistSession(payload.account, payload.token || token, creds);
@@ -347,7 +368,8 @@
       await window.renderAccessAccountsList();
       return true;
     } catch (error) {
-      persistSession(null, '');
+      clearStaleFrontendSession();
+      forceLoginView();
       return false;
     }
   }
@@ -381,6 +403,7 @@
   }
 
   function bind(){
+    forceLoginView();
     const loginBtn = cloneButton('adminLoginBtn');
     if (loginBtn) loginBtn.addEventListener('click', handleLogin);
 
@@ -409,4 +432,5 @@
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
   else bind();
+  window.addEventListener('load', function(){ restoreBackendSession(); });
 })();
