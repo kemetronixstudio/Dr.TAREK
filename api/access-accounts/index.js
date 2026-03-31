@@ -1,5 +1,9 @@
 const backend = require('../../lib/access-accounts-backend');
 
+function setAuthCookie(res, token) {
+  if (token) res.setHeader('Set-Cookie', `kgAccessToken=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=43200`);
+}
+
 module.exports = async function handler(req, res) {
   try {
     if (req.method === 'GET') {
@@ -10,10 +14,11 @@ module.exports = async function handler(req, res) {
         res.end(JSON.stringify({ ok: false, error: auth.error }));
         return;
       }
+      setAuthCookie(res, auth.token);
       const accounts = await backend.mergedAccounts();
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify({ ok: true, accounts: accounts.map(backend.publicAccount) }));
+      res.end(JSON.stringify({ ok: true, accounts: accounts.map(backend.publicAccount), token: auth.token }));
       return;
     }
 
@@ -25,11 +30,12 @@ module.exports = async function handler(req, res) {
         res.end(JSON.stringify({ ok: false, error: auth.error }));
         return;
       }
+      setAuthCookie(res, auth.token);
       const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
       const result = await backend.saveAccount(body, auth.account);
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(result));
+      res.end(JSON.stringify({ ...result, token: result.token || auth.token }));
       return;
     }
 
@@ -41,11 +47,12 @@ module.exports = async function handler(req, res) {
         res.end(JSON.stringify({ ok: false, error: auth.error }));
         return;
       }
+      setAuthCookie(res, auth.token);
       const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
       const result = await backend.deleteAccount(body, auth.account);
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(result));
+      res.end(JSON.stringify({ ...result, token: auth.token }));
       return;
     }
 

@@ -1,5 +1,9 @@
 const backend = require('../../lib/access-accounts-backend');
 
+function setAuthCookie(res, token) {
+  if (token) res.setHeader('Set-Cookie', `kgAccessToken=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=43200`);
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== 'GET') {
     res.statusCode = 405;
@@ -15,9 +19,10 @@ module.exports = async function handler(req, res) {
       res.end(JSON.stringify({ ok: false, error: auth.error }));
       return;
     }
+    setAuthCookie(res, auth.token);
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ ok: true, account: auth.account }));
+    res.end(JSON.stringify({ ok: true, account: auth.account, token: auth.token }));
   } catch (error) {
     res.statusCode = error.status || 500;
     res.setHeader('Content-Type', 'application/json');

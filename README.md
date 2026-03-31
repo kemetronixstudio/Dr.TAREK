@@ -67,7 +67,7 @@ This build now includes Vercel serverless API routes for the **Access Accounts**
 - `POST /api/access-accounts/change-password`
 
 ### Storage
-- Recommended on Vercel: configure **Vercel KV** using `KV_REST_API_URL` and `KV_REST_API_TOKEN`
+- Supported production storage: `KV_REST_API_URL` + `KV_REST_API_TOKEN` **or** `REDIS_URL`
 - Local/dev fallback: `data/access-accounts.json`
 - Last fallback: in-memory store (not persistent)
 
@@ -78,3 +78,8 @@ This build now includes Vercel serverless API routes for the **Access Accounts**
 - You can override built-in admins with `BUILTIN_ADMINS_JSON`
 
 See `.env.example` for the expected environment variables.
+
+
+### Auth behavior
+- Admin login now signs a backend session token and also sets a secure same-site cookie.
+- If the browser token is missing, the Access Accounts panel can still re-validate using the stored admin session and recover automatically.

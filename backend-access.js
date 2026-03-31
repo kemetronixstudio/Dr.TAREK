@@ -4,6 +4,7 @@
   const API_BASE = '/api/access-accounts';
   const TOKEN_KEY = 'kgAccessApiTokenV1';
   const ACCOUNT_KEY = 'kgEnglishAccessSessionV1';
+  const CREDS_KEY = 'kgAccessApiCredsV1';
   const ACCOUNT_STATUS_AUTO_CLEAR_MS = 2600;
   let accountCache = [];
 
@@ -51,24 +52,42 @@
       delete el.dataset.state;
     }
   }
-  function persistSession(account, token){
+  function persistSession(account, token, creds){
     window.__currentAccessAccount = account || null;
     try {
       if (token) sessionStorage.setItem(TOKEN_KEY, token);
       if (account) sessionStorage.setItem(ACCOUNT_KEY, JSON.stringify({ user: account.user, originalUser: account.originalUser || account.user, role: account.role }));
       else sessionStorage.removeItem(ACCOUNT_KEY);
-      if (!account) sessionStorage.removeItem(TOKEN_KEY);
+      if (creds && creds.user && creds.pass) sessionStorage.setItem(CREDS_KEY, JSON.stringify({ user: creds.user, pass: creds.pass }));
+      if (!account) {
+        sessionStorage.removeItem(TOKEN_KEY);
+        sessionStorage.removeItem(CREDS_KEY);
+      }
     } catch (error) {}
   }
   function readToken(){
     try { return sessionStorage.getItem(TOKEN_KEY) || ''; } catch (error) { return ''; }
   }
+  function readCreds(){
+    try {
+      const raw = sessionStorage.getItem(CREDS_KEY) || '';
+      return raw ? JSON.parse(raw) : null;
+    } catch (error) { return null; }
+  }
   function authHeaders(){
     const token = readToken();
-    return token ? { Authorization: 'Bearer ' + token } : {};
+    const creds = readCreds();
+    const headers = {};
+    if (token) headers.Authorization = 'Bearer ' + token;
+    if (creds && creds.user && creds.pass) {
+      headers['X-Access-User'] = creds.user;
+      headers['X-Access-Pass'] = creds.pass;
+    }
+    return headers;
   }
   async function api(path, options){
     const response = await fetch(API_BASE + path, Object.assign({
+      credentials: 'same-origin',
       headers: Object.assign({ 'Content-Type': 'application/json' }, authHeaders(), (options && options.headers) || {})
     }, options || {}));
     let payload = {};
@@ -301,7 +320,7 @@
     const pass = document.getElementById('adminPass') && document.getElementById('adminPass').value || '';
     try {
       const payload = await api('/login', { method: 'POST', body: JSON.stringify({ user: user, pass: pass }), headers: { Authorization: '' } });
-      persistSession(payload.account, payload.token);
+      persistSession(payload.account, payload.token, { user: user, pass: pass });
       setPanelVisible(payload.account);
       if (typeof window.renderAccessPermissions === 'function') window.renderAccessPermissions([]);
       await window.renderAccessAccountsList();
@@ -312,10 +331,11 @@
 
   async function restoreBackendSession(){
     const token = readToken();
-    if (!token) return false;
+    const creds = readCreds();
+    if (!token && !(creds && creds.user && creds.pass)) return false;
     try {
       const payload = await api('/me', { method: 'GET' });
-      persistSession(payload.account, token);
+      persistSession(payload.account, payload.token || token, creds);
       setPanelVisible(payload.account);
       if (typeof window.renderAccessPermissions === 'function') window.renderAccessPermissions([]);
       await window.renderAccessAccountsList();

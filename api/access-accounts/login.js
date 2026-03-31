@@ -1,5 +1,9 @@
 const backend = require('../../lib/access-accounts-backend');
 
+function setAuthCookie(res, token) {
+  res.setHeader('Set-Cookie', `kgAccessToken=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=43200`);
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     res.statusCode = 405;
@@ -17,6 +21,7 @@ module.exports = async function handler(req, res) {
       return;
     }
     const token = backend.createTokenForAccount(account);
+    setAuthCookie(res, token);
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({ ok: true, token, account }));
