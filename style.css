@@ -495,3 +495,9 @@ body[data-lang="ar"] .lang-btn{font-family:"Cairo","Baloo 2",sans-serif;}
 .student-cloud-answer-item{padding:12px 14px;border-radius:16px;background:#f7fbff;border:1px solid #d7e7f7;color:#476585}
 .student-cloud-row td{vertical-align:top}
 @media (max-width:640px){.student-cloud-grid{grid-template-columns:1fr}.guest-invite-card h2{font-size:1.25rem}}
+
+.teacher-note-box{margin:14px 0;padding:14px;border-radius:16px;background:rgba(255,255,255,.72);border:1px solid rgba(63,81,181,.12)}
+.teacher-note-box textarea{width:100%;min-height:96px;border-radius:14px;border:1px solid rgba(63,81,181,.18);padding:12px;font:inherit;resize:vertical;margin-top:8px}
+.teacher-note-actions{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:10px}
+.analytics-grid{align-items:start}
+.mini-metrics{margin-bottom:14px}

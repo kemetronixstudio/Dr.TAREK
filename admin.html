@@ -32,8 +32,8 @@
     </div>
 
     <section class="card admin-table-card" data-section-key="dashboard">
-      <div class="section-head"><h2>Cloud Student Records</h2><div class="admin-tools"><button class="ghost-btn" id="refreshStudentCloudBtn" type="button">Refresh</button></div></div>
-      <p class="muted-note">Search cloud-saved student attempts by student name, student ID, or class. Teachers and admins can open the full saved answers and progress.</p>
+      <div class="section-head"><h2>Cloud Student Records</h2><div class="admin-tools"><button class="ghost-btn" id="refreshStudentCloudBtn" type="button">Refresh</button><button class="ghost-btn" id="exportStudentCloudExcelBtn" type="button">Export Student Excel</button></div></div>
+      <p class="muted-note">Search cloud-saved student attempts by student name, student ID, or class. Teachers and admins can open the full saved answers, write teacher notes, and export records to Excel.</p>
       <div class="editor-grid">
         <input id="studentCloudSearch" placeholder="Search by name or student ID">
         <input id="studentCloudClassFilter" placeholder="Filter by class">
@@ -41,8 +41,29 @@
         <button class="main-btn" id="studentCloudSearchBtn" type="button">Search Cloud Records</button>
       </div>
       <div id="studentCloudStatus" class="muted-note"></div>
-      <div class="table-wrap"><table><thead><tr><th>Name</th><th>Student ID</th><th>Class</th><th>Grade</th><th>Quiz</th><th>Score</th><th>Updated</th><th>Open</th></tr></thead><tbody id="studentCloudTableBody"></tbody></table></div>
+      <div class="table-wrap"><table><thead><tr><th>Name</th><th>Student ID</th><th>Class</th><th>Grade</th><th>Quiz</th><th>Score</th><th>Note</th><th>Updated</th><th>Open</th></tr></thead><tbody id="studentCloudTableBody"></tbody></table></div>
       <div id="studentCloudDetail" class="stored-questions question-editor-list"></div>
+    </section>
+
+    <section class="card admin-table-card" data-section-key="dashboard">
+      <div class="section-head"><h2>Class Analytics</h2><div class="admin-tools"><button class="ghost-btn" id="refreshStudentAnalyticsBtn" type="button">Refresh Analytics</button></div></div>
+      <div id="studentAnalyticsStatus" class="muted-note"></div>
+      <div class="admin-top-grid mini-metrics">
+        <div class="card metric-card"><span>Completed Attempts</span><strong id="studentAnalyticsAttempts">0</strong></div>
+        <div class="card metric-card"><span>Cloud Students</span><strong id="studentAnalyticsStudents">0</strong></div>
+        <div class="card metric-card"><span>Classes</span><strong id="studentAnalyticsClasses">0</strong></div>
+        <div class="card metric-card"><span>Average</span><strong id="studentAnalyticsAverage">0%</strong></div>
+      </div>
+      <div class="admin-grid analytics-grid">
+        <div>
+          <h3>By Class</h3>
+          <div class="table-wrap"><table><thead><tr><th>Class</th><th>Grade</th><th>Students</th><th>Attempts</th><th>Average</th><th>Top Score</th></tr></thead><tbody id="classAnalyticsTableBody"></tbody></table></div>
+        </div>
+        <div>
+          <h3>Student Leaderboard</h3>
+          <div class="table-wrap"><table><thead><tr><th>#</th><th>Name</th><th>Student ID</th><th>Class</th><th>Best</th><th>Average</th><th>Attempts</th></tr></thead><tbody id="studentLeaderboardTableBody"></tbody></table></div>
+        </div>
+      </div>
     </section>
 
     <section class="card admin-level-card" data-section-key="levelVisibility">
