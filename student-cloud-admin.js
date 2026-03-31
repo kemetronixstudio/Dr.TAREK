@@ -49,6 +49,35 @@
     const rows = Array.isArray(leaderboard) ? leaderboard.slice(0, 50) : [];
     body.innerHTML = rows.map(row => `<tr><td>${escapeHtml(row.studentName)}</td><td>${escapeHtml(row.grade || '-')}</td><td>${escapeHtml(String(row.attempts || 0))}</td><td>${escapeHtml(String(row.bestPercent || 0))}%</td><td>${escapeHtml(String(row.averagePercent || 0))}%</td><td>${escapeHtml((row.teacherNote || '').slice(0, 40) || '-')}</td></tr>`).join('') || '<tr><td colspan="6">No cloud student records yet.</td></tr>';
   }
+  function leaderboardFallbackRows(leaderboard, filters){
+    const q = String(filters.q || '').trim().toLowerCase();
+    const cls = String(filters.className || '').trim().toLowerCase();
+    const wantStatus = String(filters.status || '').trim().toLowerCase();
+    if (wantStatus && wantStatus !== 'completed') return [];
+    return (Array.isArray(leaderboard) ? leaderboard : []).filter(row => {
+      const hay = [row.studentName, row.studentId, row.className, row.grade].join(' ').toLowerCase();
+      if (q && !hay.includes(q)) return false;
+      if (cls && String(row.className || '').trim().toLowerCase() !== cls) return false;
+      return true;
+    }).map((row, index) => ({
+      key: row.key || row.identityKey || `leaderboard-${index}`,
+      identityKey: row.identityKey || '',
+      status: 'completed',
+      studentName: row.studentName || '',
+      studentId: row.studentId || '-',
+      className: row.className || '-',
+      grade: row.grade || '-',
+      quizLevel: row.quizLevel || row.quizKey || '-',
+      percent: Number(row.bestPercent || row.averagePercent || 0) || 0,
+      teacherNote: row.teacherNote || '',
+      updatedAt: row.updatedAt || row.lastUpdatedAt || ''
+    }));
+  }
+  function renderRows(rows){
+    const body = document.getElementById('studentCloudTableBody');
+    if (!body) return;
+    body.innerHTML = rows.map(row => `\n<tr data-key="${escapeHtml(row.key)}" class="student-cloud-row">\n<td>${escapeHtml(row.studentName)}</td>\n<td>${escapeHtml(row.studentId || '-')}</td>\n<td>${escapeHtml(row.className || '-')}</td>\n<td>${escapeHtml(row.grade || '-')}</td>\n<td>${escapeHtml(row.quizLevel || row.quizKey || '-')}</td>\n<td>${row.status === 'completed' ? `${escapeHtml(String(row.percent || 0))}%` : 'In Progress'}</td>\n<td>${escapeHtml((row.teacherNote || '').slice(0, 36) || '-')}</td>\n<td>${escapeHtml(row.updatedAt ? new Date(row.updatedAt).toLocaleString() : '-')}</td>\n<td><button type="button" class="ghost-btn small-btn student-cloud-view-btn" data-key="${escapeHtml(row.key)}">View</button></td>\n</tr>`).join('') || '<tr><td colspan="9">No cloud student records found.</td></tr>';
+  }
   function getFilters(){
     return {
       q: document.getElementById('studentCloudSearch')?.value || '',
@@ -57,31 +86,34 @@
     };
   }
   async function render(){
-    const body = document.getElementById('studentCloudTableBody');
-    if (!body) return;
     status('Loading cloud records...');
     const filters = getFilters();
     const q = encodeURIComponent(filters.q);
     const className = encodeURIComponent(filters.className);
     const statusValue = encodeURIComponent(filters.status);
     try {
-      const data = await api(`/list?q=${q}&className=${className}&status=${statusValue}`);
-      const rows = Array.isArray(data.rows) ? data.rows : [];
+      const [listData, analyticsData] = await Promise.all([
+        api(`/list?q=${q}&className=${className}&status=${statusValue}`),
+        api(`/analytics?q=${q}&className=${className}`)
+      ]);
+      let rows = Array.isArray(listData.rows) ? listData.rows : [];
+      const analytics = analyticsData || {};
+      if (!rows.length) rows = leaderboardFallbackRows(analytics.leaderboard || [], filters);
       lastRows = rows.slice();
-      body.innerHTML = rows.map(row => `\n<tr data-key="${escapeHtml(row.key)}" class="student-cloud-row">\n<td>${escapeHtml(row.studentName)}</td>\n<td>${escapeHtml(row.studentId || '-')}</td>\n<td>${escapeHtml(row.className || '-')}</td>\n<td>${escapeHtml(row.grade || '-')}</td>\n<td>${escapeHtml(row.quizLevel || row.quizKey || '-')}</td>\n<td>${row.status === 'completed' ? `${escapeHtml(String(row.percent || 0))}%` : 'In Progress'}</td>\n<td>${escapeHtml((row.teacherNote || '').slice(0, 36) || '-')}</td>\n<td>${escapeHtml(row.updatedAt ? new Date(row.updatedAt).toLocaleString() : '-')}</td>\n<td><button type="button" class="ghost-btn small-btn student-cloud-view-btn" data-key="${escapeHtml(row.key)}">View</button></td>\n</tr>`).join('') || '<tr><td colspan="9">No cloud student records found.</td></tr>';
+      renderRows(rows);
       status(rows.length ? `${rows.length} cloud record(s) loaded.` : 'No matching records. Try clearing filters.');
       if (typeof window.__kgClearUnauthorized === 'function') window.__kgClearUnauthorized();
-      await renderAnalytics();
+      await renderAnalytics(analytics);
     } catch (error) {
-      body.innerHTML = '<tr><td colspan="9">Could not load cloud records.</td></tr>';
+      renderRows([]);
       status(error.message || 'Could not load cloud records.');
     }
   }
-  async function renderAnalytics(){
+  async function renderAnalytics(prefetched){
     const filters = getFilters();
     analyticsStatus('Loading analytics...');
     try {
-      const data = await api(`/analytics?q=${encodeURIComponent(filters.q)}&className=${encodeURIComponent(filters.className)}`);
+      const data = prefetched || await api(`/analytics?q=${encodeURIComponent(filters.q)}&className=${encodeURIComponent(filters.className)}`);
       const totals = data.totals || {};
       const classRows = Array.isArray(data.classAnalytics) ? data.classAnalytics : [];
       const leaderboard = Array.isArray(data.leaderboard) ? data.leaderboard : [];
@@ -150,8 +182,9 @@
         api(`/list?q=${q}&className=${className}&status=${statusValue}`),
         api(`/analytics?q=${q}&className=${className}`)
       ]);
-      const rows = Array.isArray(listData.rows) ? listData.rows : [];
+      let rows = Array.isArray(listData.rows) ? listData.rows : [];
       const analytics = analyticsData || {};
+      if (!rows.length) rows = leaderboardFallbackRows(analytics.leaderboard || [], filters);
       const wb = XLSX.utils.book_new();
       const recordsSheet = XLSX.utils.json_to_sheet(rows.length ? rows : [{ Info: 'No student rows found' }]);
       XLSX.utils.book_append_sheet(wb, recordsSheet, 'Student Records');
@@ -170,7 +203,7 @@
   }
   function wire(){
     document.getElementById('refreshStudentCloudBtn')?.addEventListener('click', render);
-    document.getElementById('refreshStudentAnalyticsBtn')?.addEventListener('click', renderAnalytics);
+    document.getElementById('refreshStudentAnalyticsBtn')?.addEventListener('click', ()=>renderAnalytics());
     document.getElementById('exportStudentCloudExcelBtn')?.addEventListener('click', exportExcel);
     document.getElementById('studentCloudSearchBtn')?.addEventListener('click', render);
     document.getElementById('studentCloudSearch')?.addEventListener('keydown', (e)=>{ if (e.key === 'Enter') render(); });
