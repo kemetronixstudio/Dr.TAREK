@@ -151,6 +151,7 @@
     if (typeof wireCollapseButtons === 'function') try { wireCollapseButtons(); } catch (error) {}
     if (typeof wireQuestionFilterButtons === 'function') try { wireQuestionFilterButtons(); } catch (error) {}
     if (typeof window.renderAccessLogs === 'function') try { window.renderAccessLogs(); } catch (error) {}
+    if (typeof window.renderStudentCloudAdminPanel === 'function') try { window.renderStudentCloudAdminPanel(); } catch (error) {}
   }
   function clearForm(){
     const userEl = document.getElementById('accessAccountUser');

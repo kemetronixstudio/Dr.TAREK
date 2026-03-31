@@ -30,6 +30,21 @@
         <div class="table-wrap"><table><thead><tr><th data-i18n="questionLabel">Question</th><th data-i18n="missesLabel">Misses</th></tr></thead><tbody id="missedTableBody"></tbody></table></div>
       </section>
     </div>
+
+    <section class="card admin-table-card" data-section-key="dashboard">
+      <div class="section-head"><h2>Cloud Student Records</h2><div class="admin-tools"><button class="ghost-btn" id="refreshStudentCloudBtn" type="button">Refresh</button></div></div>
+      <p class="muted-note">Search cloud-saved student attempts by student name, student ID, or class. Teachers and admins can open the full saved answers and progress.</p>
+      <div class="editor-grid">
+        <input id="studentCloudSearch" placeholder="Search by name or student ID">
+        <input id="studentCloudClassFilter" placeholder="Filter by class">
+        <select id="studentCloudStatusFilter"><option value="">All statuses</option><option value="completed">Completed</option><option value="in-progress">In Progress</option></select>
+        <button class="main-btn" id="studentCloudSearchBtn" type="button">Search Cloud Records</button>
+      </div>
+      <div id="studentCloudStatus" class="muted-note"></div>
+      <div class="table-wrap"><table><thead><tr><th>Name</th><th>Student ID</th><th>Class</th><th>Grade</th><th>Quiz</th><th>Score</th><th>Updated</th><th>Open</th></tr></thead><tbody id="studentCloudTableBody"></tbody></table></div>
+      <div id="studentCloudDetail" class="stored-questions question-editor-list"></div>
+    </section>
+
     <section class="card admin-level-card" data-section-key="levelVisibility">
       <div class="section-head"><h2 data-i18n="levelVisibility">Level Visibility</h2><button class="ghost-btn" id="resetLevelsBtn" data-i18n="showAllLevels">Show All Levels</button></div>
       <p class="muted-note" data-i18n="chooseWhichLevels">Choose which quiz levels students can see on KG1 and KG2 pages.</p>
@@ -171,4 +186,4 @@
     </section>
   </div></section>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script><script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><script src="script.js"></script><script src="custom-classes.js"></script><script src="backend-access.js"></script></body></html>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script><script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><script src="script.js"></script><script src="custom-classes.js"></script><script src="backend-access.js"></script><script src="student-cloud-admin.js"></script></body></html>
