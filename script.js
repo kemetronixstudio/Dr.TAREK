@@ -289,8 +289,10 @@ function ensureAdminShortcutUI(){
   }
 }
 
+function ensureAdminShortcutUi(){ return ensureAdminShortcutUI(); }
+
 function wireCollapseButtons(){
-  ensureAdminShortcutUI();
+  try { ensureAdminShortcutUI(); } catch (error) {}
   collapseAllAdminSections();
   ADMIN_COLLAPSIBLE_CONFIGS.forEach(cfg => {
     const button = document.getElementById(cfg.buttonId);
@@ -314,7 +316,7 @@ function updateShortcutLabels(){
   document.querySelectorAll('[data-shortcut-target]').forEach(btn => {
     const target = document.getElementById(btn.dataset.shortcutTarget);
     const heading = target?.querySelector('h2');
-    const label = heading ? heading.textContent.trim() : btn.dataset.shortcutTarget;
+    const label = heading ? heading.textContent.trim() : (btn.getAttribute('title') || btn.dataset.shortcutTarget || 'Shortcut');
     const text = btn.querySelector('.shortcut-text');
     if (text) text.textContent = label;
     btn.setAttribute('title', label);
@@ -328,6 +330,7 @@ function wireShortcutButtons(){
     btn.dataset.wired = '1';
     btn.addEventListener('click', (event) => {
       event.preventDefault();
+      event.stopPropagation();
       const sectionId = btn.dataset.shortcutTarget;
       const cfg = ADMIN_COLLAPSIBLE_CONFIGS.find(item => item.sectionId === sectionId);
       const section = document.getElementById(sectionId);
