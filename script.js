@@ -244,25 +244,28 @@ function collapseAllAdminSections(){
   });
 }
 
-function ensureAdminShortcutUi(){
+function ensureAdminShortcutUI(){
   const panel = document.getElementById('adminDashboardContent');
   if (!panel) return;
   let sticky = document.getElementById('adminStickyShortcuts');
-  if (!sticky) {
+  if (!sticky){
     sticky = document.createElement('div');
     sticky.id = 'adminStickyShortcuts';
     sticky.className = 'admin-shortcuts-sticky';
     panel.insertBefore(sticky, panel.firstChild || null);
   }
-  let gridCard = panel.querySelector('.admin-shortcuts-card');
-  if (!gridCard) {
+  let gridCard = document.querySelector('.admin-shortcuts-card');
+  if (!gridCard){
     gridCard = document.createElement('section');
     gridCard.className = 'card admin-shortcuts-card';
     gridCard.innerHTML = '<div class="section-head"><h2>Quick Access</h2></div><div class="admin-shortcuts-grid" id="adminShortcutsGrid"></div>';
     panel.insertBefore(gridCard, sticky.nextSibling || null);
   }
   const grid = document.getElementById('adminShortcutsGrid') || gridCard.querySelector('.admin-shortcuts-grid');
-  const iconMap = {levelVisibilitySection:'👁️',timerSettingsSection:'⏱️',quizAccessSection:'🔐',teacherTestSection:'🧪',bulkQuestionsSection:'📥',classManagerSection:'🏫',accountManagerSection:'👥',activityLogsSection:'📝',questionBankSection:'📚'};
+  const iconMap = {
+    levelVisibilitySection:'👁️', timerSettingsSection:'⏱️', quizAccessSection:'🔐', teacherTestSection:'🧪',
+    bulkQuestionsSection:'📥', classManagerSection:'🏫', accountManagerSection:'👥', activityLogsSection:'📝', questionBankSection:'📚'
+  };
   if (sticky && !sticky.children.length) {
     ADMIN_COLLAPSIBLE_CONFIGS.forEach(cfg => {
       const btn = document.createElement('button');
@@ -280,14 +283,14 @@ function ensureAdminShortcutUi(){
       btn.type = 'button';
       btn.className = 'shortcut-chip';
       btn.dataset.shortcutTarget = cfg.sectionId;
-      btn.innerHTML = `<span class="shortcut-icon">${iconMap[cfg.sectionId] || '•'}</span><span class="shortcut-text">${cfg.sectionId}</span>`;
+      btn.innerHTML = '<span class="shortcut-icon">'+(iconMap[cfg.sectionId] || '•')+'</span><span class="shortcut-text">'+cfg.sectionId+'</span>';
       grid.appendChild(btn);
     });
   }
 }
 
 function wireCollapseButtons(){
-  ensureAdminShortcutUi();
+  ensureAdminShortcutUI();
   collapseAllAdminSections();
   ADMIN_COLLAPSIBLE_CONFIGS.forEach(cfg => {
     const button = document.getElementById(cfg.buttonId);
@@ -313,7 +316,7 @@ function updateShortcutLabels(){
     const heading = target?.querySelector('h2');
     const label = heading ? heading.textContent.trim() : btn.dataset.shortcutTarget;
     const text = btn.querySelector('.shortcut-text');
-    if (heading && text) text.textContent = label;
+    if (text) text.textContent = label;
     btn.setAttribute('title', label);
     btn.setAttribute('aria-label', label);
   });
@@ -323,7 +326,8 @@ function wireShortcutButtons(){
   document.querySelectorAll('[data-shortcut-target]').forEach(btn => {
     if (btn.dataset.wired) return;
     btn.dataset.wired = '1';
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (event) => {
+      event.preventDefault();
       const sectionId = btn.dataset.shortcutTarget;
       const cfg = ADMIN_COLLAPSIBLE_CONFIGS.find(item => item.sectionId === sectionId);
       const section = document.getElementById(sectionId);
