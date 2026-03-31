@@ -3,6 +3,7 @@
 
   const API_BASE = '/api/access-accounts';
   const TOKEN_KEY = 'kgAccessApiTokenV1';
+  const LEGACY_TOKEN_KEY = 'admin_token';
   const ACCOUNT_KEY = 'kgEnglishAccessSessionV1';
   const CREDS_KEY = 'kgAccessApiCredsV1';
   const ACCOUNT_STATUS_AUTO_CLEAR_MS = 2600;
@@ -55,18 +56,23 @@
   function persistSession(account, token, creds){
     window.__currentAccessAccount = account || null;
     try {
-      if (token) sessionStorage.setItem(TOKEN_KEY, token);
+      if (token) { sessionStorage.setItem(TOKEN_KEY, token); try { localStorage.setItem(TOKEN_KEY, token); localStorage.setItem(LEGACY_TOKEN_KEY, token); } catch (e) {} }
       if (account) sessionStorage.setItem(ACCOUNT_KEY, JSON.stringify({ user: account.user, originalUser: account.originalUser || account.user, role: account.role }));
       else sessionStorage.removeItem(ACCOUNT_KEY);
       if (creds && creds.user && creds.pass) sessionStorage.setItem(CREDS_KEY, JSON.stringify({ user: creds.user, pass: creds.pass }));
       if (!account) {
         sessionStorage.removeItem(TOKEN_KEY);
         sessionStorage.removeItem(CREDS_KEY);
+        try { localStorage.removeItem(TOKEN_KEY); localStorage.removeItem(LEGACY_TOKEN_KEY); } catch (e) {}
       }
     } catch (error) {}
   }
   function readToken(){
-    try { return sessionStorage.getItem(TOKEN_KEY) || ''; } catch (error) { return ''; }
+    try {
+      return sessionStorage.getItem(TOKEN_KEY) || localStorage.getItem(TOKEN_KEY) || localStorage.getItem(LEGACY_TOKEN_KEY) || '';
+    } catch (error) {
+      try { return localStorage.getItem(TOKEN_KEY) || localStorage.getItem(LEGACY_TOKEN_KEY) || ''; } catch (e) { return ''; }
+    }
   }
   function readCreds(){
     try {
@@ -346,6 +352,34 @@
     }
   }
 
+  function installHardCaptureBindings(){
+    if (document.documentElement.dataset.backendAccessCaptureBound === '1') return;
+    document.documentElement.dataset.backendAccessCaptureBound = '1';
+    document.addEventListener('click', function(event){
+      const loginBtn = event.target && event.target.closest ? event.target.closest('#adminLoginBtn') : null;
+      if (loginBtn) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        handleLogin(event);
+        return;
+      }
+      const saveBtn = event.target && event.target.closest ? event.target.closest('#saveAccessAccountBtn') : null;
+      if (saveBtn) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        window.saveAccessAccountFromAdmin();
+        return;
+      }
+      const clearBtn = event.target && event.target.closest ? event.target.closest('#clearAccessAccountBtn') : null;
+      if (clearBtn) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        clearForm();
+        showStatus(lang()==='ar' ? 'تم مسح النموذج.' : 'Form cleared.', 'info');
+      }
+    }, true);
+  }
+
   function bind(){
     const loginBtn = cloneButton('adminLoginBtn');
     if (loginBtn) loginBtn.addEventListener('click', handleLogin);
@@ -369,6 +403,7 @@
     });
 
     if (typeof window.renderAccessPermissions === 'function') window.renderAccessPermissions([]);
+    installHardCaptureBindings();
     restoreBackendSession();
   }
 
