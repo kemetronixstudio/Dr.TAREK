@@ -205,18 +205,21 @@ function saveAccessAccountFromAdmin(){
   }
 }
 
-function wireCollapseButtons(){
-  const editorBtn = document.getElementById('toggleQuestionBankEditorBtn');
-  if (editorBtn && !editorBtn.dataset.wired){
-    editorBtn.dataset.wired = '1';
-    editorBtn.addEventListener('click', ()=>toggleCollapse('questionBankEditorBody', editorBtn));
-  }
-}
+const ADMIN_COLLAPSIBLE_CONFIGS = [
+  { buttonId:'toggleLevelVisibilityBtn', bodyId:'levelVisibilityBody', sectionId:'levelVisibilitySection' },
+  { buttonId:'toggleTimerSettingsBtn', bodyId:'timerSettingsBody', sectionId:'timerSettingsSection' },
+  { buttonId:'toggleQuizAccessBtn', bodyId:'quizAccessBody', sectionId:'quizAccessSection' },
+  { buttonId:'toggleTeacherTestBtn', bodyId:'teacherTestBody', sectionId:'teacherTestSection' },
+  { buttonId:'toggleBulkQuestionsBtn', bodyId:'bulkQuestionsBody', sectionId:'bulkQuestionsSection' },
+  { buttonId:'toggleClassManagerBtn', bodyId:'classManagerBody', sectionId:'classManagerSection' },
+  { buttonId:'toggleAccountManagerBtn', bodyId:'accountManagerBody', sectionId:'accountManagerSection' },
+  { buttonId:'toggleActivityLogsBtn', bodyId:'activityLogsBody', sectionId:'activityLogsSection' },
+  { buttonId:'toggleQuestionBankEditorBtn', bodyId:'questionBankEditorBody', sectionId:'questionBankSection' }
+];
 
-function toggleCollapse(targetId, button){
+function setCollapsed(targetId, button, collapsed){
   const box = document.getElementById(targetId);
   if (!box) return;
-  const collapsed = !box.classList.contains('collapsed-body');
   if (collapsed){
     box.classList.add('collapsed-body');
     box.hidden = true;
@@ -230,7 +233,60 @@ function toggleCollapse(targetId, button){
     const key = collapsed ? 'expandEditor' : 'collapseEditor';
     button.textContent = (translations[getLang()] && translations[getLang()][key]) || (collapsed ? 'Expand' : 'Collapse');
     button.setAttribute('aria-expanded', String(!collapsed));
+    button.dataset.collapsed = collapsed ? '1' : '0';
   }
+}
+
+function wireCollapseButtons(){
+  ADMIN_COLLAPSIBLE_CONFIGS.forEach(cfg => {
+    const button = document.getElementById(cfg.buttonId);
+    const body = document.getElementById(cfg.bodyId);
+    if (!button || !body) return;
+    if (!button.dataset.wired){
+      button.dataset.wired = '1';
+      button.addEventListener('click', (event)=>{
+        event.preventDefault();
+        toggleCollapse(cfg.bodyId, button);
+      });
+    }
+    setCollapsed(cfg.bodyId, button, body.classList.contains('collapsed-body') || body.hidden || body.style.display === 'none');
+  });
+  wireShortcutButtons();
+  updateShortcutLabels();
+}
+
+function updateShortcutLabels(){
+  document.querySelectorAll('[data-shortcut-target]').forEach(btn => {
+    const target = document.getElementById(btn.dataset.shortcutTarget);
+    const heading = target?.querySelector('h2');
+    const text = btn.querySelector('.shortcut-text');
+    if (heading && text) text.textContent = heading.textContent.trim();
+  });
+}
+
+function wireShortcutButtons(){
+  document.querySelectorAll('[data-shortcut-target]').forEach(btn => {
+    if (btn.dataset.wired) return;
+    btn.dataset.wired = '1';
+    btn.addEventListener('click', () => {
+      const sectionId = btn.dataset.shortcutTarget;
+      const cfg = ADMIN_COLLAPSIBLE_CONFIGS.find(item => item.sectionId === sectionId);
+      const section = document.getElementById(sectionId);
+      if (!section) return;
+      if (cfg){
+        const toggleBtn = document.getElementById(cfg.buttonId);
+        setCollapsed(cfg.bodyId, toggleBtn, false);
+      }
+      section.scrollIntoView({ behavior:'smooth', block:'start' });
+    });
+  });
+}
+
+function toggleCollapse(targetId, button){
+  const box = document.getElementById(targetId);
+  if (!box) return;
+  const collapsed = !box.classList.contains('collapsed-body');
+  setCollapsed(targetId, button, collapsed);
 }
 function downloadCurrentQuestionsExcel(){
   const rows=[]; ['kg1','kg2'].forEach(grade=>{ sanitizedPool(grade).forEach(q=> rows.push({KG:grade.toUpperCase(),Question:q.text,'Choice 1':q.options[0]||'','Choice 2':q.options[1]||'','Choice 3':q.options[2]||'','Choice 4':q.options[3]||'', 'Correct Answer':q.answer,'Skill (optional)':q.skill||'','Type (optional)':q.type||'','Image (optional)':q.image||'','Difficulty 1-3 (optional)':q.difficulty||1,'Note (optional)':q.note||''})); });

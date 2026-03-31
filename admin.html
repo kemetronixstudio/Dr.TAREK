@@ -14,6 +14,20 @@
   </section>
 
   <section id="adminPanel" class="hidden"><div id="adminDashboardContent">
+    <section class="card admin-shortcuts-card">
+      <div class="section-head"><h2>Quick Access</h2></div>
+      <div class="admin-shortcuts-grid" id="adminShortcutsGrid">
+        <button type="button" class="shortcut-chip" data-shortcut-target="levelVisibilitySection"><span class="shortcut-icon">👁️</span><span class="shortcut-text">Level Visibility</span></button>
+        <button type="button" class="shortcut-chip" data-shortcut-target="timerSettingsSection"><span class="shortcut-icon">⏱️</span><span class="shortcut-text">Timer Settings</span></button>
+        <button type="button" class="shortcut-chip" data-shortcut-target="quizAccessSection"><span class="shortcut-icon">🔐</span><span class="shortcut-text">Quiz Access Password</span></button>
+        <button type="button" class="shortcut-chip" data-shortcut-target="teacherTestSection"><span class="shortcut-icon">🧪</span><span class="shortcut-text">Teacher Test Builder</span></button>
+        <button type="button" class="shortcut-chip" data-shortcut-target="bulkQuestionsSection"><span class="shortcut-icon">📥</span><span class="shortcut-text">Bulk Question Import</span></button>
+        <button type="button" class="shortcut-chip" data-shortcut-target="classManagerSection"><span class="shortcut-icon">🏫</span><span class="shortcut-text">Class Manager</span></button>
+        <button type="button" class="shortcut-chip" data-shortcut-target="accountManagerSection"><span class="shortcut-icon">👥</span><span class="shortcut-text">Access Accounts</span></button>
+        <button type="button" class="shortcut-chip" data-shortcut-target="activityLogsSection"><span class="shortcut-icon">📝</span><span class="shortcut-text">Activity Logs</span></button>
+        <button type="button" class="shortcut-chip" data-shortcut-target="questionBankSection"><span class="shortcut-icon">📚</span><span class="shortcut-text">Question Bank Editor</span></button>
+      </div>
+    </section>
     <div class="admin-top-grid">
       <div class="card metric-card"><span data-i18n="totalStudents">Total Students</span><strong id="metricStudents">0</strong></div>
       <div class="card metric-card"><span data-i18n="totalAttempts">Total Attempts</span><strong id="metricAttempts">0</strong></div>
@@ -66,21 +80,26 @@
       </div>
     </section>
 
-    <section class="card admin-level-card" data-section-key="levelVisibility">
-      <div class="section-head"><h2 data-i18n="levelVisibility">Level Visibility</h2><button class="ghost-btn" id="resetLevelsBtn" data-i18n="showAllLevels">Show All Levels</button></div>
+    <section class="card admin-level-card collapsible-section" data-section-key="levelVisibility" id="levelVisibilitySection">
+      <div class="section-head"><h2 data-i18n="levelVisibility">Level Visibility</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleLevelVisibilityBtn" type="button">Expand</button><button class="ghost-btn" id="resetLevelsBtn" data-i18n="showAllLevels">Show All Levels</button></div></div>
+      <div id="levelVisibilityBody" class="admin-collapsible-body collapsed-body">
       <p class="muted-note" data-i18n="chooseWhichLevels">Choose which quiz levels students can see on KG1 and KG2 pages.</p>
       <div id="adminLevelVisibility" class="level-visibility-grid"></div>
       <div class="action-row"><button class="main-btn" id="saveLevelsBtn" data-i18n="saveLevelVisibility">Save Level Visibility</button></div>
+      </div>
     </section>
-    <section class="card admin-level-card" data-section-key="timerSettings">
-      <div class="section-head"><h2 data-i18n="timerSettings">Timer Settings</h2><button class="ghost-btn" id="resetTimerSettingsBtn" data-i18n="turnTimersOn">Turn Timers On</button></div>
+    <section class="card admin-level-card collapsible-section" data-section-key="timerSettings" id="timerSettingsSection">
+      <div class="section-head"><h2 data-i18n="timerSettings">Timer Settings</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleTimerSettingsBtn" type="button">Expand</button><button class="ghost-btn" id="resetTimerSettingsBtn" data-i18n="turnTimersOn">Turn Timers On</button></div></div>
+      <div id="timerSettingsBody" class="admin-collapsible-body collapsed-body">
       <p class="muted-note" data-i18n="timerInfo">Turn the timer on or off for each grade. When timer is off, students answer without countdown and each correct answer gives fixed points.</p>
       <div id="adminTimerSettings" class="level-visibility-grid"></div>
       <div class="action-row"><button class="main-btn" id="saveTimerSettingsBtn" data-i18n="saveTimerSettings">Save Timer Settings</button></div>
+      </div>
     </section>
 
-    <section class="card admin-level-card" data-section-key="quizAccess">
-      <div class="section-head"><h2 data-i18n="quizAccessPassword">Quiz Access Password</h2><button class="ghost-btn" id="clearQuizPasswordBtn" data-i18n="noPassword">No Password</button></div>
+    <section class="card admin-level-card collapsible-section" data-section-key="quizAccess" id="quizAccessSection">
+      <div class="section-head"><h2 data-i18n="quizAccessPassword">Quiz Access Password</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleQuizAccessBtn" type="button">Expand</button><button class="ghost-btn" id="clearQuizPasswordBtn" data-i18n="noPassword">No Password</button></div></div>
+      <div id="quizAccessBody" class="admin-collapsible-body collapsed-body">
       <p class="muted-note" data-i18n="setPasswordInfo">Set a password for KG1 or KG2. Students will be asked for it before entering the quiz. Leave blank to disable password.</p>
       <div id="adminQuizAccess" class="admin-quiz-access-grid">
         <div class="level-visibility-card">
@@ -95,9 +114,11 @@
         </div>
       </div>
       <div class="action-row"><button class="main-btn" id="saveQuizPasswordBtn" data-i18n="saveQuizPassword">Save Quiz Password</button></div>
+      </div>
     </section>
-    <section class="card admin-level-card" data-section-key="teacherTest">
-      <div class="section-head"><h2 data-i18n="teacherTestBuilder">Teacher Test Builder</h2><button class="ghost-btn" id="clearTeacherTestBtn" data-i18n="clearTest">Clear Test</button></div>
+    <section class="card admin-level-card collapsible-section" data-section-key="teacherTest" id="teacherTestSection">
+      <div class="section-head"><h2 data-i18n="teacherTestBuilder">Teacher Test Builder</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleTeacherTestBtn" type="button">Expand</button><button class="ghost-btn" id="clearTeacherTestBtn" data-i18n="clearTest">Clear Test</button></div></div>
+      <div id="teacherTestBody" class="admin-collapsible-body collapsed-body">
       <p class="muted-note" data-i18n="teacherTestInfo">Create a named test for KG1 or KG2. Choose random questions or paste exact question texts line by line.</p>
       <div class="editor-grid">
         <input id="testGrade" data-placeholder-i18n="gradePlaceholder" placeholder="Grade (KG1 or KG2)">
@@ -118,10 +139,12 @@
       </div>
       <div class="editor-grid v382-test-tools"><input id="cloneTestNameInput" placeholder="New cloned test name"><button class="ghost-btn" id="cloneTeacherTestBtn">Clone Current Test</button><button class="danger-btn" id="archiveTeacherTestBtn">Archive Current Test</button></div>
       <div class="action-row"><button class="main-btn" id="saveTeacherTestBtn" data-i18n="saveTeacherTest">Save Teacher Test</button></div>
+      </div>
     </section>
 
-    <section class="card admin-level-card" data-section-key="bulkQuestions">
-      <div class="section-head"><h2 data-i18n="bulkQuestionsTitle">Bulk Question Import</h2></div>
+    <section class="card admin-level-card collapsible-section" data-section-key="bulkQuestions" id="bulkQuestionsSection">
+      <div class="section-head"><h2 data-i18n="bulkQuestionsTitle">Bulk Question Import</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleBulkQuestionsBtn" type="button">Expand</button></div></div>
+      <div id="bulkQuestionsBody" class="admin-collapsible-body collapsed-body">
       <p class="muted-note" data-i18n="bulkQuestionsInfo">Download the ready Excel form, fill it with questions, then upload it to add many questions at once.</p>
       <div class="action-row wrap-row">
         <a class="ghost-btn" id="downloadBulkTemplateBtn" href="bulk-questions-template.xlsx" download data-i18n="downloadExcelForm">Download Excel Form</a>
@@ -129,11 +152,13 @@
         <label class="file-label inline-file"><span data-i18n="uploadFilledForm">Upload Filled Form</span><input type="file" id="bulkQuestionUpload" accept=".xlsx,.xls"></label>
       </div>
       <div id="bulkImportStatus" class="muted-note"></div>
+      </div>
     </section>
 
     
-    <section class="card admin-level-card" data-section-key="classManager">
-      <div class="section-head"><h2 data-i18n="classManagerTitle">Class Manager</h2></div>
+    <section class="card admin-level-card collapsible-section" data-section-key="classManager" id="classManagerSection">
+      <div class="section-head"><h2 data-i18n="classManagerTitle">Class Manager</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleClassManagerBtn" type="button">Expand</button></div></div>
+      <div id="classManagerBody" class="admin-collapsible-body collapsed-body">
       <p class="muted-note" data-i18n="classManagerInfo">Create extra classes like Class 1 or Class 2. You can build them from existing questions or upload a filled question file for the class.</p>
       <div class="editor-grid">
         <input id="classNameInput" data-placeholder-i18n="classNamePlaceholder" placeholder="Class name (example: Class 1)">
@@ -159,11 +184,13 @@
         <button class="main-btn" id="saveClassBtn" data-i18n="saveClass">Save Class</button>
       </div>
       <div id="customClassesList" class="stored-questions question-editor-list"></div>
+      </div>
     </section>
 
 
-    <section class="card admin-level-card" data-section-key="accountManager">
-      <div class="section-head"><h2 data-i18n="accessAccounts">Access Accounts</h2></div>
+    <section class="card admin-level-card collapsible-section" data-section-key="accountManager" id="accountManagerSection">
+      <div class="section-head"><h2 data-i18n="accessAccounts">Access Accounts</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleAccountManagerBtn" type="button">Expand</button></div></div>
+      <div id="accountManagerBody" class="admin-collapsible-body collapsed-body">
       <p class="muted-note" data-i18n="accessAccountsInfo">Create admin or user accounts. User accounts only see the sections you allow.</p>
       <div class="editor-grid">
         <input id="accessAccountUser" data-placeholder-i18n="usernamePlaceholder" placeholder="Username">
@@ -174,18 +201,21 @@
       <div class="action-row access-account-actions"><button class="main-btn" id="saveAccessAccountBtn" type="button" data-i18n="saveAccessAccount">Save Account</button><button class="ghost-btn" id="clearAccessAccountBtn" type="button" data-i18n="clearAccessAccountForm">Clear Form</button></div>
       <div id="accessAccountsStatus" class="account-status-note" aria-live="polite"></div>
       <div id="accessAccountsList" class="stored-questions"></div>
+      </div>
     </section>
 
 
-    <section class="card admin-table-card" data-section-key="accountManager">
-      <div class="section-head"><h2>Activity Logs</h2><button class="ghost-btn" id="refreshAccessLogsBtn">Refresh Logs</button></div>
+    <section class="card admin-table-card collapsible-section" data-section-key="accountManager" id="activityLogsSection">
+      <div class="section-head"><h2>Activity Logs</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleActivityLogsBtn" type="button">Expand</button><button class="ghost-btn" id="refreshAccessLogsBtn">Refresh Logs</button></div></div>
+      <div id="activityLogsBody" class="admin-collapsible-body collapsed-body">
       <p class="muted-note">Track login, create, edit, delete, and password actions for admins and staff accounts.</p>
       <div id="accessLogsList" class="stored-questions question-editor-list"></div>
+      </div>
     </section>
 
-    <section class="card admin-editor-card" data-section-key="questionBank">
-      <div class="section-head"><h2 data-i18n="questionBankEditor">Question Bank Editor</h2><div class="editor-head-actions"><button class="ghost-btn" id="toggleQuestionBankEditorBtn" data-i18n="collapseEditor">Collapse</button><button class="ghost-btn" id="showStoredQuestionsBtn" data-i18n="refreshQuestionList">Refresh Question List</button></div></div>
-      <div id="questionBankEditorBody">
+    <section class="card admin-editor-card collapsible-section" data-section-key="questionBank" id="questionBankSection">
+      <div class="section-head"><h2 data-i18n="questionBankEditor">Question Bank Editor</h2><div class="editor-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleQuestionBankEditorBtn" type="button">Expand</button><button class="ghost-btn" id="showStoredQuestionsBtn" data-i18n="refreshQuestionList">Refresh Question List</button></div></div>
+      <div id="questionBankEditorBody" class="admin-collapsible-body collapsed-body">
       <div class="editor-grid">
         <input id="newQGrade" placeholder="Grade (KG1 or KG2)">
         <input id="newQSkill" placeholder="Skill (Vocabulary, Phonics...)">

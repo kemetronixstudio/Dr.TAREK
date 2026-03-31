@@ -501,3 +501,21 @@ body[data-lang="ar"] .lang-btn{font-family:"Cairo","Baloo 2",sans-serif;}
 .teacher-note-actions{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:10px}
 .analytics-grid{align-items:start}
 .mini-metrics{margin-bottom:14px}
+
+.admin-shortcuts-card{margin-bottom:18px}
+.admin-shortcuts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.shortcut-chip{display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;border:none;border-radius:20px;background:#f7fbff;box-shadow:0 10px 22px rgba(41,75,122,.10);color:#294b7a;font:inherit;font-weight:800;cursor:pointer;text-align:start}
+.shortcut-chip:hover{transform:translateY(-1px);box-shadow:0 14px 28px rgba(41,75,122,.14)}
+.shortcut-icon{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#fff0d8,#ffe6bf);font-size:1.2rem;flex:0 0 42px}
+.shortcut-text{line-height:1.2}
+.section-head-actions,.editor-head-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.admin-collapsible-body{overflow:hidden}
+.collapsible-section .section-head{margin-bottom:0}
+.collapsible-section .admin-collapsible-body{margin-top:14px}
+.collapse-toggle-btn{min-width:104px}
+body[data-lang="ar"] .shortcut-chip{text-align:right}
+@media (max-width: 720px){
+  .admin-shortcuts-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .shortcut-chip{padding:12px}
+  .shortcut-icon{width:38px;height:38px;flex-basis:38px}
+}
