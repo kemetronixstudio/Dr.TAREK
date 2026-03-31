@@ -109,10 +109,14 @@
     return headers;
   }
   async function api(path, options){
-    const response = await fetch(API_BASE + path, Object.assign({
+    const method = String((options && options.method) || 'GET').toUpperCase();
+    const finalOptions = Object.assign({
       credentials: 'same-origin',
-      headers: Object.assign({ 'Content-Type': 'application/json' }, authHeaders(), (options && options.headers) || {})
-    }, options || {}));
+      cache: 'no-store',
+      headers: Object.assign({ 'Content-Type': 'application/json', 'Cache-Control': 'no-store, no-cache, max-age=0', Pragma: 'no-cache' }, authHeaders(), (options && options.headers) || {})
+    }, options || {});
+    if (method === 'GET' && !('body' in finalOptions)) delete finalOptions.body;
+    const response = await fetch(API_BASE + path, finalOptions);
     let payload = {};
     try { payload = await response.json(); } catch (error) {}
     if (!response.ok || !payload.ok) {
@@ -176,9 +180,28 @@
       if (box) box.innerHTML = '<div class="stored-question"><h4>' + escapeText('Account management is available to admins only.') + '</h4></div>';
       return [];
     }
-    const payload = await api('', { method: 'GET' });
-    accountCache = Array.isArray(payload.accounts) ? payload.accounts : [];
-    return accountCache;
+    const fetchList = function(){
+      return api('?ts=' + Date.now(), { method: 'GET' });
+    };
+    try {
+      const payload = await fetchList();
+      accountCache = Array.isArray(payload.accounts) ? payload.accounts : [];
+      return accountCache;
+    } catch (error) {
+      const creds = readCreds();
+      if (error && error.status === 401 && creds && creds.user && creds.pass) {
+        try {
+          const loginPayload = await api('/login', { method: 'POST', body: JSON.stringify({ user: creds.user, pass: creds.pass }), headers: { Authorization: '' } });
+          persistSession(loginPayload.account, loginPayload.token, creds);
+          const payload = await fetchList();
+          accountCache = Array.isArray(payload.accounts) ? payload.accounts : [];
+          return accountCache;
+        } catch (retryError) {
+          throw retryError;
+        }
+      }
+      throw error;
+    }
   }
 
   window.renderAccessAccountsList = async function(){
