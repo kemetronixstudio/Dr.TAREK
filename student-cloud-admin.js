@@ -30,25 +30,6 @@
   function status(msg){ const el = document.getElementById('studentCloudStatus'); if (el) el.textContent = msg || ''; }
   function analyticsStatus(msg){ const el = document.getElementById('studentAnalyticsStatus'); if (el) el.textContent = msg || ''; }
   function escapeHtml(value){ return String(value || '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
-
-  function syncDashboardCardsFromCloud(totals){
-    const map = {
-      metricStudents: String(totals.totalStudents || 0),
-      metricAttempts: String(totals.totalCompletedAttempts || 0),
-      metricAverage: `${Number(totals.averagePercent || 0)}%`,
-      metricWeak: totals.mostCommonWeakness || '-'
-    };
-    Object.entries(map).forEach(([id, value]) => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = value;
-    });
-  }
-  function syncDashboardTableFromCloud(leaderboard){
-    const body = document.getElementById('studentTableBody');
-    if (!body) return;
-    const rows = Array.isArray(leaderboard) ? leaderboard.slice(0, 50) : [];
-    body.innerHTML = rows.map(row => `<tr><td>${escapeHtml(row.studentName)}</td><td>${escapeHtml(row.grade || '-')}</td><td>${escapeHtml(String(row.attempts || 0))}</td><td>${escapeHtml(String(row.bestPercent || 0))}%</td><td>${escapeHtml(String(row.averagePercent || 0))}%</td><td>${escapeHtml((row.teacherNote || '').slice(0, 40) || '-')}</td></tr>`).join('') || '<tr><td colspan="6">No cloud student records yet.</td></tr>';
-  }
   function getFilters(){
     return {
       q: document.getElementById('studentCloudSearch')?.value || '',
@@ -69,7 +50,7 @@
       const rows = Array.isArray(data.rows) ? data.rows : [];
       lastRows = rows.slice();
       body.innerHTML = rows.map(row => `\n<tr data-key="${escapeHtml(row.key)}" class="student-cloud-row">\n<td>${escapeHtml(row.studentName)}</td>\n<td>${escapeHtml(row.studentId || '-')}</td>\n<td>${escapeHtml(row.className || '-')}</td>\n<td>${escapeHtml(row.grade || '-')}</td>\n<td>${escapeHtml(row.quizLevel || row.quizKey || '-')}</td>\n<td>${row.status === 'completed' ? `${escapeHtml(String(row.percent || 0))}%` : 'In Progress'}</td>\n<td>${escapeHtml((row.teacherNote || '').slice(0, 36) || '-')}</td>\n<td>${escapeHtml(row.updatedAt ? new Date(row.updatedAt).toLocaleString() : '-')}</td>\n<td><button type="button" class="ghost-btn small-btn student-cloud-view-btn" data-key="${escapeHtml(row.key)}">View</button></td>\n</tr>`).join('') || '<tr><td colspan="9">No cloud student records found.</td></tr>';
-      status(rows.length ? `${rows.length} cloud record(s) loaded.` : 'No matching records. Try clearing filters.');
+      status(`${rows.length} cloud record(s) loaded.`);
       if (typeof window.__kgClearUnauthorized === 'function') window.__kgClearUnauthorized();
       await renderAnalytics();
     } catch (error) {
@@ -90,7 +71,6 @@
       setText('studentAnalyticsStudents', String(totals.totalStudents || 0));
       setText('studentAnalyticsClasses', String(totals.totalClasses || 0));
       setText('studentAnalyticsAverage', `${Number(totals.averagePercent || 0)}%`);
-      syncDashboardCardsFromCloud(totals);
 
       const classBody = document.getElementById('classAnalyticsTableBody');
       if (classBody) {
@@ -100,7 +80,6 @@
       if (leaderboardBody) {
         leaderboardBody.innerHTML = leaderboard.slice(0, 20).map((row, index) => `<tr><td>${index + 1}</td><td>${escapeHtml(row.studentName)}</td><td>${escapeHtml(row.studentId || '-')}</td><td>${escapeHtml(row.className || '-')}</td><td>${escapeHtml(String(row.bestPercent || 0))}%</td><td>${escapeHtml(String(row.averagePercent || 0))}%</td><td>${escapeHtml(String(row.attempts || 0))}</td></tr>`).join('') || '<tr><td colspan="7">No leaderboard data yet.</td></tr>';
       }
-      syncDashboardTableFromCloud(leaderboard);
       analyticsStatus(`Analytics ready. Top weakness: ${totals.mostCommonWeakness || '-'}`);
     } catch (error) {
       analyticsStatus(error.message || 'Could not load analytics.');
