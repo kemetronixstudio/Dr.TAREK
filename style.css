@@ -578,3 +578,34 @@ body[data-theme="space"] .badge-pill{background:#eaf1ff;color:#29477b}
   .top-shell-inline .header-left,.top-shell-inline .header-center,.top-shell-inline .header-right{justify-self:center;flex-wrap:wrap;justify-content:center}
   .top-shell-inline .teacher-topline{max-width:90vw}
 }
+
+.playtest-card{background:linear-gradient(135deg,#fff8e1,#ffe0b2);border:2px solid rgba(255,145,0,.18)}
+.playtest-card-icon{font-size:3rem;line-height:1;margin-bottom:.4rem}
+.playtest-btn{background:linear-gradient(135deg,#ff7b54,#ffb26b)!important}
+.play-wrap{display:grid;gap:1rem}
+.play-hero-card{display:grid;grid-template-columns:1.15fr .85fr;gap:1rem;align-items:start}
+.play-hero-copy h1{margin:.35rem 0 .4rem;font-size:clamp(1.8rem,3vw,2.6rem)}
+.play-top3-panel{background:rgba(255,255,255,.8);border-radius:22px;padding:1rem;box-shadow:0 10px 24px rgba(18,38,63,.08)}
+.play-top3-list{display:grid;gap:.75rem}
+.play-top3-item{display:flex;align-items:center;justify-content:space-between;gap:.7rem;padding:.8rem 1rem;border-radius:18px;background:#fff}
+.play-top3-item strong,.play-top3-item span,.play-medal-score{color:#17324d}
+.play-top3-item span{display:block;font-size:.85rem;opacity:.75}
+.play-medal{font-size:1.8rem}
+.play-medal-score{font-weight:800;font-size:1.15rem}
+.play-top3-empty{text-align:center;padding:1rem;color:#33506b}
+.play-form-grid{display:grid;grid-template-columns:1fr 1fr auto;gap:.75rem;align-items:center}
+.play-form-grid input{width:100%;padding:.95rem 1rem;border-radius:16px;border:1px solid rgba(35,55,100,.15);font:inherit}
+.play-stats-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.75rem}
+.play-progress-track{height:14px;background:rgba(35,55,100,.08);border-radius:999px;overflow:hidden;margin-bottom:1rem}
+.play-progress-fill{height:100%;width:0;background:linear-gradient(90deg,#6dd5fa,#8e7dff);border-radius:999px;transition:width .25s ease}
+.play-question-text{font-size:clamp(1.4rem,2.5vw,2rem);margin:.4rem 0 1rem;color:#12263f}
+.play-options{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.play-option-btn{padding:1rem;border:0;border-radius:18px;background:#fff;box-shadow:0 10px 24px rgba(18,38,63,.08);font:700 1rem/1.35 'Baloo 2',system-ui;cursor:pointer;color:#17324d}
+.play-option-btn.correct{background:#d9f8e6;color:#0f6c3d}
+.play-option-btn.wrong{background:#ffe4e4;color:#b3261e}
+.play-option-btn:disabled{cursor:default;opacity:1}
+.play-result-card{text-align:center}
+.play-result-score{font-size:3.2rem;font-weight:800;color:#17324d;margin:.4rem 0}
+body[data-theme="space"] .play-question-text,body[data-theme="space"] .play-top3-item strong,body[data-theme="space"] .play-top3-item span,body[data-theme="space"] .play-medal-score,body[data-theme="space"] .play-option-btn{color:#12263f}
+body[data-theme="space"] .play-top3-item,body[data-theme="space"] .play-option-btn,body[data-theme="space"] .play-top3-panel{background:rgba(255,255,255,.96)}
+@media (max-width: 900px){.play-hero-card{grid-template-columns:1fr}.play-form-grid{grid-template-columns:1fr}.play-options{grid-template-columns:1fr}}
