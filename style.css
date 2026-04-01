@@ -285,6 +285,11 @@ body[data-lang="ar"] .permissions-grid, body[data-lang="ar"] .account-card {dire
 .top-home-link{
   justify-self:start;
   margin:0 !important;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  white-space:nowrap;
+  flex-wrap:nowrap;
 }
 .subpage-top-shell .teacher-topline{
   justify-self:center;
@@ -630,3 +635,12 @@ body[data-theme="space"] .play-top3-item,body[data-theme="space"] .play-option-b
 .play-result-badge.star{background:linear-gradient(135deg,#efe8ff,#ddd2ff);color:#47348f;}
 .play-top3-item small{display:block;color:#69759a;margin-top:3px;}
 @media (max-width: 900px){.play-stage-grid{grid-template-columns:1fr;}}
+
+.play-quiz-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0 12px;flex-wrap:wrap;}
+.play-auto-next-toggle{display:inline-flex;align-items:center;gap:10px;font-weight:800;color:#223b5d;background:#eef5ff;padding:10px 14px;border-radius:999px;}
+.play-auto-next-toggle input{width:18px;height:18px;}
+.option-btn,.play-option-btn{color:#374151 !important;}
+body[data-theme='space'] .option-btn,body[data-theme='space'] .play-option-btn,body[data-theme='space'] .play-question-text{color:#374151 !important;}
+body[data-theme='space'] .certificate-shell,body[data-theme='space'] .certificate-shell .cert-title,body[data-theme='space'] .certificate-shell .cert-sub,body[data-theme='space'] .certificate-shell .cert-message,body[data-theme='space'] .certificate-shell .cert-box span,body[data-theme='space'] .certificate-shell .cert-box strong,body[data-theme='space'] .certificate-shell .signature-card span,body[data-theme='space'] .certificate-shell .signature-card strong{color:#334155 !important;}
+body[data-theme='space'] .certificate-shell .cert-box,body[data-theme='space'] .certificate-shell .signature-card{background:rgba(255,255,255,.96);}
+body[data-theme='space'] .certificate-shell{background:rgba(255,255,255,.94);}

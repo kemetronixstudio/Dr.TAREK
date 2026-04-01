@@ -3,14 +3,16 @@
   const STORAGE_KEY = 'kgPlayTestSessionV2';
   const STAGE_STORAGE_KEY = 'kgPlayTestStage';
   const SOUND_STORAGE_KEY = 'kgPlayTestSound';
+  const AUTO_NEXT_STORAGE_KEY = 'kgPlayTestAutoNext';
   const STAGE_CONFIGS = {
-    starter: { label:'Starter', count:12, seconds:300, difficulty:1 },
-    explorer: { label:'Explorer', count:15, seconds:360, difficulty:2 },
-    champion: { label:'Champion', count:18, seconds:420, difficulty:3 }
+    starter: { label:'Starter', count:30, seconds:420, difficulty:1 },
+    explorer: { label:'Explorer', count:50, seconds:540, difficulty:2 },
+    champion: { label:'Champion', count:75, seconds:720, difficulty:3 }
   };
   let state = null;
   let timerId = null;
   let soundEnabled = true;
+  let autoNextEnabled = true;
 
   function $(id){ return document.getElementById(id); }
   function setStatus(msg){ const el = $('playStatus'); if (el) el.textContent = msg || ''; }
@@ -21,6 +23,8 @@
   function loadSelectedStage(){ try { return localStorage.getItem(STAGE_STORAGE_KEY) || 'starter'; } catch (error) { return 'starter'; } }
   function saveSoundSetting(){ try { localStorage.setItem(SOUND_STORAGE_KEY, soundEnabled ? '1' : '0'); } catch (error) {} }
   function loadSoundSetting(){ try { return localStorage.getItem(SOUND_STORAGE_KEY) !== '0'; } catch (error) { return true; } }
+  function saveAutoNextSetting(){ try { localStorage.setItem(AUTO_NEXT_STORAGE_KEY, autoNextEnabled ? '1' : '0'); } catch (error) {} }
+  function loadAutoNextSetting(){ try { return localStorage.getItem(AUTO_NEXT_STORAGE_KEY) !== '0'; } catch (error) { return true; } }
   async function request(path, options){
     const res = await fetch(API + path, Object.assign({ credentials:'same-origin', cache:'no-store' }, options || {}));
     const data = await res.json().catch(()=>({ ok:false, error:'Request failed' }));
@@ -54,6 +58,10 @@
     const btn = $('playSoundToggleBtn');
     if (!btn) return;
     btn.textContent = soundEnabled ? '🔊 Sounds' : '🔈 Muted';
+  }
+  function updateAutoNextToggle(){
+    const input = $('playAutoNextToggle');
+    if (input) input.checked = autoNextEnabled;
   }
   function playTone(freq, duration, type, volume){
     if (!soundEnabled) return;
@@ -156,6 +164,14 @@
     if (correct) { state.score += 1; playCorrect(); } else { playWrong(); }
     await saveProgress();
     renderQuestion();
+    if (!correct) {
+      setStatus('Wrong answer. Your score has been saved to the leaderboard.');
+      setTimeout(() => { finishQuiz(false, true).catch(()=>{}); }, 650);
+      return;
+    }
+    if (autoNextEnabled) {
+      setTimeout(() => { nextQuestion(); }, 450);
+    }
   }
   function nextQuestion(){
     const answered = state.answers.find(a => a.index === state.currentIndex);
@@ -164,23 +180,24 @@
     renderQuestion();
     saveProgress().catch(()=>{});
   }
-  async function finishQuiz(timeUp){
+  async function finishQuiz(timeUp, wrongStop){
     if (!state || state.completed) return;
     state.completed = true;
     stopTimer();
-    const percent = Math.round((state.score / state.questions.length) * 100);
+    const answeredCount = Math.max(1, state.answers.length);
+    const percent = Math.round((state.score / answeredCount) * 100);
     const badge = getBadgeMeta(percent);
     const result = await request('?action=submit', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ identity:state.identity, sessionId:state.sessionId, result:{ score:state.score, total:state.questions.length, percent, answers:state.answers, questionCount:state.questions.length, completedAt:new Date().toISOString(), selectedLevelLabel:'Mixed English - ' + state.stageLabel, stage:state.stage, stageLabel:state.stageLabel, timeLeft:state.timeLeft, totalSeconds:state.totalSeconds, badgeTitle:badge.title }, progress:{ completed:true, currentIndex:state.currentIndex, questions:state.questions.map(questionPayload) } })
+      body: JSON.stringify({ identity:state.identity, sessionId:state.sessionId, result:{ score:state.score, total:answeredCount, percent, answers:state.answers, questionCount:answeredCount, completedAt:new Date().toISOString(), selectedLevelLabel:'Mixed English - ' + state.stageLabel, stage:state.stage, stageLabel:state.stageLabel, timeLeft:state.timeLeft, totalSeconds:state.totalSeconds, badgeTitle:badge.title, finishedByWrong: !!wrongStop }, progress:{ completed:true, currentIndex:state.currentIndex, questions:state.questions.map(questionPayload) } })
     });
     playFinish();
     $('playResultMedal').textContent = badge.medal;
     $('playResultBadge').textContent = badge.title;
     $('playResultBadge').className = 'play-result-badge ' + badge.cls;
-    $('playResultScore').textContent = percent + '%';
-    $('playResultText').textContent = timeUp ? `Time is over. You finished ${state.stageLabel} with ${state.score} correct answers.` : `Fantastic! You finished the ${state.stageLabel} challenge with ${state.score} correct answers.`;
+    $('playResultScore').textContent = state.score + ' pts';
+    $('playResultText').textContent = timeUp ? `Time is over. You scored ${state.score} points in ${state.stageLabel}.` : wrongStop ? `Wrong answer. Game over with ${state.score} points. Try again and climb higher!` : `Fantastic! You finished the ${state.stageLabel} challenge with ${state.score} points.`;
     saveLocal();
     showSection('playResultCard');
     if (result && result.leaderboard) renderLeaderboard(result.leaderboard);
@@ -233,6 +250,7 @@
       }
       startTimer();
       renderQuestion();
+      updateAutoNextToggle();
     } catch (error) {
       setStatus(error.message || 'Could not start the quiz.');
     }
@@ -251,7 +269,9 @@
   document.addEventListener('DOMContentLoaded', function(){
     if (document.body.dataset.page !== 'playtest') return;
     soundEnabled = loadSoundSetting();
+    autoNextEnabled = loadAutoNextSetting();
     updateSoundButton();
+    updateAutoNextToggle();
     wireStageButtons();
     loadLeaderboard().catch((error)=> setStatus(error.message || 'Could not load leaderboard.'));
     $('playStartBtn')?.addEventListener('click', startOrResume);
@@ -267,5 +287,6 @@
     });
     $('refreshPlayLeadersBtn')?.addEventListener('click', ()=> loadLeaderboard().catch(()=>{}));
     $('playSoundToggleBtn')?.addEventListener('click', function(){ soundEnabled = !soundEnabled; saveSoundSetting(); updateSoundButton(); });
+    $('playAutoNextToggle')?.addEventListener('change', function(){ autoNextEnabled = !!this.checked; saveAutoNextSetting(); updateAutoNextToggle(); });
   });
 })();

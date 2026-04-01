@@ -125,7 +125,14 @@
       };
       const allowed = stageMap[stage] || [1];
       const filtered = bank.filter(q => allowed.includes(Number(q.difficulty || 1)));
-      return sample(filtered.length >= count ? filtered : bank, Math.min(Math.max(10, count || 15), (filtered.length >= count ? filtered : bank).length)).map((q, index) => Object.assign({ id:`pq-${Date.now()}-${index}-${Math.random().toString(36).slice(2,7)}` }, q));
+      const source = filtered.length ? filtered : bank;
+      const targetCount = Math.max(20, count || 30);
+      const output = [];
+      for (let i = 0; i < targetCount; i += 1) {
+        const picked = source[Math.floor(Math.random() * source.length)] || bank[Math.floor(Math.random() * bank.length)];
+        output.push(Object.assign({ id:`pq-${Date.now()}-${i}-${Math.random().toString(36).slice(2,7)}` }, picked));
+      }
+      return output;
     }
   };
 })();
