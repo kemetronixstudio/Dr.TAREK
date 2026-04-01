@@ -105,7 +105,7 @@
     }).join('') : '<tr><td colspan="6">No leaderboard data yet.</td></tr>';
   }
   async function loadLeaderboard(){ const data = await request('?action=leaderboard'); renderLeaderboard(data); return data; }
-  function showSection(cardId){ ['playStartCard','playQuizCard','playResultCard'].forEach(id => $(id)?.classList.add('hidden')); $(cardId)?.classList.remove('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+  function showSection(cardId){ ['playStartCard','playQuizCard','playResultCard'].forEach(id => $(id)?.classList.add('hidden')); $(cardId)?.classList.remove('hidden'); }
   function updateBadges(){
     if (!state) return;
     $('playPlayerBadge').textContent = `Player: ${state.identity.name}`;
@@ -138,44 +138,41 @@
     const q = state.questions[state.currentIndex];
     $('playQuestionText').textContent = q.text;
     const answered = state.answers.find(a => a.index === state.currentIndex);
-    $('playOptions').innerHTML = q.options.map((opt) => {
+    $('playOptions').innerHTML = q.options.map((opt, idx) => {
       const chosen = answered && answered.chosen === opt;
       const correct = answered && q.answer === opt;
       const cls = answered ? (correct ? 'correct' : chosen ? 'wrong' : '') : '';
-      return `<button type="button" class="play-option-btn ${cls}" data-option="${escapeHtml(opt)}" ${answered ? 'disabled' : ''}><span class="play-option-text">${escapeHtml(opt)}</span></button>`;
+      return `<button type="button" class="play-option-btn ${cls}" data-option-index="${idx}" ${answered ? 'disabled' : ''}>${escapeHtml(opt)}</button>`;
     }).join('');
-    $('playOptions').querySelectorAll('[data-option]').forEach(btn => btn.addEventListener('click', () => chooseAnswer(btn.dataset.option)));
+    $('playOptions').querySelectorAll('[data-option-index]').forEach(btn => btn.addEventListener('click', () => {
+      const index = Number(btn.dataset.optionIndex || 0);
+      chooseAnswer(q.options[index]);
+    }));
     $('playNextBtn').disabled = !answered;
   }
   async function saveProgress(){
-    if (!state) return true;
+    if (!state) return;
     state.updatedAt = new Date().toISOString();
     saveLocal();
-    try {
-      await request('?action=save-progress', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ identity:state.identity, sessionId:state.sessionId, state:{ selectedCount:state.questions.length, selectedLevelLabel:'Mixed English - ' + state.stageLabel, currentIndex:state.currentIndex, score:state.score, answers:state.answers, questions:state.questions.map(questionPayload), startedAt:state.startedAt, updatedAt:state.updatedAt, completed:false, stage:state.stage, stageLabel:state.stageLabel, timeLeft:state.timeLeft, totalSeconds:state.totalSeconds } })
-      });
-      return true;
-    } catch (error) {
-      console.warn('Play progress save failed', error);
-      setStatus('Your answer was counted. Cloud save will retry.');
-      return false;
-    }
+    await request('?action=save-progress', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ identity:state.identity, sessionId:state.sessionId, state:{ selectedCount:state.questions.length, selectedLevelLabel:'Mixed English - ' + state.stageLabel, currentIndex:state.currentIndex, score:state.score, answers:state.answers, questions:state.questions.map(questionPayload), startedAt:state.startedAt, updatedAt:state.updatedAt, completed:false, stage:state.stage, stageLabel:state.stageLabel, timeLeft:state.timeLeft, totalSeconds:state.totalSeconds } })
+    });
   }
   async function chooseAnswer(option){
     if (!state) return;
+    const q = state.questions[state.currentIndex];
+    if (!q) return;
     const alreadyAnswered = state.answers.find(a => a.index === state.currentIndex);
     if (alreadyAnswered) return;
-    const q = state.questions[state.currentIndex];
     const correct = option === q.answer;
     state.answers.push({ index:state.currentIndex, questionText:q.text, chosen:option, correct, expected:q.answer, answeredAt:new Date().toISOString(), difficulty:q.difficulty || 1 });
     if (correct) { state.score += 1; playCorrect(); } else { playWrong(); }
     renderQuestion();
     saveProgress().catch(()=>{});
     if (!correct) {
-      setStatus('Wrong answer. Game over. Saving your score...');
+      setStatus('Wrong answer. Your score has been saved to the leaderboard.');
       setTimeout(() => { finishQuiz(false, true).catch(()=>{}); }, 650);
       return;
     }
@@ -197,6 +194,11 @@
     const answeredCount = Math.max(1, state.answers.length);
     const percent = Math.round((state.score / answeredCount) * 100);
     const badge = getBadgeMeta(percent);
+    const result = await request('?action=submit', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ identity:state.identity, sessionId:state.sessionId, result:{ score:state.score, total:answeredCount, percent, answers:state.answers, questionCount:answeredCount, completedAt:new Date().toISOString(), selectedLevelLabel:'Mixed English - ' + state.stageLabel, stage:state.stage, stageLabel:state.stageLabel, timeLeft:state.timeLeft, totalSeconds:state.totalSeconds, badgeTitle:badge.title, finishedByWrong: !!wrongStop }, progress:{ completed:true, currentIndex:state.currentIndex, questions:state.questions.map(questionPayload) } })
+    });
     playFinish();
     $('playResultMedal').textContent = badge.medal;
     $('playResultBadge').textContent = badge.title;
@@ -205,19 +207,8 @@
     $('playResultText').textContent = timeUp ? `Time is over. You scored ${state.score} points in ${state.stageLabel}.` : wrongStop ? `Wrong answer. Game over with ${state.score} points. Try again and climb higher!` : `Fantastic! You finished the ${state.stageLabel} challenge with ${state.score} points.`;
     saveLocal();
     showSection('playResultCard');
-    try {
-      const result = await request('?action=submit', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ identity:state.identity, sessionId:state.sessionId, result:{ score:state.score, total:answeredCount, percent, answers:state.answers, questionCount:answeredCount, completedAt:new Date().toISOString(), selectedLevelLabel:'Mixed English - ' + state.stageLabel, stage:state.stage, stageLabel:state.stageLabel, timeLeft:state.timeLeft, totalSeconds:state.totalSeconds, badgeTitle:badge.title, finishedByWrong: !!wrongStop }, progress:{ completed:true, currentIndex:state.currentIndex, questions:state.questions.map(questionPayload) } })
-      });
-      setStatus('Score saved to the live leaderboard.');
-      if (result && result.leaderboard) renderLeaderboard(result.leaderboard);
-      else loadLeaderboard().catch(()=>{});
-    } catch (error) {
-      console.warn('Play submit failed', error);
-      setStatus('Result shown, but cloud save failed. Please refresh and try again.');
-    }
+    if (result && result.leaderboard) renderLeaderboard(result.leaderboard);
+    else loadLeaderboard().catch(()=>{});
   }
   async function startOrResume(){
     try {

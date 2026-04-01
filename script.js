@@ -2486,3 +2486,18 @@ function resetDashboardData(){
     alert(lang === 'ar' ? 'تم حذف بيانات لوحة المتابعة.' : 'Dashboard data has been reset.');
   }
 }
+
+
+function ensureStudioFooter(){
+  try {
+    if (document.querySelector('.site-credit-footer')) return;
+    const footer = document.createElement('footer');
+    footer.className = 'site-credit-footer';
+    footer.textContent = '©2026 KEMETRONIX STUDIO';
+    document.body.appendChild(footer);
+  } catch (error) {}
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  ensureStudioFooter();
+});
