@@ -722,101 +722,74 @@ body[data-page="playtest"][data-lang="ar"] .play-top3-panel .section-head{flex-d
 body[data-page="playtest"][data-lang="ar"] #playLeaderboardBody td,
 body[data-page="playtest"][data-lang="ar"] .data-table th{text-align:right;}
 
+/* v38.18 mobile polish */
+@media (max-width: 720px){
+  .container,.top-shell,.top-shell-inline,.subpage-top-shell{width:min(100% - 20px,1180px)}
+  .top-shell-inline{grid-template-columns:1fr auto;grid-template-areas:"center center" "left right";gap:10px 12px;align-items:center}
+  .top-shell-inline .header-center{grid-area:center;width:100%;justify-content:center}
+  .top-shell-inline .header-left{grid-area:left;justify-content:flex-start;flex-wrap:wrap}
+  .top-shell-inline .header-right{grid-area:right;justify-content:flex-end;flex-wrap:wrap;gap:8px}
+  .top-shell-inline .teacher-topline{max-width:100%;width:auto;white-space:normal;line-height:1.25;padding:10px 14px;border-radius:20px;text-align:center}
+  .top-shell-inline .lang-switch{gap:8px}
+  .top-shell-inline .theme-quick-switch{gap:8px;justify-content:flex-end}
+  .top-shell-inline .theme-pill-btn,.top-shell-inline .lang-btn,.top-shell-inline .tiny-admin-link,.top-shell-inline .back-link{min-width:48px;min-height:48px}
+  .top-shell-inline .back-link{padding-inline:16px}
 
-/* Mobile polish responsive v2 */
-@media (max-width: 768px){
-  .top-shell-inline,
-  .subpage-top-shell.top-shell-inline,
-  body[data-page="playtest"] .top-shell-inline,
-  body[data-page="home"] .top-shell-inline{
-    display:grid !important;
-    grid-template-columns:1fr auto !important;
-    grid-template-areas:
-      "teacher teacher"
-      "left right" !important;
-    align-items:center !important;
-    gap:12px !important;
-    width:min(100% - 20px, 1180px) !important;
-    margin:0 auto 14px !important;
-    padding-top:12px !important;
-  }
-  .top-shell-inline .header-center{grid-area:teacher !important; width:100% !important; justify-self:stretch !important;}
-  .top-shell-inline .header-left{grid-area:left !important; justify-self:start !important; justify-content:flex-start !important; flex-wrap:wrap !important; gap:8px !important;}
-  .top-shell-inline .header-right{grid-area:right !important; justify-self:end !important; justify-content:flex-end !important; flex-wrap:wrap !important; gap:8px !important;}
-  .top-shell-inline .teacher-topline,
-  body[data-page="playtest"] .top-shell-inline .teacher-topline,
-  body[data-page="home"] .top-shell-inline .teacher-topline{
-    max-width:100% !important;
-    width:100% !important;
-    white-space:normal !important;
-    line-height:1.25 !important;
-    text-align:center !important;
-    font-size:14px !important;
-    padding:10px 14px !important;
-    justify-content:center !important;
-  }
-  .lang-switch,.theme-quick-switch{gap:8px !important;}
-  .lang-btn,.theme-pill-btn,.tiny-admin-link{width:48px !important;height:48px !important;flex:0 0 48px !important;}
-  .top-home-link.back-link{min-height:48px !important;padding:0 18px !important;display:inline-flex !important;align-items:center !important;}
+  body[data-page="home"] .hero-card{padding:20px 18px}
+  body[data-page="home"] .hero-copy h1{font-size:clamp(2rem,10vw,3rem);line-height:1.08}
+  body[data-page="home"] .lead{font-size:1.05rem;line-height:1.55}
+  .home-levels{grid-template-columns:1fr;gap:16px}
+  .home-levels .level-card{padding:20px 18px;min-height:auto}
+  .home-levels .level-card img{height:120px}
+  .playtest-card .playtest-card-icon{font-size:2.6rem}
 
-  body[data-page="home"] .hero-card,
-  body[data-page="playtest"] .play-hero-card,
-  body[data-page="playtest"] .play-start-card,
-  body[data-page="playtest"] .play-quiz-card,
-  body[data-page="playtest"] .play-board-card,
-  body[data-page="playtest"] .play-result-card{
-    width:100% !important;
-    max-width:100% !important;
-  }
-  body[data-page="playtest"] .play-wrap{
-    width:min(100% - 20px,1180px) !important;
-    gap:16px !important;
-    padding-top:10px !important;
-    padding-bottom:40px !important;
-  }
-  body[data-page="playtest"] .play-top3-panel{padding:14px !important;}
-  body[data-page="playtest"] .play-top3-item{display:grid !important;grid-template-columns:auto 1fr auto !important;align-items:center !important;gap:12px !important;padding:12px !important;}
-  body[data-page="playtest"] .play-top3-item strong{font-size:1rem !important;}
-  body[data-page="playtest"] .play-hero-copy h1{font-size:clamp(2rem,9vw,2.7rem) !important;line-height:1.08 !important;}
-  body[data-page="playtest"] .play-result-card{display:block !important;text-align:center !important;max-width:100% !important;}
-  body[data-page="playtest"] .play-result-card .main-btn{width:auto !important;min-width:160px;}
+  body[data-page="playtest"] .play-wrap{width:min(100% - 20px,1180px);padding-top:12px;padding-bottom:52px;gap:16px}
+  body[data-page="playtest"] .play-hero-card{padding:20px 18px;grid-template-columns:1fr;gap:16px}
+  body[data-page="playtest"] .play-hero-copy h1{font-size:clamp(2rem,8vw,3rem);line-height:1.08}
+  body[data-page="playtest"] .play-top3-panel{padding:14px}
+  body[data-page="playtest"] .play-top3-item{padding:12px 14px;border-radius:16px}
+  body[data-page="playtest"] .play-form-grid-wide{grid-template-columns:1fr;gap:12px}
+  body[data-page="playtest"] .play-start-card,body[data-page="playtest"] .play-quiz-card,body[data-page="playtest"] .play-board-card,body[data-page="playtest"] .play-result-card{padding:18px}
+  body[data-page="playtest"] .play-stats-row{gap:8px}
+  body[data-page="playtest"] .play-stats-row .badge-pill{font-size:.95rem}
+  body[data-page="playtest"] .play-quiz-toolbar{gap:10px}
+  body[data-page="playtest"] .play-auto-next-toggle{width:100%;justify-content:flex-start}
+  body[data-page="playtest"] .sound-toggle-btn{align-self:flex-start}
+  body[data-page="playtest"] .play-question-text{font-size:clamp(1.4rem,7vw,2rem);line-height:1.2}
+  body[data-page="playtest"] .play-options{grid-template-columns:1fr;gap:12px}
+  body[data-page="playtest"] .play-option-btn{width:100%;min-height:60px;font-size:1.05rem}
+  body[data-page="playtest"] .play-result-card{max-width:100%}
+  body[data-page="playtest"] .play-result-score{font-size:2.8rem}
+  body[data-page="playtest"] .play-board-card .data-table{min-width:620px}
 
-  .admin-shortcuts-sticky{position:static !important;top:auto !important;}
-  .admin-shortcuts-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
-  .admin-table-card,.card{overflow:hidden;}
-  .table-wrap{overflow-x:auto !important; -webkit-overflow-scrolling:touch;}
-  .admin-table-card table,
-  .play-board-card table,
-  #studentCloudTable,
-  #activityLogsTable,
-  #classAnalyticsTable,
-  #studentLeaderboardTable{min-width:680px !important;}
+  body[data-page="playtest"][data-lang="ar"] .top-shell-inline .header-left,
+  body[data-page="playtest"][data-lang="ar"] .top-shell-inline .header-right{flex-direction:row}
+  body[data-page="playtest"][data-lang="ar"] .play-form-grid-wide{grid-template-columns:1fr}
+  body[data-page="playtest"][data-lang="ar"] .play-top3-panel .section-head,
+  body[data-page="playtest"][data-lang="ar"] .play-quiz-toolbar,
+  body[data-page="playtest"][data-lang="ar"] .play-stats-row{justify-content:flex-start}
+
+  .admin-top-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .admin-grid,.analytics-grid{grid-template-columns:1fr}
+  .editor-grid,.question-edit-grid{grid-template-columns:1fr}
+  .table-wrap{overflow:auto;-webkit-overflow-scrolling:touch}
+  .admin-table-card table,.data-table{min-width:680px}
+  .admin-table-card{padding:18px}
+  .admin-shortcuts-sticky{top:8px;padding:10px;gap:8px}
+  .admin-shortcuts-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 }
 
 @media (max-width: 480px){
-  .top-shell-inline,
-  .subpage-top-shell.top-shell-inline,
-  body[data-page="playtest"] .top-shell-inline,
-  body[data-page="home"] .top-shell-inline{
-    grid-template-columns:1fr !important;
-    grid-template-areas:
-      "teacher"
-      "left"
-      "right" !important;
-    gap:10px !important;
-  }
-  .top-shell-inline .header-left,
-  .top-shell-inline .header-right,
-  .top-shell-inline .header-center{justify-self:center !important; justify-content:center !important;}
-  .top-shell-inline .header-left,.top-shell-inline .header-right{width:100% !important;}
-  .top-shell-inline .header-left{justify-content:center !important;}
-  .top-shell-inline .header-right{justify-content:center !important;}
-  .top-shell-inline .teacher-topline{font-size:13px !important;padding:9px 12px !important;}
-  body[data-page="playtest"] .play-top3-item{grid-template-columns:auto 1fr auto !important;}
-  body[data-page="playtest"] .play-form-grid,
-  body[data-page="playtest"] .play-form-grid-wide,
-  body[data-page="playtest"][data-lang="ar"] .play-form-grid-wide{grid-template-columns:1fr !important;}
-  body[data-page="playtest"] .play-stats-row{grid-template-columns:1fr 1fr !important;display:grid !important;gap:8px !important;}
-  body[data-page="playtest"] .play-option-btn{font-size:1rem !important;min-height:58px !important;}
-  .admin-shortcuts-grid{grid-template-columns:1fr 1fr !important;}
+  .top-shell-inline .teacher-topline{font-size:14px;padding:9px 12px}
+  .top-shell-inline .header-left,.top-shell-inline .header-right{width:100%}
+  .top-shell-inline .header-right{justify-content:flex-start}
+  body[data-page="home"] .hero-copy h1{font-size:clamp(1.8rem,12vw,2.7rem)}
+  body[data-page="playtest"] .play-hero-copy h1{font-size:clamp(1.8rem,11vw,2.7rem)}
+  body[data-page="playtest"] .play-top3-item{grid-template-columns:1fr}
+  body[data-page="playtest"] .play-top3-item{display:grid;align-items:center}
+  body[data-page="playtest"] .play-medal-score{text-align:left}
+  body[data-page="playtest"][data-lang="ar"] .play-medal-score{text-align:right}
+  body[data-page="playtest"] .play-board-card .data-table{min-width:560px}
+  .admin-top-grid{grid-template-columns:1fr}
+  .admin-shortcuts-grid{grid-template-columns:1fr}
 }
