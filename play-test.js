@@ -17,6 +17,26 @@
   let autoNextTimer = null;
 
   function $(id){ return document.getElementById(id); }
+
+  function getLang(){ return (window.kgGetLang ? window.kgGetLang() : (localStorage.getItem('kgAppLang') || 'en')); }
+  function tr(key, vars){
+    const lang = getLang();
+    const dict = (window.kgTranslations && window.kgTranslations[lang]) || {};
+    let value = dict[key] || ((window.kgTranslations && window.kgTranslations.en && window.kgTranslations.en[key]) || key);
+    if (vars) Object.keys(vars).forEach(k => { value = value.replace(new RegExp('\\{'+k+'\\}','g'), String(vars[k])); });
+    return value;
+  }
+  function updatePlayStaticText(){
+    const soundBtn = $('playSoundToggleBtn');
+    if (soundBtn) soundBtn.textContent = (soundEnabled ? '🔊 ' + tr('playSounds') : '🔈 ' + tr('playMuted'));
+    const player = $('playPlayerBadge'); if (player && state) player.textContent = tr('playPlayer') + ': ' + state.identity.name;
+    const stage = $('playStageBadge'); if (stage && state) stage.textContent = tr('playStage') + ': ' + state.stageLabel;
+    const qbadge = $('playQuestionBadge'); if (qbadge && state) qbadge.textContent = tr('playQuestion') + ' ' + Math.min(state.currentIndex + 1, state.questions.length) + ' / ' + state.questions.length;
+    const score = $('playScoreBadge'); if (score && state) score.textContent = tr('playScore') + ': ' + state.score;
+    const timer = $('playTimerBadge'); if (timer && state) timer.textContent = tr('playTime') + ': ' + formatTime(Number(state.timeLeft || 0));
+    document.querySelectorAll('#playTop3Panel .play-top3-empty').forEach(el => el.textContent = tr('playNoTop3'));
+    document.querySelectorAll('#playLeaderboardBody td[colspan="6"]').forEach(el => { if (/Loading|leaderboard|لوحة/.test(el.textContent)) return; el.textContent = tr('playNoLeaderboard'); });
+  }
   function setStatus(msg){ const el = $('playStatus'); if (el) el.textContent = msg || ''; }
   function escapeHtml(value){ return String(value || '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
   function saveLocal(){ try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (error) {} }
@@ -36,7 +56,7 @@
   function buildIdentity(){
     const name = String($('playStudentName')?.value || '').trim();
     const studentId = String($('playStudentId')?.value || '').trim();
-    if (!name) throw new Error('Please enter the student name first.');
+    if (!name) throw new Error(tr('playEnterName'));
     return { name, studentId, grade:'PLAY', isGuest:true, className:'Play & Test' };
   }
   function getSelectedStage(){
@@ -53,13 +73,13 @@
     const el = $('playTimerBadge');
     if (!el) return;
     const seconds = state ? Number(state.timeLeft || 0) : 0;
-    el.textContent = 'Time: ' + formatTime(seconds);
+    el.textContent = tr('playTime') + ': ' + formatTime(seconds);
     el.classList.toggle('timer-warning', seconds <= 60);
   }
   function updateSoundButton(){
     const btn = $('playSoundToggleBtn');
     if (!btn) return;
-    btn.textContent = soundEnabled ? '🔊 Sounds' : '🔈 Muted';
+    btn.textContent = soundEnabled ? '🔊 ' + tr('playSounds') : '🔈 ' + tr('playMuted');
   }
   function updateAutoNextToggle(){
     const input = $('playAutoNextToggle');
@@ -100,22 +120,23 @@
     $('playTop3List').innerHTML = top3.length ? top3.map((row, index) => {
       const meta = getBadgeMeta(Number(row.bestPercent || 0));
       return `<div class="play-top3-item rank-${index+1}"><div class="play-medal">${index===0?'🥇':index===1?'🥈':'🥉'}</div><div><strong>${escapeHtml(row.studentName)}</strong><span>${escapeHtml(row.studentId || 'No ID')}</span><small>${escapeHtml(meta.title)}</small></div><div class="play-medal-score">${escapeHtml(String(row.bestPercent || 0))}%</div></div>`;
-    }).join('') : '<div class="play-top3-empty">No scores yet. Be the first champion!</div>';
+    }).join('') : '<div class="play-top3-empty">'+escapeHtml(tr('playNoTop3'))+'</div>';
     $('playLeaderboardBody').innerHTML = leaders.length ? leaders.map((row, index) => {
       const meta = getBadgeMeta(Number(row.bestPercent || 0));
       return `<tr><td>${index+1}</td><td>${meta.medal} ${escapeHtml(row.studentName)}</td><td>${escapeHtml(row.studentId || '-')}</td><td>${escapeHtml(String(row.bestPercent || 0))}%</td><td>${escapeHtml(String(row.attempts || 0))}</td><td>${escapeHtml(row.updatedAt ? new Date(row.updatedAt).toLocaleString() : '-')}</td></tr>`;
-    }).join('') : '<tr><td colspan="6">No leaderboard data yet.</td></tr>';
+    }).join('') : '<tr><td colspan="6">'+escapeHtml(tr('playNoLeaderboard'))+'</td></tr>';
   }
-  async function loadLeaderboard(){ const data = await request('?action=leaderboard'); renderLeaderboard(data); return data; }
-  function showSection(cardId){ ['playStartCard','playQuizCard','playResultCard'].forEach(id => $(id)?.classList.add('hidden')); $(cardId)?.classList.remove('hidden'); }
+  async function loadLeaderboard(){ const data = await request('?action=leaderboard'); renderLeaderboard(data); updatePlayStaticText(); return data; }
+  function showSection(cardId){ ['playStartCard','playQuizCard','playResultCard'].forEach(id => $(id)?.classList.add('hidden')); $(cardId)?.classList.remove('hidden'); updatePlayStaticText(); }
   function updateBadges(){
     if (!state) return;
-    $('playPlayerBadge').textContent = `Player: ${state.identity.name}`;
-    $('playStageBadge').textContent = `Stage: ${state.stageLabel}`;
-    $('playQuestionBadge').textContent = `Question ${Math.min(state.currentIndex + 1, state.questions.length)} / ${state.questions.length}`;
-    $('playScoreBadge').textContent = `Score: ${state.score}`;
+    $('playPlayerBadge').textContent = tr('playPlayer') + ': ' + state.identity.name;
+    $('playStageBadge').textContent = tr('playStage') + ': ' + state.stageLabel;
+    $('playQuestionBadge').textContent = tr('playQuestion') + ' ' + Math.min(state.currentIndex + 1, state.questions.length) + ' / ' + state.questions.length;
+    $('playScoreBadge').textContent = tr('playScore') + ': ' + state.score;
     $('playProgressFill').style.width = `${Math.round((state.answers.length / state.questions.length) * 100)}%`;
     setTimerBadge();
+    updatePlayStaticText();
   }
   function clearAutoNext(){ if (autoNextTimer) { clearTimeout(autoNextTimer); autoNextTimer = null; } }
   function stopTimer(){ if (timerId) { clearInterval(timerId); timerId = null; } clearAutoNext(); }
@@ -128,7 +149,7 @@
       setTimerBadge();
       if (state.timeLeft <= 0) {
         stopTimer();
-        setStatus('Time is over. Your quiz is being submitted.');
+        setStatus(tr('playTimeOver'));
         await finishQuiz(true);
       }
     }, 1000);
@@ -147,7 +168,7 @@
       const chosen = answered && answered.chosen === opt;
       const correct = answered && q.answer === opt;
       const cls = answered ? (correct ? 'correct' : chosen ? 'wrong' : '') : '';
-      return `<button type="button" class="play-option-btn ${cls}" data-option-index="${idx}" onclick="window.__playChooseAnswer(${idx}); return false;" ${answered ? 'disabled' : ''}>${escapeHtml(opt)}</button>`;
+      return `<button type="button" class="play-option-btn ${cls}" data-option-index="${idx}" ${answered ? 'disabled' : ''}>${escapeHtml(opt)}</button>`;
     }).join('');
     const optionButtons = Array.from(document.querySelectorAll('#playOptions .play-option-btn'));
     optionButtons.forEach((btn) => {
@@ -162,9 +183,9 @@
           chooseAnswer(state.questions[state.currentIndex].options[idx]);
         }
       };
-      btn.addEventListener('click', choose);
-      btn.addEventListener('touchend', choose, { passive:false });
-      btn.addEventListener('pointerup', choose);
+      btn.onclick = choose;
+      btn.onpointerup = choose;
+      btn.ontouchend = choose;
     });
     $('playNextBtn').disabled = !answered;
   }
@@ -205,7 +226,7 @@
     markAnsweredUi(option, correct);
     saveProgress().catch(()=>{});
     if (!correct) {
-      setStatus('Wrong answer. Your score has been saved to the leaderboard.');
+      setStatus(tr('playWrongSaved'));
       autoNextTimer = setTimeout(() => { finishQuiz(false, true).catch(()=>{}); }, 700);
       return;
     }
@@ -239,7 +260,7 @@
     $('playResultBadge').textContent = badge.title;
     $('playResultBadge').className = 'play-result-badge ' + badge.cls;
     $('playResultScore').textContent = state.score + ' pts';
-    $('playResultText').textContent = timeUp ? `Time is over. You scored ${state.score} points in ${state.stageLabel}.` : wrongStop ? `Wrong answer. Game over with ${state.score} points. Try again and climb higher!` : `Fantastic! You finished the ${state.stageLabel} challenge with ${state.score} points.`;
+    $('playResultText').textContent = timeUp ? tr('playTimeOverResult',{score:state.score,stage:state.stageLabel}) : wrongStop ? tr('playWrongResult',{score:state.score}) : tr('playGreatResult',{score:state.score,stage:state.stageLabel});
     saveLocal();
     showSection('playResultCard');
     if (result && result.leaderboard) renderLeaderboard(result.leaderboard);
@@ -257,7 +278,7 @@
 
   async function startOrResume(){
     try {
-      setStatus('Preparing your mixed quiz...');
+      setStatus(tr('playPreparing'));
       const identity = buildIdentity();
       const stage = getSelectedStage();
       const stageConfig = STAGE_CONFIGS[stage];
@@ -353,5 +374,14 @@
     };
     $('playOptions')?.addEventListener('click', optionHandler, true);
     $('playOptions')?.addEventListener('pointerup', optionHandler, true);
+    window.kgPlayHandleLangChange = function(){
+      try { updatePlayStaticText(); } catch (error) {}
+      try { if (state) renderQuestion(); } catch (error) {}
+      try { loadLeaderboard().catch(function(){}); } catch (error) {}
+    };
   });
 })();
+
+window.addEventListener('kg:langchange', function(){
+  if (typeof window.kgPlayHandleLangChange === 'function') window.kgPlayHandleLangChange();
+});
