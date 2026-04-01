@@ -1,0 +1,16 @@
+{
+  "name": "KG English Quiz App",
+  "short_name": "KG Quiz",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fff7cc",
+  "theme_color": "#ffd54f",
+  "icons": [
+    {
+      "src": "assets/svg/school-logo.svg",
+      "sizes": "180x180",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

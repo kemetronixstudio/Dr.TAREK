@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Cairo:wght@400;600;700;800&family=Noto+Naskh+Arabic:wght@600;700&display=swap" rel="stylesheet"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#ffd54f"><link rel="stylesheet" href="style.css"><title>KG English Quiz</title></head><body data-page="home">
+<div class="floating-shapes"></div>
+<header class="top-shell top-shell-inline"><div class="header-left"><div class="lang-switch"><button class="lang-btn active" data-lang="en">EN</button><button class="lang-btn" data-lang="ar">AR</button></div></div><div class="header-center"><div class="teacher-topline" data-i18n="teacherTopline">Dr. TAREK ABDALAZIZ 📞 01032188008</div></div><div class="header-right"><div class="theme-quick-switch home-theme-quick" id="themeQuickSwitch"></div><a class="tiny-admin-link" href="admin.html" title="Teacher Area">★</a></div></header>
+<main class="container home-wrap">
+  <section class="hero-card card rainbow-border">
+    <div class="hero-copy hero-copy-wide">
+      <span class="badge-pill" data-i18n="homeBadge">English Learning for KG1 & KG2</span>
+      <h1 data-i18n="homeTitle">Fun English Quiz for Kids</h1>
+      <p class="lead" data-i18n="homeText">Play, learn, and grow with colorful English questions.</p>
+      
+    </div>
+    <div class="level-grid home-levels" id="homeLevelsGrid">
+      <a class="level-card kg1-card" href="kg1.html">
+        <img src="assets/svg/cat.svg" alt="KG1">
+        <h3>KG1</h3>
+        <p data-i18n="kg1Desc">Letters, phonics, colors, feelings, body parts, and simple picture words.</p>
+        <span class="main-btn" data-i18n="startKg1">Start KG1</span>
+      </a>
+      <a class="level-card kg2-card" href="kg2.html">
+        <img src="assets/svg/school.svg" alt="KG2">
+        <h3>KG2</h3>
+        <p data-i18n="kg2Desc">Alphabet, grammar, singular/plural, there is/there are, reading and vocabulary.</p>
+        <span class="main-btn alt" data-i18n="startKg2">Start KG2</span>
+      </a>
+      <a class="level-card playtest-card" href="play.html">
+        <div class="playtest-card-icon">🎮</div>
+        <h3>Play &amp; Test With Dr. Tarek</h3>
+        <p>Start a new mixed English challenge every time, save your score, and climb the live leaderboard.</p>
+        <span class="main-btn playtest-btn">Open Play Mode</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="card kids-theme-card hidden-theme-section" id="kidsThemeCard" aria-hidden="true">
+    <div class="section-head"><h2 data-i18n="themePackTitle">Pick a Fun Theme</h2><span class="badge-pill small" data-i18n="themePackBadge">Kids Theme Pack v1</span></div>
+    <p class="theme-pack-text" data-i18n="themePackText">Choose a playful look for the whole quiz world. Your theme stays saved across home, KG1, KG2, and certificates.</p>
+    <div class="theme-pack-grid">
+      <button type="button" class="theme-card-btn" data-theme="jungle">
+        <span class="theme-card-emoji">🦁</span>
+        <strong data-i18n="themeJungleTitle">Jungle Adventure</strong>
+        <span data-i18n="themeJungleText">Leaves, animals, and cheerful green colors.</span>
+      </button>
+      <button type="button" class="theme-card-btn" data-theme="ocean">
+        <span class="theme-card-emoji">🐠</span>
+        <strong data-i18n="themeOceanTitle">Ocean World</strong>
+        <span data-i18n="themeOceanText">Bubbles, waves, and bright sea blues.</span>
+      </button>
+      <button type="button" class="theme-card-btn" data-theme="space">
+        <span class="theme-card-emoji">🚀</span>
+        <strong data-i18n="themeSpaceTitle">Space Kids</strong>
+        <span data-i18n="themeSpaceText">Stars, planets, and magical cosmic colors.</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="card progress-card">
+    <div class="section-head"><h2 data-i18n="progressTitle">Progress</h2><button class="ghost-btn" id="resetProgressBtn" data-i18n="resetProgress">Reset Progress</button></div>
+    <div id="progressSummary" class="progress-grid"></div>
+  </section>
+</main>
+<script src="script.js"></script><script src="custom-classes.js"></script>
+</body></html>
