@@ -25,7 +25,7 @@ module.exports = async function handler(req, res) {
     }
     const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
     if (action === 'start') {
-      const result = await backend.getPlaySession(body.identity || body, body.sessionId || body.quizKey || '');
+      const result = await backend.getPlaySession(Object.assign({}, body.identity || body, { className: (body.identity && body.identity.className) || 'Play & Test', isGuest: true }), body.sessionId || body.quizKey || '');
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify(result));
@@ -33,7 +33,7 @@ module.exports = async function handler(req, res) {
     }
     if (action === 'save-progress') {
       const result = await backend.saveProgress({
-        identity: Object.assign({}, body.identity || body, { grade: 'PLAY', isGuest: true, className: (body.identity && body.identity.className) || 'Play & Test' }),
+        identity: Object.assign({}, body.identity || body, { isGuest: true, className: (body.identity && body.identity.className) || 'Play & Test' }),
         quizKey: body.sessionId || body.quizKey || body.quizId,
         state: body.state || body.progress || body
       });
@@ -44,7 +44,7 @@ module.exports = async function handler(req, res) {
     }
     if (action === 'submit') {
       const result = await backend.submitResult({
-        identity: Object.assign({}, body.identity || body, { grade: 'PLAY', isGuest: true, className: (body.identity && body.identity.className) || 'Play & Test' }),
+        identity: Object.assign({}, body.identity || body, { isGuest: true, className: (body.identity && body.identity.className) || 'Play & Test' }),
         quizKey: body.sessionId || body.quizKey || body.quizId,
         result: body.result || body,
         progress: body.progress || body.state || {}

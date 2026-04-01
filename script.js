@@ -147,6 +147,48 @@ function initThemeButtons(){
   applyTheme(getTheme());
 }
 
+
+translations.en = Object.assign({}, translations.en || {}, {
+  playBadge:'Mixed English Challenge',
+  playTitle:'Play & Test With Dr. Tarek',
+  playHeroText:'Every start gives a different mixed quiz in English. Play, score high, and race to the top of the live leaderboard.',
+  playTop3:'Top 3 Champions',
+  playStartTitle:'Start a New Mixed Quiz',
+  playStudentNamePlaceholder:'Student name',
+  playStudentIdPlaceholder:'Student ID (optional)',
+  playStartBtn:'Start Playing',
+  playChooseStage:'Difficulty follows the selected grade',
+  playStageAutoNote:'KG1–Grade 2 use Starter, Grade 3–4 use Explorer, and Grade 5–6 use Champion.',
+  playStartNote:'Before you start, check the live Top 3. Your score will be shared with all players on the leaderboard.',
+  playLoadingLeaderboard:'Loading leaderboard...',
+  playNoTop3:'No scores yet. Be the first champion!',
+  playNoLeaderboard:'No leaderboard data yet.',
+  playPlayer:'Player', playStage:'Stage', playQuestion:'Question', playScore:'Score', playTime:'Time',
+  playSounds:'Sounds', playMuted:'Muted', playQuestionText:'Question text', playNextQuestion:'Next Question',
+  playResultTitle:'Your Result', playAgain:'Play Again', playLiveLeaderboard:'Live Leaderboard',
+  playGradeLabel:'Grade', leaderName:'Name', leaderGrade:'Grade', leaderStudentId:'Student ID', leaderBestScore:'Best Score', leaderAttempts:'Attempts', leaderLastPlayed:'Last Played'
+});
+translations.ar = Object.assign({}, translations.ar || {}, {
+  playBadge:'تحدي إنجليزي مختلط',
+  playTitle:'العب واختبر نفسك مع د. طارق',
+  playHeroText:'في كل مرة تبدأ فيها ستحصل على اختبار إنجليزي مختلط مختلف. العب، واجمع النقاط، واصعد إلى لوحة المتصدرين المباشرة.',
+  playTop3:'أفضل 3 أبطال',
+  playStartTitle:'ابدأ اختبارًا مختلطًا جديدًا',
+  playStudentNamePlaceholder:'اسم الطالب',
+  playStudentIdPlaceholder:'رقم الطالب (اختياري)',
+  playStartBtn:'ابدأ اللعب',
+  playChooseStage:'يتم تحديد الصعوبة تلقائيًا حسب الصف',
+  playStageAutoNote:'KG1 إلى Grade 2 = مبتدئ، Grade 3 إلى Grade 4 = مستكشف، Grade 5 إلى Grade 6 = بطل.',
+  playStartNote:'قبل أن تبدأ، تحقق من أفضل 3. سيتم مشاركة نتيجتك مع جميع اللاعبين في لوحة المتصدرين.',
+  playLoadingLeaderboard:'جارٍ تحميل لوحة المتصدرين...',
+  playNoTop3:'لا توجد نتائج بعد. كن أول بطل!',
+  playNoLeaderboard:'لا توجد بيانات في لوحة المتصدرين حتى الآن.',
+  playPlayer:'اللاعب', playStage:'المرحلة', playQuestion:'السؤال', playScore:'النقاط', playTime:'الوقت',
+  playSounds:'الأصوات', playMuted:'صامت', playQuestionText:'نص السؤال', playNextQuestion:'السؤال التالي',
+  playResultTitle:'النتيجة', playAgain:'العب مرة أخرى', playLiveLeaderboard:'لوحة المتصدرين المباشرة',
+  playGradeLabel:'الصف', leaderName:'الاسم', leaderGrade:'الصف', leaderStudentId:'رقم الطالب', leaderBestScore:'أفضل نتيجة', leaderAttempts:'المحاولات', leaderLastPlayed:'آخر لعب'
+});
+
 const storeKeys = {
   lang:'kgAppLang',
   progress:'kgEnglishProgressV7',
