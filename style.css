@@ -657,3 +657,8 @@ body[data-theme="space"] .site-credit-footer{color:#dce6ff;}
 body[data-page="certificate"] .site-credit-footer{color:#607c9f;}
 body[data-page="playtest"] .muted-note,body[data-page="playtest"] .play-stage-btn span,body[data-page="playtest"] .play-stage-btn small,body[data-page="playtest"] .play-top3-empty,body[data-page="playtest"] .play-hero-copy p{color:#42556f;}
 body[data-page="playtest"] .play-option-btn,body[data-page="playtest"] .play-question-text{color:#374151 !important;}
+
+body[data-page="playtest"] .top-shell-inline{margin-bottom:18px;}
+body[data-page="playtest"] .play-wrap{margin-top:8px;padding-top:6px;}
+body[data-page="playtest"] .play-quiz-card{position:relative;z-index:4;}
+body[data-page="playtest"] .play-options,.play-option-btn{pointer-events:auto !important;}

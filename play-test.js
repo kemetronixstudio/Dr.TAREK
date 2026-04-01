@@ -142,12 +142,19 @@
       const chosen = answered && answered.chosen === opt;
       const correct = answered && q.answer === opt;
       const cls = answered ? (correct ? 'correct' : chosen ? 'wrong' : '') : '';
-      return `<button type="button" class="play-option-btn ${cls}" data-option-index="${idx}" ${answered ? 'disabled' : ''}>${escapeHtml(opt)}</button>`;
+      return `<button type="button" class="play-option-btn ${cls}" data-option-index="${idx}" onclick="window.__playChooseAnswer && window.__playChooseAnswer(this.dataset.optionIndex); return false;" ${answered ? 'disabled' : ''}>${escapeHtml(opt)}</button>`;
     }).join('');
-    $('playOptions').querySelectorAll('[data-option-index]').forEach(btn => btn.addEventListener('click', () => {
-      const index = Number(btn.dataset.optionIndex || 0);
-      chooseAnswer(q.options[index]);
-    }));
+    $('playOptions').querySelectorAll('[data-option-index]').forEach(btn => {
+      const handler = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const index = Number(btn.dataset.optionIndex || 0);
+        chooseAnswer(q.options[index]);
+      };
+      btn.addEventListener('click', handler, { passive:false });
+      btn.addEventListener('pointerup', handler, { passive:false });
+      btn.addEventListener('touchend', handler, { passive:false });
+    });
     $('playNextBtn').disabled = !answered;
   }
   async function saveProgress(){
@@ -210,6 +217,16 @@
     if (result && result.leaderboard) renderLeaderboard(result.leaderboard);
     else loadLeaderboard().catch(()=>{});
   }
+
+  window.__playChooseAnswer = function(index){
+    if (!state) return;
+    const q = state.questions && state.questions[state.currentIndex];
+    if (!q || !Array.isArray(q.options)) return;
+    const idx = Number(index || 0);
+    if (Number.isNaN(idx) || idx < 0 || idx >= q.options.length) return;
+    chooseAnswer(q.options[idx]);
+  };
+
   async function startOrResume(){
     try {
       setStatus('Preparing your mixed quiz...');
@@ -295,5 +312,15 @@
     $('refreshPlayLeadersBtn')?.addEventListener('click', ()=> loadLeaderboard().catch(()=>{}));
     $('playSoundToggleBtn')?.addEventListener('click', function(){ soundEnabled = !soundEnabled; saveSoundSetting(); updateSoundButton(); });
     $('playAutoNextToggle')?.addEventListener('change', function(){ autoNextEnabled = !!this.checked; saveAutoNextSetting(); updateAutoNextToggle(); });
+    $('playOptions')?.addEventListener('click', function(event){
+      const btn = event.target && event.target.closest ? event.target.closest('.play-option-btn') : null;
+      if (!btn || btn.disabled) return;
+      event.preventDefault();
+      event.stopPropagation();
+      const index = Number(btn.dataset.optionIndex || 0);
+      if (!Number.isNaN(index) && state && state.questions && state.questions[state.currentIndex]) {
+        chooseAnswer(state.questions[state.currentIndex].options[index]);
+      }
+    }, true);
   });
 })();
