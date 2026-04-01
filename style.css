@@ -523,3 +523,35 @@ body[data-lang="ar"] .shortcut-chip{text-align:right}
 .admin-shortcuts-sticky{position:sticky;top:10px;z-index:40;display:flex;flex-wrap:wrap;gap:10px;margin:0 0 14px;padding:10px 12px;border-radius:18px;background:rgba(255,255,255,.78);backdrop-filter:blur(10px);box-shadow:0 10px 26px rgba(41,75,122,.12)}
 .shortcut-icon-btn{width:48px;height:48px;border:none;border-radius:16px;background:#f7fbff;box-shadow:0 8px 18px rgba(41,75,122,.12);font-size:22px;cursor:pointer;display:grid;place-items:center}
 .shortcut-icon-btn:hover{transform:translateY(-1px);box-shadow:0 12px 24px rgba(41,75,122,.16)}
+
+
+/* Kids Theme Pack v1 */
+body[data-theme="jungle"]{
+  --bg1:#f7ffe0; --bg2:#d8f3c9; --ink:#23491f; --ink-soft:#567a4f; --gold:#8cc63f; --gold2:#c8ef67; --pink:#ffa45c; --blue:#7cd992; --green:#96df58;
+}
+body[data-theme="jungle"] .hero-card{background:linear-gradient(135deg,#d7f27d 0%,#8cd96b 48%,#ffd36e 100%)}
+body[data-theme="jungle"] .floating-shapes{background-image:radial-gradient(circle at 10% 15%,#7cb342 0 14px,transparent 15px),radial-gradient(circle at 82% 18%,#ffca28 0 16px,transparent 17px),radial-gradient(circle at 22% 82%,#66bb6a 0 14px,transparent 15px),radial-gradient(circle at 80% 78%,#ff8a65 0 17px,transparent 18px),radial-gradient(circle at 50% 50%,#aed581 0 9px,transparent 10px)}
+body[data-theme="ocean"]{
+  --bg1:#e7f8ff; --bg2:#cdeeff; --ink:#16496a; --ink-soft:#4d7894; --gold:#31b8ff; --gold2:#7ce2ff; --pink:#76d7ff; --blue:#3fa9f5; --green:#76e1da;
+}
+body[data-theme="ocean"] .hero-card{background:linear-gradient(135deg,#8fe3ff 0%,#57c1ff 45%,#8cf3dd 100%)}
+body[data-theme="ocean"] .floating-shapes{background-image:radial-gradient(circle at 10% 15%,#4fc3f7 0 14px,transparent 15px),radial-gradient(circle at 82% 18%,#80deea 0 16px,transparent 17px),radial-gradient(circle at 22% 82%,#29b6f6 0 14px,transparent 15px),radial-gradient(circle at 80% 78%,#4dd0e1 0 17px,transparent 18px),radial-gradient(circle at 50% 50%,#90caf9 0 9px,transparent 10px)}
+body[data-theme="space"]{
+  --bg1:#171b43; --bg2:#312f7a; --ink:#eff3ff; --ink-soft:#c6cdfb; --gold:#7d6bff; --gold2:#b39bff; --pink:#ff87d8; --blue:#7fd7ff; --green:#8c8cff; --shadow:0 18px 44px rgba(7,8,34,.28);
+}
+body[data-theme="space"] .card, body[data-theme="space"] .level-card, body[data-theme="space"] .teacher-topline, body[data-theme="space"] .lang-btn, body[data-theme="space"] .back-link, body[data-theme="space"] .ghost-btn, body[data-theme="space"] .level-btn{background:rgba(255,255,255,.92); color:#22355d}
+body[data-theme="space"] .hero-card{background:linear-gradient(135deg,#3a2f87 0%,#5a52d5 45%,#ff8bdd 100%)}
+body[data-theme="space"] .floating-shapes{opacity:.35;background-image:radial-gradient(circle at 10% 15%,#b39bff 0 8px,transparent 9px),radial-gradient(circle at 82% 18%,#7fd7ff 0 10px,transparent 11px),radial-gradient(circle at 22% 82%,#ff87d8 0 8px,transparent 9px),radial-gradient(circle at 80% 78%,#8c8cff 0 10px,transparent 11px),radial-gradient(circle at 50% 50%,#ffffff 0 5px,transparent 6px)}
+.kids-theme-card{margin-top:22px}
+.theme-pack-text{margin:0 0 16px;color:var(--ink-soft)}
+.theme-pack-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.theme-card-btn{border:none;background:#fff;border-radius:24px;padding:18px;display:flex;flex-direction:column;align-items:flex-start;gap:10px;box-shadow:var(--shadow);cursor:pointer;text-align:left;color:var(--ink);transition:transform .18s ease, box-shadow .18s ease, outline-color .18s ease;outline:3px solid transparent}
+.theme-card-btn:hover,.theme-card-btn.active{transform:translateY(-4px);outline-color:rgba(255,181,71,.55)}
+.theme-card-emoji{font-size:2rem;line-height:1}
+.theme-card-btn strong{font-size:1.2rem}
+.theme-card-btn span:last-child{color:var(--ink-soft);line-height:1.5}
+.theme-quick-switch{display:flex;gap:8px;align-items:center;justify-content:center}
+.theme-pill-btn{border:none;background:#fff;border-radius:999px;padding:10px 12px;box-shadow:var(--shadow);cursor:pointer;font-size:1.1rem;line-height:1;transition:transform .18s ease, outline-color .18s ease;outline:3px solid transparent}
+.theme-pill-btn.active{outline-color:rgba(255,181,71,.7);transform:translateY(-2px)}
+.home-theme-quick{justify-self:start}
+@media (max-width:900px){.theme-pack-grid{grid-template-columns:1fr}.theme-quick-switch{grid-column:1/-1;order:3;justify-content:center}.home-theme-quick{justify-self:center}}

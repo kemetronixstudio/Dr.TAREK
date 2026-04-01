@@ -87,6 +87,66 @@ function sanitizedPool(grade){
   });
 }
 
+
+
+const THEME_KEY = 'kgKidsThemeV1';
+const THEME_PACKS = {
+  jungle: { key:'jungle', color:'#8bc34a' },
+  ocean: { key:'ocean', color:'#35b6ff' },
+  space: { key:'space', color:'#7d6bff' }
+};
+translations.en = Object.assign({}, translations.en || {}, {
+  themePackTitle:'Pick a Fun Theme',
+  themePackBadge:'Kids Theme Pack v1',
+  themePackText:'Choose a playful look for the whole quiz world. Your theme stays saved across home, KG1, KG2, and certificates.',
+  themeJungleTitle:'Jungle Adventure',
+  themeJungleText:'Leaves, animals, and cheerful green colors.',
+  themeOceanTitle:'Ocean World',
+  themeOceanText:'Bubbles, waves, and bright sea blues.',
+  themeSpaceTitle:'Space Kids',
+  themeSpaceText:'Stars, planets, and magical cosmic colors.',
+  themeQuickLabel:'Theme'
+});
+translations.ar = Object.assign({}, translations.ar || {}, {
+  themePackTitle:'اختَر مظهراً ممتعاً',
+  themePackBadge:'مجموعة الثيمات 1',
+  themePackText:'اختَر شكلاً مرحاً لكل عالم الاختبارات. سيتم حفظ الثيم في الصفحة الرئيسية وKG1 وKG2 والشهادة.',
+  themeJungleTitle:'مغامرة الغابة',
+  themeJungleText:'أوراق وحيوانات وألوان خضراء مبهجة.',
+  themeOceanTitle:'عالم البحر',
+  themeOceanText:'فقاعات وأمواج ودرجات أزرق جميلة.',
+  themeSpaceTitle:'أطفال الفضاء',
+  themeSpaceText:'نجوم وكواكب وألوان فضائية ساحرة.',
+  themeQuickLabel:'الثيم'
+});
+function getTheme(){ return localStorage.getItem(THEME_KEY) || 'jungle'; }
+function applyTheme(theme){
+  const next = THEME_PACKS[theme] ? theme : 'jungle';
+  localStorage.setItem(THEME_KEY, next);
+  document.body.dataset.theme = next;
+  document.querySelectorAll('[data-theme]').forEach(btn=>{
+    if (btn.classList.contains('theme-card-btn') || btn.classList.contains('theme-pill-btn')) btn.classList.toggle('active', btn.dataset.theme === next);
+  });
+  const themeColor = document.querySelector('meta[name="theme-color"]');
+  if (themeColor) themeColor.setAttribute('content', THEME_PACKS[next].color);
+}
+function renderThemeQuickSwitch(){
+  const wrap = document.getElementById('themeQuickSwitch');
+  if (!wrap || wrap.dataset.wired === '1') return;
+  wrap.dataset.wired = '1';
+  wrap.innerHTML = '<button type="button" class="theme-pill-btn" data-theme="jungle" title="Jungle Adventure">🦁</button><button type="button" class="theme-pill-btn" data-theme="ocean" title="Ocean World">🐠</button><button type="button" class="theme-pill-btn" data-theme="space" title="Space Kids">🚀</button>';
+  wrap.querySelectorAll('[data-theme]').forEach(btn => btn.addEventListener('click', ()=> applyTheme(btn.dataset.theme)));
+}
+function initThemeButtons(){
+  renderThemeQuickSwitch();
+  document.querySelectorAll('.theme-card-btn,[data-theme].theme-pill-btn').forEach(btn=>{
+    if (btn.dataset.themeWired === '1') return;
+    btn.dataset.themeWired = '1';
+    btn.addEventListener('click', ()=> applyTheme(btn.dataset.theme));
+  });
+  applyTheme(getTheme());
+}
+
 const storeKeys = {
   lang:'kgAppLang',
   progress:'kgEnglishProgressV7',
@@ -289,10 +349,8 @@ function ensureAdminShortcutUI(){
   }
 }
 
-function ensureAdminShortcutUi(){ return ensureAdminShortcutUI(); }
-
 function wireCollapseButtons(){
-  try { ensureAdminShortcutUI(); } catch (error) {}
+  ensureAdminShortcutUI();
   collapseAllAdminSections();
   ADMIN_COLLAPSIBLE_CONFIGS.forEach(cfg => {
     const button = document.getElementById(cfg.buttonId);
@@ -316,7 +374,7 @@ function updateShortcutLabels(){
   document.querySelectorAll('[data-shortcut-target]').forEach(btn => {
     const target = document.getElementById(btn.dataset.shortcutTarget);
     const heading = target?.querySelector('h2');
-    const label = heading ? heading.textContent.trim() : (btn.getAttribute('title') || btn.dataset.shortcutTarget || 'Shortcut');
+    const label = heading ? heading.textContent.trim() : btn.dataset.shortcutTarget;
     const text = btn.querySelector('.shortcut-text');
     if (text) text.textContent = label;
     btn.setAttribute('title', label);
@@ -330,7 +388,6 @@ function wireShortcutButtons(){
     btn.dataset.wired = '1';
     btn.addEventListener('click', (event) => {
       event.preventDefault();
-      event.stopPropagation();
       const sectionId = btn.dataset.shortcutTarget;
       const cfg = ADMIN_COLLAPSIBLE_CONFIGS.find(item => item.sectionId === sectionId);
       const section = document.getElementById(sectionId);
@@ -886,7 +943,7 @@ function registerPwa(){
 }
 window.addEventListener('pagehide', ()=>{ try { if ('speechSynthesis' in window) speechSynthesis.cancel(); } catch(e){} });
 document.addEventListener('visibilitychange', ()=>{ if (document.hidden) { try { if ('speechSynthesis' in window) speechSynthesis.cancel(); } catch(e){} } });
-initLangButtons(); applyTranslations(); renderHomeProgress(); initQuiz(); renderCertificate(); initAdmin(); registerPwa();
+initThemeButtons(); initLangButtons(); applyTranslations(); renderHomeProgress(); initQuiz(); renderCertificate(); initAdmin(); registerPwa();
 
 
 window.addEventListener('error', (event) => { try { console.error('App error', event.error || event.message); } catch(e){} });

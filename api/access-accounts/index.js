@@ -15,8 +15,7 @@ module.exports = async function handler(req, res) {
         return;
       }
       setAuthCookie(res, auth.token);
-      const rawAction = req.query && (req.query.action || req.query.mode || req.query.view || '');
-      const action = String(rawAction || '').trim().toLowerCase();
+      const action = String((req.query && (req.query.action || req.query.mode)) || '').trim().toLowerCase();
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
       if (action === 'me') {
