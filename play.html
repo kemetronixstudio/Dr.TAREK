@@ -21,6 +21,14 @@
       <input id="playStudentId" placeholder="Student ID (optional)" maxlength="40">
       <button class="main-btn" id="playStartBtn" type="button">Start Playing</button>
     </div>
+    <div class="play-stage-wrap">
+      <div class="play-stage-title">Choose your age stage</div>
+      <div class="play-stage-grid" id="playStageGrid">
+        <button class="play-stage-btn active" type="button" data-stage="starter"><strong>Starter</strong><span>KG - Grade 2</span><small>Easy words + quick math</small></button>
+        <button class="play-stage-btn" type="button" data-stage="explorer"><strong>Explorer</strong><span>Grade 3 - 4</span><small>Mixed reading + logic</small></button>
+        <button class="play-stage-btn" type="button" data-stage="champion"><strong>Champion</strong><span>Grade 5 - 6</span><small>Longer reading + trickier thinking</small></button>
+      </div>
+    </div>
     <p class="muted-note">Before you start, check the live Top 3. Your score will be shared with all players on the leaderboard.</p>
     <div id="playStatus" class="student-cloud-status"></div>
   </section>
@@ -28,8 +36,11 @@
   <section class="card play-quiz-card hidden" id="playQuizCard">
     <div class="play-stats-row">
       <span class="badge-pill small" id="playPlayerBadge">Player: -</span>
+      <span class="badge-pill small" id="playStageBadge">Stage: Starter</span>
       <span class="badge-pill small" id="playQuestionBadge">Question 1 / 15</span>
       <span class="badge-pill small" id="playScoreBadge">Score: 0</span>
+      <span class="badge-pill small timer-pill" id="playTimerBadge">Time: 00:00</span>
+      <button class="ghost-btn small-btn sound-toggle-btn" id="playSoundToggleBtn" type="button" aria-label="Toggle sounds">🔊 Sounds</button>
     </div>
     <div class="play-progress-track"><div class="play-progress-fill" id="playProgressFill"></div></div>
     <h2 class="play-question-text" id="playQuestionText">Question text</h2>
@@ -39,7 +50,9 @@
 
   <section class="card play-result-card hidden" id="playResultCard">
     <div class="section-head"><h2>Your Result</h2></div>
+    <div class="play-result-medal" id="playResultMedal">🏅</div>
     <div class="play-result-score" id="playResultScore">0%</div>
+    <div class="play-result-badge" id="playResultBadge">Rising Star</div>
     <p id="playResultText">Great job.</p>
     <div class="action-row"><button class="main-btn" id="playAgainBtn" type="button">Play Again</button></div>
   </section>

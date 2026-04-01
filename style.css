@@ -609,3 +609,24 @@ body[data-theme="space"] .badge-pill{background:#eaf1ff;color:#29477b}
 body[data-theme="space"] .play-question-text,body[data-theme="space"] .play-top3-item strong,body[data-theme="space"] .play-top3-item span,body[data-theme="space"] .play-medal-score,body[data-theme="space"] .play-option-btn{color:#12263f}
 body[data-theme="space"] .play-top3-item,body[data-theme="space"] .play-option-btn,body[data-theme="space"] .play-top3-panel{background:rgba(255,255,255,.96)}
 @media (max-width: 900px){.play-hero-card{grid-template-columns:1fr}.play-form-grid{grid-template-columns:1fr}.play-options{grid-template-columns:1fr}}
+
+
+.play-stage-wrap{margin-top:14px;}
+.play-stage-title{font-weight:800;margin-bottom:10px;color:#243b66;}
+.play-stage-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+.play-stage-btn{border:2px solid rgba(88,114,255,.18);background:#fff;border-radius:18px;padding:12px 14px;text-align:left;display:flex;flex-direction:column;gap:4px;font:inherit;cursor:pointer;box-shadow:0 8px 24px rgba(55,73,135,.08);}
+.play-stage-btn strong{font-size:1.02rem;color:#1f2c58;}
+.play-stage-btn span{font-size:.9rem;color:#5d6a8b;}
+.play-stage-btn small{font-size:.82rem;color:#7e88a8;}
+.play-stage-btn.active{border-color:#5a67ff;background:linear-gradient(135deg,#eef1ff,#ffffff);transform:translateY(-1px);box-shadow:0 12px 30px rgba(78,89,204,.16);}
+.timer-pill{background:linear-gradient(135deg,#e7fff1,#f8fffb);}
+.timer-pill.timer-warning{background:linear-gradient(135deg,#fff1f1,#fff7d8);color:#8a3b1e;}
+.sound-toggle-btn{white-space:nowrap;}
+.play-result-medal{font-size:3rem;line-height:1;text-align:center;margin-bottom:8px;}
+.play-result-badge{display:inline-flex;align-items:center;justify-content:center;margin:0 auto 12px;min-width:160px;padding:10px 16px;border-radius:999px;font-weight:800;background:#eef1ff;color:#243b66;}
+.play-result-badge.gold{background:linear-gradient(135deg,#fff5c9,#ffe27a);color:#5e4600;}
+.play-result-badge.silver{background:linear-gradient(135deg,#eef2f7,#dfe5ef);color:#445067;}
+.play-result-badge.bronze{background:linear-gradient(135deg,#ffe2cf,#f8c59f);color:#6d3c1f;}
+.play-result-badge.star{background:linear-gradient(135deg,#efe8ff,#ddd2ff);color:#47348f;}
+.play-top3-item small{display:block;color:#69759a;margin-top:3px;}
+@media (max-width: 900px){.play-stage-grid{grid-template-columns:1fr;}}
