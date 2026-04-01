@@ -555,3 +555,26 @@ body[data-theme="space"] .floating-shapes{opacity:.35;background-image:radial-gr
 .theme-pill-btn.active{outline-color:rgba(255,181,71,.7);transform:translateY(-2px)}
 .home-theme-quick{justify-self:start}
 @media (max-width:900px){.theme-pack-grid{grid-template-columns:1fr}.theme-quick-switch{grid-column:1/-1;order:3;justify-content:center}.home-theme-quick{justify-self:center}}
+
+
+/* Theme header polish v1.1 */
+.top-shell-inline{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px}
+.top-shell-inline .header-left{display:flex;align-items:center;gap:10px;justify-self:start;min-width:0}
+.top-shell-inline .header-center{display:flex;align-items:center;justify-content:center;justify-self:center;min-width:0}
+.top-shell-inline .header-right{display:flex;align-items:center;gap:10px;justify-self:end;min-width:0}
+.top-shell-inline .teacher-topline{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:min(52vw,560px)}
+.top-shell-inline .theme-quick-switch{justify-content:flex-end}
+.hidden-theme-section{display:none !important}
+body[data-theme="space"]{color:#eef3ff}
+body[data-theme="space"] .hero-card{color:#ffffff}
+body[data-theme="space"] .hero-title,body[data-theme="space"] .hero-subtitle,body[data-theme="space"] .hero-card h1,body[data-theme="space"] .hero-card h2,body[data-theme="space"] .hero-card p{color:#ffffff}
+body[data-theme="space"] .card, body[data-theme="space"] .level-card, body[data-theme="space"] .teacher-topline, body[data-theme="space"] .lang-btn, body[data-theme="space"] .back-link, body[data-theme="space"] .ghost-btn, body[data-theme="space"] .level-btn{background:rgba(255,255,255,.96); color:#13264d}
+body[data-theme="space"] .card h1,body[data-theme="space"] .card h2,body[data-theme="space"] .card h3,body[data-theme="space"] .card strong,body[data-theme="space"] .card th,body[data-theme="space"] .section-head h2{color:#17305f}
+body[data-theme="space"] .card p,body[data-theme="space"] .card span,body[data-theme="space"] .card td,body[data-theme="space"] .card label,body[data-theme="space"] .card li,body[data-theme="space"] .muted,body[data-theme="space"] .theme-pack-text{color:#3b4f7b}
+body[data-theme="space"] .main-btn{background:linear-gradient(135deg,#ff9f62 0%,#ff6e95 100%);color:#fff}
+body[data-theme="space"] .badge-pill{background:#eaf1ff;color:#29477b}
+@media (max-width:900px){
+  .top-shell-inline{grid-template-columns:1fr;gap:10px}
+  .top-shell-inline .header-left,.top-shell-inline .header-center,.top-shell-inline .header-right{justify-self:center;flex-wrap:wrap;justify-content:center}
+  .top-shell-inline .teacher-topline{max-width:90vw}
+}
