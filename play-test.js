@@ -147,8 +147,25 @@
       const chosen = answered && answered.chosen === opt;
       const correct = answered && q.answer === opt;
       const cls = answered ? (correct ? 'correct' : chosen ? 'wrong' : '') : '';
-      return `<button type="button" class="play-option-btn ${cls}" data-option-index="${idx}" ${answered ? 'disabled' : ''}>${escapeHtml(opt)}</button>`;
+      return `<button type="button" class="play-option-btn ${cls}" data-option-index="${idx}" onclick="window.__playChooseAnswer(${idx}); return false;" ${answered ? 'disabled' : ''}>${escapeHtml(opt)}</button>`;
     }).join('');
+    const optionButtons = Array.from(document.querySelectorAll('#playOptions .play-option-btn'));
+    optionButtons.forEach((btn) => {
+      const idx = Number(btn.dataset.optionIndex || 0);
+      const choose = function(event){
+        if (event) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        if (btn.disabled || answerLock) return;
+        if (!Number.isNaN(idx) && state && state.questions && state.questions[state.currentIndex]) {
+          chooseAnswer(state.questions[state.currentIndex].options[idx]);
+        }
+      };
+      btn.addEventListener('click', choose);
+      btn.addEventListener('touchend', choose, { passive:false });
+      btn.addEventListener('pointerup', choose);
+    });
     $('playNextBtn').disabled = !answered;
   }
   function markAnsweredUi(option, correct){
