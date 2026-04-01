@@ -66,7 +66,7 @@
   let state = null, timerId = null, soundEnabled = true, autoNextEnabled = true, answerLock = false, autoNextTimer = null;
 
   function $(id){ return document.getElementById(id); }
-  function getLang(){ return window.kgGetLang ? window.kgGetLang() : (localStorage.getItem('kgAppLang') || 'en'); }
+  function getLang(){ const bodyLang = document.body && document.body.dataset ? document.body.dataset.lang : ''; if (bodyLang === 'ar' || bodyLang === 'en') return bodyLang; if (window.kgGetLang) return window.kgGetLang(); return localStorage.getItem('kgAppLang') || 'en'; }
   function tr(key, vars){ let value = (I18N[getLang()] && I18N[getLang()][key]) || I18N.en[key] || key; if (vars) Object.keys(vars).forEach(k => value = value.replace(new RegExp('\\{'+k+'\\}','g'), String(vars[k]))); return value; }
   function setDir(){ const lang = getLang(); document.documentElement.lang = lang === 'ar' ? 'ar' : 'en'; document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'; document.body.dataset.lang = lang; }
   function escapeHtml(v){ return String(v || '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
@@ -95,9 +95,9 @@
   function questionPayload(q){ return { text:q.text, options:q.options, answer:q.answer, skill:q.skill||'', type:'Choice', difficulty:Number(q.difficulty||1)||1 }; }
   function getBadgeMeta(score){ if (score >= 50) return { medal:'👑', title: getLang()==='ar' ? 'ملك التحدي' : 'Quiz King / Queen', cls:'gold' }; if (score >= 30) return { medal:'🥇', title:getLang()==='ar'?'بطل ذهبي':'Gold Champion', cls:'gold' }; if (score >= 20) return { medal:'🥈', title:getLang()==='ar'?'نجم فضي':'Silver Star', cls:'silver' }; if (score >= 10) return { medal:'🥉', title:getLang()==='ar'?'بطل برونزي':'Bronze Brave', cls:'bronze' }; return { medal:'🌟', title:tr('playRisingStar'), cls:'star' }; }
 
-  let leaderboardCache = { top3: [], leaderboard: [] };
   function applyPlayTranslations(){
     setDir();
+    document.title = tr('playTitle');
     document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.dataset.i18n; if (I18N.en[key] || (I18N.ar&&I18N.ar[key])) el.textContent = tr(key); });
     document.querySelectorAll('[data-placeholder-i18n]').forEach(el => { el.placeholder = tr(el.dataset.placeholderI18n); });
     const gradeSelect=$('playStudentGrade');
@@ -107,23 +107,15 @@
       gradeSelect.innerHTML = GRADE_OPTIONS.map((pair, idx) => `<option value="${pair[0]}" ${pair[0]===current?'selected':''}>${labels[getLang()][idx]}</option>`).join('');
     }
     updateSoundButton(); updateAutoNextToggle(); updateBadges();
-    renderLeaderboard(leaderboardCache);
   }
 
-  function formatLocalDate(value){
-    try {
-      if (!value) return '-';
-      return new Date(value).toLocaleString(getLang() === 'ar' ? 'ar-EG' : 'en-US');
-    } catch (error) { return '-'; }
-  }
   function renderLeaderboard(data){
     const top3 = Array.isArray(data.top3) ? data.top3 : [];
     const leaders = Array.isArray(data.leaderboard) ? data.leaderboard : [];
-    const pointsLabel = getLang() === 'ar' ? 'نقطة' : 'pts';
-    $('playTop3List').innerHTML = top3.length ? top3.map((row, index) => `<div class="play-top3-item rank-${index+1}"><div class="play-medal">${index===0?'🥇':index===1?'🥈':'🥉'}</div><div><strong>${escapeHtml(row.studentName)}</strong><span>${escapeHtml(row.grade || '-')}</span><small>${escapeHtml(String(row.bestScore || 0))} ${pointsLabel}</small></div><div class="play-medal-score">${escapeHtml(String(row.bestScore || 0))}</div></div>`).join('') : `<div class="play-top3-empty">${escapeHtml(tr('playNoTop3'))}</div>`;
-    $('playLeaderboardBody').innerHTML = leaders.length ? leaders.map((row, index) => `<tr><td>${index+1}</td><td>${escapeHtml(row.studentName)}</td><td>${escapeHtml(row.grade || '-')}</td><td>${escapeHtml(row.studentId || '-')}</td><td>${escapeHtml(String(row.bestScore || 0))}</td><td>${escapeHtml(String(row.attempts || 0))}</td><td>${escapeHtml(formatLocalDate(row.updatedAt))}</td></tr>`).join('') : `<tr><td colspan="7">${escapeHtml(tr('playNoLeaderboard'))}</td></tr>`;
+    $('playTop3List').innerHTML = top3.length ? top3.map((row, index) => `<div class="play-top3-item rank-${index+1}"><div class="play-medal">${index===0?'🥇':index===1?'🥈':'🥉'}</div><div><strong>${escapeHtml(row.studentName)}</strong><span>${escapeHtml(row.grade || '-')}</span><small>${escapeHtml(String(row.bestScore || 0))} pts</small></div><div class="play-medal-score">${escapeHtml(String(row.bestScore || 0))}</div></div>`).join('') : `<div class="play-top3-empty">${escapeHtml(tr('playNoTop3'))}</div>`;
+    $('playLeaderboardBody').innerHTML = leaders.length ? leaders.map((row, index) => `<tr><td>${index+1}</td><td>${escapeHtml(row.studentName)}</td><td>${escapeHtml(row.grade || '-')}</td><td>${escapeHtml(row.studentId || '-')}</td><td>${escapeHtml(String(row.bestScore || 0))}</td><td>${escapeHtml(String(row.attempts || 0))}</td><td>${escapeHtml(row.updatedAt ? new Date(row.updatedAt).toLocaleString() : '-')}</td></tr>`).join('') : `<tr><td colspan="7">${escapeHtml(tr('playNoLeaderboard'))}</td></tr>`;
   }
-  async function loadLeaderboard(){ const data = await request('?action=leaderboard'); leaderboardCache = data || { top3: [], leaderboard: [] }; renderLeaderboard(leaderboardCache); return data; }
+  async function loadLeaderboard(){ const data = await request('?action=leaderboard'); renderLeaderboard(data); return data; }
   function stopTimer(){ if (timerId) { clearInterval(timerId); timerId = null; } if (autoNextTimer) { clearTimeout(autoNextTimer); autoNextTimer = null; } }
   function startTimer(){ stopTimer(); timerId = setInterval(async function(){ if (!state) return stopTimer(); state.timeLeft = Math.max(0, Number(state.timeLeft||0)-1); updateBadges(); if (state.timeLeft <= 0) { stopTimer(); await finishQuiz(true, false); } }, 1000); }
   async function saveProgress(){ if (!state) return; state.updatedAt = new Date().toISOString(); saveLocal(); await request('?action=save-progress', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ identity:state.identity, sessionId:state.sessionId, state:{ currentIndex:state.currentIndex, score:state.score, answers:state.answers, questions:state.questions.map(questionPayload), startedAt:state.startedAt, updatedAt:state.updatedAt, completed:false, stage:state.stage, stageLabel:getStageLabel(state.stage), timeLeft:state.timeLeft, totalSeconds:QUESTION_SECONDS } }) }); }
@@ -139,32 +131,18 @@
   window.__playChooseAnswer = function(index){ if (!state) return; const q=state.questions[state.currentIndex]; const idx=Number(index||0); if (!q || Number.isNaN(idx) || idx<0 || idx>=q.options.length) return; chooseAnswer(q.options[idx]); };
   async function startOrResume(){ try{ setStatus(tr('playPreparing')); const identity = buildIdentity(); const stage = getStageFromGrade(identity.grade); const local = loadLocal(); const same = local && local.identity && local.identity.name === identity.name && String(local.identity.studentId||'').trim() === identity.studentId && String(local.identity.grade||'') === identity.grade; const startData = await request('?action=start',{ method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ identity, sessionId: same ? local.sessionId : '' }) }); if (startData.progress && Array.isArray(startData.progress.questions) && startData.progress.questions.length && !startData.progress.completed) { state = { identity:startData.identity, sessionId:startData.sessionId, questions:startData.progress.questions, currentIndex:Number(startData.progress.currentIndex||0)||0, score:Number(startData.progress.score||0)||0, answers:Array.isArray(startData.progress.answers)?startData.progress.answers:[], startedAt:startData.progress.startedAt || new Date().toISOString(), completed:false, stage:startData.progress.stage||stage, timeLeft:QUESTION_SECONDS }; setStatus(tr('playResuming')); } else { const questions = (window.PlayQuestionBank && window.PlayQuestionBank.createMixedQuiz) ? window.PlayQuestionBank.createMixedQuiz(STAGE_POOL_SIZE[stage], stage) : []; state = { identity:startData.identity, sessionId:startData.sessionId, questions, currentIndex:0, score:0, answers:[], startedAt:new Date().toISOString(), completed:false, stage, timeLeft:QUESTION_SECONDS }; await saveProgress(); setStatus(tr('playReady')); } renderQuestion(); updateAutoNextToggle(); } catch(error){ setStatus(error.message || 'Could not start the quiz.'); } }
   function wireOptionFallbacks(){ const wrap = $('playOptions'); if (!wrap) return; const handler = function(event){ const btn = event.target && event.target.closest ? event.target.closest('.play-option-btn') : null; if (!btn || btn.disabled || answerLock) return; event.preventDefault(); event.stopPropagation(); const index = Number(btn.dataset.optionIndex || 0); if (!Number.isNaN(index)) window.__playChooseAnswer(index); }; wrap.addEventListener('click', handler, true); wrap.addEventListener('pointerup', handler, true); wrap.addEventListener('touchend', handler, true); }
-  function init(){
-    if (document.body.dataset.page !== 'playtest') return;
-    soundEnabled = loadSoundSetting();
-    autoNextEnabled = loadAutoNextSetting();
-    applyPlayTranslations();
-    wireOptionFallbacks();
-    loadLeaderboard().catch(error => setStatus(error.message || tr('playNoLeaderboard')));
-    $('playStartBtn')?.addEventListener('click', startOrResume);
-    $('playNextBtn')?.addEventListener('click', nextQuestion);
-    $('playAgainBtn')?.addEventListener('click', function(){ if ($('playStudentName') && state && state.identity) $('playStudentName').value = state.identity.name || ''; if ($('playStudentId') && state && state.identity) $('playStudentId').value = state.identity.studentId || ''; if ($('playStudentGrade') && state && state.identity) $('playStudentGrade').value = state.identity.grade || 'KG1'; clearLocal(); stopTimer(); answerLock = false; state = null; showSection('playStartCard'); setStatus(tr('playReady')); loadLeaderboard().catch(()=>{}); });
-    $('refreshPlayLeadersBtn')?.addEventListener('click', ()=> loadLeaderboard().catch(()=>{}));
-    $('playSoundToggleBtn')?.addEventListener('click', ()=>{ soundEnabled=!soundEnabled; saveSoundSetting(); updateSoundButton(); });
-    $('playAutoNextToggle')?.addEventListener('change', function(){ autoNextEnabled=!!this.checked; saveAutoNextSetting(); updateAutoNextToggle(); });
-    window.kgPlayHandleLangChange = function(){
-      applyPlayTranslations();
-      if (state) { renderQuestion(); }
-      loadLeaderboard().catch(()=>{});
-    };
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-      if (btn.dataset.playLangWired === '1') return;
-      btn.dataset.playLangWired = '1';
-      btn.addEventListener('click', function(){ setTimeout(() => { if (typeof window.kgPlayHandleLangChange === 'function') window.kgPlayHandleLangChange(); }, 10); });
-    });
-    const observer = new MutationObserver(() => { if (typeof window.kgPlayHandleLangChange === 'function') window.kgPlayHandleLangChange(); });
-    observer.observe(document.body, { attributes:true, attributeFilter:['data-lang'] });
+  function bindLangSync(){
+    window.kgPlayHandleLangChange = function(){ applyPlayTranslations(); if (state) { renderQuestion(); } loadLeaderboard().catch(()=>{}); };
+    let lastLang = getLang();
+    const sync = function(){ const next = getLang(); if (next !== lastLang) { lastLang = next; window.kgPlayHandleLangChange(); } };
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', function(){ setTimeout(sync, 20); }));
+    if (window.MutationObserver && document.body) {
+      const mo = new MutationObserver(sync);
+      mo.observe(document.body, { attributes:true, attributeFilter:['data-lang'] });
+    }
+    window.addEventListener('storage', sync);
   }
+  function init(){ if (document.body.dataset.page !== 'playtest') return; soundEnabled = loadSoundSetting(); autoNextEnabled = loadAutoNextSetting(); applyPlayTranslations(); bindLangSync(); wireOptionFallbacks(); loadLeaderboard().catch(error => setStatus(error.message || tr('playNoLeaderboard'))); $('playStartBtn')?.addEventListener('click', startOrResume); $('playNextBtn')?.addEventListener('click', nextQuestion); $('playAgainBtn')?.addEventListener('click', function(){ if ($('playStudentName') && state && state.identity) $('playStudentName').value = state.identity.name || ''; if ($('playStudentId') && state && state.identity) $('playStudentId').value = state.identity.studentId || ''; if ($('playStudentGrade') && state && state.identity) $('playStudentGrade').value = state.identity.grade || 'KG1'; clearLocal(); stopTimer(); answerLock = false; state = null; showSection('playStartCard'); setStatus(tr('playReady')); loadLeaderboard().catch(()=>{}); }); $('refreshPlayLeadersBtn')?.addEventListener('click', ()=> loadLeaderboard().catch(()=>{})); $('playSoundToggleBtn')?.addEventListener('click', ()=>{ soundEnabled=!soundEnabled; saveSoundSetting(); updateSoundButton(); }); $('playAutoNextToggle')?.addEventListener('change', function(){ autoNextEnabled=!!this.checked; saveAutoNextSetting(); updateAutoNextToggle(); }); }
   document.addEventListener('DOMContentLoaded', init);
 })();
 window.addEventListener('kg:langchange', function(){ if (typeof window.kgPlayHandleLangChange === 'function') window.kgPlayHandleLangChange(); });
