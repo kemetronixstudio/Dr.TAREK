@@ -223,3 +223,18 @@
   wire();
   window.renderStudentCloudAdminPanel = render;
 })();
+
+
+  const resetBtn = document.getElementById('resetPlayLeaderboardBtn');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', async () => {
+      if (!confirm('Are you sure you want to reset Play leaderboard?')) return;
+      try {
+        await fetch('/api/student/play?action=reset', { method: 'POST' });
+        alert('Play leaderboard reset successfully');
+        location.reload();
+      } catch (e) {
+        alert('Reset failed');
+      }
+    });
+  }
