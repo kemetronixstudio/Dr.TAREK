@@ -20,7 +20,8 @@
     });
   }
 
-  function appendCountNote(){
+  function appendCountNote(){ return;
+
     const grid = document.getElementById('homeLevelsGrid');
     if (!grid) return;
     grid.querySelectorAll('[data-grade-card], .kg1-card, .kg2-card').forEach(function(card){

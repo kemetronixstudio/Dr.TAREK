@@ -1364,3 +1364,36 @@ body[data-page="playtest"] .data-table{min-width:760px;}
   }
   body[data-page="playtest"] .play-board-card .data-table{min-width:680px;}
 }
+
+
+/* v39.3 cleanup: hide quiz item count, tighten cards, and keep Arabic title on one line */
+.question-count-note{display:none !important;}
+body[data-page="home"] .home-levels .level-card,
+body[data-page="home"] .home-levels .playtest-card{
+  min-height:auto !important;
+  height:auto !important;
+  justify-content:flex-start !important;
+  gap:12px !important;
+}
+body[data-page="home"] .home-levels .level-card p,
+body[data-page="home"] .home-levels .playtest-card p{
+  min-height:auto !important;
+  margin:0 auto 2px !important;
+}
+body[data-page="home"] .home-levels .level-card .main-btn,
+body[data-page="home"] .home-levels .playtest-card .main-btn{
+  margin-top:8px !important;
+}
+body[data-page="home"][data-lang="ar"] .hero-copy h1{
+  white-space:nowrap !important;
+  font-size:clamp(1.45rem,2.2vw,2.4rem) !important;
+  max-width:none !important;
+}
+@media (max-width: 900px){
+  body[data-page="home"][data-lang="ar"] .hero-copy h1{
+    white-space:normal !important;
+    font-size:clamp(1.6rem,5.2vw,2.4rem) !important;
+  }
+}
+body{overflow-x:hidden;}
+.site-credit-footer, footer.site-footer{display:none !important;}
