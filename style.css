@@ -746,3 +746,17 @@ body[data-page="playtest"][data-lang="ar"] .data-table td{text-align:right;}
 @media (orientation: landscape) and (max-width: 900px){
   .home-levels{grid-template-columns:repeat(2,minmax(0,1fr));}
 }
+
+
+/* play card PNG art */
+.home-levels .playtest-card{background:linear-gradient(135deg,#fff8e1,#ffe0b2);border:2px solid rgba(255,145,0,.18);padding:18px 18px 20px;gap:14px;}
+.home-levels .playtest-card .playtest-card-art{width:100%;max-width:760px;height:auto;display:block;margin:0 auto 2px;object-fit:contain;}
+.home-levels .playtest-card .playtest-card-icon,.home-levels .playtest-card h3{display:none !important;}
+.home-levels .playtest-card p{text-align:center;}
+.home-levels .playtest-card .main-btn{align-self:center;min-width:min(100%,260px);}
+@media (max-width:900px){
+  .home-levels .playtest-card .playtest-card-art{max-width:100%;}
+}
+@media (max-width:640px){
+  .home-levels .playtest-card{padding:14px 14px 16px;}
+}
