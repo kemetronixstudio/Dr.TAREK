@@ -1,9 +1,4 @@
 const backend = require('../../lib/student-cloud-backend');
-const access = require('../../lib/access-accounts-backend');
-
-function setAuthCookie(res, token) {
-  if (token) res.setHeader('Set-Cookie', `kgAccessToken=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=43200`);
-}
 
 module.exports = async function handler(req, res) {
   const url = new URL(req.url, 'http://localhost');
@@ -12,6 +7,13 @@ module.exports = async function handler(req, res) {
     if (req.method === 'GET') {
       if (action === 'leaderboard' || !action) {
         const result = await backend.getPlayLeaderboard();
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(result));
+        return;
+      }
+      if (action === 'reset') {
+        const result = await backend.resetPlayLeaderboard();
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(result));
@@ -58,21 +60,6 @@ module.exports = async function handler(req, res) {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify(Object.assign({}, result, { leaderboard })));
-      return;
-    }
-    if (action === 'reset') {
-      const auth = await access.requireAuthorized(req, 'dashboard');
-      if (!auth.ok || !auth.account || auth.account.role !== 'admin') {
-        res.statusCode = auth.status || 403;
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({ ok: false, error: auth.error || 'Admin access required' }));
-        return;
-      }
-      setAuthCookie(res, auth.token);
-      const result = await backend.resetPlayLeaderboard();
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(Object.assign({}, result, { token: auth.token, account: auth.account })));
       return;
     }
     res.statusCode = 400;

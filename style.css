@@ -706,15 +706,3 @@ body[data-page="playtest"][data-lang="ar"] .data-table td{text-align:right;}
   body[data-page="playtest"] .play-form-grid-wide,
   body[data-page="playtest"][data-lang="ar"] .play-form-grid-wide{grid-template-columns:1fr;}
 }
-
-
-@media (max-width: 768px){
-  .top-shell-inline{grid-template-columns:1fr;gap:10px}
-  .top-shell-inline .header-left,.top-shell-inline .header-center,.top-shell-inline .header-right{justify-self:center;flex-wrap:wrap;justify-content:center}
-  .top-shell-inline .teacher-topline{max-width:90vw;text-align:center;justify-content:center}
-  .playtest-card{width:100%}
-  .play-hero-card,.play-start-card,.play-quiz-card,.play-board-card,.play-result-card{width:100%;max-width:100%}
-  .play-form-grid,.play-options{grid-template-columns:1fr}
-  .play-stats-row,.play-quiz-toolbar{flex-wrap:wrap;gap:10px}
-  .play-top3-panel{margin-top:16px}
-}
