@@ -31,6 +31,13 @@ module.exports = async function handler(req, res) {
       return;
     }
     const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
+    if (action === 'reset') {
+      const result = await backend.resetPlayLeaderboard();
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify(result));
+      return;
+    }
     if (action === 'start') {
       const result = await backend.getPlaySession(Object.assign({}, body.identity || body, { className: (body.identity && body.identity.className) || 'Play & Test', isGuest: true }), body.sessionId || body.quizKey || '');
       res.statusCode = 200;

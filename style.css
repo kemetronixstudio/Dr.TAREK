@@ -706,3 +706,5 @@ body[data-page="playtest"][data-lang="ar"] .data-table td{text-align:right;}
   body[data-page="playtest"] .play-form-grid-wide,
   body[data-page="playtest"][data-lang="ar"] .play-form-grid-wide{grid-template-columns:1fr;}
 }
+
+.admin-subhead.with-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}

@@ -201,19 +201,24 @@
       status(error.message || 'Could not export Excel.');
     }
   }
+
   async function resetPlayLeaderboard(){
     if (!confirm('Are you sure you want to reset Play leaderboard?')) return;
     try {
-      await post('/play?action=reset', {});
-      alert('Play leaderboard reset successfully');
+      await request('/play?action=reset', { method: 'POST' });
       const leaderboardBody = document.getElementById('studentLeaderboardTableBody');
       if (leaderboardBody) leaderboardBody.innerHTML = '<tr><td colspan="7">No leaderboard data yet.</td></tr>';
+      const classBody = document.getElementById('classAnalyticsTableBody');
+      if (classBody) classBody.innerHTML = '<tr><td colspan="6">No class analytics yet.</td></tr>';
+      analyticsStatus('Play leaderboard reset successfully.');
+      status('Play leaderboard reset successfully.');
       await renderAnalytics();
       await render();
     } catch (error) {
       alert(error.message || 'Reset failed');
     }
   }
+
   function wire(){
     document.getElementById('refreshStudentCloudBtn')?.addEventListener('click', render);
     document.getElementById('refreshStudentAnalyticsBtn')?.addEventListener('click', ()=>renderAnalytics());
