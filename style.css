@@ -585,6 +585,17 @@ body[data-theme="space"] .badge-pill{background:#eaf1ff;color:#29477b}
 }
 
 .playtest-card{background:linear-gradient(135deg,#fff8e1,#ffe0b2);border:2px solid rgba(255,145,0,.18)}
+@media (min-width:901px){
+  .home-levels .playtest-card{
+    grid-column:1 / -1;
+    justify-self:center;
+    width:min(100%,460px);
+    text-align:center;
+  }
+  .home-levels .playtest-card .main-btn{
+    align-self:center;
+  }
+}
 .playtest-card-icon{font-size:3rem;line-height:1;margin-bottom:.4rem}
 .playtest-btn{background:linear-gradient(135deg,#ff7b54,#ffb26b)!important}
 .play-wrap{display:grid;gap:1rem}
