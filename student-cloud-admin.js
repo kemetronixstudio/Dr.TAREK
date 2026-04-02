@@ -171,6 +171,20 @@
       if (statusEl) statusEl.textContent = error.message || 'Could not save note.';
     }
   }
+
+  async function resetPlayLeaderboard(){
+    const ok = typeof window !== 'undefined' && window.confirm ? window.confirm('Reset the Play & Test live leaderboard now? This will remove all saved Play & Test scores.') : true;
+    if (!ok) return;
+    analyticsStatus('Resetting live leaderboard...');
+    try {
+      await post('/play?action=reset', {});
+      status('Play & Test live leaderboard reset.');
+      await render();
+    } catch (error) {
+      analyticsStatus(error.message || 'Could not reset leaderboard.');
+    }
+  }
+
   async function exportExcel(){
     status('Preparing Excel export...');
     try {
@@ -204,6 +218,7 @@
   function wire(){
     document.getElementById('refreshStudentCloudBtn')?.addEventListener('click', render);
     document.getElementById('refreshStudentAnalyticsBtn')?.addEventListener('click', ()=>renderAnalytics());
+    document.getElementById('resetPlayLeaderboardBtn')?.addEventListener('click', resetPlayLeaderboard);
     document.getElementById('exportStudentCloudExcelBtn')?.addEventListener('click', exportExcel);
     document.getElementById('studentCloudSearchBtn')?.addEventListener('click', render);
     document.getElementById('studentCloudSearch')?.addEventListener('keydown', (e)=>{ if (e.key === 'Enter') render(); });
