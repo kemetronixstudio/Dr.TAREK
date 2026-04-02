@@ -719,3 +719,30 @@ body[data-page="playtest"][data-lang="ar"] .data-table td{text-align:right;}
 }
 
 .admin-subhead.with-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+
+
+/* merged PNG grade cards */
+.home-levels{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));align-items:stretch;}
+.home-levels .level-card{min-height:unset;height:100%;}
+.home-levels .level-card:not(.playtest-card){justify-content:flex-start;gap:14px;}
+.home-levels .level-card:not(.playtest-card) h3{display:none !important;}
+.home-levels .level-card .grade-card-art,
+.home-levels .level-card:not(.playtest-card) img{width:100%;max-width:420px;height:auto;max-height:none;aspect-ratio:auto;object-fit:contain;margin:0 auto 4px;display:block;}
+.home-levels .level-card p{margin:0 0 10px;}
+.home-levels .level-card .main-btn{margin-top:auto;align-self:stretch;text-align:center;}
+.home-levels .playtest-card{order:-10;}
+@media (min-width: 901px){
+  .home-levels .playtest-card{grid-column:1 / -1;width:min(100%,560px);}
+}
+@media (max-width: 900px){
+  .home-levels{grid-template-columns:repeat(auto-fit,minmax(240px,1fr));}
+  .home-levels .level-card .grade-card-art,
+  .home-levels .level-card:not(.playtest-card) img{max-width:100%;}
+}
+@media (max-width: 640px){
+  .home-levels{grid-template-columns:1fr;gap:16px;}
+  .home-levels .level-card{padding:16px;}
+}
+@media (orientation: landscape) and (max-width: 900px){
+  .home-levels{grid-template-columns:repeat(2,minmax(0,1fr));}
+}

@@ -166,8 +166,7 @@
       a.className = 'level-card custom-class-card';
       a.href = `class.html?grade=${encodeURIComponent(cls.key)}`;
       a.innerHTML = `
-        <img src="${cls.image || 'assets/svg/school.svg'}" alt="${escapeHtml(cls.name)}">
-        <h3>${escapeHtml(cls.name)}</h3>
+        <img src="${cls.image || 'assets/grades/kg2.png'}" alt="${escapeHtml(cls.name)}" class="grade-card-art">
         <p>${escapeHtml(cls.description || T('customClassSubtitle'))}</p>
         <span class="main-btn alt">${T('startClass')} ${escapeHtml(cls.name)}</span>
       `;
