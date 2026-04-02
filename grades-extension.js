@@ -114,3 +114,78 @@
     }
   });
 })();
+
+
+(function(){
+  const GRADE_CARD_I18N = {
+    en: {
+      grade1:{label:'Grade 1', title:'Grade 1 Quiz', desc:(translations.en.grade1CardDesc||'Mixed Grade 1 questions from math, English, science, and general knowledge.'), btn:(translations.en.startGrade1||'Start Grade 1')},
+      grade2:{label:'Grade 2', title:'Grade 2 Quiz', desc:(translations.en.grade2CardDesc||'Stronger Grade 2 quizzes with mixed subjects and more challenge.'), btn:(translations.en.startGrade2||'Start Grade 2')},
+      grade3:{label:'Grade 3', title:'Grade 3 Quiz', desc:(translations.en.grade3CardDesc||'Grade 3 mixed quiz set with reading, science, geography, and math.'), btn:(translations.en.startGrade3||'Start Grade 3')},
+      grade4:{label:'Grade 4', title:'Grade 4 Quiz', desc:(translations.en.grade4CardDesc||'Advanced Grade 4 quizzes across school subjects.'), btn:(translations.en.startGrade4||'Start Grade 4')},
+      grade5:{label:'Grade 5', title:'Grade 5 Quiz', desc:(translations.en.grade5CardDesc||'Competitive Grade 5 question bank for stronger students.'), btn:(translations.en.startGrade5||'Start Grade 5')},
+      grade6:{label:'Grade 6', title:'Grade 6 Quiz', desc:(translations.en.grade6CardDesc||'Grade 6 mixed challenge for top learners.'), btn:(translations.en.startGrade6||'Start Grade 6')}
+    },
+    ar: {
+      grade1:{label:'Grade 1', title:'اختبار Grade 1', desc:(translations.ar.grade1CardDesc||'أسئلة Grade 1 متنوعة من الرياضيات والإنجليزي والعلوم والمعرفة العامة.'), btn:(translations.ar.startGrade1||'ابدأ Grade 1')},
+      grade2:{label:'Grade 2', title:'اختبار Grade 2', desc:(translations.ar.grade2CardDesc||'اختبارات Grade 2 أقوى بمواد متنوعة وتحدٍ أكبر.'), btn:(translations.ar.startGrade2||'ابدأ Grade 2')},
+      grade3:{label:'Grade 3', title:'اختبار Grade 3', desc:(translations.ar.grade3CardDesc||'مجموعة Grade 3 متنوعة في القراءة والعلوم والجغرافيا والرياضيات.'), btn:(translations.ar.startGrade3||'ابدأ Grade 3')},
+      grade4:{label:'Grade 4', title:'اختبار Grade 4', desc:(translations.ar.grade4CardDesc||'اختبارات Grade 4 متقدمة في مواد دراسية مختلفة.'), btn:(translations.ar.startGrade4||'ابدأ Grade 4')},
+      grade5:{label:'Grade 5', title:'اختبار Grade 5', desc:(translations.ar.grade5CardDesc||'بنك أسئلة Grade 5 تنافسي للطلاب الأقوى.'), btn:(translations.ar.startGrade5||'ابدأ Grade 5')},
+      grade6:{label:'Grade 6', title:'اختبار Grade 6', desc:(translations.ar.grade6CardDesc||'تحدي Grade 6 متنوع للمتعلمين المتميزين.'), btn:(translations.ar.startGrade6||'ابدأ Grade 6')}
+    }
+  };
+
+  function currentLang(){ return (typeof getLang==='function' ? getLang() : (localStorage.getItem('kgQuizLang')||'en')) === 'ar' ? 'ar' : 'en'; }
+  function gradeMetaLocalized(key){
+    const lang = currentLang();
+    const base = (window.kgBulkGradeMeta && window.kgBulkGradeMeta[key]) || null;
+    const loc = (GRADE_CARD_I18N[lang]||{})[key] || {};
+    if (!base) return loc;
+    return Object.assign({}, base, loc);
+  }
+  function localizeHomeCards(){
+    const lang = currentLang();
+    document.querySelectorAll('[data-grade-card]').forEach(card => {
+      const key = card.getAttribute('data-grade-card');
+      const meta = gradeMetaLocalized(key);
+      if (!meta) return;
+      const img = card.querySelector('img'); if (img) img.alt = meta.label;
+      const p = card.querySelector('p'); if (p) p.textContent = meta.desc;
+      const btn = card.querySelector('.main-btn'); if (btn) btn.textContent = meta.btn;
+    });
+    const playCard = document.querySelector('.playtest-card');
+    if (playCard){
+      const p = playCard.querySelector('p'); if (p) p.textContent = translations[lang].homePlayCardText || p.textContent;
+      const btn = playCard.querySelector('.main-btn'); if (btn) btn.textContent = translations[lang].homePlayOpen || btn.textContent;
+    }
+  }
+  function localizeQuizPageMeta(){
+    if (!document.body || document.body.dataset.page !== 'quiz') return;
+    const params = new URLSearchParams(location.search);
+    const key = String(params.get('grade') || document.body.dataset.grade || '').trim().toLowerCase();
+    const meta = gradeMetaLocalized(key);
+    if (!meta) return;
+    const badge = document.querySelector('.setup-card .badge-pill');
+    const title = document.querySelector('.setup-card h1');
+    const subtitle = document.querySelector('.setup-card > .setup-grid p, .setup-card p[data-i18n="customClassSubtitle"]');
+    if (badge) badge.textContent = meta.label;
+    if (title) title.textContent = meta.title;
+    if (subtitle) subtitle.textContent = meta.desc;
+    document.title = meta.title;
+  }
+  function localizeHero(){
+    if (!document.body || document.body.dataset.page !== 'home') return;
+    const lang = currentLang();
+    const badge = document.querySelector('[data-i18n="homeBadge"]');
+    const title = document.querySelector('[data-i18n="homeTitle"]');
+    const text = document.querySelector('[data-i18n="homeText"]');
+    if (badge) badge.textContent = '';
+    if (title) title.textContent = lang === 'ar' ? 'اختبار إنجليزي ممتع للأطفال' : 'Fun English Quiz for Kids';
+    if (text) text.textContent = lang === 'ar' ? 'العب وتعلّم وتطوّر من خلال أسئلة إنجليزية ملوّنة.' : 'Play, learn, and grow with colorful English questions.';
+  }
+  const run = ()=>{ localizeHero(); localizeHomeCards(); localizeQuizPageMeta(); };
+  document.addEventListener('DOMContentLoaded', run);
+  window.addEventListener('load', run);
+  window.addEventListener('kg:langchange', run);
+})();

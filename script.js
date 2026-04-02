@@ -2518,7 +2518,59 @@ function ensureStudioFooter(){
 }
 
 document.addEventListener('DOMContentLoaded', function(){
-  ensureStudioFooter();
+  // footer removed for cleaner layout
 });
 
 window.kgTranslations = translations; window.kgGetLang = getLang;
+
+
+Object.assign(translations.en, {
+  leaderName:'Name',
+  leaderGrade:'Grade',
+  leaderStudentId:'Student ID',
+  leaderBestScore:'Best Score',
+  leaderAttempts:'Attempts',
+  leaderLastPlayed:'Last Played',
+  customClassBadge:'Class',
+  customClassSubtitle:'Teacher-selected class questions.',
+  homePlayCardText:'Start a new mixed English challenge every time, save your score, and climb the live leaderboard.',
+  homePlayOpen:'Open Play Mode',
+  quizItemsLabel:'quiz items',
+  grade1CardDesc:'Mixed Grade 1 questions from math, English, science, and general knowledge.',
+  grade2CardDesc:'Stronger Grade 2 quizzes with mixed subjects and more challenge.',
+  grade3CardDesc:'Grade 3 mixed quiz set with reading, science, geography, and math.',
+  grade4CardDesc:'Advanced Grade 4 quizzes across school subjects.',
+  grade5CardDesc:'Competitive Grade 5 question bank for stronger students.',
+  grade6CardDesc:'Grade 6 mixed challenge for top learners.',
+  startGrade1:'Start Grade 1',
+  startGrade2:'Start Grade 2',
+  startGrade3:'Start Grade 3',
+  startGrade4:'Start Grade 4',
+  startGrade5:'Start Grade 5',
+  startGrade6:'Start Grade 6'
+});
+Object.assign(translations.ar, {
+  leaderName:'الاسم',
+  leaderGrade:'الصف',
+  leaderStudentId:'رقم الطالب',
+  leaderBestScore:'أفضل نتيجة',
+  leaderAttempts:'المحاولات',
+  leaderLastPlayed:'آخر لعب',
+  customClassBadge:'الصف',
+  customClassSubtitle:'أسئلة صف يختارها المعلم.',
+  homePlayCardText:'ابدأ تحدياً إنجليزياً مختلفاً كل مرة، واحفظ نتيجتك، واصعد في لوحة المتصدرين.',
+  homePlayOpen:'افتح وضع اللعب',
+  quizItemsLabel:'عنصر اختبار',
+  grade1CardDesc:'أسئلة Grade 1 متنوعة من الرياضيات والإنجليزي والعلوم والمعرفة العامة.',
+  grade2CardDesc:'اختبارات Grade 2 أقوى بمواد متنوعة وتحدٍ أكبر.',
+  grade3CardDesc:'مجموعة Grade 3 متنوعة في القراءة والعلوم والجغرافيا والرياضيات.',
+  grade4CardDesc:'اختبارات Grade 4 متقدمة في مواد دراسية مختلفة.',
+  grade5CardDesc:'بنك أسئلة Grade 5 تنافسي للطلاب الأقوى.',
+  grade6CardDesc:'تحدي Grade 6 متنوع للمتعلمين المتميزين.',
+  startGrade1:'ابدأ Grade 1',
+  startGrade2:'ابدأ Grade 2',
+  startGrade3:'ابدأ Grade 3',
+  startGrade4:'ابدأ Grade 4',
+  startGrade5:'ابدأ Grade 5',
+  startGrade6:'ابدأ Grade 6'
+});

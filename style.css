@@ -864,3 +864,503 @@ body[data-page="playtest"] .data-table td:last-child{min-width:190px;white-space
   body[data-page="playtest"] .play-form-grid-wide{grid-template-columns:1fr 1fr 1fr auto}
   body[data-page="playtest"] .play-form-grid-wide .main-btn{grid-column:auto}
 }
+
+
+/* v39.1 responsive friendly polish + quiz bulk package */
+body[data-page="home"] .hero-card{max-width:1180px;margin-inline:auto;}
+body[data-page="home"] .hero-copy h1{max-width:10ch;font-size:clamp(1.95rem,3.9vw,3.95rem);line-height:1.06;margin-bottom:14px;}
+body[data-page="home"] .hero-copy .lead{max-width:720px;font-size:clamp(1rem,1.5vw,1.18rem);}
+body[data-page="home"] .hero-card{padding:28px clamp(18px,2.6vw,34px);}
+.home-levels .playtest-card{width:min(100%,640px)!important;}
+.home-levels .playtest-card .playtest-card-art{max-width:560px;}
+.question-count-note{display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:999px;background:#eef7ff;color:#32639a;font-weight:800;font-size:.9rem;margin:0 auto 6px;}
+
+.top-shell-inline{column-gap:16px;row-gap:12px;}
+.top-shell-inline .header-left,.top-shell-inline .header-right{flex-wrap:wrap;}
+.lang-switch{display:flex;flex-wrap:wrap;gap:10px;}
+.lang-btn{min-width:76px;min-height:52px;padding:12px 18px;font-size:1.05rem;}
+.theme-quick-switch{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+.theme-pill-btn,.tiny-admin-link{width:52px;height:52px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;padding:0;flex:0 0 52px;}
+.teacher-topline{display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border-radius:999px;text-align:center;min-height:52px;font-weight:800;}
+body[data-page="playtest"] .teacher-topline{min-height:56px;}
+
+@media (min-width: 901px){
+  .top-shell-inline{grid-template-columns:minmax(220px,1fr) auto minmax(220px,1fr);}
+  .top-shell-inline .header-left{justify-self:start;}
+  .top-shell-inline .header-center{justify-self:center;}
+  .top-shell-inline .header-right{justify-self:end;justify-content:flex-end;}
+}
+
+@media (max-width: 900px){
+  .top-shell-inline{grid-template-columns:1fr;grid-template-areas:"teacher" "left" "right";align-items:stretch;}
+  .top-shell-inline .header-center{grid-area:teacher;width:100%;}
+  .top-shell-inline .header-left{grid-area:left;width:100%;justify-content:center;}
+  .top-shell-inline .header-right{grid-area:right;width:100%;justify-content:center;}
+  .teacher-topline{width:min(100%,680px);max-width:100%;white-space:normal;line-height:1.35;padding:12px 16px;}
+  body[data-page="home"] .hero-copy h1{font-size:clamp(1.9rem,6.8vw,3rem);max-width:11ch;}
+}
+
+@media (max-width: 640px){
+  .top-shell-inline{gap:10px;}
+  .top-shell-inline .header-left,.top-shell-inline .header-right{display:flex;justify-content:center;gap:10px;}
+  .top-shell-inline .header-left{align-items:flex-start;}
+  .lang-switch{justify-content:center;max-width:180px;}
+  .lang-btn{min-width:70px;min-height:50px;padding:11px 14px;}
+  .theme-quick-switch{justify-content:center;max-width:190px;}
+  .theme-pill-btn,.tiny-admin-link{width:48px;height:48px;flex-basis:48px;}
+  .teacher-topline{font-size:1rem;min-height:unset;padding:11px 14px;border-radius:24px;}
+  body[data-page="home"] .hero-card{padding:22px 14px;}
+  body[data-page="home"] .hero-copy h1{font-size:clamp(1.85rem,8.6vw,2.8rem);line-height:1.08;}
+  body[data-page="home"] .hero-copy .lead{font-size:1rem;line-height:1.65;}
+  .home-levels .playtest-card{padding:16px 14px 18px;}
+  .home-levels .playtest-card .playtest-card-art{max-width:100%;}
+}
+
+@media (orientation:landscape) and (max-width: 900px){
+  .top-shell-inline .header-left,.top-shell-inline .header-right{flex-direction:row;flex-wrap:wrap;}
+  .lang-switch,.theme-quick-switch{max-width:none;}
+}
+
+/* v39.2 layout rescue: centered hero + cleaner responsive header */
+.badge-pill:empty{display:none !important;}
+
+body[data-page="home"] .hero-copy-wide{
+  width:100%;
+  margin:0 auto 10px;
+  text-align:center;
+}
+body[data-page="home"] .hero-copy h1{
+  max-width:16ch;
+  margin:0 auto 14px;
+  font-size:clamp(1.8rem,2.8vw,3.15rem);
+  line-height:1.12;
+  text-wrap:balance;
+}
+body[data-page="home"] .hero-copy .lead{
+  max-width:760px;
+  margin:0 auto;
+  font-size:clamp(.98rem,1.25vw,1.12rem);
+  line-height:1.7;
+}
+body[data-page="home"] .home-levels{
+  margin-top:28px;
+}
+body[data-page="home"] .playtest-card{
+  text-align:center;
+}
+body[data-page="home"] .playtest-card p,
+body[data-page="home"] .level-card p{
+  line-height:1.7;
+}
+
+.top-shell-inline,
+.subpage-top-shell.top-shell-inline{
+  display:grid !important;
+  grid-template-columns:minmax(220px,1fr) auto minmax(220px,1fr) !important;
+  align-items:center;
+  column-gap:18px;
+  row-gap:12px;
+}
+.top-shell-inline .header-left,
+.top-shell-inline .header-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.top-shell-inline .header-left{justify-self:start;justify-content:flex-start;}
+.top-shell-inline .header-center{justify-self:center;width:auto;display:flex;justify-content:center;}
+.top-shell-inline .header-right{justify-self:end;justify-content:flex-end;}
+.top-shell-inline .teacher-topline,
+.subpage-top-shell .teacher-topline{
+  max-width:min(56vw,560px);
+  width:auto;
+  min-height:54px;
+  padding:12px 18px;
+  border-radius:999px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.top-shell-inline .lang-switch,
+.top-shell-inline .theme-quick-switch{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:10px;
+}
+.top-shell-inline .lang-btn{
+  min-width:72px;
+  min-height:52px;
+}
+.top-shell-inline .theme-pill-btn,
+.top-shell-inline .tiny-admin-link{
+  width:50px;
+  height:50px;
+  flex:0 0 50px;
+}
+body[data-lang="ar"] .top-shell-inline,
+body[data-lang="ar"] .subpage-top-shell.top-shell-inline{
+  direction:ltr;
+}
+body[data-lang="ar"] .top-shell-inline .header-left,
+body[data-lang="ar"] .top-shell-inline .header-center,
+body[data-lang="ar"] .top-shell-inline .header-right{
+  direction:ltr;
+}
+body[data-lang="ar"] .hero-copy-wide{
+  text-align:center;
+}
+body[data-lang="ar"][data-page="home"] .hero-copy h1{
+  max-width:12ch;
+  font-size:clamp(2rem,3.2vw,3.4rem);
+  line-height:1.18;
+}
+body[data-lang="ar"][data-page="home"] .hero-copy .lead{
+  max-width:680px;
+  direction:rtl;
+}
+
+@media (max-width: 900px){
+  body[data-page="home"] .hero-copy h1{
+    max-width:12ch;
+    font-size:clamp(1.9rem,5.7vw,2.75rem);
+  }
+  body[data-lang="ar"][data-page="home"] .hero-copy h1{
+    max-width:none;
+    font-size:clamp(2rem,6.2vw,3rem);
+  }
+  .top-shell-inline,
+  .subpage-top-shell.top-shell-inline{
+    grid-template-columns:1fr !important;
+    grid-template-areas:"teacher" "left" "right";
+  }
+  .top-shell-inline .header-center{grid-area:teacher;justify-self:center;width:100%;}
+  .top-shell-inline .header-left{grid-area:left;justify-self:center;justify-content:center;width:100%;}
+  .top-shell-inline .header-right{grid-area:right;justify-self:center;justify-content:center;width:100%;}
+  .top-shell-inline .teacher-topline,
+  .subpage-top-shell .teacher-topline{
+    max-width:min(92vw,720px);
+    white-space:normal;
+    text-align:center;
+    line-height:1.35;
+  }
+  .top-shell-inline .header-left,
+  .top-shell-inline .header-right{
+    gap:12px;
+  }
+}
+
+@media (max-width: 640px){
+  body[data-page="home"] .hero-card{
+    padding:20px 14px;
+  }
+  body[data-page="home"] .hero-copy h1{
+    max-width:none;
+    font-size:clamp(1.95rem,8.4vw,2.65rem);
+  }
+  body[data-page="home"] .hero-copy .lead{
+    font-size:1rem;
+  }
+  .top-shell-inline .header-left,
+  .top-shell-inline .header-right{
+    max-width:100%;
+  }
+  .top-shell-inline .lang-switch,
+  .top-shell-inline .theme-quick-switch{
+    justify-content:center;
+    max-width:220px;
+  }
+  .top-shell-inline .teacher-topline,
+  .subpage-top-shell .teacher-topline{
+    max-width:min(94vw,520px);
+    font-size:.98rem;
+    padding:11px 14px;
+    border-radius:24px;
+  }
+}
+
+
+/* responsive polish patch */
+body[data-page="home"] .hero-card{
+  padding:34px clamp(22px,4vw,46px) 26px;
+}
+body[data-page="home"] .hero-copy-wide{
+  max-width:860px;
+  margin:0 auto 14px;
+  text-align:center;
+}
+body[data-page="home"] .hero-copy h1{
+  max-width:none;
+  margin:0 auto 12px;
+  font-size:clamp(1.9rem,3.5vw,3.4rem);
+  line-height:1.12;
+}
+body[data-page="home"] .hero-copy .lead{
+  margin:0 auto;
+  max-width:760px;
+  font-size:clamp(1rem,1.8vw,1.18rem);
+}
+body[data-page="home"][data-lang="ar"] .hero-copy-wide,
+body[data-page="home"][data-lang="ar"] .hero-copy h1,
+body[data-page="home"][data-lang="ar"] .hero-copy .lead{
+  text-align:center;
+}
+body[data-page="home"][data-lang="ar"] .hero-copy h1{
+  font-size:clamp(1.9rem,3.2vw,3.15rem);
+  line-height:1.25;
+  max-width:14ch;
+}
+body[data-page="home"] .badge-pill[data-i18n="homeBadge"]{
+  display:none !important;
+}
+body[data-page="home"] .top-shell-inline,
+body[data-page="playtest"] .top-shell-inline{
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  align-items:start;
+  gap:14px;
+}
+.top-shell-inline .header-left,
+.top-shell-inline .header-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.top-shell-inline .header-left{justify-self:start;justify-content:flex-start;}
+.top-shell-inline .header-center{justify-self:center;min-width:0;}
+.top-shell-inline .header-right{justify-self:end;justify-content:flex-end;}
+.top-shell-inline .teacher-topline{
+  white-space:nowrap;
+  max-width:min(100%,520px);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  font-size:clamp(.95rem,1.2vw,1.1rem);
+}
+.theme-quick-switch{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.theme-pill-btn,.lang-btn,.tiny-admin-link,.top-home-link{
+  min-width:58px;
+  min-height:58px;
+  border-radius:22px;
+}
+.top-home-link{padding:0 20px;min-width:auto;display:inline-flex;align-items:center;justify-content:center;}
+@media (max-width: 900px){
+  body[data-page="home"] .top-shell-inline,
+  body[data-page="playtest"] .top-shell-inline{
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  .top-shell-inline .header-left,
+  .top-shell-inline .header-center,
+  .top-shell-inline .header-right{
+    width:100%;
+    justify-self:center;
+    justify-content:center;
+  }
+  .top-shell-inline .teacher-topline{
+    white-space:normal;
+    text-align:center;
+    max-width:100%;
+  }
+}
+@media (max-width: 640px){
+  .top-shell-inline .header-left,
+  .top-shell-inline .header-right{
+    gap:12px;
+  }
+  .top-shell-inline .header-left{order:2;}
+  .top-shell-inline .header-center{order:1;}
+  .top-shell-inline .header-right{order:3;}
+  .theme-quick-switch,.lang-switch{justify-content:center;}
+  .lang-switch{width:100%;}
+  .theme-pill-btn,.lang-btn,.tiny-admin-link{min-width:54px;min-height:54px;border-radius:20px;}
+  body[data-page="home"] .hero-card{padding:24px 16px 20px;}
+  body[data-page="home"] .hero-copy h1{font-size:clamp(1.85rem,8vw,2.6rem);}
+  body[data-page="home"] .hero-copy .lead{font-size:1rem;line-height:1.7;}
+}
+body[data-page="playtest"] .play-hero-copy h1{font-size:clamp(1.8rem,3vw,2.8rem);line-height:1.14;}
+body[data-page="playtest"][data-lang="ar"] .play-hero-copy h1{line-height:1.25;}
+body[data-page="playtest"] .play-hero-copy p{font-size:clamp(1rem,1.5vw,1.08rem);}
+body[data-page="playtest"] .play-top3-panel{min-width:0;}
+body[data-page="playtest"] .data-table{min-width:760px;}
+
+
+/* v39 final responsive polish */
+.site-credit-footer,
+footer.site-footer{display:none !important;height:0 !important;margin:0 !important;padding:0 !important;overflow:hidden !important;}
+
+body[data-page="home"] .hero-card{
+  padding:clamp(20px,3vw,34px);
+}
+body[data-page="home"] .hero-copy{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  max-width:860px;
+  margin:0 auto 18px;
+}
+body[data-page="home"] .hero-copy .badge-pill{display:none !important;}
+body[data-page="home"] .hero-copy h1{
+  font-size:clamp(2rem,3.2vw,3.25rem);
+  line-height:1.12;
+  margin:6px auto 8px;
+  max-width:100%;
+  text-wrap:balance;
+}
+body[data-page="home"] .hero-copy .lead{
+  font-size:clamp(1rem,1.5vw,1.2rem);
+  max-width:760px;
+  margin:0 auto;
+  text-align:center;
+}
+body[data-page="home"][data-lang="ar"] .hero-copy h1{
+  font-size:clamp(1.9rem,3vw,3rem);
+  white-space:nowrap;
+}
+body[data-page="home"][data-lang="ar"] .hero-copy .lead,
+body[data-page="home"][data-lang="ar"] .hero-copy h1{
+  text-align:center;
+}
+
+body[data-page="home"] .home-levels{
+  grid-template-columns:repeat(3,minmax(250px,1fr));
+  max-width:1200px;
+  gap:20px;
+}
+body[data-page="home"] .home-levels .playtest-card{
+  grid-column:1/-1;
+  max-width:560px;
+  width:100%;
+  justify-self:center;
+}
+body[data-page="home"] .home-levels .playtest-card img{
+  width:min(360px,92%);
+  height:auto;
+  max-height:none;
+  object-fit:contain;
+}
+body[data-page="home"] .home-levels .level-card{
+  min-height:unset;
+  text-align:center;
+}
+body[data-page="home"] .home-levels .level-card p{
+  margin-inline:auto;
+}
+
+.top-shell-inline,
+.subpage-top-shell.top-shell-inline{
+  width:min(1180px,calc(100% - 24px));
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:minmax(220px,1fr) auto minmax(220px,1fr);
+  gap:14px;
+  align-items:center;
+}
+.top-shell-inline .header-left,
+.top-shell-inline .header-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.top-shell-inline .header-left{justify-self:start;justify-content:flex-start;}
+.top-shell-inline .header-center{justify-self:center;display:flex;justify-content:center;min-width:0;}
+.top-shell-inline .header-right{justify-self:end;justify-content:flex-end;}
+.top-shell-inline .teacher-topline,
+.subpage-top-shell .teacher-topline{
+  max-width:min(54vw,560px);
+  width:auto;
+  padding:11px 18px;
+  font-size:1rem;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.top-shell-inline .lang-switch,
+.top-shell-inline .theme-quick-switch{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.top-shell-inline .lang-btn,
+.top-shell-inline .theme-pill-btn,
+.top-shell-inline .tiny-admin-link,
+.top-shell-inline .top-home-link{
+  min-width:60px;
+  min-height:60px;
+}
+.top-shell-inline .top-home-link{
+  min-height:52px;
+  padding:12px 20px;
+}
+
+body[data-page="playtest"] .play-wrap{
+  max-width:1120px;
+  gap:18px;
+}
+body[data-page="playtest"] .play-hero-card{
+  grid-template-columns:1.15fr .85fr;
+  gap:24px;
+  align-items:start;
+}
+body[data-page="playtest"] .play-start-centered,
+body[data-page="playtest"] .play-board-card,
+body[data-page="playtest"] .play-quiz-card,
+body[data-page="playtest"] .play-result-card{
+  max-width:980px;
+}
+body[data-page="playtest"] .table-wrap{overflow:auto;}
+body[data-page="playtest"] .data-table{min-width:760px;}
+
+@media (max-width: 1024px){
+  body[data-page="home"] .home-levels{grid-template-columns:repeat(2,minmax(240px,1fr));}
+}
+@media (max-width: 900px){
+  .top-shell-inline,
+  .subpage-top-shell.top-shell-inline{
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+  .top-shell-inline .header-left,
+  .top-shell-inline .header-center,
+  .top-shell-inline .header-right{
+    justify-self:center;
+    justify-content:center;
+    width:100%;
+  }
+  .top-shell-inline .header-left,
+  .top-shell-inline .header-right{gap:12px;}
+  .top-shell-inline .teacher-topline,
+  .subpage-top-shell .teacher-topline{
+    max-width:100%;
+    white-space:normal;
+    text-align:center;
+  }
+  body[data-page="home"] .home-levels{grid-template-columns:1fr;}
+  body[data-page="playtest"] .play-hero-card,
+  body[data-page="playtest"][data-lang="ar"] .play-hero-card{grid-template-columns:1fr;}
+  body[data-page="playtest"] .play-form-grid-wide,
+  body[data-page="playtest"][data-lang="ar"] .play-form-grid-wide{grid-template-columns:1fr;}
+}
+@media (max-width: 640px){
+  body[data-page="home"] .hero-copy h1{font-size:clamp(1.85rem,8vw,2.6rem);}
+  body[data-page="home"][data-lang="ar"] .hero-copy h1{white-space:normal;}
+  .top-shell-inline .header-left,
+  .top-shell-inline .header-right{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,auto));
+    justify-content:center;
+  }
+  .top-shell-inline .header-right{max-width:220px;}
+  .top-shell-inline .lang-switch,
+  .top-shell-inline .theme-quick-switch{justify-content:center;}
+  .top-shell-inline .lang-btn,
+  .top-shell-inline .theme-pill-btn,
+  .top-shell-inline .tiny-admin-link{
+    min-width:56px;
+    min-height:56px;
+  }
+  body[data-page="playtest"] .play-board-card .data-table{min-width:680px;}
+}
