@@ -201,10 +201,24 @@
       status(error.message || 'Could not export Excel.');
     }
   }
+  async function resetPlayLeaderboard(){
+    if (!confirm('Are you sure you want to reset Play leaderboard?')) return;
+    try {
+      await post('/play?action=reset', {});
+      alert('Play leaderboard reset successfully');
+      const leaderboardBody = document.getElementById('studentLeaderboardTableBody');
+      if (leaderboardBody) leaderboardBody.innerHTML = '<tr><td colspan="7">No leaderboard data yet.</td></tr>';
+      await renderAnalytics();
+      await render();
+    } catch (error) {
+      alert(error.message || 'Reset failed');
+    }
+  }
   function wire(){
     document.getElementById('refreshStudentCloudBtn')?.addEventListener('click', render);
     document.getElementById('refreshStudentAnalyticsBtn')?.addEventListener('click', ()=>renderAnalytics());
     document.getElementById('exportStudentCloudExcelBtn')?.addEventListener('click', exportExcel);
+    document.getElementById('resetPlayLeaderboardBtn')?.addEventListener('click', resetPlayLeaderboard);
     document.getElementById('studentCloudSearchBtn')?.addEventListener('click', render);
     document.getElementById('studentCloudSearch')?.addEventListener('keydown', (e)=>{ if (e.key === 'Enter') render(); });
     document.getElementById('studentCloudClassFilter')?.addEventListener('keydown', (e)=>{ if (e.key === 'Enter') render(); });
@@ -223,18 +237,3 @@
   wire();
   window.renderStudentCloudAdminPanel = render;
 })();
-
-
-  const resetBtn = document.getElementById('resetPlayLeaderboardBtn');
-  if (resetBtn) {
-    resetBtn.addEventListener('click', async () => {
-      if (!confirm('Are you sure you want to reset Play leaderboard?')) return;
-      try {
-        await fetch('/api/student/play?action=reset', { method: 'POST' });
-        alert('Play leaderboard reset successfully');
-        location.reload();
-      } catch (e) {
-        alert('Reset failed');
-      }
-    });
-  }
