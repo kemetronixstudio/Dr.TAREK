@@ -266,6 +266,8 @@ function saveAccessAccountFromAdmin(){
 }
 
 const ADMIN_COLLAPSIBLE_CONFIGS = [
+  { buttonId:'toggleStudentCloudBtn', bodyId:'studentCloudBody', sectionId:'studentCloudSection' },
+  { buttonId:'toggleStudentAnalyticsBtn', bodyId:'studentAnalyticsBody', sectionId:'studentAnalyticsSection' },
   { buttonId:'toggleLevelVisibilityBtn', bodyId:'levelVisibilityBody', sectionId:'levelVisibilitySection' },
   { buttonId:'toggleTimerSettingsBtn', bodyId:'timerSettingsBody', sectionId:'timerSettingsSection' },
   { buttonId:'toggleQuizAccessBtn', bodyId:'quizAccessBody', sectionId:'quizAccessSection' },
@@ -323,7 +325,7 @@ function ensureAdminShortcutUI(){
   }
   const grid = document.getElementById('adminShortcutsGrid') || gridCard.querySelector('.admin-shortcuts-grid');
   const iconMap = {
-    levelVisibilitySection:'👁️', timerSettingsSection:'⏱️', quizAccessSection:'🔐', teacherTestSection:'🧪',
+    studentCloudSection:'☁️', studentAnalyticsSection:'📊', levelVisibilitySection:'👁️', timerSettingsSection:'⏱️', quizAccessSection:'🔐', teacherTestSection:'🧪',
     bulkQuestionsSection:'📥', classManagerSection:'🏫', accountManagerSection:'👥', activityLogsSection:'📝', questionBankSection:'📚'
   };
   if (sticky && !sticky.children.length) {
@@ -2465,8 +2467,25 @@ function getFilteredDashboardData(){
   };
 }
 
-function resetDashboardData(){
+async function resetDashboardData(){
   const lang = typeof getLang === 'function' ? getLang() : 'en';
+  if (typeof window.resetCloudDashboardData === 'function') {
+    const didReset = await window.resetCloudDashboardData();
+    if (didReset) {
+      try {
+        localStorage.removeItem(storeKeys.progress);
+        localStorage.removeItem(storeKeys.records);
+        localStorage.removeItem(storeKeys.analytics);
+        localStorage.removeItem(storeKeys.attemptsLog);
+      } catch(err) {}
+      try {
+        renderHomeProgress();
+        populateDashboardDateFilter();
+        renderAdminDashboard();
+      } catch(err) {}
+    }
+    return;
+  }
   const msg = lang === 'ar'
     ? 'سيتم حذف كل بيانات الطلاب ومحاولات الاختبار والإحصائيات. هل تريد المتابعة؟'
     : 'This will remove all student records, attempts, and analytics data. Continue?';

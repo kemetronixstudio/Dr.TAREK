@@ -219,6 +219,30 @@
     }
   }
 
+  async function resetAllCloudData(){
+    const ok = confirm('Are you sure you want to reset all cloud student records and analytics?');
+    if (!ok) return false;
+    try {
+      await request('/analytics?action=reset-all', { method: 'POST' });
+      analyticsStatus('All cloud student data has been reset.');
+      status('All cloud student data has been reset.');
+      const leaderboardBody = document.getElementById('studentLeaderboardTableBody');
+      if (leaderboardBody) leaderboardBody.innerHTML = '<tr><td colspan="7">No leaderboard data yet.</td></tr>';
+      const classBody = document.getElementById('classAnalyticsTableBody');
+      if (classBody) classBody.innerHTML = '<tr><td colspan="6">No class analytics yet.</td></tr>';
+      const progressBody = document.getElementById('studentTableBody');
+      if (progressBody) progressBody.innerHTML = '<tr><td colspan="6">No cloud student records yet.</td></tr>';
+      await renderAnalytics();
+      await render();
+      return true;
+    } catch (error) {
+      alert(error.message || 'Reset failed');
+      return false;
+    }
+  }
+
+  window.resetCloudDashboardData = resetAllCloudData;
+
   function wire(){
     document.getElementById('refreshStudentCloudBtn')?.addEventListener('click', render);
     document.getElementById('refreshStudentAnalyticsBtn')?.addEventListener('click', ()=>renderAnalytics());

@@ -6,12 +6,6 @@ function setAuthCookie(res, token) {
 }
 
 module.exports = async function handler(req, res) {
-  if (req.method !== 'GET') {
-    res.statusCode = 405;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ ok: false, error: 'Method not allowed' }));
-    return;
-  }
   try {
     const auth = await access.requireAuthorized(req, 'dashboard');
     if (!auth.ok) {
@@ -22,6 +16,23 @@ module.exports = async function handler(req, res) {
     }
     setAuthCookie(res, auth.token);
     const url = new URL(req.url, 'http://localhost');
+    const action = String(url.searchParams.get('action') || '').trim().toLowerCase();
+
+    if (req.method === 'POST' && action === 'reset-all') {
+      const result = await backend.resetAllStudentData();
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({ ...result, token: auth.token, account: auth.account }));
+      return;
+    }
+
+    if (req.method !== 'GET') {
+      res.statusCode = 405;
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({ ok: false, error: 'Method not allowed' }));
+      return;
+    }
+
     const result = await backend.analytics({
       q: url.searchParams.get('q') || '',
       className: url.searchParams.get('className') || '',
