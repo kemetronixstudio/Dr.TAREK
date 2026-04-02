@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fff8f0" rx="20"/>
+  
+  <rect x="40" y="60" width="220" height="130" rx="18" fill="#1a73e8" opacity="0.12" stroke="#1a73e8" stroke-width="2"/>
+  <text x="85" y="125" font-size="30" fill="#1a73e8">○</text>
+  <text x="135" y="115" font-size="25" fill="#1a73e8">○</text>
+  <text x="175" y="130" font-size="35" fill="#1a73e8">○</text>
+  <text x="110" y="165" font-size="22" fill="#1a73e8">○</text>
+  <text x="155" y="170" font-size="28" fill="#1a73e8">○</text>
+  <text x="150" y="243" text-anchor="middle" font-size="14" font-family="Arial" font-weight="bold" fill="#555">Gas — no fixed shape</text>
+
+</svg>

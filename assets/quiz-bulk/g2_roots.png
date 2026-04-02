@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fff8f0" rx="20"/>
+  
+  <rect x="0" y="150" width="300" height="100" rx="0" fill="#8d6e63" opacity="0.6"/>
+  <line x1="150" y1="150" x2="150" y2="60" stroke="#4caf50" stroke-width="6"/>
+  <ellipse cx="110" cy="90" rx="35" ry="22" fill="#4caf50" transform="rotate(-25 110 90)"/>
+  <ellipse cx="190" cy="95" rx="35" ry="22" fill="#4caf50" transform="rotate(25 190 95)"/>
+  <line x1="150" y1="150" x2="120" y2="195" stroke="#6d4c41" stroke-width="4"/>
+  <line x1="150" y1="150" x2="180" y2="195" stroke="#6d4c41" stroke-width="4"/>
+  <line x1="150" y1="155" x2="150" y2="210" stroke="#6d4c41" stroke-width="4"/>
+  <line x1="120" y1="195" x2="100" y2="230" stroke="#6d4c41" stroke-width="3"/>
+  <line x1="180" y1="195" x2="200" y2="230" stroke="#6d4c41" stroke-width="3"/>
+  <text x="150" y="243" text-anchor="middle" font-size="14" font-family="Arial" font-weight="bold" fill="white">Roots absorb Water</text>
+
+</svg>

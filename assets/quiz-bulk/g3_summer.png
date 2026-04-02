@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fff9c4" rx="20"/>
+  
+  <rect width="300" height="250" fill="#fff9c4" rx="20"/>
+  <circle cx="150" cy="100" r="60" fill="#ffd600"/>
+  <line x1="150" y1="25" x2="150" y2="5" stroke="#ffd600" stroke-width="5"/>
+  <line x1="220" y1="50" x2="235" y2="35" stroke="#ffd600" stroke-width="5"/>
+  <line x1="250" y1="100" x2="270" y2="100" stroke="#ffd600" stroke-width="5"/>
+  <line x1="80" y1="50" x2="65" y2="35" stroke="#ffd600" stroke-width="5"/>
+  <line x1="50" y1="100" x2="30" y2="100" stroke="#ffd600" stroke-width="5"/>
+  <text x="150" y="195" text-anchor="middle" font-size="22" font-family="Arial" font-weight="bold" fill="#ff7043">☀ SUMMER</text>
+  <text x="150" y="243" text-anchor="middle" font-size="15" font-family="Arial" font-weight="bold" fill="#555">After Spring</text>
+
+</svg>

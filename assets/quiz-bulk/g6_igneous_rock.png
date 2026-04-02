@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fff8f0" rx="20"/>
+  
+  <ellipse cx="150" cy="145" rx="85" ry="70" fill="#616161"/>
+  <ellipse cx="120" cy="125" rx="40" ry="30" fill="#757575"/>
+  <ellipse cx="180" cy="155" rx="35" ry="28" fill="#9e9e9e"/>
+  <path d="M150 80 Q130 60 140 40 Q155 30 165 45 Q170 65 150 80Z" fill="#ff5722"/>
+  <text x="150" y="243" text-anchor="middle" font-size="13" font-family="Arial" font-weight="bold" fill="#555">Igneous Rock (cooled lava)</text>
+
+</svg>

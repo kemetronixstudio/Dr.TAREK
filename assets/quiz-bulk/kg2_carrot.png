@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fff8f0" rx="20"/>
+  
+  <path d="M150 90 L110 200 L150 195 L190 200 Z" fill="#ff7043"/>
+  <line x1="150" y1="90" x2="135" y2="60" stroke="#4caf50" stroke-width="5"/>
+  <line x1="150" y1="90" x2="150" y2="55" stroke="#4caf50" stroke-width="5"/>
+  <line x1="150" y1="90" x2="165" y2="60" stroke="#4caf50" stroke-width="5"/>
+  <line x1="150" y1="90" x2="125" y2="65" stroke="#4caf50" stroke-width="4"/>
+  <line x1="150" y1="90" x2="175" y2="65" stroke="#4caf50" stroke-width="4"/>
+  <text x="150" y="235" text-anchor="middle" font-size="18" font-family="Arial" font-weight="bold" fill="#555">Carrot</text>
+
+</svg>

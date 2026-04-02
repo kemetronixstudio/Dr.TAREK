@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fff8f0" rx="20"/>
+  
+  <ellipse cx="100" cy="145" rx="50" ry="55" fill="#e63946"/>
+  <path d="M100 95 Q108 70 120 75" stroke="#5d4037" stroke-width="3" fill="none"/>
+  <ellipse cx="115" cy="75" rx="14" ry="9" fill="#4caf50" transform="rotate(-20 115 75)"/>
+  <ellipse cx="200" cy="145" rx="50" ry="55" fill="#e63946"/>
+  <path d="M200 95 Q208 70 220 75" stroke="#5d4037" stroke-width="3" fill="none"/>
+  <ellipse cx="215" cy="75" rx="14" ry="9" fill="#4caf50" transform="rotate(-20 215 75)"/>
+  <text x="150" y="238" text-anchor="middle" font-size="16" font-family="Arial" font-weight="bold" fill="#555">Count: 2 Apples</text>
+
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fff8f0" rx="20"/>
+  
+  <circle cx="150" cy="125" r="90" fill="#ef5350"/>
+  <circle cx="150" cy="125" r="68" fill="#ff7043"/>
+  <circle cx="150" cy="125" r="45" fill="#ffa726"/>
+  <circle cx="150" cy="125" r="20" fill="#ffcc02"/>
+  <text x="180" y="60" font-size="11" font-family="Arial" fill="#555">Crust</text>
+  <line x1="170" y1="63" x2="155" y2="78" stroke="#555" stroke-width="1"/>
+  <text x="215" y="100" font-size="11" font-family="Arial" fill="#555">Mantle</text>
+  <text x="210" y="135" font-size="11" font-family="Arial" fill="#555">Outer Core</text>
+  <text x="205" y="160" font-size="11" font-family="Arial" fill="#555">Inner Core</text>
+  <text x="150" y="243" text-anchor="middle" font-size="14" font-family="Arial" font-weight="bold" fill="#555">Earth's Layers</text>
+
+</svg>

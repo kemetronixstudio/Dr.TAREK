@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#e3f2fd" rx="20"/>
+  
+  <ellipse cx="150" cy="135" rx="100" ry="28" fill="#607d8b"/>
+  <path d="M250 135 Q290 125 290 135 Q290 145 250 135" fill="#455a64"/>
+  <polygon points="110,135 180,80 185,135" fill="#607d8b"/>
+  <polygon points="110,135 180,190 185,135" fill="#455a64"/>
+  <polygon points="235,135 265,115 268,135" fill="#607d8b"/>
+  <polygon points="235,135 265,155 268,135" fill="#455a64"/>
+  <ellipse cx="95" cy="130" rx="18" ry="12" fill="#87ceeb" opacity="0.9"/>
+  <text x="150" y="235" text-anchor="middle" font-size="18" font-family="Arial" font-weight="bold" fill="#555">Airplane</text>
+
+</svg>

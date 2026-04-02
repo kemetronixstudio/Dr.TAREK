@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fff8f0" rx="20"/>
+  
+  <rect x="70" y="80" width="160" height="120" rx="15" fill="#b3e5fc" stroke="#0288d1" stroke-width="3"/>
+  <text x="150" y="155" text-anchor="middle" font-size="22" font-family="Arial" font-weight="bold" fill="#0277bd">ICE</text>
+  <text x="150" y="185" text-anchor="middle" font-size="14" font-family="Arial" fill="#555">Frozen Water</text>
+  <text x="150" y="240" text-anchor="middle" font-size="15" font-family="Arial" font-weight="bold" fill="#555">State of Matter</text>
+
+</svg>

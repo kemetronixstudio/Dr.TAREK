@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fff8f0" rx="20"/>
+  
+  <circle cx="150" cy="80" r="25" fill="#ff7043"/>
+  <text x="150" y="87" text-anchor="middle" font-size="22">🍎</text>
+  <line x1="150" y1="105" x2="150" y2="145" stroke="#555" stroke-width="3"/>
+  <polygon points="143,143 157,143 150,158" fill="#555"/>
+  <rect x="50" y="160" width="200" height="45" rx="10" fill="#bdbdbd"/>
+  <text x="150" y="188" text-anchor="middle" font-size="14" font-family="Arial" font-weight="bold" fill="#333">At Rest → Stays at Rest</text>
+  <text x="150" y="243" text-anchor="middle" font-size="13" font-family="Arial" font-weight="bold" fill="#555">Newton's 1st Law — Inertia</text>
+
+</svg>

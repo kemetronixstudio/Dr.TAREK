@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fff8f0" rx="20"/>
+  
+  <polygon points="80,200 80,80 220,200" fill="#9c27b0" opacity="0.15" stroke="#9c27b0" stroke-width="4"/>
+  <rect x="80" y="180" width="20" height="20" fill="none" stroke="#9c27b0" stroke-width="3"/>
+  <text x="45" y="145" font-size="14" font-family="Arial" fill="#555">a</text>
+  <text x="150" y="225" font-size="14" font-family="Arial" fill="#555">b</text>
+  <text x="160" y="130" font-size="14" font-family="Arial" fill="#9c27b0">c</text>
+  <text x="150" y="60" text-anchor="middle" font-size="20" font-family="Arial" font-weight="bold" fill="#9c27b0">a²+b²=c²</text>
+  <text x="150" y="243" text-anchor="middle" font-size="14" font-family="Arial" font-weight="bold" fill="#555">Pythagorean Theorem</text>
+
+</svg>

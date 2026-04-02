@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fff8f0" rx="20"/>
+  
+  <circle cx="105" cy="160" r="28" fill="none" stroke="#607d8b" stroke-width="8"/>
+  <circle cx="145" cy="160" r="28" fill="none" stroke="#607d8b" stroke-width="8"/>
+  <line x1="127" y1="145" x2="230" y2="70" stroke="#607d8b" stroke-width="10" stroke-linecap="round"/>
+  <line x1="127" y1="175" x2="230" y2="200" stroke="#607d8b" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="107" cy="162" r="8" fill="#e63946"/>
+  <circle cx="148" cy="162" r="8" fill="#e63946"/>
+  <text x="150" y="243" text-anchor="middle" font-size="16" font-family="Arial" font-weight="bold" fill="#555">Scissors</text>
+
+</svg>

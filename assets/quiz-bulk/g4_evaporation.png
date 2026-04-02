@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fff8f0" rx="20"/>
+  
+  <rect x="70" y="160" width="160" height="55" rx="8" fill="#1a73e8" opacity="0.6"/>
+  <circle cx="150" cy="125" r="30" fill="#ffd600"/>
+  <text x="150" y="132" text-anchor="middle" font-size="22">☀</text>
+  <text x="100" y="115" font-size="22" fill="#87ceeb">↑</text>
+  <text x="130" y="105" font-size="22" fill="#87ceeb">↑</text>
+  <text x="160" y="110" font-size="22" fill="#87ceeb">↑</text>
+  <text x="190" y="118" font-size="22" fill="#87ceeb">↑</text>
+  <text x="150" y="243" text-anchor="middle" font-size="14" font-family="Arial" font-weight="bold" fill="#555">Water → Vapor (Evaporation)</text>
+
+</svg>

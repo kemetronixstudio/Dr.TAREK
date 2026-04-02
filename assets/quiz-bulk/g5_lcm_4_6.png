@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fff8f0" rx="20"/>
+  
+  <text x="150" y="110" text-anchor="middle" font-size="18" font-family="Arial" fill="#555">Multiples of 4: 4, 8, <tspan font-weight="bold" fill="#e63946">12</tspan>...</text>
+  <text x="150" y="150" text-anchor="middle" font-size="18" font-family="Arial" fill="#555">Multiples of 6: 6, <tspan font-weight="bold" fill="#e63946">12</tspan>...</text>
+  <text x="150" y="200" text-anchor="middle" font-size="22" font-family="Arial" font-weight="bold" fill="#4caf50">LCM = 12</text>
+  <text x="150" y="243" text-anchor="middle" font-size="14" font-family="Arial" font-weight="bold" fill="#555">Math — LCM</text>
+
+</svg>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fff8f0" rx="20"/>
+  
+  <ellipse cx="150" cy="160" rx="70" ry="55" fill="#f4a460"/>
+  <ellipse cx="150" cy="120" rx="45" ry="40" fill="#f4a460"/>
+  <polygon points="115,90 125,65 135,90" fill="#f4a460"/>
+  <polygon points="165,90 175,65 185,90" fill="#f4a460"/>
+  <circle cx="137" cy="115" r="8" fill="#333"/>
+  <circle cx="163" cy="115" r="8" fill="#333"/>
+  <circle cx="140" cy="116" r="3" fill="white"/>
+  <circle cx="166" cy="116" r="3" fill="white"/>
+  <ellipse cx="150" cy="130" rx="10" ry="7" fill="#ff9999"/>
+  <line x1="130" y1="128" x2="105" y2="124" stroke="#555" stroke-width="2"/>
+  <line x1="130" y1="131" x2="105" y2="131" stroke="#555" stroke-width="2"/>
+  <line x1="170" y1="128" x2="195" y2="124" stroke="#555" stroke-width="2"/>
+  <line x1="170" y1="131" x2="195" y2="131" stroke="#555" stroke-width="2"/>
+  <text x="150" y="235" text-anchor="middle" font-size="18" font-family="Arial" font-weight="bold" fill="#555">Cat</text>
+
+</svg>

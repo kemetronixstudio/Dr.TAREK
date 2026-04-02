@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fff8f0" rx="20"/>
+  
+  <ellipse cx="110" cy="140" rx="55" ry="70" fill="#ffcdd2" stroke="#e63946" stroke-width="3" opacity="0.9"/>
+  <ellipse cx="190" cy="140" rx="55" ry="70" fill="#ffcdd2" stroke="#e63946" stroke-width="3" opacity="0.9"/>
+  <rect x="143" y="60" width="14" height="90" rx="7" fill="#bdbdbd"/>
+  <text x="150" y="243" text-anchor="middle" font-size="14" font-family="Arial" font-weight="bold" fill="#555">Lungs — Breathing</text>
+
+</svg>

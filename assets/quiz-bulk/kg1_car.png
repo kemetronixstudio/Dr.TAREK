@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#e8f4fd" rx="20"/>
+  
+  <rect x="40" y="130" width="220" height="70" rx="15" fill="#e63946"/>
+  <path d="M80 130 Q100 80 200 80 Q230 80 240 130Z" fill="#c62828"/>
+  <rect x="90" y="90" width="120" height="45" rx="8" fill="#87ceeb" opacity="0.8"/>
+  <circle cx="85" cy="200" r="25" fill="#333"/>
+  <circle cx="85" cy="200" r="14" fill="#888"/>
+  <circle cx="215" cy="200" r="25" fill="#333"/>
+  <circle cx="215" cy="200" r="14" fill="#888"/>
+  <text x="150" y="243" text-anchor="middle" font-size="18" font-family="Arial" font-weight="bold" fill="#555">Car</text>
+
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fff8f0" rx="20"/>
+  
+  <ellipse cx="160" cy="150" rx="80" ry="45" fill="#8d6e63"/>
+  <ellipse cx="100" cy="120" rx="38" ry="35" fill="#a1887f"/>
+  <ellipse cx="65" cy="108" rx="10" ry="20" fill="#8d6e63"/>
+  <ellipse cx="90" cy="105" rx="10" ry="20" fill="#8d6e63"/>
+  <circle cx="75" cy="118" r="6" fill="#555"/>
+  <text x="150" y="225" text-anchor="middle" font-size="13" font-family="Arial" fill="#4caf50" font-weight="bold">🌿 Eats only plants</text>
+  <text x="150" y="243" text-anchor="middle" font-size="14" font-family="Arial" font-weight="bold" fill="#555">Herbivore</text>
+
+</svg>

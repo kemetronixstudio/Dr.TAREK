@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fff8f0" rx="20"/>
+  
+  <circle cx="150" cy="80" r="25" fill="#ff7043"/>
+  <text x="150" y="87" text-anchor="middle" font-size="28">🍎</text>
+  <line x1="150" y1="105" x2="150" y2="165" stroke="#1a73e8" stroke-width="4" marker-end="url(#arrow)"/>
+  <polygon points="143,160 157,160 150,180" fill="#1a73e8"/>
+  <text x="170" y="145" font-size="13" font-family="Arial" fill="#1a73e8" font-weight="bold">GRAVITY</text>
+  <rect x="60" y="178" width="180" height="20" rx="5" fill="#8d6e63"/>
+  <text x="150" y="243" text-anchor="middle" font-size="15" font-family="Arial" font-weight="bold" fill="#555">Gravity pulls down</text>
+
+</svg>

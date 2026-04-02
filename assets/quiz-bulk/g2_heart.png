@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fff8f0" rx="20"/>
+  
+  <path d="M150 185 Q80 145 80 100 Q80 65 115 65 Q135 65 150 85 Q165 65 185 65 Q220 65 220 100 Q220 145 150 185Z" fill="#e63946"/>
+  <text x="150" y="240" text-anchor="middle" font-size="14" font-family="Arial" font-weight="bold" fill="#555">Heart pumps blood</text>
+
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fff8f0" rx="20"/>
+  
+  <ellipse cx="150" cy="105" rx="65" ry="70" fill="#fdbcb4" stroke="#e0a090" stroke-width="3"/>
+  <circle cx="125" cy="90" r="10" fill="#333"/>
+  <circle cx="175" cy="90" r="10" fill="#333"/>
+  <path d="M120 130 Q150 148 180 130" stroke="#e63946" stroke-width="3" fill="none"/>
+  <ellipse cx="115" cy="80" rx="8" ry="12" fill="#fdbcb4" stroke="#e0a090" stroke-width="2"/>
+  <ellipse cx="185" cy="80" rx="8" ry="12" fill="#fdbcb4" stroke="#e0a090" stroke-width="2"/>
+  <text x="150" y="220" text-anchor="middle" font-size="13" font-family="Arial" fill="#e63946" font-weight="bold">Largest Organ!</text>
+  <text x="150" y="243" text-anchor="middle" font-size="14" font-family="Arial" font-weight="bold" fill="#555">Skin</text>
+
+</svg>

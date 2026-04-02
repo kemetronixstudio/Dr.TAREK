@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fff8f0" rx="20"/>
+  
+  <ellipse cx="160" cy="150" rx="65" ry="45" fill="#e63946"/>
+  <ellipse cx="110" cy="130" rx="40" ry="28" fill="#c62828"/>
+  <ellipse cx="155" cy="120" rx="35" ry="30" fill="#c62828"/>
+  <circle cx="115" cy="120" r="10" fill="white"/>
+  <circle cx="117" cy="118" r="5" fill="#333"/>
+  <polygon points="100,132 80,138 100,144" fill="#ffd600"/>
+  <path d="M195 135 Q235 100 255 70" stroke="#c62828" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <path d="M200 145 Q240 130 265 115" stroke="#c62828" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <text x="150" y="235" text-anchor="middle" font-size="18" font-family="Arial" font-weight="bold" fill="#555">Bird</text>
+
+</svg>

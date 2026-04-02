@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fff8f0" rx="20"/>
+  
+  <ellipse cx="120" cy="135" rx="55" ry="30" fill="#558b2f"/>
+  <ellipse cx="95" cy="125" rx="40" ry="22" fill="#689f38"/>
+  <path d="M175 135 Q215 130 255 120 Q245 140 200 148 Q185 148 175 135Z" fill="#558b2f"/>
+  <ellipse cx="80" cy="122" rx="12" ry="8" fill="#7cb342"/>
+  <circle cx="75" cy="120" r="5" fill="#333"/>
+  <line x1="90" y1="155" x2="70" y2="190" stroke="#558b2f" stroke-width="7" stroke-linecap="round"/>
+  <line x1="105" y1="158" x2="95" y2="200" stroke="#558b2f" stroke-width="7" stroke-linecap="round"/>
+  <line x1="145" y1="158" x2="155" y2="200" stroke="#558b2f" stroke-width="7" stroke-linecap="round"/>
+  <line x1="160" y1="155" x2="175" y2="190" stroke="#558b2f" stroke-width="7" stroke-linecap="round"/>
+  <text x="150" y="243" text-anchor="middle" font-size="16" font-family="Arial" font-weight="bold" fill="#555">Lizard — Reptile</text>
+
+</svg>

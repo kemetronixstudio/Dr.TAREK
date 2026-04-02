@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fff8f0" rx="20"/>
+  
+  <ellipse cx="150" cy="145" rx="45" ry="38" fill="#333"/>
+  <ellipse cx="150" cy="108" rx="30" ry="25" fill="#555"/>
+  <circle cx="140" cy="103" r="7" fill="#81d4fa"/>
+  <circle cx="160" cy="103" r="7" fill="#81d4fa"/>
+  <line x1="108" y1="130" x2="55" y2="100" stroke="#333" stroke-width="4"/>
+  <line x1="108" y1="140" x2="50" y2="140" stroke="#333" stroke-width="4"/>
+  <line x1="108" y1="150" x2="55" y2="175" stroke="#333" stroke-width="4"/>
+  <line x1="108" y1="160" x2="60" y2="200" stroke="#333" stroke-width="4"/>
+  <line x1="192" y1="130" x2="245" y2="100" stroke="#333" stroke-width="4"/>
+  <line x1="192" y1="140" x2="250" y2="140" stroke="#333" stroke-width="4"/>
+  <line x1="192" y1="150" x2="245" y2="175" stroke="#333" stroke-width="4"/>
+  <line x1="192" y1="160" x2="240" y2="200" stroke="#333" stroke-width="4"/>
+  <text x="150" y="240" text-anchor="middle" font-size="14" font-family="Arial" font-weight="bold" fill="#555">Spider: 8 legs</text>
+
+</svg>

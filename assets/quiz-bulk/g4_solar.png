@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250">
+  <rect width="300" height="250" fill="#fffde7" rx="20"/>
+  
+  <rect width="300" height="250" fill="#fffde7" rx="20"/>
+  <circle cx="150" cy="100" r="55" fill="#ffd600"/>
+  <line x1="150" y1="30" x2="150" y2="10" stroke="#ffa000" stroke-width="5"/>
+  <line x1="225" y1="60" x2="242" y2="42" stroke="#ffa000" stroke-width="5"/>
+  <line x1="260" y1="100" x2="280" y2="100" stroke="#ffa000" stroke-width="5"/>
+  <line x1="75" y1="60" x2="58" y2="42" stroke="#ffa000" stroke-width="5"/>
+  <line x1="40" y1="100" x2="20" y2="100" stroke="#ffa000" stroke-width="5"/>
+  <rect x="60" y="175" width="180" height="35" rx="8" fill="#607d8b"/>
+  <line x1="75" y1="155" x2="70" y2="175" stroke="#bdbdbd" stroke-width="3"/>
+  <line x1="110" y1="155" x2="105" y2="175" stroke="#bdbdbd" stroke-width="3"/>
+  <line x1="150" y1="155" x2="145" y2="175" stroke="#bdbdbd" stroke-width="3"/>
+  <line x1="190" y1="155" x2="185" y2="175" stroke="#bdbdbd" stroke-width="3"/>
+  <line x1="225" y1="155" x2="220" y2="175" stroke="#bdbdbd" stroke-width="3"/>
+  <text x="150" y="240" text-anchor="middle" font-size="14" font-family="Arial" font-weight="bold" fill="#555">Solar Energy Panel</text>
+
+</svg>
