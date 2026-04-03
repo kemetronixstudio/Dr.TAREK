@@ -62,6 +62,50 @@ translations.ar.noExtraAccounts='لا توجد حسابات محفوظة بعد.
 translations.ar.clearAccessAccountForm='مسح النموذج';
 
 
+function inferLegacyPictureImage(question){
+  if (!question) return null;
+  const answer = String(question.answer || '').trim().toLowerCase();
+  const text = String(question.text || '').trim().toLowerCase();
+  const type = String(question.type || '').trim().toLowerCase();
+  if (type !== 'picture') return null;
+  const answerMap = {
+    'happy':'svg/happy.png',
+    'sad':'svg/sad.png',
+    'cat':'svg/cat.png',
+    'dog':'svg/dog.png',
+    'book':'svg/book.png',
+    'school bag':'svg/school-bag.png',
+    'school-bag':'svg/school-bag.png',
+    'apple':'svg/apple.png',
+    'ball':'svg/ball.png',
+    'triangle':'svg/triangle.png',
+    'alligator':'svg/alligator.png',
+    'apricot':'svg/apricot.png',
+    'tooth':'svg/tooth.png',
+    'truck':'svg/truck.png',
+    'head':'svg/head.png',
+    'hippo':'svg/hippo.png',
+    'orange':'svg/orange.png',
+    'carrots':'svg/carrots.png',
+    'cucumbers':'svg/cucumbers.png',
+    'chicken':'svg/chicken.png',
+    'meat':'svg/meat.png',
+    'healthy':'svg/healthy.png',
+    'food':'svg/food.png',
+    'please':'svg/please.png',
+    'wash your hands':'svg/wash.png',
+    'wash':'svg/wash.png',
+    'seat':'svg/seat.png'
+  };
+  if (answerMap[answer]) return answerMap[answer];
+  if (text.includes('animal')) return 'svg/cat.png';
+  if (text.includes('face feel')) return 'svg/sad.png';
+  if (text.includes('child feel')) return 'svg/happy.png';
+  if (text.includes('school item')) return 'svg/book.png';
+  if (text.includes('carry to school')) return 'svg/school-bag.png';
+  if (text.includes('3 sides')) return 'svg/triangle.png';
+  return null;
+}
 function normalizeQuestion(question){
   if (!question || !Array.isArray(question.options)) return null;
   const clean = {...question};
@@ -74,7 +118,7 @@ function normalizeQuestion(question){
     if (ci) clean.answer = ci;
   }
   if (!clean.options.includes(clean.answer)) return null;
-  clean.image = normalizeQuestionImage(clean.image, clean.grade, clean.text);
+  clean.image = normalizeQuestionImage(clean.image || inferLegacyPictureImage(clean), clean.grade, clean.text);
   return clean;
 }
 function sanitizedPool(grade){
@@ -509,7 +553,7 @@ const LEGACY_IMAGE_MAP = {
   'kg1||what do we use to write?':'assets/quiz-bulk/kg2_pencil.png',
   'kg1||what is 2 + 1?':'assets/quiz-bulk/g1_math_2plus3.png',
   'kg1||which animal hops?':'assets/quiz-bulk/kg1_rabbit.png',
-  'kg1||how does the face feel?':'',
+  'kg1||how does the face feel?':'svg/sad.png',
   'kg2||what shape has 3 sides?':'assets/quiz-bulk/kg2_triangle.png',
   'kg2||what do we use to write?':'assets/quiz-bulk/kg2_pencil.png',
   'kg2||what color is the sky?':'assets/quiz-bulk/kg2_sky.png'
@@ -523,27 +567,27 @@ function normalizeQuestionImage(image, grade, text){
   if (lower.startsWith('data:image/svg')) return null;
 
   const legacySvgToPng = {
-    'icons/book.svg': 'assets/svg/book.png',
-    'icons/book': 'assets/svg/book.png',
-    'icons/school.svg': 'assets/svg/school.png',
-    'icons/school': 'assets/svg/school.png',
-    'icons/house.svg': 'assets/svg/school.png',
-    'icons/house': 'assets/svg/school.png',
-    'assets/svg/book.svg': 'assets/svg/book.png',
-    'assets/svg/school.svg': 'assets/svg/school.png',
-    'assets/svg/house.svg': 'assets/svg/school.png'
+    'icons/book.svg': 'svg/book.png',
+    'icons/book': 'svg/book.png',
+    'icons/school.svg': 'svg/school.png',
+    'icons/school': 'svg/school.png',
+    'icons/house.svg': 'svg/school.png',
+    'icons/house': 'svg/school.png',
+    'svg/book.svg': 'svg/book.png',
+    'svg/school.svg': 'svg/school.png',
+    'svg/house.svg': 'svg/school.png'
   };
   if (legacySvgToPng[lower]) return legacySvgToPng[lower];
 
   if (lower.endsWith('.svg')) {
     const pngVersion = raw.replace(/\.svg(\?.*)?$/i, '.png');
-    if (/^assets\/svg\//i.test(pngVersion) || /^icons\//i.test(raw)) return pngVersion.replace(/^icons\//i, 'assets/svg/');
+    if (/^assets\/svg\//i.test(pngVersion) || /^icons\//i.test(raw)) return pngVersion.replace(/^icons\//i, 'svg/').replace(/^assets\/svg\//i, 'svg/');
     return null;
   }
 
-  if (lower.includes('icons/book')) return 'assets/svg/book.png';
-  if (lower.includes('icons/school')) return 'assets/svg/school.png';
-  if (lower.includes('icons/house')) return 'assets/svg/school.png';
+  if (lower.includes('icons/book')) return 'svg/book.png';
+  if (lower.includes('icons/school')) return 'svg/school.png';
+  if (lower.includes('icons/house')) return 'svg/school.png';
 
   return raw;
 }
