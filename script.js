@@ -121,6 +121,49 @@ function normalizeQuestion(question){
   clean.image = normalizeQuestionImage(clean.image || inferLegacyPictureImage(clean), clean.grade, clean.text);
   return clean;
 }
+
+function loadQuestionImage(image, text=''){
+  const wrap = document.getElementById('questionImageWrap');
+  const img = document.getElementById('questionImage');
+  if (!wrap || !img) return;
+  const pageGrade = (document.body && document.body.dataset && document.body.dataset.grade) ? document.body.dataset.grade : '';
+  const normalized = normalizeQuestionImage(image, pageGrade, text);
+  if (!normalized) {
+    wrap.classList.add('hidden');
+    img.removeAttribute('src');
+    img.onerror = null;
+    return;
+  }
+  const tried = new Set();
+  const candidates = [];
+  const push = (value) => {
+    const v = String(value || '').trim();
+    if (!v || tried.has(v)) return;
+    tried.add(v);
+    candidates.push(v);
+  };
+  push(normalized);
+  if (/^svg\//i.test(normalized)) push(normalized.replace(/^svg\//i, 'assets/svg/'));
+  if (/^assets\/svg\//i.test(normalized)) push(normalized.replace(/^assets\/svg\//i, 'svg/'));
+  if (!/\.(png|jpe?g|webp|gif)($|\?)/i.test(normalized)) {
+    push(normalized + '.png');
+    if (/^svg\//i.test(normalized)) push(normalized.replace(/^svg\//i, 'assets/svg/') + '.png');
+    if (/^assets\/svg\//i.test(normalized)) push(normalized.replace(/^assets\/svg\//i, 'svg/') + '.png');
+  }
+  let idx = 0;
+  wrap.classList.remove('hidden');
+  img.onerror = function(){
+    idx += 1;
+    if (idx < candidates.length) {
+      img.src = candidates[idx];
+      return;
+    }
+    img.removeAttribute('src');
+    wrap.classList.add('hidden');
+    img.onerror = null;
+  };
+  img.src = candidates[idx];
+}
 function sanitizedPool(grade){
   const pool = allQuestionsFor(grade).map(normalizeQuestion).filter(Boolean);
   const seen = new Set();
@@ -205,6 +248,7 @@ const storeKeys = {
   timerSettings:'kgEnglishTimerSettingsV23',
   quizAccess:'kgEnglishQuizAccessV23',
   teacherTests:'kgEnglishTeacherTestsV23',
+  archivedTeacherTestsV382:'kgEnglishArchivedTeacherTestsV382',
   studentRotation:'kgEnglishStudentRotationV23',
   accessAccounts:'kgEnglishAccessAccountsV26'
 };
@@ -294,11 +338,11 @@ function saveAccessAccountFromAdmin(){
       alert((translations[getLang()] && translations[getLang()].chooseOnePermission) || 'Please choose at least one permission for this staff account.');
       return;
     }
-    const accounts = getExtraAccounts ? getExtraAccounts() : [];
+    const accounts = getAccessAccounts ? getAccessAccounts() : [];
     const idx = accounts.findIndex(acc => String(acc.username).toLowerCase() === user.toLowerCase());
     const payload = { username:user, password:pass, role, permissions };
     if (idx >= 0) accounts[idx] = payload; else accounts.push(payload);
-    if (setExtraAccounts) setExtraAccounts(accounts); else localStorage.setItem('kgEnglishExtraAccountsV26', JSON.stringify(accounts));
+    if (setAccessAccounts) setAccessAccounts(accounts); else localStorage.setItem('kgEnglishAccessAccountsV26', JSON.stringify(accounts));
     renderAccessAccountsList && renderAccessAccountsList();
     const userEl = document.getElementById('accessAccountUser'); if (userEl) userEl.value = '';
     const passEl = document.getElementById('accessAccountPass'); if (passEl) passEl.value = '';
@@ -811,7 +855,7 @@ function initQuiz(){
   function current(){ return questions[currentIndex]; }
   let quizTimerToken = 0;
   function renderQuestion(){
-    clearQuizTimers(); const timerToken = quizTimerToken; answered = false; nextBtn.classList.add('hidden'); const q = current(); if (!q) { finishQuiz(); return; } ensureSkillStat(q.skill, q.text); if (questionProgressEl) questionProgressEl.textContent = `${currentIndex+1} / ${questions.length}`; skillBadge.textContent = skillLabels[getLang()][q.skill] || q.skill; typeBadge.textContent = typeLabels[getLang()][q.type] || q.type; questionText.textContent = q.text; if (q.image){ loadQuestionImage(q.image, q.text); } else { questionImageWrap.classList.add('hidden'); questionImage.removeAttribute('src'); questionImage.onerror = null; } optionsWrap.innerHTML = ''; const timerEnabled = timerEnabledFor(grade); timer = grade === 'kg1' ? 15 : 18; quizDeadlineTs = timerEnabled ? (Date.now() + (timer * 1000)) : 0; timerValueEl.textContent = timerEnabled ? String(timer) : '∞'; timerValueEl.closest('.status-card')?.classList.toggle('timer-disabled', !timerEnabled); shuffle(q.options).forEach(opt=>{ const b=document.createElement('button'); b.className='option-btn'; b.textContent = opt; b.onclick = ()=> answerQuestion(b, opt === q.answer, opt); optionsWrap.appendChild(b); }); if (timerEnabled) { interval = setInterval(()=>{ try { if (timerToken !== quizTimerToken) { clearQuizTimers(); return; } const remaining = Math.max(0, Math.ceil((quizDeadlineTs - Date.now()) / 1000)); if (remaining !== timer) { timer = remaining; timerValueEl.textContent = String(timer); } if (remaining <= 0){ clearInterval(interval); interval = null; timeoutQuestion(); } } catch(err){ console.error('timer tick failed', err); clearQuizTimers(); finishQuiz(); } }, 250); } else { interval = null; } }
+    clearQuizTimers(); const timerToken = quizTimerToken; answered = false; nextBtn.classList.add('hidden'); const q = current(); if (!q) { finishQuiz(); return; } ensureSkillStat(q.skill, q.text); if (questionProgressEl) questionProgressEl.textContent = `${currentIndex+1} / ${questions.length}`; skillBadge.textContent = skillLabels[getLang()][q.skill] || q.skill; typeBadge.textContent = typeLabels[getLang()][q.type] || q.type; questionText.textContent = q.text; const resolvedImage = normalizeQuestionImage(q.image || inferLegacyPictureImage(q), q.grade || grade, q.text); if (resolvedImage){ q.image = resolvedImage; loadQuestionImage(resolvedImage, q.text); } else { questionImageWrap.classList.add('hidden'); questionImage.removeAttribute('src'); questionImage.onerror = null; } optionsWrap.innerHTML = ''; const timerEnabled = timerEnabledFor(grade); timer = grade === 'kg1' ? 15 : 18; quizDeadlineTs = timerEnabled ? (Date.now() + (timer * 1000)) : 0; timerValueEl.textContent = timerEnabled ? String(timer) : '∞'; timerValueEl.closest('.status-card')?.classList.toggle('timer-disabled', !timerEnabled); shuffle(q.options).forEach(opt=>{ const b=document.createElement('button'); b.className='option-btn'; b.textContent = opt; b.onclick = ()=> answerQuestion(b, opt === q.answer, opt); optionsWrap.appendChild(b); }); if (timerEnabled) { interval = setInterval(()=>{ try { if (timerToken !== quizTimerToken || current() !== q) { clearQuizTimers(); return; } const remaining = Math.max(0, Math.ceil((quizDeadlineTs - Date.now()) / 1000)); if (remaining !== timer) { timer = remaining; timerValueEl.textContent = String(timer); } if (remaining <= 0){ clearInterval(interval); interval = null; timeoutQuestion(); } } catch(err){ console.error('timer tick failed', err); clearQuizTimers(); finishQuiz(); } }, 250); } else { interval = null; } }
   function markCorrect(buttons, q){ buttons.forEach(btn=>{ if (btn.textContent === q.answer) btn.classList.add('correct'); }); }
   function schedule(){ if (autoNext.checked) { autoAdvanceTimeout = setTimeout(goNext, 900); } else nextBtn.classList.remove('hidden'); }
   function tuneDifficulty(wasCorrect, remaining){ if (wasCorrect && remaining > 10) adaptiveIndex = Math.min(adaptiveIndex + 1, 2); if (!wasCorrect || remaining < 4) adaptiveIndex = Math.max(adaptiveIndex - 1, 0); }
@@ -963,7 +1007,7 @@ function syncTeacherQuestionTextarea(){
   const checks = Array.from(document.querySelectorAll('.teacher-question-check:checked'));
   const listEl = document.getElementById('testQuestionList');
   if (!listEl) return;
-  listEl.value = checks.map(c => c.dataset.questionText || '').filter(Boolean).join('\\n');
+  listEl.value = checks.map(c => c.dataset.questionText || '').filter(Boolean).join('\n');
 }
 function renderTeacherTestEditor(){
   const tests = getTeacherTests();
@@ -981,7 +1025,7 @@ function renderTeacherTestEditor(){
     if (![...modeEl.options].some(o=>o.value===cfg.mode)){ const opt=document.createElement('option'); opt.value='select'; opt.textContent=translations[getLang()].chooseExistingQuestions; modeEl.appendChild(opt); }
     modeEl.value = cfg.mode || 'random';
     countEl.value = cfg.count || '';
-    listEl.value = (cfg.questions || []).join('\\n');
+    listEl.value = (cfg.questions || []).join('\n');
   } else {
     gradeEl.value = activeGrade.toUpperCase();
     nameEl.value = '';
@@ -1044,9 +1088,6 @@ initThemeButtons(); initLangButtons(); applyTranslations(); renderHomeProgress()
 
 window.addEventListener('error', (event) => { try { console.error('App error', event.error || event.message); } catch(e){} });
 window.addEventListener('unhandledrejection', (event) => { try { console.error('Unhandled promise rejection', event.reason); } catch(e){} });
-
-window.addEventListener('error', (event) => { try { console.error('App error:', event.message, event.filename, event.lineno); } catch(e){} });
-window.addEventListener('unhandledrejection', (event) => { try { console.error('Unhandled promise rejection:', event.reason); } catch(e){} });
 
 document.getElementById('testGrade')?.addEventListener('change', renderTeacherTestEditor);
 

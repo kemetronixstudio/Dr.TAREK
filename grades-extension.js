@@ -106,12 +106,8 @@
     mergeIntoPools();
     setQuizPageMeta();
     refreshHomeHeroText();
-    refreshHomeHeroText();
     renderHomeGradeCards();
     refreshAdminGradeFilters();
-    if (document.body && document.body.dataset.page === 'quiz' && typeof initQuiz === 'function' && document.body.dataset.grade) {
-      try { initQuiz(); } catch (err) {}
-    }
   });
 })();
 
