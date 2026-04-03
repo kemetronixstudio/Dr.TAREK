@@ -1397,3 +1397,122 @@ body[data-page="home"][data-lang="ar"] .hero-copy h1{
 }
 body{overflow-x:hidden;}
 .site-credit-footer, footer.site-footer{display:none !important;}
+
+
+
+/* v6 mobile header organization fix */
+@media (max-width: 640px){
+  .top-shell,
+  .top-shell-inline{
+    width:min(100% - 20px, 100%);
+    display:grid !important;
+    grid-template-columns:1fr 1fr;
+    grid-template-areas:
+      "center center"
+      "left right";
+    align-items:start;
+    gap:12px 14px;
+    padding-top:12px;
+  }
+
+  .top-shell-inline .header-center,
+  .top-shell .header-center{
+    grid-area:center;
+    width:100%;
+    justify-self:center;
+    display:flex;
+    justify-content:center;
+  }
+
+  .top-shell-inline .header-left,
+  .top-shell .header-left{
+    grid-area:left;
+    width:100%;
+    justify-self:start;
+    display:flex;
+    justify-content:flex-start;
+    align-items:flex-start;
+  }
+
+  .top-shell-inline .header-right,
+  .top-shell .header-right{
+    grid-area:right;
+    width:100%;
+    justify-self:end;
+    display:flex;
+    justify-content:flex-end;
+    align-items:flex-start;
+  }
+
+  .top-shell-inline .teacher-topline,
+  .top-shell .teacher-topline{
+    max-width:100%;
+    width:auto;
+    min-height:50px;
+    padding:10px 16px;
+    font-size:.9rem;
+    line-height:1.2;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .lang-switch{
+    display:grid !important;
+    grid-template-columns:1fr;
+    gap:10px;
+    justify-items:start;
+  }
+
+  .lang-btn{
+    min-width:64px;
+    min-height:64px;
+    padding:0 16px;
+    font-size:1.15rem;
+  }
+
+  .top-shell-inline .theme-quick-switch,
+  .top-shell .theme-quick-switch{
+    display:grid !important;
+    grid-template-columns:repeat(2, minmax(52px, 1fr));
+    gap:10px;
+    justify-content:end;
+    justify-items:end;
+    width:auto;
+  }
+
+  .theme-pill-btn,
+  .tiny-admin-link{
+    width:52px;
+    height:52px;
+    min-width:52px;
+    min-height:52px;
+    padding:0;
+    font-size:1.05rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 900px){
+  .top-shell-inline{
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+
+  .top-shell-inline .header-left,
+  .top-shell-inline .header-center,
+  .top-shell-inline .header-right{
+    justify-self:center;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+
+  .top-shell-inline .teacher-topline{
+    max-width:92vw;
+  }
+
+  .lang-switch,
+  .top-shell-inline .theme-quick-switch{
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+}
