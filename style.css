@@ -2008,3 +2008,72 @@ body{overflow-x:hidden;}
     display:none !important;
   }
 }
+
+
+/* v10 mobile theme centering + leaderboard overflow fix */
+@media (max-width: 640px){
+  body[data-page="home"] .top-shell-inline .header-right{
+    justify-content:center !important;
+    text-align:center !important;
+  }
+
+  body[data-page="home"] .top-shell-inline .theme-quick-switch{
+    width:100% !important;
+    display:flex !important;
+    justify-content:center !important;
+    align-items:center !important;
+    margin-inline:auto !important;
+  }
+}
+
+/* leaderboard/table overflow fix across all devices */
+.leaderboard-wrap,
+.leaderboard-table-wrap,
+.table-wrap,
+.responsive-table-wrap{
+  width:100%;
+  max-width:100%;
+  overflow-x:auto !important;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  padding-bottom:4px;
+}
+
+.leaderboard-table,
+table.leaderboard,
+.leaderboard-wrap table,
+.leaderboard-table-wrap table,
+.table-wrap table,
+.responsive-table-wrap table{
+  width:100%;
+  min-width:720px;
+  border-collapse:separate;
+  border-spacing:0;
+  table-layout:auto;
+}
+
+.leaderboard-table th,
+.leaderboard-table td,
+table.leaderboard th,
+table.leaderboard td,
+.leaderboard-wrap table th,
+.leaderboard-wrap table td,
+.leaderboard-table-wrap table th,
+.leaderboard-table-wrap table td,
+.table-wrap table th,
+.table-wrap table td,
+.responsive-table-wrap table th,
+.responsive-table-wrap table td{
+  white-space:nowrap;
+}
+
+@media (max-width: 900px){
+  .leaderboard-table,
+  table.leaderboard,
+  .leaderboard-wrap table,
+  .leaderboard-table-wrap table,
+  .table-wrap table,
+  .responsive-table-wrap table{
+    min-width:640px;
+  }
+}
