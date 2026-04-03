@@ -216,3 +216,46 @@
   window.addEventListener('load', mapGradeImages);
 })();
 
+
+
+/* v14 force image mapping into grade banks */
+(function(){
+  function eachList(obj, fn){
+    if(Array.isArray(obj)) return fn(obj);
+    if(obj && typeof obj === 'object'){
+      Object.keys(obj).forEach(function(k){
+        if(Array.isArray(obj[k])) fn(obj[k], k);
+      });
+    }
+  }
+  function run(){
+    if(!window.getMappedQuestionImage) return;
+    [
+      window.gradeQuestionBanks,
+      window.gradeBanks,
+      window.questionsByGrade,
+      window.gradesQuestionBank,
+      window.gradePools,
+      window.gradeQuestions,
+      window.grade1Questions,
+      window.grade2Questions,
+      window.grade3Questions,
+      window.grade4Questions,
+      window.grade5Questions,
+      window.grade6Questions
+    ].forEach(function(bank){
+      eachList(bank, function(list){
+        list.forEach(function(q){
+          try{
+            if(q && !q.image){
+              const img = window.getMappedQuestionImage(q);
+              if(img) q.image = img;
+            }
+          }catch(_){}
+        });
+      });
+    });
+  }
+  document.addEventListener('DOMContentLoaded', run);
+  window.addEventListener('load', run);
+})();

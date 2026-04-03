@@ -69,6 +69,8 @@ function inferLegacyPictureImage(question){
   const type = String(question.type || '').trim().toLowerCase();
   if (type !== 'picture') return null;
   const answerMap = {
+  '3':'svg/triangle.png',
+  'banana':'svg/banana.png',
     'happy':'svg/happy.png',
     'sad':'svg/sad.png',
     'cat':'svg/cat.png',
@@ -3170,6 +3172,8 @@ Object.assign(translations.ar, {
   const globalScope = window;
 
   const IMAGE_ANSWER_MAP = Object.assign({
+    '3':'svg/triangle.png',
+    'banana':'svg/banana.png',
     'cat':'svg/cat.png',
     'dog':'svg/dog.png',
     'fish':'svg/fish.png',
@@ -3339,3 +3343,50 @@ Object.assign(translations.ar, {
   window.addEventListener('load', preprocessKnownBanks);
 })();
 
+
+
+/* v14 wider grade image preprocessing */
+(function(){
+  function applyMappedImages(list){
+    if(!Array.isArray(list) || !window.getMappedQuestionImage) return;
+    list.forEach(function(q){
+      try{
+        if(q && !q.image){
+          const img = window.getMappedQuestionImage(q);
+          if(img) q.image = img;
+        }
+      }catch(_){}
+    });
+  }
+  function run(){
+    [
+      window.quizQuestions,
+      window.kgQuestions,
+      window.kg1Questions,
+      window.kg2Questions,
+      window.grade1Questions,
+      window.grade2Questions,
+      window.grade3Questions,
+      window.grade4Questions,
+      window.grade5Questions,
+      window.grade6Questions,
+      window.gradeQuestions,
+      window.allQuestions,
+      window.questionBank
+    ].forEach(applyMappedImages);
+
+    [
+      window.gradeQuestionBanks,
+      window.gradeBanks,
+      window.questionsByGrade,
+      window.gradesQuestionBank,
+      window.gradePools
+    ].forEach(function(obj){
+      if(obj && typeof obj === 'object'){
+        Object.keys(obj).forEach(function(k){ applyMappedImages(obj[k]); });
+      }
+    });
+  }
+  document.addEventListener('DOMContentLoaded', run);
+  window.addEventListener('load', run);
+})();
