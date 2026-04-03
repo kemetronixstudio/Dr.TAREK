@@ -2261,3 +2261,61 @@ body[data-page="playtest"] .play-top3-item{
     width:100% !important;
   }
 }
+
+
+/* play modes upgrade */
+.game-mode-wrap,
+.total-timer-wrap{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.field-label{
+  font-weight:700;
+  color:#2c5a2c;
+  font-size:.95rem;
+}
+.game-mode-select{
+  width:100%;
+  min-height:58px;
+  border:1px solid #d8dbe6;
+  border-radius:18px;
+  padding:0 18px;
+  background:#fff;
+  font:inherit;
+  color:#334;
+}
+.game-mode-hint{
+  color:#62718c;
+  font-size:.92rem;
+  line-height:1.45;
+}
+.mode-top3-tabs{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:8px 0 14px;
+}
+.mode-tab-btn{
+  border:none;
+  border-radius:999px;
+  padding:10px 14px;
+  font:inherit;
+  font-weight:700;
+  background:#edf2fb;
+  color:#2c5a8c;
+  cursor:pointer;
+}
+.mode-tab-btn.active{
+  background:linear-gradient(90deg,#ff945e,#ffb34f);
+  color:#fff;
+  box-shadow:0 10px 20px rgba(255,153,87,.22);
+}
+.quiz-stat-card.mini{
+  min-width:140px;
+}
+@media (max-width: 900px){
+  .mode-top3-tabs{
+    justify-content:center;
+  }
+}

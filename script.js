@@ -2744,3 +2744,341 @@ Object.assign(translations.ar, {
   document.addEventListener('DOMContentLoaded', normalizeMobileHeader);
   window.addEventListener('resize', normalizeMobileHeader, {passive:true});
 })();
+
+
+/* v12 play modes upgrade */
+(function(){
+  const APP = window;
+  const MODE_KEYS = {
+    question_timer: 'playLeaderboard_question_timer_v1',
+    total_timer: 'playLeaderboard_total_timer_v1',
+    endless: 'playLeaderboard_endless_v1'
+  };
+  const ADMIN_RESET_KEYS = Object.values(MODE_KEYS);
+
+  const qs = (sel, root=document) => root.querySelector(sel);
+  const qsa = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+  APP.playGameMode = APP.playGameMode || 'question_timer';
+  APP.playTotalTimerMs = APP.playTotalTimerMs || 10*60*1000;
+  APP.playTotalTimerStartedAt = APP.playTotalTimerStartedAt || 0;
+  APP.playTotalTimerInterval = APP.playTotalTimerInterval || null;
+  APP.playQuestionTimerInterval = APP.playQuestionTimerInterval || null;
+  APP.playQuestionTimerGeneration = APP.playQuestionTimerGeneration || 0;
+  APP.playQuestionIndex = APP.playQuestionIndex || 0;
+  APP.playQuestionLimit = APP.playQuestionLimit || 10;
+  APP.activeModeBoard = APP.activeModeBoard || 'question_timer';
+  APP.activeModeTable = APP.activeModeTable || 'question_timer';
+
+  function modeLabel(mode){
+    if(mode === 'total_timer') return 'Total Timer';
+    if(mode === 'endless') return 'Endless';
+    return 'Question Timer';
+  }
+
+  function getModeStore(mode){
+    try{
+      const key = MODE_KEYS[mode] || MODE_KEYS.question_timer;
+      return JSON.parse(localStorage.getItem(key) || '[]');
+    }catch(_){
+      return [];
+    }
+  }
+
+  function setModeStore(mode, rows){
+    const key = MODE_KEYS[mode] || MODE_KEYS.question_timer;
+    localStorage.setItem(key, JSON.stringify(rows || []));
+  }
+
+  function modeSorted(mode){
+    const rows = getModeStore(mode).slice();
+    rows.sort((a,b)=>{
+      const scoreDiff = (Number(b.bestScore)||0) - (Number(a.bestScore)||0);
+      if(scoreDiff !== 0) return scoreDiff;
+      return new Date(b.lastPlayed||0).getTime() - new Date(a.lastPlayed||0).getTime();
+    });
+    return rows;
+  }
+
+  function renderModeTop3(mode){
+    const list = qs('#top3List, #playTop3List, .play-top3-list');
+    if(!list) return;
+    const rows = modeSorted(mode).slice(0,3);
+    if(!rows.length){
+      list.innerHTML = '<div class="muted-empty">No scores yet. Be the first champion!</div>';
+      return;
+    }
+    list.innerHTML = rows.map((row, idx)=>{
+      const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : '🥉';
+      return `<div class="play-top3-item">
+        <div class="play-top3-medal">${medal}</div>
+        <div class="play-top3-main">
+          <div class="play-top3-name">${row.name || '-'}</div>
+          <div class="play-top3-grade">${row.grade || '-'}</div>
+          <div class="play-top3-sub">${modeLabel(mode)}</div>
+        </div>
+        <div class="play-top3-score">${Number(row.bestScore)||0}</div>
+      </div>`;
+    }).join('');
+  }
+
+  function renderModeTable(mode){
+    const table = qs('.play-board-card table, .leaderboard table, .data-table');
+    if(!table) return;
+    const tbody = table.querySelector('tbody');
+    if(!tbody) return;
+    const rows = modeSorted(mode);
+    if(!rows.length){
+      tbody.innerHTML = '<tr><td colspan="7">No leaderboard data yet.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = rows.map((row, idx)=>`
+      <tr>
+        <td>${idx+1}</td>
+        <td>${row.name || '-'}</td>
+        <td>${row.grade || '-'}</td>
+        <td>${row.studentId || '-'}</td>
+        <td>${Number(row.bestScore)||0}</td>
+        <td>${Number(row.attempts)||1}</td>
+        <td>${row.lastPlayed || '-'}</td>
+      </tr>
+    `).join('');
+  }
+
+  function refreshModeBoards(){
+    renderModeTop3(APP.activeModeBoard);
+    renderModeTable(APP.activeModeTable);
+    const modeBadge = qs('#modeBadge');
+    if(modeBadge) modeBadge.textContent = modeLabel(APP.playGameMode);
+  }
+
+  function bindModeTabs(){
+    qsa('[data-mode-board]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        APP.activeModeBoard = btn.dataset.modeBoard;
+        qsa('[data-mode-board]').forEach(x=>x.classList.toggle('active', x===btn));
+        renderModeTop3(APP.activeModeBoard);
+      });
+    });
+    qsa('[data-mode-table]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        APP.activeModeTable = btn.dataset.modeTable;
+        qsa('[data-mode-table]').forEach(x=>x.classList.toggle('active', x===btn));
+        renderModeTable(APP.activeModeTable);
+      });
+    });
+  }
+
+  function updateModeHint(){
+    const modeSelect = qs('#gameMode');
+    const totalWrap = qs('#totalTimerWrap');
+    const hint = qs('#gameModeHint');
+    if(!modeSelect || !hint) return;
+    const mode = modeSelect.value;
+    if(totalWrap) totalWrap.hidden = mode !== 'total_timer';
+    if(mode === 'total_timer') hint.textContent = 'Total timer: solve as many questions as you can before time ends.';
+    else if(mode === 'endless') hint.textContent = 'Endless: no timer, keep playing until you finish the set.';
+    else hint.textContent = 'Question timer: every question has its own timer.';
+  }
+
+  function stopQuestionTimer(){
+    APP.playQuestionTimerGeneration += 1;
+    if(APP.playQuestionTimerInterval){
+      clearInterval(APP.playQuestionTimerInterval);
+      APP.playQuestionTimerInterval = null;
+    }
+  }
+
+  function stopTotalTimer(){
+    if(APP.playTotalTimerInterval){
+      clearInterval(APP.playTotalTimerInterval);
+      APP.playTotalTimerInterval = null;
+    }
+  }
+
+  function writeTimerValue(seconds){
+    const timer = qs('#timerBadge, #timeBadge, #timeLeftValue');
+    if(timer) timer.textContent = Math.max(0, Math.ceil(seconds));
+  }
+
+  function writeModeProgress(){
+    const el = qs('#modeProgressValue');
+    if(!el) return;
+    if(APP.playGameMode === 'total_timer'){
+      const elapsed = Date.now() - APP.playTotalTimerStartedAt;
+      const left = Math.max(0, APP.playTotalTimerMs - elapsed);
+      el.textContent = `${Math.ceil(left/60000)} min left`;
+    }else if(APP.playGameMode === 'endless'){
+      el.textContent = `${APP.playQuestionIndex + 1} / ${APP.playQuestionLimit}`;
+    }else{
+      el.textContent = `${APP.playQuestionIndex + 1} / ${APP.playQuestionLimit}`;
+    }
+  }
+
+  function startQuestionTimer(seconds){
+    stopQuestionTimer();
+    if(APP.playGameMode !== 'question_timer'){
+      writeModeProgress();
+      return;
+    }
+    const generation = ++APP.playQuestionTimerGeneration;
+    let remaining = Number(seconds)||20;
+    writeTimerValue(remaining);
+    writeModeProgress();
+    APP.playQuestionTimerInterval = setInterval(()=>{
+      if(generation !== APP.playQuestionTimerGeneration){
+        clearInterval(APP.playQuestionTimerInterval);
+        return;
+      }
+      remaining -= 1;
+      writeTimerValue(remaining);
+      if(remaining <= 0){
+        stopQuestionTimer();
+        if(typeof APP.nextMixedQuestion === 'function') APP.nextMixedQuestion(true);
+      }
+    }, 1000);
+  }
+
+  function startTotalTimer(){
+    stopTotalTimer();
+    if(APP.playGameMode !== 'total_timer'){
+      writeModeProgress();
+      return;
+    }
+    APP.playTotalTimerStartedAt = Date.now();
+    const run = ()=>{
+      const leftMs = Math.max(0, APP.playTotalTimerMs - (Date.now() - APP.playTotalTimerStartedAt));
+      writeTimerValue(Math.ceil(leftMs/1000));
+      writeModeProgress();
+      if(leftMs <= 0){
+        stopTotalTimer();
+        stopQuestionTimer();
+        if(typeof APP.finishMixedQuiz === 'function') APP.finishMixedQuiz('time_up');
+      }
+    };
+    run();
+    APP.playTotalTimerInterval = setInterval(run, 1000);
+  }
+
+  function patchStartFlow(){
+    const startBtn = qs('#startMixedQuizBtn');
+    if(!startBtn || startBtn.dataset.modesBound === '1') return;
+    startBtn.dataset.modesBound = '1';
+
+    startBtn.addEventListener('click', ()=>{
+      const modeSel = qs('#gameMode');
+      const minsSel = qs('#totalTimerMinutes');
+      APP.playGameMode = modeSel ? modeSel.value : 'question_timer';
+      APP.playTotalTimerMs = ((minsSel ? Number(minsSel.value) : 10) || 10) * 60 * 1000;
+      APP.playQuestionLimit = 10;
+      APP.playQuestionIndex = 0;
+      stopQuestionTimer();
+      stopTotalTimer();
+      setTimeout(()=>{
+        const modeBadge = qs('#modeBadge');
+        if(modeBadge) modeBadge.textContent = modeLabel(APP.playGameMode);
+        writeModeProgress();
+        if(APP.playGameMode === 'total_timer') startTotalTimer();
+      }, 0);
+    }, true);
+  }
+
+  function patchQuizFns(){
+    if(typeof APP.renderMixedQuestion === 'function' && !APP.renderMixedQuestion.__modesPatched){
+      const originalRender = APP.renderMixedQuestion;
+      APP.renderMixedQuestion = function(){
+        const result = originalRender.apply(this, arguments);
+        writeModeProgress();
+        if(APP.playGameMode === 'question_timer'){
+          startQuestionTimer(20);
+        }else if(APP.playGameMode === 'endless'){
+          stopQuestionTimer();
+          writeTimerValue('∞');
+          writeModeProgress();
+        }else if(APP.playGameMode === 'total_timer'){
+          stopQuestionTimer();
+          writeModeProgress();
+        }
+        return result;
+      };
+      APP.renderMixedQuestion.__modesPatched = true;
+    }
+
+    if(typeof APP.nextMixedQuestion === 'function' && !APP.nextMixedQuestion.__modesPatched){
+      const originalNext = APP.nextMixedQuestion;
+      APP.nextMixedQuestion = function(){
+        APP.playQuestionIndex = Math.min((APP.playQuestionIndex||0) + 1, (APP.playQuestionLimit||10));
+        return originalNext.apply(this, arguments);
+      };
+      APP.nextMixedQuestion.__modesPatched = true;
+    }
+
+    if(typeof APP.finishMixedQuiz === 'function' && !APP.finishMixedQuiz.__modesPatched){
+      const originalFinish = APP.finishMixedQuiz;
+      APP.finishMixedQuiz = function(reason){
+        stopQuestionTimer();
+        stopTotalTimer();
+        try{
+          const score = Number(APP.mixedScore || APP.currentScore || 0);
+          const gradeSel = qs('#mixedGrade, #gradeSelect');
+          const studentId = (qs('#studentId') || {}).value || '';
+          const playerName = (qs('#playerName') || {}).value || 'Player';
+          const gradeVal = gradeSel ? gradeSel.value : '-';
+          const rows = getModeStore(APP.playGameMode);
+          const found = rows.find(r => (r.name||'') === playerName && (r.studentId||'') === studentId && (r.grade||'') === gradeVal);
+          const playedAt = new Date().toLocaleString();
+          if(found){
+            found.bestScore = Math.max(Number(found.bestScore)||0, score);
+            found.lastPlayed = playedAt;
+            found.attempts = (Number(found.attempts)||1) + 1;
+          }else{
+            rows.push({name:playerName, studentId:studentId || '-', grade:gradeVal || '-', bestScore:score, attempts:1, lastPlayed:playedAt});
+          }
+          setModeStore(APP.playGameMode, rows);
+        }catch(_){}
+        refreshModeBoards();
+        return originalFinish.apply(this, arguments);
+      };
+      APP.finishMixedQuiz.__modesPatched = true;
+    }
+  }
+
+  function patchAdminReset(){
+    if(!APP.resetAllTeacherData){
+      APP.resetAllTeacherData = function(){
+        ADMIN_RESET_KEYS.forEach(k => localStorage.removeItem(k));
+        refreshModeBoards();
+      };
+      return;
+    }
+    if(APP.resetAllTeacherData.__modesPatched) return;
+    const originalReset = APP.resetAllTeacherData;
+    APP.resetAllTeacherData = function(){
+      ADMIN_RESET_KEYS.forEach(k => localStorage.removeItem(k));
+      const result = originalReset.apply(this, arguments);
+      refreshModeBoards();
+      return result;
+    };
+    APP.resetAllTeacherData.__modesPatched = true;
+  }
+
+  document.addEventListener('DOMContentLoaded', ()=>{
+    const modeSel = qs('#gameMode');
+    if(modeSel && !modeSel.dataset.bound){
+      modeSel.dataset.bound = '1';
+      modeSel.addEventListener('change', updateModeHint);
+      updateModeHint();
+    }
+    bindModeTabs();
+    patchStartFlow();
+    patchQuizFns();
+    patchAdminReset();
+    refreshModeBoards();
+  });
+
+  window.addEventListener('load', ()=>{
+    patchQuizFns();
+    patchAdminReset();
+    refreshModeBoards();
+  });
+})();

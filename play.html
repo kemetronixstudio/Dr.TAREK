@@ -8,7 +8,12 @@
       <p data-i18n="playHeroText">Every start gives a different mixed quiz in English. Play, score high, and race to the top of the live leaderboard.</p>
     </div>
     <div class="play-top3-panel" id="playTop3Panel">
-      <div class="section-head compact"><h2 data-i18n="playTop3">Top 3 Champions</h2><button class="ghost-btn small-btn" id="refreshPlayLeadersBtn" type="button" data-i18n="refresh">Refresh</button></div>
+      <div class="section-head compact"><h2 data-i18n="playTop3">Top 3 Champions</h2>
+                  <div class="mode-top3-tabs" id="modeTop3Tabs">
+                    <button type="button" class="mode-tab-btn active" data-mode-board="question_timer">Question</button>
+                    <button type="button" class="mode-tab-btn" data-mode-board="total_timer">Total</button>
+                    <button type="button" class="mode-tab-btn" data-mode-board="endless">Endless</button>
+                  </div><button class="ghost-btn small-btn" id="refreshPlayLeadersBtn" type="button" data-i18n="refresh">Refresh</button></div>
       <div class="play-top3-list" id="playTop3List"><div class="play-top3-empty" data-i18n="playLoadingLeaderboard">Loading leaderboard...</div></div>
     </div>
   </section>
@@ -54,7 +59,12 @@
   </section>
 
   <section class="card play-board-card">
-    <div class="section-head"><h2 data-i18n="playLiveLeaderboard">Live Leaderboard</h2></div>
+    <div class="section-head"><h2 data-i18n="playLiveLeaderboard">Live Leaderboard</h2>
+                  <div class="mode-top3-tabs leaderboard-mode-tabs" id="leaderboardModeTabs">
+                    <button type="button" class="mode-tab-btn active" data-mode-table="question_timer">Question</button>
+                    <button type="button" class="mode-tab-btn" data-mode-table="total_timer">Total</button>
+                    <button type="button" class="mode-tab-btn" data-mode-table="endless">Endless</button>
+                  </div></div>
     <div class="table-wrap">
       <table class="data-table">
         <thead><tr><th>#</th><th data-i18n="leaderName">Name</th><th data-i18n="leaderGrade">Grade</th><th data-i18n="leaderStudentId">Student ID</th><th data-i18n="leaderBestScore">Best Score</th><th data-i18n="leaderAttempts">Attempts</th><th data-i18n="leaderLastPlayed">Last Played</th></tr></thead>
