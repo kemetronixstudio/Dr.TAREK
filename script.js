@@ -74,6 +74,7 @@ function normalizeQuestion(question){
     if (ci) clean.answer = ci;
   }
   if (!clean.options.includes(clean.answer)) return null;
+  clean.image = normalizeQuestionImage(clean.image, clean.grade, clean.text);
   return clean;
 }
 function sanitizedPool(grade){
@@ -498,6 +499,30 @@ function collectQuestionsWithMeta(grade){
 }
 function applyQuestionOverrides(question){ const overrides = getQuestionOverrides(); const meta = question._meta || {}; const patch = overrides[meta.id] || {}; return {...question, ...patch, _meta:meta}; }
 function questionSignature(q){ return [q.grade || '', q.skill || '', q.text || '', q.answer || '', q.image || ''].join('||'); }
+const LEGACY_IMAGE_MAP = {
+  'kg1||what color is the sky?':'assets/quiz-bulk/kg2_sky.png',
+  'kg1||what color is a banana?':'assets/quiz-bulk/kg1_banana.png',
+  'kg1||what shape is a ball?':'assets/quiz-bulk/kg1_circle.png',
+  'kg1||how many fingers do you have on one hand?':'assets/quiz-bulk/kg1_number5.png',
+  'kg1||what color is grass?':'assets/quiz-bulk/kg1_blue.png',
+  'kg1||what sound does a cat make?':'assets/quiz-bulk/kg1_cat.png',
+  'kg1||what do we use to write?':'assets/quiz-bulk/kg2_pencil.png',
+  'kg1||what is 2 + 1?':'assets/quiz-bulk/g1_math_2plus3.png',
+  'kg1||which animal hops?':'assets/quiz-bulk/kg1_rabbit.png',
+  'kg1||how does the face feel?':'',
+  'kg2||what shape has 3 sides?':'assets/quiz-bulk/kg2_triangle.png',
+  'kg2||what do we use to write?':'assets/quiz-bulk/kg2_pencil.png',
+  'kg2||what color is the sky?':'assets/quiz-bulk/kg2_sky.png'
+};
+function normalizeQuestionImage(image, grade, text){
+  const raw = String(image || '').trim();
+  const key = `${String(grade||'').toLowerCase()}||${String(text||'').trim().toLowerCase()}`;
+  if (LEGACY_IMAGE_MAP[key] !== undefined) return LEGACY_IMAGE_MAP[key] || null;
+  if (!raw) return null;
+  const lower = raw.toLowerCase();
+  if (lower.startsWith('data:image/svg') || lower.endsWith('.svg') || lower.includes('/assets/svg/') || lower.includes('icons/book') || lower.includes('icons/school') || lower.includes('icons/house')) return null;
+  return raw;
+}
 function sanitizeQuestions(list){
   const seen = new Set();
   return (list || []).filter(q => {
@@ -716,8 +741,9 @@ function initQuiz(){
     selectedCount = baseSet.length; questions = baseSet; sessionUsed = new Set(baseSet.map(questionSignature)); currentIndex = 0; score = 0; missedQuestions = []; skillStats = {}; adaptiveIndex = 0; answerLog = []; quizStartedAt = new Date().toISOString(); questions.forEach(q=> ensureSkillStat(q.skill, q.text)); timer = grade === 'kg1' ? 15 : 18; unlockSpeech(); setupCard.classList.add('hidden'); quizSection.classList.remove('hidden'); studentPreview.textContent = studentName; quizLevelLabel.textContent = `${selectedLevelLabel} / ${selectedCount}`; scoreValueEl.textContent = '0'; await pushCloudProgress(); try { renderQuestion(); } catch (e) { console.error('renderQuestion failed on startQuiz', e); finishQuiz(); }
   }
   function current(){ return questions[currentIndex]; }
+  let quizTimerToken = 0;
   function renderQuestion(){
-    clearQuizTimers(); answered = false; nextBtn.classList.add('hidden'); const q = current(); if (!q) { finishQuiz(); return; } ensureSkillStat(q.skill, q.text); if (questionProgressEl) questionProgressEl.textContent = `${currentIndex+1} / ${questions.length}`; skillBadge.textContent = skillLabels[getLang()][q.skill] || q.skill; typeBadge.textContent = typeLabels[getLang()][q.type] || q.type; questionText.textContent = q.text; if (q.image){ questionImage.onerror = () => { questionImageWrap.classList.add('hidden'); questionImage.removeAttribute('src'); questionImage.onerror = null; }; questionImage.src = q.image; questionImage.alt = q.text; questionImageWrap.classList.remove('hidden'); } else { questionImageWrap.classList.add('hidden'); questionImage.removeAttribute('src'); questionImage.onerror = null; } optionsWrap.innerHTML = ''; const timerEnabled = timerEnabledFor(grade); timer = grade === 'kg1' ? 15 : 18; quizDeadlineTs = timerEnabled ? (Date.now() + (timer * 1000)) : 0; timerValueEl.textContent = timerEnabled ? String(timer) : '∞'; timerValueEl.closest('.status-card')?.classList.toggle('timer-disabled', !timerEnabled); shuffle(q.options).forEach(opt=>{ const b=document.createElement('button'); b.className='option-btn'; b.textContent = opt; b.onclick = ()=> answerQuestion(b, opt === q.answer, opt); optionsWrap.appendChild(b); }); if (timerEnabled) { interval = setInterval(()=>{ try { const remaining = Math.max(0, Math.ceil((quizDeadlineTs - Date.now()) / 1000)); if (remaining !== timer) { timer = remaining; timerValueEl.textContent = String(timer); } if (remaining <= 0){ clearInterval(interval); interval = null; timeoutQuestion(); } } catch(err){ console.error('timer tick failed', err); clearQuizTimers(); finishQuiz(); } }, 250); } else { interval = null; } }
+    clearQuizTimers(); quizTimerToken += 1; const timerToken = quizTimerToken; answered = false; nextBtn.classList.add('hidden'); const q = current(); if (!q) { finishQuiz(); return; } ensureSkillStat(q.skill, q.text); if (questionProgressEl) questionProgressEl.textContent = `${currentIndex+1} / ${questions.length}`; skillBadge.textContent = skillLabels[getLang()][q.skill] || q.skill; typeBadge.textContent = typeLabels[getLang()][q.type] || q.type; questionText.textContent = q.text; if (q.image){ questionImage.onerror = () => { questionImageWrap.classList.add('hidden'); questionImage.removeAttribute('src'); questionImage.onerror = null; }; questionImage.src = q.image; questionImage.alt = q.text; questionImageWrap.classList.remove('hidden'); } else { questionImageWrap.classList.add('hidden'); questionImage.removeAttribute('src'); questionImage.onerror = null; } optionsWrap.innerHTML = ''; const timerEnabled = timerEnabledFor(grade); timer = grade === 'kg1' ? 15 : 18; quizDeadlineTs = timerEnabled ? (Date.now() + (timer * 1000)) : 0; timerValueEl.textContent = timerEnabled ? String(timer) : '∞'; timerValueEl.closest('.status-card')?.classList.toggle('timer-disabled', !timerEnabled); shuffle(q.options).forEach(opt=>{ const b=document.createElement('button'); b.className='option-btn'; b.textContent = opt; b.onclick = ()=> answerQuestion(b, opt === q.answer, opt); optionsWrap.appendChild(b); }); if (timerEnabled) { interval = setInterval(()=>{ try { if (timerToken !== quizTimerToken) { clearQuizTimers(); return; } const remaining = Math.max(0, Math.ceil((quizDeadlineTs - Date.now()) / 1000)); if (remaining !== timer) { timer = remaining; timerValueEl.textContent = String(timer); } if (remaining <= 0){ clearInterval(interval); interval = null; timeoutQuestion(); } } catch(err){ console.error('timer tick failed', err); clearQuizTimers(); finishQuiz(); } }, 250); } else { interval = null; } }
   function markCorrect(buttons, q){ buttons.forEach(btn=>{ if (btn.textContent === q.answer) btn.classList.add('correct'); }); }
   function schedule(){ if (autoNext.checked) { autoAdvanceTimeout = setTimeout(goNext, 900); } else nextBtn.classList.remove('hidden'); }
   function tuneDifficulty(wasCorrect, remaining){ if (wasCorrect && remaining > 10) adaptiveIndex = Math.min(adaptiveIndex + 1, 2); if (!wasCorrect || remaining < 4) adaptiveIndex = Math.max(adaptiveIndex - 1, 0); }
