@@ -3082,3 +3082,34 @@ Object.assign(translations.ar, {
     refreshModeBoards();
   });
 })();
+
+
+/* visible mode cards sync */
+(function(){
+  function syncModeCardsUI(){
+    var selected = document.querySelector('input[name="gameModeCards"]:checked');
+    document.querySelectorAll('.mode-card').forEach(function(card){
+      card.classList.toggle('is-active', !!selected && card.getAttribute('data-mode-card') === selected.value);
+    });
+    var hiddenMode = document.getElementById('gameMode');
+    if(hiddenMode && selected) hiddenMode.value = selected.value;
+    var totalWrap = document.getElementById('totalTimerInlineWrap');
+    if(totalWrap) totalWrap.hidden = !(selected && selected.value === 'total_timer');
+    var oldTotal = document.getElementById('totalTimerMinutes');
+    var newTotal = document.getElementById('totalTimerMinutesInline');
+    if(oldTotal && newTotal) oldTotal.value = newTotal.value;
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    var radios = document.querySelectorAll('input[name="gameModeCards"]');
+    radios.forEach(function(radio){
+      radio.addEventListener('change', syncModeCardsUI);
+    });
+    var newTotal = document.getElementById('totalTimerMinutesInline');
+    var oldTotal = document.getElementById('totalTimerMinutes');
+    if(newTotal && oldTotal){
+      newTotal.addEventListener('change', function(){ oldTotal.value = newTotal.value; });
+    }
+    syncModeCardsUI();
+  });
+})();

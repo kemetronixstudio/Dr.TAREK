@@ -2319,3 +2319,71 @@ body[data-page="playtest"] .play-top3-item{
     justify-content:center;
   }
 }
+
+
+/* visible play mode cards */
+.game-mode-cards-wrap,
+.total-timer-inline-wrap{
+  margin: 14px 0 12px;
+}
+.game-mode-cards{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0,1fr));
+  gap:12px;
+  margin-top:8px;
+}
+.mode-card{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  min-height:116px;
+  padding:14px 14px 12px;
+  border-radius:20px;
+  background:#f3f6fb;
+  border:2px solid transparent;
+  cursor:pointer;
+  transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease, background .15s ease;
+}
+.mode-card:hover{
+  transform:translateY(-1px);
+  box-shadow:0 8px 18px rgba(37,55,110,.08);
+}
+.mode-card input{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+.mode-card-icon{
+  font-size:1.4rem;
+  line-height:1;
+}
+.mode-card-title{
+  font-weight:800;
+  color:#284d28;
+}
+.mode-card-sub{
+  font-size:.88rem;
+  line-height:1.35;
+  color:#66728b;
+}
+.mode-card.is-active{
+  background:linear-gradient(135deg,#fff0e8,#fff7ef);
+  border-color:#ffab63;
+  box-shadow:0 10px 24px rgba(255,153,87,.16);
+}
+.total-timer-inline-wrap .game-mode-select{
+  margin-top:8px;
+  max-width:280px;
+}
+@media (max-width: 900px){
+  .game-mode-cards{
+    grid-template-columns:1fr;
+  }
+  .mode-card{
+    min-height:auto;
+  }
+  .total-timer-inline-wrap .game-mode-select{
+    max-width:100%;
+  }
+}
