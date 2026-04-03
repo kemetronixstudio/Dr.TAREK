@@ -145,10 +145,22 @@ function loadQuestionImage(image, text=''){
   push(normalized);
   if (/^svg\//i.test(normalized)) push(normalized.replace(/^svg\//i, 'assets/svg/'));
   if (/^assets\/svg\//i.test(normalized)) push(normalized.replace(/^assets\/svg\//i, 'svg/'));
+  if (/^assets\/quiz-bulk\//i.test(normalized)) {
+    const fileName = normalized.split('/').pop();
+    if (fileName) {
+      push('svg/' + fileName);
+      push('assets/svg/' + fileName);
+    }
+  }
   if (!/\.(png|jpe?g|webp|gif)($|\?)/i.test(normalized)) {
     push(normalized + '.png');
     if (/^svg\//i.test(normalized)) push(normalized.replace(/^svg\//i, 'assets/svg/') + '.png');
     if (/^assets\/svg\//i.test(normalized)) push(normalized.replace(/^assets\/svg\//i, 'svg/') + '.png');
+    if (/^assets\/quiz-bulk\//i.test(normalized)) {
+      const fileName = normalized.split('/').pop() + '.png';
+      push('svg/' + fileName);
+      push('assets/svg/' + fileName);
+    }
   }
   let idx = 0;
   wrap.classList.remove('hidden');
@@ -632,6 +644,12 @@ function normalizeQuestionImage(image, grade, text){
   if (lower.includes('icons/book')) return 'svg/book.png';
   if (lower.includes('icons/school')) return 'svg/school.png';
   if (lower.includes('icons/house')) return 'svg/school.png';
+
+  /* quiz-bulk image path support */
+  if (lower.startsWith('assets/quiz-bulk/')) {
+    const fileName = raw.split('/').pop();
+    if (fileName) return 'svg/' + fileName;
+  }
 
   return raw;
 }
@@ -3143,3 +3161,5 @@ Object.assign(translations.ar, {
     syncVisibleModeCards();
   });
 })();
+
+/* quiz-bulk image candidates */
