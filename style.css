@@ -1516,3 +1516,141 @@ body{overflow-x:hidden;}
     justify-content:center;
   }
 }
+
+
+/* v7 header layout cleanup for all pages */
+@media (max-width: 768px){
+  .top-shell,
+  .top-shell-inline,
+  .subpage-top-shell.top-shell-inline{
+    width:min(100% - 20px, 100%);
+    display:grid !important;
+    grid-template-columns:1fr auto;
+    grid-template-areas:
+      "center center"
+      "left right";
+    align-items:start;
+    gap:12px 12px;
+    padding-top:12px;
+  }
+
+  .top-shell-inline .header-center,
+  .top-shell .header-center{
+    grid-area:center;
+    display:flex;
+    justify-content:center;
+    width:100%;
+  }
+
+  .top-shell-inline .header-left,
+  .top-shell .header-left{
+    grid-area:left;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:10px;
+    min-width:0;
+  }
+
+  .top-shell-inline .header-right,
+  .top-shell .header-right{
+    grid-area:right;
+    display:flex;
+    align-items:flex-start;
+    justify-content:flex-end;
+    gap:10px;
+    flex-wrap:wrap;
+    max-width:180px;
+  }
+
+  .top-shell-inline .teacher-topline,
+  .top-shell .teacher-topline{
+    max-width:min(100%, 520px);
+    width:100%;
+    min-height:50px;
+    padding:12px 16px;
+    font-size:.92rem;
+    line-height:1.2;
+    text-align:center;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .lang-switch{
+    display:flex !important;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+  }
+
+  .top-home-link{
+    margin-right:2px;
+  }
+
+  .lang-btn,
+  .back-link.top-home-link{
+    min-height:56px;
+    padding:0 18px;
+    border-radius:22px;
+    font-size:1.05rem;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .top-shell-inline .theme-quick-switch,
+  .top-shell .theme-quick-switch{
+    display:flex !important;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+    gap:10px;
+    max-width:122px;
+  }
+
+  .theme-pill-btn,
+  .tiny-admin-link{
+    width:52px;
+    height:52px;
+    min-width:52px;
+    min-height:52px;
+    padding:0;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:18px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px){
+  .top-shell-inline{
+    grid-template-columns:auto 1fr auto;
+    align-items:center;
+    gap:12px;
+  }
+
+  .top-shell-inline .header-left,
+  .top-shell-inline .header-right{
+    gap:8px;
+  }
+
+  .top-shell-inline .teacher-topline{
+    max-width:min(44vw, 460px);
+    font-size:.98rem;
+    padding:10px 18px;
+  }
+
+  .lang-btn,
+  .back-link.top-home-link{
+    min-height:48px;
+    padding:0 16px;
+  }
+
+  .theme-pill-btn,
+  .tiny-admin-link{
+    width:46px;
+    height:46px;
+    min-width:46px;
+    min-height:46px;
+  }
+}
