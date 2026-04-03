@@ -2077,3 +2077,187 @@ table.leaderboard td,
     min-width:640px;
   }
 }
+
+
+/* v11 final mobile centering + safe overflow overrides */
+body[data-page="playtest"]{
+  overflow-x:hidden !important;
+}
+body[data-page="playtest"] .container.play-wrap,
+body[data-page="playtest"] .play-wrap,
+body[data-page="playtest"] .play-wrap > *,
+body[data-page="playtest"] .play-hero-card,
+body[data-page="playtest"] .play-top3-panel,
+body[data-page="playtest"] .play-start-card,
+body[data-page="playtest"] .play-board-card,
+body[data-page="playtest"] .play-result-card{
+  min-width:0 !important;
+  max-width:100% !important;
+  box-sizing:border-box !important;
+}
+body[data-page="playtest"] .play-board-card{
+  overflow:hidden !important;
+}
+body[data-page="playtest"] .play-board-card .table-wrap{
+  width:100% !important;
+  max-width:100% !important;
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+  -webkit-overflow-scrolling:touch !important;
+}
+body[data-page="playtest"] .play-board-card .data-table{
+  width:max-content !important;
+  min-width:680px !important;
+  max-width:none !important;
+}
+body[data-page="playtest"] .play-board-card .data-table th,
+body[data-page="playtest"] .play-board-card .data-table td{
+  white-space:nowrap !important;
+}
+body[data-page="playtest"] .play-top3-panel{
+  overflow:hidden !important;
+}
+body[data-page="playtest"] .play-top3-list,
+body[data-page="playtest"] .play-top3-item{
+  min-width:0 !important;
+}
+body[data-page="playtest"] .play-top3-item{
+  grid-template-columns:none !important;
+}
+
+@media (max-width:640px){
+  /* exact mobile header rows */
+  .top-shell-inline,
+  .subpage-top-shell.top-shell-inline{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:10px !important;
+    align-items:center !important;
+    justify-items:center !important;
+  }
+
+  .top-shell-inline .header-center{
+    order:1 !important;
+    width:100% !important;
+    display:flex !important;
+    justify-content:center !important;
+    align-items:center !important;
+  }
+
+  .top-shell-inline .header-left{
+    order:2 !important;
+    width:100% !important;
+    display:flex !important;
+    justify-content:center !important;
+    align-items:center !important;
+    gap:10px !important;
+    flex-wrap:wrap !important;
+    max-width:100% !important;
+  }
+
+  .top-shell-inline .header-right{
+    order:3 !important;
+    width:100% !important;
+    display:flex !important;
+    justify-content:center !important;
+    align-items:center !important;
+    gap:10px !important;
+    flex-wrap:wrap !important;
+    max-width:100% !important;
+    margin-inline:auto !important;
+  }
+
+  .top-shell-inline .teacher-topline,
+  .subpage-top-shell .teacher-topline{
+    max-width:min(92vw, 520px) !important;
+    width:auto !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+    text-align:center !important;
+    margin-inline:auto !important;
+  }
+
+  /* home only: line 2 = EN AR star */
+  body[data-page="home"] .top-shell-inline .header-left{
+    display:flex !important;
+    justify-content:center !important;
+  }
+  body[data-page="home"] .top-shell-inline .header-left .top-home-link{
+    display:none !important;
+  }
+  body[data-page="home"] .top-shell-inline .lang-switch{
+    display:flex !important;
+    justify-content:center !important;
+    align-items:center !important;
+    gap:10px !important;
+    flex-wrap:nowrap !important;
+  }
+  body[data-page="home"] .top-shell-inline .tiny-admin-link{
+    display:inline-flex !important;
+    justify-content:center !important;
+    align-items:center !important;
+    width:54px !important;
+    height:54px !important;
+    min-width:54px !important;
+    min-height:54px !important;
+    border-radius:20px !important;
+    margin:0 !important;
+  }
+
+  /* home only: line 3 = themes centered */
+  body[data-page="home"] .top-shell-inline .header-right{
+    display:flex !important;
+    justify-content:center !important;
+    text-align:center !important;
+    margin-inline:auto !important;
+  }
+  body[data-page="home"] .top-shell-inline .theme-quick-switch{
+    display:flex !important;
+    width:100% !important;
+    justify-content:center !important;
+    align-items:center !important;
+    gap:10px !important;
+    flex-wrap:nowrap !important;
+    margin-inline:auto !important;
+    text-align:center !important;
+  }
+  body[data-page="home"] .top-shell-inline .theme-pill-btn{
+    width:54px !important;
+    height:54px !important;
+    min-width:54px !important;
+    min-height:54px !important;
+    margin:0 !important;
+  }
+  /* ensure star isn't hidden by older rules */
+  body[data-page="home"] .top-shell-inline .header-right > .tiny-admin-link{
+    display:none !important;
+  }
+  body[data-page="home"] .top-shell-inline .header-left > .tiny-admin-link{
+    display:inline-flex !important;
+  }
+  /* move visual order by allowing wrap of left row elements only */
+  body[data-page="home"] .top-shell-inline .header-left{
+    gap:10px !important;
+  }
+  body[data-page="home"] .top-shell-inline .header-left .lang-switch{order:1 !important;}
+  body[data-page="home"] .top-shell-inline .header-left .tiny-admin-link{order:2 !important;}
+
+  /* non-home mobile: only teacher line */
+  body:not([data-page="home"]) .top-shell-inline .header-left{
+    display:none !important;
+  }
+  body:not([data-page="home"]) .top-shell-inline .header-right{
+    display:none !important;
+  }
+
+  /* play page card width safety */
+  body[data-page="playtest"] .container.play-wrap{
+    width:min(100% - 16px, 100%) !important;
+  }
+  body[data-page="playtest"] .play-hero-card,
+  body[data-page="playtest"] .play-start-card,
+  body[data-page="playtest"] .play-board-card{
+    width:100% !important;
+  }
+}

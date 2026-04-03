@@ -2706,3 +2706,41 @@ Object.assign(translations.ar, {
   startGrade5:'ابدأ Grade 5',
   startGrade6:'ابدأ Grade 6'
 });
+
+
+/* v11 mobile header helper */
+(function(){
+  function normalizeMobileHeader(){
+    const shell = document.querySelector('.top-shell-inline');
+    if(!shell) return;
+    const body = document.body;
+    const left = shell.querySelector('.header-left');
+    const right = shell.querySelector('.header-right');
+    const langSwitch = shell.querySelector('.lang-switch');
+    const star = shell.querySelector('.tiny-admin-link');
+    const themes = shell.querySelector('.theme-quick-switch');
+    if(!left || !right || !star) return;
+
+    const home = body && body.dataset && body.dataset.page === 'home';
+    const mobile = window.matchMedia('(max-width: 640px)').matches;
+
+    if(home && mobile){
+      if(langSwitch && star.parentElement !== left){
+        left.appendChild(star);
+      }
+      if(themes && themes.parentElement !== right){
+        right.appendChild(themes);
+      }
+    }else{
+      if(star.parentElement !== right){
+        right.appendChild(star);
+      }
+      if(themes && themes.parentElement !== right){
+        right.appendChild(themes);
+      }
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', normalizeMobileHeader);
+  window.addEventListener('resize', normalizeMobileHeader, {passive:true});
+})();
