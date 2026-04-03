@@ -560,6 +560,11 @@ body[data-theme="space"] .card h1,body[data-theme="space"] .card h2,body[data-th
 body[data-theme="space"] .card p,body[data-theme="space"] .card span,body[data-theme="space"] .card td,body[data-theme="space"] .card label,body[data-theme="space"] .card li,body[data-theme="space"] .muted,body[data-theme="space"] .theme-pack-text{color:#3b4f7b}
 body[data-theme="space"] .main-btn{background:linear-gradient(135deg,#ff9f62 0%,#ff6e95 100%);color:#fff}
 body[data-theme="space"] .badge-pill{background:#eaf1ff;color:#29477b}
+@media (max-width:900px){
+  .top-shell-inline{grid-template-columns:1fr;gap:10px}
+  .top-shell-inline .header-left,.top-shell-inline .header-center,.top-shell-inline .header-right{justify-self:center;flex-wrap:wrap;justify-content:center}
+  .top-shell-inline .teacher-topline{max-width:90vw}
+}
 
 .playtest-card{background:linear-gradient(135deg,#fff8e1,#ffe0b2);border:2px solid rgba(255,145,0,.18)}
 @media (min-width:901px){
@@ -796,7 +801,18 @@ body[data-page="playtest"] .data-table td:last-child{min-width:190px;white-space
   .home-levels{grid-template-columns:repeat(2,minmax(0,1fr))}
   body[data-page="playtest"] .play-stats-row{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
-
+@media (max-width:900px){
+  body[data-page="home"] .hero-card{padding:24px 16px}
+  .home-levels{grid-template-columns:1fr;gap:18px}
+  .home-levels .level-card p{min-height:auto}
+  .top-shell-inline{gap:12px}
+  body[data-page="playtest"] .play-wrap{padding-top:12px}
+  body[data-page="playtest"] .play-hero-card{grid-template-columns:1fr}
+  body[data-page="playtest"] .play-top3-panel{order:2}
+  body[data-page="playtest"] .play-form-grid-wide{grid-template-columns:1fr 1fr}
+  body[data-page="playtest"] .play-form-grid-wide .main-btn{grid-column:1/-1}
+  body[data-page="playtest"] .play-stats-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 @media (max-width:640px){
   .top-shell-inline .header-left,.top-shell-inline .header-center,.top-shell-inline .header-right{width:100%}
   .top-shell-inline .header-left,.top-shell-inline .header-right{justify-content:center}
@@ -977,6 +993,36 @@ body[data-lang="ar"][data-page="home"] .hero-copy h1{
 body[data-lang="ar"][data-page="home"] .hero-copy .lead{
   max-width:680px;
   direction:rtl;
+}
+
+@media (max-width: 900px){
+  body[data-page="home"] .hero-copy h1{
+    max-width:12ch;
+    font-size:clamp(1.9rem,5.7vw,2.75rem);
+  }
+  body[data-lang="ar"][data-page="home"] .hero-copy h1{
+    max-width:none;
+    font-size:clamp(2rem,6.2vw,3rem);
+  }
+  .top-shell-inline,
+  .subpage-top-shell.top-shell-inline{
+    grid-template-columns:1fr !important;
+    grid-template-areas:"teacher" "left" "right";
+  }
+  .top-shell-inline .header-center{grid-area:teacher;justify-self:center;width:100%;}
+  .top-shell-inline .header-left{grid-area:left;justify-self:center;justify-content:center;width:100%;}
+  .top-shell-inline .header-right{grid-area:right;justify-self:center;justify-content:center;width:100%;}
+  .top-shell-inline .teacher-topline,
+  .subpage-top-shell .teacher-topline{
+    max-width:min(92vw,720px);
+    white-space:normal;
+    text-align:center;
+    line-height:1.35;
+  }
+  .top-shell-inline .header-left,
+  .top-shell-inline .header-right{
+    gap:12px;
+  }
 }
 
 @media (max-width: 640px){
@@ -1225,7 +1271,33 @@ body[data-page="playtest"] .data-table{min-width:760px;}
 @media (max-width: 1024px){
   body[data-page="home"] .home-levels{grid-template-columns:repeat(2,minmax(240px,1fr));}
 }
-
+@media (max-width: 900px){
+  .top-shell-inline,
+  .subpage-top-shell.top-shell-inline{
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+  .top-shell-inline .header-left,
+  .top-shell-inline .header-center,
+  .top-shell-inline .header-right{
+    justify-self:center;
+    justify-content:center;
+    width:100%;
+  }
+  .top-shell-inline .header-left,
+  .top-shell-inline .header-right{gap:12px;}
+  .top-shell-inline .teacher-topline,
+  .subpage-top-shell .teacher-topline{
+    max-width:100%;
+    white-space:normal;
+    text-align:center;
+  }
+  body[data-page="home"] .home-levels{grid-template-columns:1fr;}
+  body[data-page="playtest"] .play-hero-card,
+  body[data-page="playtest"][data-lang="ar"] .play-hero-card{grid-template-columns:1fr;}
+  body[data-page="playtest"] .play-form-grid-wide,
+  body[data-page="playtest"][data-lang="ar"] .play-form-grid-wide{grid-template-columns:1fr;}
+}
 @media (max-width: 640px){
   body[data-page="home"] .hero-copy h1{font-size:clamp(1.85rem,8vw,2.6rem);}
   body[data-page="home"][data-lang="ar"] .hero-copy h1{white-space:normal;}
@@ -2381,101 +2453,5 @@ body[data-page="playtest"] .play-top3-item{
   }
   .top-shell-inline .theme-quick-switch{
     display:none !important;
-  }
-}
-
-
-/* restore clean PC/tablet header layout */
-@media (min-width: 901px){
-  .top-shell-inline,
-  .subpage-top-shell.top-shell-inline{
-    display:grid !important;
-    grid-template-columns:auto minmax(0,1fr) auto !important;
-    align-items:center !important;
-    gap:18px !important;
-    width:min(100% - 32px, 1280px) !important;
-    margin-inline:auto !important;
-  }
-
-  .top-shell-inline .header-left{
-    display:flex !important;
-    align-items:center !important;
-    justify-content:flex-start !important;
-    gap:14px !important;
-    flex-wrap:nowrap !important;
-    min-width:max-content !important;
-  }
-
-  .top-shell-inline .header-center{
-    display:flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    min-width:0 !important;
-  }
-
-  .top-shell-inline .header-right{
-    display:flex !important;
-    align-items:center !important;
-    justify-content:flex-end !important;
-    gap:14px !important;
-    flex-wrap:nowrap !important;
-    min-width:max-content !important;
-  }
-
-  .top-shell-inline .teacher-topline{
-    width:auto !important;
-    max-width:min(34vw, 430px) !important;
-    min-height:52px !important;
-    padding:10px 22px !important;
-    white-space:nowrap !important;
-    overflow:hidden !important;
-    text-overflow:ellipsis !important;
-    margin-inline:auto !important;
-  }
-
-  .top-shell-inline .theme-quick-switch{
-    display:flex !important;
-    align-items:center !important;
-    justify-content:flex-end !important;
-    gap:12px !important;
-    flex-wrap:nowrap !important;
-    width:auto !important;
-  }
-
-  .top-shell-inline .lang-switch{
-    display:flex !important;
-    align-items:center !important;
-    justify-content:flex-start !important;
-    gap:14px !important;
-    flex-wrap:nowrap !important;
-    width:auto !important;
-  }
-
-  .top-shell-inline .theme-pill-btn,
-  .top-shell-inline .tiny-admin-link{
-    width:54px !important;
-    height:54px !important;
-    min-width:54px !important;
-    min-height:54px !important;
-    padding:0 !important;
-    border-radius:20px !important;
-  }
-
-  .top-shell-inline .lang-btn,
-  .top-shell-inline .top-home-link{
-    min-height:54px !important;
-    padding:0 20px !important;
-    border-radius:20px !important;
-  }
-}
-
-
-@media (min-width: 901px){
-  body[data-page="home"] .top-shell-inline .header-center,
-  body[data-page="playtest"] .top-shell-inline .header-center,
-  body[data-page="kg1"] .top-shell-inline .header-center,
-  body[data-page="kg2"] .top-shell-inline .header-center,
-  body[data-page="class"] .top-shell-inline .header-center{
-    justify-content:center !important;
   }
 }
