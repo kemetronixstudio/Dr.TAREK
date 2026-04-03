@@ -520,7 +520,31 @@ function normalizeQuestionImage(image, grade, text){
   if (LEGACY_IMAGE_MAP[key] !== undefined) return LEGACY_IMAGE_MAP[key] || null;
   if (!raw) return null;
   const lower = raw.toLowerCase();
-  if (lower.startsWith('data:image/svg') || lower.endsWith('.svg') || lower.includes('/assets/svg/') || lower.includes('icons/book') || lower.includes('icons/school') || lower.includes('icons/house')) return null;
+  if (lower.startsWith('data:image/svg')) return null;
+
+  const legacySvgToPng = {
+    'icons/book.svg': 'assets/svg/book.png',
+    'icons/book': 'assets/svg/book.png',
+    'icons/school.svg': 'assets/svg/school.png',
+    'icons/school': 'assets/svg/school.png',
+    'icons/house.svg': 'assets/svg/school.png',
+    'icons/house': 'assets/svg/school.png',
+    'assets/svg/book.svg': 'assets/svg/book.png',
+    'assets/svg/school.svg': 'assets/svg/school.png',
+    'assets/svg/house.svg': 'assets/svg/school.png'
+  };
+  if (legacySvgToPng[lower]) return legacySvgToPng[lower];
+
+  if (lower.endsWith('.svg')) {
+    const pngVersion = raw.replace(/\.svg(\?.*)?$/i, '.png');
+    if (/^assets\/svg\//i.test(pngVersion) || /^icons\//i.test(raw)) return pngVersion.replace(/^icons\//i, 'assets/svg/');
+    return null;
+  }
+
+  if (lower.includes('icons/book')) return 'assets/svg/book.png';
+  if (lower.includes('icons/school')) return 'assets/svg/school.png';
+  if (lower.includes('icons/house')) return 'assets/svg/school.png';
+
   return raw;
 }
 function sanitizeQuestions(list){
