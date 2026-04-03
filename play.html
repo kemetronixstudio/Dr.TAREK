@@ -24,7 +24,41 @@
       <input id="playStudentName" data-placeholder-i18n="playStudentNamePlaceholder" placeholder="Student name" maxlength="60">
       <select id="playStudentGrade" aria-label="Grade"></select>
       <input id="playStudentId" data-placeholder-i18n="playStudentIdPlaceholder" placeholder="Student ID (optional)" maxlength="40">
-      <button class="main-btn" id="playStartBtn" type="button" data-i18n="playStartBtn">Start Playing</button>
+      
+<div class="game-mode-cards-wrap" id="gameModeCardsWrap">
+  <label class="field-label">Choose Game Mode</label>
+  <div class="game-mode-cards">
+    <label class="mode-card active" data-mode-value="question_timer">
+      <input type="radio" name="gameModeCards" value="question_timer" checked>
+      <span class="mode-card-icon">⏱</span>
+      <span class="mode-card-title">Per Question</span>
+      <span class="mode-card-sub">Each question has its own timer</span>
+    </label>
+    <label class="mode-card" data-mode-value="total_timer">
+      <input type="radio" name="gameModeCards" value="total_timer">
+      <span class="mode-card-icon">⏳</span>
+      <span class="mode-card-title">Total Time</span>
+      <span class="mode-card-sub">Solve as many as you can before time ends</span>
+    </label>
+    <label class="mode-card" data-mode-value="endless">
+      <input type="radio" name="gameModeCards" value="endless">
+      <span class="mode-card-icon">♾</span>
+      <span class="mode-card-title">Endless</span>
+      <span class="mode-card-sub">No timer, keep playing freely</span>
+    </label>
+  </div>
+</div>
+<div class="total-timer-inline-wrap" id="totalTimerInlineWrap" hidden>
+  <label class="field-label" for="totalTimerMinutesInline">Total Time</label>
+  <select id="totalTimerMinutesInline" class="game-mode-select" aria-label="Total timer minutes">
+    <option value="5">5 minutes</option>
+    <option value="10" selected>10 minutes</option>
+    <option value="15">15 minutes</option>
+    <option value="20">20 minutes</option>
+  </select>
+</div>
+
+<button class="main-btn" id="playStartBtn" type="button" data-i18n="playStartBtn">Start Playing</button>
     </div>
     <div class="play-stage-wrap compact-grade-note">
       <div class="play-stage-title" data-i18n="playChooseStage">Difficulty follows the selected grade</div>
@@ -73,4 +107,16 @@
     </div>
   </section>
 </main>
-<script src="script.js"></script><script src="grades-extension.js"></script><script src="play-question-bank.js"></script><script src="play-test.js"></script><script src="quiz-bulk-package.js"></script></body></html>
+<script src="script.js"></script><script src="grades-extension.js"></script><script src="play-question-bank.js"></script><script src="play-test.js"></script><script src="quiz-bulk-package.js"></script>
+    <select id="gameMode" hidden>
+      <option value="question_timer" selected>With timer for each quiz</option>
+      <option value="total_timer">With total timer</option>
+      <option value="endless">Endless</option>
+    </select>
+    <select id="totalTimerMinutes" hidden>
+      <option value="5">5</option>
+      <option value="10" selected>10</option>
+      <option value="15">15</option>
+      <option value="20">20</option>
+    </select>
+    </body></html>
