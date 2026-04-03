@@ -3163,3 +3163,179 @@ Object.assign(translations.ar, {
 })();
 
 /* quiz-bulk image candidates */
+
+
+/* v13 image mapping for all grades, no-assets safe */
+(function(){
+  const globalScope = window;
+
+  const IMAGE_ANSWER_MAP = Object.assign({
+    'cat':'svg/cat.png',
+    'dog':'svg/dog.png',
+    'fish':'svg/fish.png',
+    'lion':'svg/lion.png',
+    'turtle':'svg/turtle.png',
+    'snake':'svg/snake.png',
+    'frog':'svg/frog.png',
+    'bird':'svg/bird.png',
+    'happy':'svg/happy.png',
+    'sad':'svg/sad.png',
+    'angry':'svg/angry.png',
+    'sleepy':'svg/sleepy.png',
+    'book':'svg/book.png',
+    'school':'svg/school.png',
+    'house':'svg/house.png',
+    'home':'svg/house.png',
+    'apple':'svg/apple.png',
+    'banana':'svg/banana.png',
+    'orange':'svg/orange.png',
+    'grapes':'svg/grapes.png',
+    'fruit':'svg/fruit.png',
+    'car':'svg/car.png',
+    'bus':'svg/bus.png',
+    'train':'svg/train.png',
+    'plane':'svg/plane.png',
+    'rocket':'svg/rocket.png',
+    'pencil':'svg/pencil.png',
+    'pen':'svg/pen.png',
+    'eraser':'svg/eraser.png',
+    'ruler':'svg/ruler.png',
+    'school bag':'svg/school-bag.png',
+    'schoolbag':'svg/school-bag.png',
+    'bag':'svg/school-bag.png',
+    'chair':'svg/chair.png',
+    'seat':'svg/chair.png',
+    'table':'svg/table.png',
+    'food':'svg/food.png',
+    'bread':'svg/bread.png',
+    'milk':'svg/milk.png',
+    'egg':'svg/egg.png',
+    'sun':'svg/sun.png',
+    'moon':'svg/moon.png',
+    'star':'svg/star.png',
+    'eye':'svg/eye.png',
+    'ear':'svg/ear.png',
+    'nose':'svg/nose.png',
+    'mouth':'svg/mouth.png',
+    'hand':'svg/hand.png',
+    'head':'svg/head.png',
+    'body':'svg/body.png',
+    'red':'svg/red.png',
+    'blue':'svg/blue.png',
+    'green':'svg/green.png',
+    'yellow':'svg/yellow.png',
+    'one':'svg/one.png',
+    'two':'svg/two.png',
+    'three':'svg/three.png',
+    'four':'svg/four.png',
+    'five':'svg/five.png',
+    'circle':'svg/circle.png',
+    'square':'svg/square.png',
+    'triangle':'svg/triangle.png'
+  }, globalScope.IMAGE_ANSWER_MAP || {});
+
+  function normalizeAnswerKey(value){
+    return String(value || '')
+      .toLowerCase()
+      .replace(/[_-]+/g, ' ')
+      .replace(/[^\w\s]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function guessImageFromTextParts(parts){
+    for(const part of parts){
+      const key = normalizeAnswerKey(part);
+      if(!key) continue;
+      if(IMAGE_ANSWER_MAP[key]) return IMAGE_ANSWER_MAP[key];
+      const words = key.split(' ');
+      for(let i = words.length; i >= 1; i--){
+        const sub = words.slice(0, i).join(' ');
+        if(IMAGE_ANSWER_MAP[sub]) return IMAGE_ANSWER_MAP[sub];
+      }
+    }
+    return null;
+  }
+
+  globalScope.getMappedQuestionImage = function(question){
+    if(!question || typeof question !== 'object') return null;
+    if(question.image && String(question.image).trim()) return question.image;
+
+    const type = normalizeAnswerKey(question.type || question.kind || '');
+    const tags = []
+      .concat(question.category || [])
+      .concat(question.skill || [])
+      .concat(question.topic || [])
+      .concat(question.tags || []);
+
+    const candidateParts = [
+      question.answer,
+      question.correctAnswer,
+      question.correct,
+      question.word,
+      question.title,
+      question.prompt,
+      question.question,
+      ...(Array.isArray(question.options) ? question.options : []),
+      ...tags
+    ];
+
+    if(type === 'picture' || tags.map(normalizeAnswerKey).includes('picture')){
+      return guessImageFromTextParts(candidateParts);
+    }
+
+    /* Also support grade questions if category/tags/topic imply picture vocab */
+    const pictureHint = [question.category, question.topic, question.skill, question.tags]
+      .flat()
+      .map(normalizeAnswerKey)
+      .some(v => ['picture','image','vocabulary','animals','feelings','colors','food','body parts','classroom'].includes(v));
+
+    if(pictureHint){
+      return guessImageFromTextParts(candidateParts);
+    }
+
+    return null;
+  };
+
+  globalScope.IMAGE_ANSWER_MAP = IMAGE_ANSWER_MAP;
+})();
+
+
+
+/* v13 preprocess all question banks for image mapping */
+(function(){
+  function applyImageMappingToList(list){
+    if(!Array.isArray(list)) return;
+    list.forEach(function(q){
+      try{
+        if(q && !q.image && window.getMappedQuestionImage){
+          const img = window.getMappedQuestionImage(q);
+          if(img) q.image = img;
+        }
+      }catch(_){}
+    });
+  }
+
+  function preprocessKnownBanks(){
+    const candidates = [
+      window.quizQuestions,
+      window.kgQuestions,
+      window.kg1Questions,
+      window.kg2Questions,
+      window.questionBank,
+      window.allQuestions,
+      window.teacherQuestions
+    ];
+    candidates.forEach(applyImageMappingToList);
+
+    if(window.gradeQuestionBanks && typeof window.gradeQuestionBanks === 'object'){
+      Object.keys(window.gradeQuestionBanks).forEach(function(k){
+        applyImageMappingToList(window.gradeQuestionBanks[k]);
+      });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', preprocessKnownBanks);
+  window.addEventListener('load', preprocessKnownBanks);
+})();
+

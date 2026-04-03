@@ -185,3 +185,34 @@
   window.addEventListener('load', run);
   window.addEventListener('kg:langchange', run);
 })();
+
+
+/* v13 grades image mapping pass */
+(function(){
+  function mapGradeImages(){
+    const root = window.gradeQuestionBanks || window.gradeQuestions || window.gradesQuestionBank || null;
+    if (!root || !window.getMappedQuestionImage) return;
+
+    function apply(list){
+      if(!Array.isArray(list)) return;
+      list.forEach(function(q){
+        try{
+          if(q && !q.image){
+            const img = window.getMappedQuestionImage(q);
+            if(img) q.image = img;
+          }
+        }catch(_){}
+      });
+    }
+
+    if (Array.isArray(root)) {
+      apply(root);
+    } else if (typeof root === 'object') {
+      Object.keys(root).forEach(function(key){ apply(root[key]); });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', mapGradeImages);
+  window.addEventListener('load', mapGradeImages);
+})();
+
