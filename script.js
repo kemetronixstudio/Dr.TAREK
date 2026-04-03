@@ -3390,3 +3390,31 @@ Object.assign(translations.ar, {
   document.addEventListener('DOMContentLoaded', run);
   window.addEventListener('load', run);
 })();
+
+
+/* teacher pill goes to main page */
+(function(){
+  function bindTeacherToplineHome(){
+    document.querySelectorAll('.teacher-topline').forEach(function(el){
+      if (el.dataset.homeBound === '1') return;
+      el.dataset.homeBound = '1';
+      el.style.cursor = 'pointer';
+      el.setAttribute('title', 'Go to home page');
+      el.addEventListener('click', function(){
+        var target = el.getAttribute('data-home-link') || 'index.html';
+        window.location.href = target;
+      });
+      el.addEventListener('keydown', function(ev){
+        if(ev.key === 'Enter' || ev.key === ' '){
+          ev.preventDefault();
+          var target = el.getAttribute('data-home-link') || 'index.html';
+          window.location.href = target;
+        }
+      });
+      if(!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+      if(!el.hasAttribute('role')) el.setAttribute('role', 'link');
+    });
+  }
+  document.addEventListener('DOMContentLoaded', bindTeacherToplineHome);
+  window.addEventListener('load', bindTeacherToplineHome);
+})();

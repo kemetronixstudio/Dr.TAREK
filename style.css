@@ -2383,3 +2383,99 @@ body[data-page="playtest"] .play-top3-item{
     display:none !important;
   }
 }
+
+
+/* restore clean PC/tablet header layout */
+@media (min-width: 901px){
+  .top-shell-inline,
+  .subpage-top-shell.top-shell-inline{
+    display:grid !important;
+    grid-template-columns:auto minmax(0,1fr) auto !important;
+    align-items:center !important;
+    gap:18px !important;
+    width:min(100% - 32px, 1280px) !important;
+    margin-inline:auto !important;
+  }
+
+  .top-shell-inline .header-left{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    gap:14px !important;
+    flex-wrap:nowrap !important;
+    min-width:max-content !important;
+  }
+
+  .top-shell-inline .header-center{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    min-width:0 !important;
+  }
+
+  .top-shell-inline .header-right{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-end !important;
+    gap:14px !important;
+    flex-wrap:nowrap !important;
+    min-width:max-content !important;
+  }
+
+  .top-shell-inline .teacher-topline{
+    width:auto !important;
+    max-width:min(34vw, 430px) !important;
+    min-height:52px !important;
+    padding:10px 22px !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+    margin-inline:auto !important;
+  }
+
+  .top-shell-inline .theme-quick-switch{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-end !important;
+    gap:12px !important;
+    flex-wrap:nowrap !important;
+    width:auto !important;
+  }
+
+  .top-shell-inline .lang-switch{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    gap:14px !important;
+    flex-wrap:nowrap !important;
+    width:auto !important;
+  }
+
+  .top-shell-inline .theme-pill-btn,
+  .top-shell-inline .tiny-admin-link{
+    width:54px !important;
+    height:54px !important;
+    min-width:54px !important;
+    min-height:54px !important;
+    padding:0 !important;
+    border-radius:20px !important;
+  }
+
+  .top-shell-inline .lang-btn,
+  .top-shell-inline .top-home-link{
+    min-height:54px !important;
+    padding:0 20px !important;
+    border-radius:20px !important;
+  }
+}
+
+
+@media (min-width: 901px){
+  body[data-page="home"] .top-shell-inline .header-center,
+  body[data-page="playtest"] .top-shell-inline .header-center,
+  body[data-page="kg1"] .top-shell-inline .header-center,
+  body[data-page="kg2"] .top-shell-inline .header-center,
+  body[data-page="class"] .top-shell-inline .header-center{
+    justify-content:center !important;
+  }
+}
