@@ -1654,3 +1654,219 @@ body{overflow-x:hidden;}
     min-height:46px;
   }
 }
+\n
+
+/* v8 header pro level final override */
+@media (max-width: 900px){
+  .top-shell-inline,
+  .subpage-top-shell.top-shell-inline,
+  body[data-page="home"] .top-shell-inline,
+  body[data-page="playtest"] .top-shell-inline,
+  body[data-page="kg1"] .top-shell-inline,
+  body[data-page="kg2"] .top-shell-inline,
+  body[data-page="class"] .top-shell-inline{
+    display:grid !important;
+    grid-template-columns:auto minmax(0,1fr) auto !important;
+    grid-template-areas:"left center right" !important;
+    align-items:center !important;
+    gap:10px !important;
+    width:min(100%, calc(100% - 20px)) !important;
+    margin-inline:auto !important;
+    padding-top:10px !important;
+  }
+
+  .top-shell-inline .header-left{grid-area:left !important;}
+  .top-shell-inline .header-center{grid-area:center !important;}
+  .top-shell-inline .header-right{grid-area:right !important;}
+
+  .top-shell-inline .header-left,
+  .top-shell-inline .header-center,
+  .top-shell-inline .header-right{
+    width:auto !important;
+    min-width:0 !important;
+    justify-self:auto !important;
+  }
+
+  .top-shell-inline .header-left{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    gap:8px !important;
+    flex-wrap:nowrap !important;
+  }
+
+  .top-shell-inline .header-center{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    overflow:hidden !important;
+  }
+
+  .top-shell-inline .header-right{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-end !important;
+    gap:8px !important;
+    flex-wrap:nowrap !important;
+  }
+
+  .top-shell-inline .teacher-topline,
+  .subpage-top-shell .teacher-topline{
+    width:auto !important;
+    max-width:min(44vw, 360px) !important;
+    min-height:48px !important;
+    padding:8px 12px !important;
+    font-size:.82rem !important;
+    line-height:1.15 !important;
+    text-align:center !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+
+  .top-shell-inline .lang-switch{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    gap:8px !important;
+    flex-wrap:nowrap !important;
+    width:auto !important;
+    max-width:none !important;
+  }
+
+  .top-shell-inline .theme-quick-switch{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-end !important;
+    gap:8px !important;
+    flex-wrap:nowrap !important;
+    width:auto !important;
+    max-width:none !important;
+  }
+
+  .top-shell-inline .theme-quick-switch .theme-pill-btn:nth-child(n+3){
+    display:none !important;
+  }
+
+  .top-shell-inline .theme-pill-btn,
+  .top-shell-inline .tiny-admin-link,
+  .top-shell-inline .lang-btn,
+  .top-shell-inline .top-home-link{
+    min-width:50px !important;
+    min-height:50px !important;
+    width:auto !important;
+    height:auto !important;
+    padding:0 16px !important;
+    border-radius:20px !important;
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    flex:0 0 auto !important;
+  }
+
+  .top-shell-inline .theme-pill-btn,
+  .top-shell-inline .tiny-admin-link{
+    width:50px !important;
+    height:50px !important;
+    padding:0 !important;
+  }
+
+  body[data-page="home"] .hero-copy h1{
+    max-width:none !important;
+    text-align:center !important;
+  }
+}
+
+@media (max-width: 640px){
+  .top-shell-inline,
+  .subpage-top-shell.top-shell-inline,
+  body[data-page="home"] .top-shell-inline,
+  body[data-page="playtest"] .top-shell-inline,
+  body[data-page="kg1"] .top-shell-inline,
+  body[data-page="kg2"] .top-shell-inline,
+  body[data-page="class"] .top-shell-inline{
+    grid-template-columns:1fr !important;
+    grid-template-areas:
+      "center"
+      "left"
+      "right" !important;
+    gap:10px !important;
+  }
+
+  .top-shell-inline .header-left,
+  .top-shell-inline .header-center,
+  .top-shell-inline .header-right{
+    width:100% !important;
+  }
+
+  .top-shell-inline .header-center{
+    justify-content:center !important;
+  }
+
+  .top-shell-inline .header-left{
+    justify-content:center !important;
+    flex-wrap:wrap !important;
+  }
+
+  .top-shell-inline .header-right{
+    justify-content:center !important;
+    flex-wrap:wrap !important;
+  }
+
+  .top-shell-inline .teacher-topline,
+  .subpage-top-shell .teacher-topline{
+    max-width:min(92vw, 420px) !important;
+    font-size:.9rem !important;
+    padding:10px 14px !important;
+  }
+
+  .top-shell-inline .lang-switch,
+  .top-shell-inline .theme-quick-switch{
+    justify-content:center !important;
+    flex-wrap:wrap !important;
+  }
+
+  .top-shell-inline .theme-quick-switch .theme-pill-btn:nth-child(n+3){
+    display:inline-flex !important;
+  }
+
+  .top-shell-inline .theme-pill-btn,
+  .top-shell-inline .tiny-admin-link,
+  .top-shell-inline .lang-btn,
+  .top-shell-inline .top-home-link{
+    min-width:54px !important;
+    min-height:54px !important;
+    border-radius:20px !important;
+  }
+
+  .top-shell-inline .top-home-link{
+    padding:0 18px !important;
+  }
+}
+
+@media (min-width: 901px){
+  .top-shell-inline,
+  .subpage-top-shell.top-shell-inline{
+    grid-template-columns:auto minmax(0,1fr) auto !important;
+    align-items:center !important;
+  }
+
+  .top-shell-inline .header-left{
+    justify-content:flex-start !important;
+    flex-wrap:nowrap !important;
+  }
+
+  .top-shell-inline .header-center{
+    justify-content:center !important;
+  }
+
+  .top-shell-inline .header-right{
+    justify-content:flex-end !important;
+    flex-wrap:nowrap !important;
+  }
+
+  .top-shell-inline .teacher-topline{
+    max-width:min(34vw, 430px) !important;
+    white-space:nowrap !important;
+  }
+}
