@@ -60,7 +60,7 @@ Removed a malformed injected JS block that was preventing the quiz and admin pag
 This build now includes Vercel serverless API routes for the **Access Accounts** feature:
 
 - `POST /api/access-accounts/login`
-- `GET /api/access-accounts/me`
+- `GET /api/access-accounts?action=me`
 - `GET /api/access-accounts`
 - `POST /api/access-accounts`
 - `DELETE /api/access-accounts`

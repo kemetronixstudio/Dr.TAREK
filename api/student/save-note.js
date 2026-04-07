@@ -21,7 +21,8 @@ module.exports = async function handler(req, res) {
       return;
     }
     setAuthCookie(res, auth.token);
-    const result = await backend.saveTeacherNote({ ...(req.body || {}), author: auth.account && auth.account.username ? auth.account.username : '' });
+    const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
+    const result = await backend.saveTeacherNote({ ...body, author: auth.account && auth.account.user ? auth.account.user : '' });
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({ ...result, token: auth.token, account: auth.account }));
