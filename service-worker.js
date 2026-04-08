@@ -1,6 +1,6 @@
-const CACHE = 'kg-quiz-v415';
+const CACHE = 'kg-quiz-v414';
 const ASSETS = [
-  './','./index.html','./kg1.html','./kg2.html','./class.html','./certificate.html','./admin.html','./style.css','./script.js','./custom-classes.js','./kg1-grade6-support.js','./manifest.json','./student-cloud-client.js','./hobby-upgrades.js','./next-upgrade-pack.js','./final-polish-pack.js','./adaptive-access-admin.js','./play.html','./play-test.js','./play-question-bank.js','./quiz-bulk-package.js'
+  './','./index.html','./kg1.html','./kg2.html','./class.html','./certificate.html','./admin.html','./style.css','./script.js','./custom-classes.js','./kg1-grade6-support.js','./manifest.json','./student-cloud-client.js','./hobby-upgrades.js','./next-upgrade-pack.js','./final-polish-pack.js','./adaptive-access-admin.js'
 ];
 self.addEventListener('install', event => {
   self.skipWaiting();

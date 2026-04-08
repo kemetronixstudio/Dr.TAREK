@@ -39,7 +39,7 @@
       <input type="radio" name="gameModeCards" value="endless">
       <span class="mode-card-icon">♾</span>
       <span class="mode-card-title">Endless</span>
-      <span class="mode-card-sub">Elapsed timer runs until all questions are finished</span>
+      <span class="mode-card-sub">Timer counts up until all questions are finished</span>
     </label>
   </div>
 </div>
@@ -74,7 +74,7 @@
     <div class="play-quiz-toolbar"><label class="play-auto-next-toggle"><input type="checkbox" id="playAutoNextToggle" checked> <span data-i18n="autoNext">Auto next after answer</span></label><button class="ghost-btn small-btn sound-toggle-btn" id="playSoundToggleBtn" type="button" aria-label="Toggle sounds">🔊 Sounds</button></div>
     <div class="play-progress-track"><div class="play-progress-fill" id="playProgressFill"></div></div>
     <h2 class="play-question-text" id="playQuestionText" data-i18n="playQuestionText">Question text</h2>
-    <div class="play-question-image-wrap hidden" id="playQuestionImageWrap"><img id="playQuestionImage" class="play-question-image" alt="Question image"></div>
+    <div class="question-art hidden" id="questionImageWrap"><img id="questionImage" alt="Question visual"></div>
     <div class="play-options" id="playOptions"></div>
     <div class="action-row"><button class="ghost-btn" id="playNextBtn" type="button" data-i18n="playNextQuestion">Next Question</button></div>
   </section>
@@ -110,4 +110,4 @@
       <option value="20">20</option>
     </select>
 <script src="script.js"></script><script src="grades-extension.js"></script><script src="play-question-bank.js"></script><script src="play-test.js"></script><script src="quiz-bulk-package.js"></script>
-    </body></html>
+    <script src="cleanup-audit-pack.js"></script></body></html>
