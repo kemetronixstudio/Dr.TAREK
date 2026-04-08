@@ -5,7 +5,6 @@
   const TOKEN_KEY = 'kgAccessApiTokenV1';
   const LEGACY_TOKEN_KEY = 'admin_token';
   const ACCOUNT_KEY = 'kgEnglishAccessSessionV1';
-  const CREDS_KEY = 'kgAccessApiCredsV1';
   const ACCOUNT_STATUS_AUTO_CLEAR_MS = 2600;
   let accountCache = [];
 
@@ -53,16 +52,14 @@
       delete el.dataset.state;
     }
   }
-  function persistSession(account, token, creds){
+  function persistSession(account, token){
     window.__currentAccessAccount = account || null;
     try {
       if (token) { sessionStorage.setItem(TOKEN_KEY, token); try { localStorage.setItem(TOKEN_KEY, token); localStorage.setItem(LEGACY_TOKEN_KEY, token); } catch (e) {} }
       if (account) sessionStorage.setItem(ACCOUNT_KEY, JSON.stringify({ user: account.user, originalUser: account.originalUser || account.user, role: account.role }));
       else sessionStorage.removeItem(ACCOUNT_KEY);
-      if (creds && creds.user && creds.pass) sessionStorage.setItem(CREDS_KEY, JSON.stringify({ user: creds.user, pass: creds.pass }));
       if (!account) {
         sessionStorage.removeItem(TOKEN_KEY);
-        sessionStorage.removeItem(CREDS_KEY);
         try { localStorage.removeItem(TOKEN_KEY); localStorage.removeItem(LEGACY_TOKEN_KEY); } catch (e) {}
       }
     } catch (error) {}
@@ -74,13 +71,6 @@
       try { return localStorage.getItem(TOKEN_KEY) || localStorage.getItem(LEGACY_TOKEN_KEY) || ''; } catch (e) { return ''; }
     }
   }
-  function readCreds(){
-    try {
-      const raw = sessionStorage.getItem(CREDS_KEY) || '';
-      return raw ? JSON.parse(raw) : null;
-    } catch (error) { return null; }
-  }
-
   function forceLoginView(){
     const loginCard = document.getElementById('adminLoginCard');
     const panel = document.getElementById('adminPanel');
@@ -90,7 +80,6 @@
   function clearStaleFrontendSession(){
     try {
       sessionStorage.removeItem(ACCOUNT_KEY);
-      sessionStorage.removeItem(CREDS_KEY);
       sessionStorage.removeItem(TOKEN_KEY);
       localStorage.removeItem(TOKEN_KEY);
       localStorage.removeItem(LEGACY_TOKEN_KEY);
@@ -99,13 +88,8 @@
   }
   function authHeaders(){
     const token = readToken();
-    const creds = readCreds();
     const headers = {};
     if (token) headers.Authorization = 'Bearer ' + token;
-    if (creds && creds.user && creds.pass) {
-      headers['X-Access-User'] = creds.user;
-      headers['X-Access-Pass'] = creds.pass;
-    }
     return headers;
   }
   async function api(path, options){
@@ -185,25 +169,9 @@
     const fetchList = function(){
       return api('?ts=' + Date.now(), { method: 'GET' });
     };
-    try {
-      const payload = await fetchList();
-      accountCache = Array.isArray(payload.accounts) ? payload.accounts : [];
-      return accountCache;
-    } catch (error) {
-      const creds = readCreds();
-      if (error && error.status === 401 && creds && creds.user && creds.pass) {
-        try {
-          const loginPayload = await api('/login', { method: 'POST', body: JSON.stringify({ user: creds.user, pass: creds.pass }), headers: { Authorization: '' } });
-          persistSession(loginPayload.account, loginPayload.token, creds);
-          const payload = await fetchList();
-          accountCache = Array.isArray(payload.accounts) ? payload.accounts : [];
-          return accountCache;
-        } catch (retryError) {
-          throw retryError;
-        }
-      }
-      throw error;
-    }
+    const payload = await fetchList();
+    accountCache = Array.isArray(payload.accounts) ? payload.accounts : [];
+    return accountCache;
   }
 
 
@@ -406,7 +374,7 @@
     const pass = document.getElementById('adminPass') && document.getElementById('adminPass').value || '';
     try {
       const payload = await api('/login', { method: 'POST', body: JSON.stringify({ user: user, pass: pass }), headers: { Authorization: '' } });
-      persistSession(payload.account, payload.token, { user: user, pass: pass });
+      persistSession(payload.account, payload.token);
       setPanelVisible(payload.account);
       if (typeof window.renderAccessPermissions === 'function') window.renderAccessPermissions([]);
       await window.renderAccessAccountsList();
@@ -418,15 +386,14 @@
 
   async function restoreBackendSession(){
     const token = readToken();
-    const creds = readCreds();
-    if (!token && !(creds && creds.user && creds.pass)) {
+    if (!token) {
       clearStaleFrontendSession();
       forceLoginView();
       return false;
     }
     try {
       const payload = await api('?action=me', { method: 'GET' });
-      persistSession(payload.account, payload.token || token, creds);
+      persistSession(payload.account, payload.token || token);
       setPanelVisible(payload.account);
       if (typeof window.renderAccessPermissions === 'function') window.renderAccessPermissions([]);
       await window.renderAccessAccountsList();

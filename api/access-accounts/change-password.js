@@ -1,33 +1,17 @@
 const backend = require('../../lib/access-accounts-backend');
-
-function setAuthCookie(res, token) {
-  if (token) res.setHeader('Set-Cookie', `kgAccessToken=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=43200`);
-}
+const { parseJsonBody, sendJson, setAuthCookie } = require('../../lib/http-utils');
 
 module.exports = async function handler(req, res) {
-  if (req.method !== 'POST') {
-    res.statusCode = 405;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ ok: false, error: 'Method not allowed' }));
-    return;
-  }
+  if (req.method !== 'POST') return sendJson(res, 405, { ok: false, error: 'Method not allowed' });
   try {
     const auth = await backend.requireAdmin(req);
-    if (!auth.ok) {
-      res.statusCode = auth.status;
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify({ ok: false, error: auth.error }));
-      return;
-    }
+    if (!auth.ok) return sendJson(res, auth.status, { ok: false, error: auth.error });
     setAuthCookie(res, auth.token);
-    const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
+    const body = parseJsonBody(req);
     const result = await backend.changePassword(body, auth.account);
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ ...result, token: result.token || auth.token }));
+    if (result.token) setAuthCookie(res, result.token);
+    return sendJson(res, 200, { ...result, token: result.token || auth.token, account: result.currentAccount || auth.account });
   } catch (error) {
-    res.statusCode = error.status || 500;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ ok: false, error: error.message || 'Request failed' }));
+    return sendJson(res, error.status || 500, { ok: false, error: error.message || 'Request failed' });
   }
 };

@@ -1,21 +1,13 @@
 const backend = require('../../lib/student-cloud-backend');
+const { parseJsonBody, sendJson } = require('../../lib/http-utils');
 
 module.exports = async function handler(req, res) {
-  if (req.method !== 'POST') {
-    res.statusCode = 405;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ ok: false, error: 'Method not allowed' }));
-    return;
-  }
+  if (req.method !== 'POST') return sendJson(res, 405, { ok: false, error: 'Method not allowed' });
   try {
-    const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
+    const body = parseJsonBody(req);
     const result = await backend.saveProgress(body);
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(result));
+    return sendJson(res, 200, result);
   } catch (error) {
-    res.statusCode = error.status || 500;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ ok: false, error: error.message || 'Request failed' }));
+    return sendJson(res, error.status || 500, { ok: false, error: error.message || 'Request failed' });
   }
 };

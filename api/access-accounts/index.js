@@ -1,77 +1,51 @@
 const backend = require('../../lib/access-accounts-backend');
-
-function setAuthCookie(res, token) {
-  if (token) res.setHeader('Set-Cookie', `kgAccessToken=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=43200`);
-}
+const { parseJsonBody, sendJson, setAuthCookie } = require('../../lib/http-utils');
 
 module.exports = async function handler(req, res) {
   try {
+    const query = req.query || {};
+    const action = String((query.action || query.mode) || '').trim().toLowerCase();
+
+    if (req.method === 'GET' && action === 'me') {
+      const auth = await backend.requireAuthorized(req, null);
+      if (!auth.ok) return sendJson(res, auth.status, { ok: false, error: auth.error });
+      setAuthCookie(res, auth.token);
+      return sendJson(res, 200, { ok: true, account: auth.account, token: auth.token });
+    }
+
     if (req.method === 'GET') {
       const auth = await backend.requireAdmin(req);
-      if (!auth.ok) {
-        res.statusCode = auth.status;
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({ ok: false, error: auth.error }));
-        return;
-      }
+      if (!auth.ok) return sendJson(res, auth.status, { ok: false, error: auth.error });
       setAuthCookie(res, auth.token);
-      const action = String((req.query && (req.query.action || req.query.mode)) || '').trim().toLowerCase();
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/json');
-      if (action === 'me') {
-        res.end(JSON.stringify({ ok: true, account: auth.account, token: auth.token }));
-        return;
-      }
       if (action === 'logs') {
         const logs = await backend.readLogs();
-        res.end(JSON.stringify({ ok: true, logs, token: auth.token }));
-        return;
+        return sendJson(res, 200, { ok: true, logs, token: auth.token, account: auth.account });
       }
       const accounts = await backend.mergedAccounts();
-      res.end(JSON.stringify({ ok: true, accounts: accounts.map(backend.publicAccount), token: auth.token }));
-      return;
+      return sendJson(res, 200, { ok: true, accounts: accounts.map(backend.publicAccount), token: auth.token, account: auth.account });
     }
 
     if (req.method === 'POST') {
       const auth = await backend.requireAdmin(req);
-      if (!auth.ok) {
-        res.statusCode = auth.status;
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({ ok: false, error: auth.error }));
-        return;
-      }
+      if (!auth.ok) return sendJson(res, auth.status, { ok: false, error: auth.error });
       setAuthCookie(res, auth.token);
-      const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
+      const body = parseJsonBody(req);
       const result = await backend.saveAccount(body, auth.account);
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify({ ...result, token: result.token || auth.token }));
-      return;
+      if (result.token) setAuthCookie(res, result.token);
+      return sendJson(res, 200, { ...result, token: result.token || auth.token });
     }
 
     if (req.method === 'DELETE') {
       const auth = await backend.requireAdmin(req);
-      if (!auth.ok) {
-        res.statusCode = auth.status;
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({ ok: false, error: auth.error }));
-        return;
-      }
+      if (!auth.ok) return sendJson(res, auth.status, { ok: false, error: auth.error });
       setAuthCookie(res, auth.token);
-      const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
+      const body = parseJsonBody(req);
       const result = await backend.deleteAccount(body, auth.account);
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify({ ...result, token: auth.token }));
-      return;
+      return sendJson(res, 200, { ...result, token: auth.token, account: auth.account });
     }
 
-    res.statusCode = 405;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ ok: false, error: 'Method not allowed' }));
+    return sendJson(res, 405, { ok: false, error: 'Method not allowed' });
   } catch (error) {
-    res.statusCode = error.status || 500;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ ok: false, error: error.message || 'Request failed' }));
+    return sendJson(res, error.status || 500, { ok: false, error: error.message || 'Request failed' });
   }
 };

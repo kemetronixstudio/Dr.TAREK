@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dr-tarek-v2';
+const CACHE_NAME = 'dr-tarek-phase1-v1';
 const ASSETS = [
   '/',
   '/index.html',
@@ -11,13 +11,13 @@ const ASSETS = [
   '/style.css',
   '/script.js',
   '/custom-classes.js',
-  '/grades-extension.js',
-  '/play-question-bank.js',
-  '/play-test.js',
-  '/quiz-bulk-package.js',
   '/student-cloud-client.js',
   '/student-cloud-admin.js',
   '/backend-access.js',
+  '/public-config-sync.js',
+  '/quiz-runtime-v2.js',
+  '/admin-config-sync.js',
+  '/play-test.js',
   '/manifest.json'
 ];
 
