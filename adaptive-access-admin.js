@@ -15,6 +15,7 @@
   }
   function getAccess(){ try { return typeof window.getQuizAccess === 'function' ? (window.getQuizAccess() || {}) : {}; } catch(e){ return {}; } }
   function setAccess(v){ try { if (typeof window.setQuizAccess === 'function') window.setQuizAccess(v); } catch(e){} }
+  function removeSnapshot(){
     var snap = document.getElementById('studentSummaryUpgrade');
     if (snap) snap.remove();
   }
@@ -61,6 +62,7 @@
     window.renderQuizAccessEditor();
   };
   function boot(){
+    removeSnapshot();
     updateQuizAccessCopy();
     if (document.body && document.body.dataset && document.body.dataset.page === 'admin') {
       if (document.getElementById('adminPanel') && !document.getElementById('adminPanel').classList.contains('hidden')) window.renderQuizAccessEditor();
@@ -73,5 +75,6 @@
   });
   document.addEventListener('DOMContentLoaded', boot);
   window.addEventListener('load', boot);
+  var mo = new MutationObserver(function(){ removeSnapshot(); });
   document.addEventListener('DOMContentLoaded', function(){ try { mo.observe(document.body, {childList:true, subtree:true}); } catch(e){} });
 })();

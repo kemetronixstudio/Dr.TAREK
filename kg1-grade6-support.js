@@ -496,6 +496,7 @@
     if (document.getElementById('storedQuestionsList') && typeof window.renderStoredQuestions === 'function') window.renderStoredQuestions();
   }
 
+
   function levelCounts(){ return [10,20,30,40,50]; }
   function localizedLevelLabel(count){
     const labels = {10:'Level 1 (10)',20:'Level 2 (20)',30:'Level 3 (30)',40:'Level 4 (40)',50:'Level 5 (50)'};

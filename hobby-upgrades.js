@@ -325,6 +325,7 @@
     const statuses = ['visible','hidden','frozen','scheduled','expired','draft'];
     const counts = statuses.reduce((acc, s) => (acc[s]=0, acc), {});
     Object.keys(getAdvanced()).forEach(k => { const s = computeStatus(k); if (counts[s] != null) counts[s] += 1; });
+    wrap.innerHTML = '<div class="section-head"><h2>Quick School Snapshot</h2></div><div class="dashboard-mini">' +
       '<div class="card"><strong>' + totalStudents + '</strong><div>Students with progress</div></div>' +
       '<div class="card"><strong>' + counts.visible + '</strong><div>Visible quizzes</div></div>' +
       '<div class="card"><strong>' + counts.scheduled + '</strong><div>Scheduled quizzes</div></div>' +

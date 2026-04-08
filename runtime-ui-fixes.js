@@ -70,13 +70,17 @@
     window.studentCloud.ensureQuizIdentityFields(grade.toUpperCase());
     translateIdentityFields();
   }
+  function hideSnapshot(){
+    document.querySelectorAll('.dashboard-mini, .home-snapshot-card').forEach(el => {
       const text = (el.textContent || '').toLowerCase();
+      if (text.includes('quick school snapshot') || text.includes('students with progress') || text.includes('visible quizzes')) {
         const card = el.closest('.card') || el;
         card.style.display = 'none';
       }
     });
     document.querySelectorAll('h2, h3').forEach(el => {
       const text = (el.textContent || '').trim().toLowerCase();
+      if (text === 'quick school snapshot') {
         const card = el.closest('.card') || el.parentElement;
         if (card) card.style.display = 'none';
       }
@@ -211,6 +215,7 @@
         translateIdentityFields();
         rebuildQuizAccess();
         updateQuestionCount();
+        hideSnapshot();
         return result;
       };
     }
@@ -225,8 +230,10 @@
     rebuildQuizAccess();
     rebuildStoredQuestions();
     updateQuestionCount();
+    hideSnapshot();
   }
   document.addEventListener('DOMContentLoaded', run);
   window.addEventListener('load', run);
+  window.addEventListener('kg:langchange', function(){ translateIdentityFields(); rebuildQuizAccess(); updateQuestionCount(); hideSnapshot(); });
   window.addEventListener('kg:quizmeta', forceQuizIdentity);
 })();
