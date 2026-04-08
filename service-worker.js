@@ -1,4 +1,4 @@
-const CACHE = 'kg-quiz-v410';
+const CACHE = 'kg-quiz-v411';
 const ASSETS = [
   './','./index.html','./kg1.html','./kg2.html','./class.html','./certificate.html','./admin.html','./style.css','./script.js','./custom-classes.js','./kg1-grade6-support.js','./manifest.json','./hobby-upgrades.js'
 ];

@@ -23,6 +23,11 @@ Upload all files in the ZIP directly to the repository root.
 ## Vercel
 Import as a static site. No build step is required.
 
+### Vercel Hobby deployment-safe notes
+- If you do not configure `KV_REST_API_URL` / `KV_REST_API_TOKEN` or `REDIS_URL`, server fallback data writes now go to `/tmp/kg-quiz-runtime` on Vercel instead of the read-only project files.
+- `/tmp` on Vercel is **ephemeral**, so server-side records can reset between deployments or cold starts. For persistent shared data, use KV/Redis.
+- Browser-managed features (question bank edits, level visibility, timer settings, quiz status, audit log, recycle bin) remain localStorage-based and are still Hobby-safe.
+
 
 ## KG2 Book Source
 

@@ -496,6 +496,96 @@
     if (document.getElementById('storedQuestionsList') && typeof window.renderStoredQuestions === 'function') window.renderStoredQuestions();
   }
 
+
+  function levelCounts(){ return [10,20,30,40,50]; }
+  function localizedLevelLabel(count){
+    const labels = {10:'Level 1 (10)',20:'Level 2 (20)',30:'Level 3 (30)',40:'Level 4 (40)',50:'Level 5 (50)'};
+    const labelsAr = {10:'المستوى 1 (10)',20:'المستوى 2 (20)',30:'المستوى 3 (30)',40:'المستوى 4 (40)',50:'المستوى 5 (50)'};
+    return (typeof window.getLang === 'function' && window.getLang() === 'ar') ? labelsAr[count] : labels[count];
+  }
+  function updateAdminLevelTimerCopy(){
+    const levelNote = document.querySelector('#levelVisibilityBody .muted-note[data-i18n="chooseWhichLevels"]');
+    if (levelNote) levelNote.textContent = textFor('Choose which quiz levels students can see for each grade from KG1 to Grade 6 and for custom classes.', 'اختر مستويات الاختبار التي يمكن للطلاب رؤيتها لكل صف من KG1 حتى Grade 6 وللفصول المخصصة.');
+    const timerNote = document.querySelector('#timerSettingsBody .muted-note[data-i18n="timerInfo"]');
+    if (timerNote) timerNote.textContent = textFor('Turn the timer on or off for each grade from KG1 to Grade 6 and for custom classes. When timer is off, students answer without countdown and each correct answer gives fixed points.', 'يمكنك تشغيل أو إيقاف المؤقت لكل صف من KG1 حتى Grade 6 وللفصول المخصصة. عند إيقافه يجيب الطالب بدون عد تنازلي وتحصل كل إجابة صحيحة على نقاط ثابتة.');
+  }
+
+  window.renderLevelVisibilityEditor = function(){
+    const wrap = document.getElementById('adminLevelVisibility');
+    if (!wrap) return;
+    updateAdminLevelTimerCopy();
+    const cfg = ensureLevelMap(window.getLevelVisibility ? window.getLevelVisibility() : {});
+    const keys = allGradeKeys();
+    wrap.innerHTML = keys.length ? keys.map(function(grade){
+      const visible = new Set(Array.isArray(cfg[grade]) ? cfg[grade].map(Number) : levelCounts());
+      return '<div class="level-visibility-card"><h3>' + escapeHtml(gradeLabel(grade)) + '</h3><div class="level-visibility-list">' +
+        levelCounts().map(function(count){
+          return '<label class="level-toggle"><input type="checkbox" data-level-grade="' + escapeHtml(grade) + '" value="' + count + '" ' + (visible.has(count) ? 'checked' : '') + '> <span>' + escapeHtml(localizedLevelLabel(count)) + '</span></label>';
+        }).join('') + '</div></div>';
+    }).join('') : '<div class="muted-note">' + escapeHtml(textFor('No grades or classes available.', 'لا توجد صفوف أو فصول متاحة.')) + '</div>';
+  };
+
+  window.saveLevelVisibilityFromAdmin = function(){
+    const keys = allGradeKeys();
+    const result = ensureLevelMap({});
+    keys.forEach(function(key){ result[key] = []; });
+    document.querySelectorAll('#adminLevelVisibility input[type="checkbox"][data-level-grade]').forEach(function(input){
+      if (!result[input.dataset.levelGrade]) result[input.dataset.levelGrade] = [];
+      if (input.checked) result[input.dataset.levelGrade].push(Number(input.value));
+    });
+    const emptyKey = keys.find(function(key){ return !Array.isArray(result[key]) || !result[key].length; });
+    if (emptyKey){
+      alert(textFor('Keep at least one visible level for ' + gradeLabel(emptyKey) + '.', 'يجب إبقاء مستوى واحد على الأقل ظاهرًا لـ ' + gradeLabel(emptyKey) + '.'));
+      return;
+    }
+    keys.forEach(function(key){ result[key] = Array.from(new Set((result[key] || []).map(Number))).sort(function(a,b){ return a-b; }); });
+    if (typeof window.setLevelVisibility === 'function') window.setLevelVisibility(result);
+    window.renderLevelVisibilityEditor();
+    alert(textFor('Level visibility saved.', 'تم حفظ إعدادات إظهار المستويات.'));
+  };
+
+  window.resetLevelVisibilityFromAdmin = function(){
+    const defaults = ensureLevelMap({});
+    if (typeof window.setLevelVisibility === 'function') window.setLevelVisibility(defaults);
+    window.renderLevelVisibilityEditor();
+  };
+
+  window.renderTimerSettingsEditor = function(){
+    const wrap = document.getElementById('adminTimerSettings');
+    if (!wrap) return;
+    updateAdminLevelTimerCopy();
+    const cfg = ensureTimerMap(window.getTimerSettings ? window.getTimerSettings() : {});
+    const keys = allGradeKeys();
+    wrap.innerHTML = keys.length ? keys.map(function(grade){
+      const enabled = cfg[grade] !== false;
+      return '<div class="level-visibility-card"><h3>' + escapeHtml(gradeLabel(grade)) + '</h3><label class="level-toggle admin-toggle-row"><input type="checkbox" data-timer-grade="' + escapeHtml(grade) + '" ' + (enabled ? 'checked' : '') + '><span>' + escapeHtml(enabled ? textFor('Timer enabled', 'المؤقت يعمل') : textFor('Timer disabled', 'المؤقت متوقف')) + '</span></label></div>';
+    }).join('') : '<div class="muted-note">' + escapeHtml(textFor('No grades or classes available.', 'لا توجد صفوف أو فصول متاحة.')) + '</div>';
+    wrap.querySelectorAll('input[data-timer-grade]').forEach(function(input){
+      input.addEventListener('change', function(){
+        const span = input.closest('label') && input.closest('label').querySelector('span');
+        if (span) span.textContent = input.checked ? textFor('Timer enabled', 'المؤقت يعمل') : textFor('Timer disabled', 'المؤقت متوقف');
+      });
+    });
+  };
+
+  window.saveTimerSettingsFromAdmin = function(){
+    const keys = allGradeKeys();
+    const result = ensureTimerMap({});
+    keys.forEach(function(key){ result[key] = true; });
+    document.querySelectorAll('#adminTimerSettings input[type="checkbox"][data-timer-grade]').forEach(function(input){
+      result[input.dataset.timerGrade] = !!input.checked;
+    });
+    if (typeof window.setTimerSettings === 'function') window.setTimerSettings(result);
+    window.renderTimerSettingsEditor();
+    alert(textFor('Timer settings saved.', 'تم حفظ إعدادات المؤقت.'));
+  };
+
+  window.resetTimerSettingsFromAdmin = function(){
+    const defaults = ensureTimerMap({});
+    if (typeof window.setTimerSettings === 'function') window.setTimerSettings(defaults);
+    window.renderTimerSettingsEditor();
+  };
+
   window.addEventListener('load', function(){
     ensureQuestionMap(readJson(KEY_CUSTOM_Q, {}));
     if (document.body.dataset.page === 'admin') runAdminRefresh();
