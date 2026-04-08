@@ -2514,14 +2514,3 @@ body[data-page="playtest"] .play-top3-item{
     display:none !important;
   }
 }
-
-/* v38.12 statuses + question bank badges */
-.quiz-status-toolbar,.class-status-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
-.quiz-state-badge{display:inline-flex;align-items:center;justify-content:center;padding:7px 12px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.04em;border:1px solid transparent}
-.quiz-state-visible{background:#e9fff2;color:#11663a;border-color:#b7efce}
-.quiz-state-hidden{background:#fff6d8;color:#8a5a00;border-color:#f0dd8e}
-.quiz-state-frozen{background:#ffe7e7;color:#9c1c1c;border-color:#efb2b2}
-.home-class-status{margin:8px 0 4px}
-.question-edit-card .class-chip{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;background:#eef6ff;color:#45658b;font-size:12px;font-weight:800}
-.class-frozen-note{margin-top:14px}
-@media (max-width:640px){.quiz-status-toolbar,.class-status-actions{flex-direction:column;align-items:stretch}.quiz-state-badge{justify-content:center}}
