@@ -105,3 +105,10 @@ Included upgrade pack:
 - question recycle bin with restore all
 - export question bank JSON/CSV
 - audit log with JSON/CSV export
+
+
+## v38.10 next upgrade pack
+- adds admin validation for teacher quiz save flow
+- adds bulk visible/hidden/frozen actions across grades and classes
+- adds safer question-bank validation with duplicate checks
+- adds live question filter summary for faster admin review
