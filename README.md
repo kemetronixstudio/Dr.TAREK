@@ -83,3 +83,20 @@ See `.env.example` for the expected environment variables.
 ### Auth behavior
 - Admin login now signs a backend session token and also sets a secure same-site cookie.
 - If the browser token is missing, the Access Accounts panel can still re-validate using the stored admin session and recover automatically.
+
+
+## Hobby-safe upgrade pack
+
+This build keeps deployment friendly for GitHub and Vercel Hobby:
+- no database required
+- no background jobs or cron required
+- no paid third-party services required
+- advanced quiz controls, audit log, and recycle bin are stored in browser localStorage
+- existing serverless API files remain lightweight and compatible with Vercel Hobby limits
+
+Included upgrade pack:
+- advanced quiz statuses: draft, visible, hidden, frozen, scheduled, expired, archived
+- advanced quiz controls: schedule, timer, attempts, pass mark, randomization
+- question recycle bin with restore all
+- export question bank JSON/CSV
+- audit log with JSON/CSV export
