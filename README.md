@@ -112,3 +112,9 @@ Included upgrade pack:
 - adds bulk visible/hidden/frozen actions across grades and classes
 - adds safer question-bank validation with duplicate checks
 - adds live question filter summary for faster admin review
+
+
+## Final polish pack
+- Adds an admin command center with section search, expand/collapse all, local backup export/import, and floating back-to-top button.
+- Adds draft recovery for teacher test and question-bank forms using browser localStorage only.
+- Remains GitHub/Vercel Hobby friendly because it does not require background jobs, databases, or server-side persistent writes.
