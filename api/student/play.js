@@ -1,4 +1,5 @@
 const backend = require('../../lib/student-cloud-backend');
+const accessBackend = require('../../lib/access-accounts-backend');
 
 module.exports = async function handler(req, res) {
   const url = new URL(req.url, 'http://localhost');
@@ -13,6 +14,13 @@ module.exports = async function handler(req, res) {
         return;
       }
       if (action === 'reset') {
+        const auth = await accessBackend.requireAdmin(req);
+        if (!auth.ok) {
+          res.statusCode = auth.status;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ ok: false, error: auth.error }));
+          return;
+        }
         const result = await backend.resetPlayLeaderboard();
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -32,6 +40,13 @@ module.exports = async function handler(req, res) {
     }
     const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
     if (action === 'reset') {
+      const auth = await accessBackend.requireAdmin(req);
+      if (!auth.ok) {
+        res.statusCode = auth.status;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({ ok: false, error: auth.error }));
+        return;
+      }
       const result = await backend.resetPlayLeaderboard();
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');

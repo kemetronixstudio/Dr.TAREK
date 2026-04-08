@@ -2766,6 +2766,7 @@ Object.assign(translations.ar, {
 
 /* v12 play modes upgrade */
 (function(){
+  if (typeof document !== 'undefined' && document.body && document.body.dataset.page === 'playtest') return;
   const APP = window;
   const MODE_KEYS = {
     question_timer: 'playLeaderboard_question_timer_v1',

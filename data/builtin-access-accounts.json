@@ -1,0 +1,10 @@
+[
+  {
+    "user": "KEMETRONIX",
+    "passwordHash": "pbkdf2$120000$9fdb58c625e2a29398847163ca20c06c$17b40ec0f03df4b9f57b4622c8f6dac0137cac7c5da6f7944a7a8af3d12c9f76"
+  },
+  {
+    "user": "Dr. Tarek",
+    "passwordHash": "pbkdf2$120000$4eac5e07b810bfdbf228b18b6a66d00c$575d5dd5946f8794306f7664d49b403aafa78358afc98eff5092325ee81c713f"
+  }
+]
