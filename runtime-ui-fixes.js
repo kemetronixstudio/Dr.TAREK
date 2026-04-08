@@ -17,6 +17,13 @@
     if (m) return 'Grade ' + m[1];
     return key;
   }
+
+  function allManagedKeys(){
+    return allPasswordKeys();
+  }
+  function prettyLabel(key){
+    return prettyGrade(key);
+  }
   function allPasswordKeys(){
     const keys = ['kg1','kg2','grade1','grade2','grade3','grade4','grade5','grade6'];
     try {
@@ -70,22 +77,19 @@
     window.studentCloud.ensureQuizIdentityFields(grade.toUpperCase());
     translateIdentityFields();
   }
+  
   function hideSnapshot(){
-    document.querySelectorAll('.dashboard-mini, .home-snapshot-card').forEach(el => {
-      const text = (el.textContent || '').toLowerCase();
+    if (document.body?.dataset?.page !== 'home') return;
+    document.querySelectorAll('#studentSummaryUpgrade, .home-snapshot-card, .quick-school-snapshot').forEach(el => el.remove());
+    document.querySelectorAll('section.card').forEach(section => {
+      const text = (section.textContent || '').toLowerCase();
       if (text.includes('quick school snapshot') || text.includes('students with progress') || text.includes('visible quizzes')) {
-        const card = el.closest('.card') || el;
-        card.style.display = 'none';
-      }
-    });
-    document.querySelectorAll('h2, h3').forEach(el => {
-      const text = (el.textContent || '').trim().toLowerCase();
-      if (text === 'quick school snapshot') {
-        const card = el.closest('.card') || el.parentElement;
-        if (card) card.style.display = 'none';
+        section.remove();
       }
     });
   }
+
+  
   function rebuildQuizAccess(){
     if (!document.body || document.body.dataset.page !== 'admin') return;
     const body = document.getElementById('quizAccessBody');
@@ -93,29 +97,160 @@
     const cfg = (typeof getQuizAccess === 'function' ? getQuizAccess() : {}) || {};
     const info = body.querySelector('p');
     if (info) info.textContent = t('dynamicPasswordInfo', info.textContent);
+    const legacy = body.querySelector('#adminQuizAccess');
+    if (legacy) legacy.remove();
     let grid = body.querySelector('.quiz-access-grid-dynamic');
     if (!grid) {
-      const oldBoxes = body.querySelectorAll('.quiz-access-grid, .quiz-password-grid, .quiz-password-cards');
-      oldBoxes.forEach(el => el.remove());
       grid = document.createElement('div');
       grid.className = 'quiz-access-grid-dynamic';
       grid.style.display = 'grid';
       grid.style.gridTemplateColumns = 'repeat(auto-fit,minmax(280px,1fr))';
       grid.style.gap = '16px';
-      body.insertBefore(grid, document.getElementById('saveQuizPasswordBtn'));
+      const saveBtn = document.getElementById('saveQuizPasswordBtn');
+      body.insertBefore(grid, saveBtn ? saveBtn.parentElement : null);
     }
-    const keys = allPasswordKeys();
+    const keys = allManagedKeys();
     grid.innerHTML = keys.map(key => {
       const rec = cfg[key] || {enabled:false,password:''};
-      const label = prettyGrade(key);
-      return '<div class="admin-subcard">' +
+      const label = prettyLabel(key);
+      const safeVal = String(rec.password || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+      return '<div class="level-visibility-card">' +
         '<h3>' + label + '</h3>' +
-        '<label class="toggle-row"><input type="checkbox" id="quizPasswordEnabled_' + key + '" ' + (rec.enabled ? 'checked' : '') + '><span>' + (lang()==='ar' ? ('حماية ' + label + ' بكلمة مرور') : ('Protect ' + label + ' with password')) + '</span></label>' +
-        '<input id="quizPasswordValue_' + key + '" placeholder="' + (lang()==='ar' ? ('كلمة مرور ' + label) : (label + ' password')) + '" value="' + String(rec.password || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;') + '">' +
+        '<label class="level-toggle admin-toggle-row"><input type="checkbox" id="quizPasswordEnabled_' + key + '" ' + (rec.enabled ? 'checked' : '') + '><span>' + (lang()==='ar' ? ('حماية ' + label + ' بكلمة مرور') : ('Protect ' + label + ' with password')) + '</span></label>' +
+        '<input class="admin-text-input" id="quizPasswordValue_' + key + '" placeholder="' + (lang()==='ar' ? ('كلمة مرور ' + label) : (label + ' password')) + '" value="' + safeVal + '">' +
       '</div>';
     }).join('');
   }
-  function patchQuizAccessFns(){
+
+
+  function rebuildTimerSettings(){
+    if (!document.body || document.body.dataset.page !== 'admin') return;
+    const wrap = document.getElementById('adminTimerSettings');
+    if (!wrap) return;
+    const cfg = (typeof getTimerSettings === 'function' ? getTimerSettings() : {}) || {};
+    const keys = allManagedKeys();
+    wrap.innerHTML = keys.map(key => {
+      const label = prettyLabel(key);
+      const checked = cfg[key] !== false;
+      return '<div class="level-visibility-card">' +
+        '<h3>' + label + '</h3>' +
+        '<label class="level-toggle admin-toggle-row">' +
+        '<input type="checkbox" data-timer-grade="' + key + '" ' + (checked ? 'checked' : '') + '>' +
+        '<span>' + (checked ? (lang()==='ar' ? 'المؤقت مفعل' : 'Timer enabled') : (lang()==='ar' ? 'المؤقت متوقف' : 'Timer disabled')) + '</span>' +
+        '</label></div>';
+    }).join('');
+    wrap.querySelectorAll('input[data-timer-grade]').forEach(input => {
+      input.addEventListener('change', () => {
+        const span = input.closest('label')?.querySelector('span');
+        if (span) span.textContent = input.checked ? (lang()==='ar' ? 'المؤقت مفعل' : 'Timer enabled') : (lang()==='ar' ? 'المؤقت متوقف' : 'Timer disabled');
+      });
+    });
+  }
+  function patchTimerFns(){
+    window.renderTimerSettingsEditor = function(){ rebuildTimerSettings(); };
+    window.saveTimerSettingsFromAdmin = function(){
+      const next = {};
+      allManagedKeys().forEach(key => {
+        const input = document.querySelector('#adminTimerSettings input[data-timer-grade="' + key + '"]');
+        next[key] = input ? !!input.checked : true;
+      });
+      if (typeof setTimerSettings === 'function') setTimerSettings(next);
+      rebuildTimerSettings();
+      alert(lang()==='ar' ? 'تم حفظ إعدادات المؤقت.' : 'Timer settings saved.');
+    };
+    window.resetTimerSettingsFromAdmin = function(){
+      const next = {};
+      allManagedKeys().forEach(key => next[key] = true);
+      if (typeof setTimerSettings === 'function') setTimerSettings(next);
+      rebuildTimerSettings();
+    };
+  }
+  function patchCommandCenter(){
+    if (!document.body || document.body.dataset.page !== 'admin') return;
+    const setAll = (collapsed) => {
+      const rows = (window.ADMIN_COLLAPSIBLE_CONFIGS || []).filter(Boolean);
+      if (typeof window.setCollapsed === 'function' && rows.length) {
+        rows.forEach(cfg => {
+          const btn = document.getElementById(cfg.buttonId);
+          if (document.getElementById(cfg.bodyId)) window.setCollapsed(cfg.bodyId, btn, collapsed);
+        });
+      } else {
+        document.querySelectorAll('.admin-collapsible-body').forEach(body => {
+          body.classList.toggle('collapsed-body', collapsed);
+          body.hidden = collapsed;
+          body.style.display = collapsed ? 'none' : '';
+        });
+      }
+    };
+    const expandBtn = document.getElementById('expandAllAdminBtn');
+    const collapseBtn = document.getElementById('collapseAllAdminBtn');
+    if (expandBtn && !expandBtn.dataset.runtimeBound) {
+      expandBtn.dataset.runtimeBound = '1';
+      expandBtn.addEventListener('click', () => setAll(false));
+    }
+    if (collapseBtn && !collapseBtn.dataset.runtimeBound) {
+      collapseBtn.dataset.runtimeBound = '1';
+      collapseBtn.addEventListener('click', () => setAll(true));
+    }
+  }
+  function patchPlayEndless(){
+    if (document.body?.dataset?.page !== 'playtest') return;
+    const endlessSub = document.querySelector('.mode-card[data-mode-value="endless"] .mode-card-sub');
+    if (endlessSub) endlessSub.textContent = lang()==='ar' ? 'يبدأ المؤقت في العد التصاعدي حتى تنتهي من كل الأسئلة' : 'Elapsed timer counts up until all questions are finished';
+    if (typeof window !== 'undefined') {
+      const APP = window;
+      APP.playEndlessStartedAt = APP.playEndlessStartedAt || 0;
+      APP.playEndlessInterval = APP.playEndlessInterval || null;
+      APP.stopEndlessTimer = function(){
+        if (APP.playEndlessInterval){ clearInterval(APP.playEndlessInterval); APP.playEndlessInterval = null; }
+      };
+      APP.startEndlessTimer = function(){
+        APP.stopEndlessTimer();
+        APP.playEndlessStartedAt = Date.now();
+        const tick = () => {
+          const secs = Math.max(0, Math.floor((Date.now() - APP.playEndlessStartedAt)/1000));
+          const badge = document.querySelector('#timerBadge, #timeBadge, #timeLeftValue, #playTimerBadge');
+          if (badge) {
+            const mins = Math.floor(secs / 60);
+            const rem = secs % 60;
+            const label = (document.getElementById('playTimerBadge') === badge || badge.id === 'playTimerBadge') ? (lang()==='ar' ? 'الوقت: ' : 'Time: ') : '';
+            badge.textContent = label + String(mins).padStart(2,'0') + ':' + String(rem).padStart(2,'0');
+          }
+        };
+        tick();
+        APP.playEndlessInterval = setInterval(tick, 1000);
+      };
+      const origRender = APP.renderMixedQuestion;
+      if (typeof origRender === 'function' && !origRender.__endlessCountPatched) {
+        APP.renderMixedQuestion = function(){
+          const result = origRender.apply(this, arguments);
+          if (APP.playGameMode === 'endless') APP.startEndlessTimer();
+          return result;
+        };
+        APP.renderMixedQuestion.__endlessCountPatched = true;
+      }
+      const origFinish = APP.finishMixedQuiz;
+      if (typeof origFinish === 'function' && !origFinish.__endlessCountPatched) {
+        APP.finishMixedQuiz = function(){
+          APP.stopEndlessTimer();
+          return origFinish.apply(this, arguments);
+        };
+        APP.finishMixedQuiz.__endlessCountPatched = true;
+      }
+      const startBtn = document.getElementById('startMixedQuizBtn');
+      if (startBtn && !startBtn.dataset.endlessCountPatched) {
+        startBtn.dataset.endlessCountPatched = '1';
+        startBtn.addEventListener('click', () => {
+          setTimeout(() => {
+            if (APP.playGameMode === 'endless') APP.startEndlessTimer();
+            else if (APP.stopEndlessTimer) APP.stopEndlessTimer();
+          }, 50);
+        }, true);
+      }
+    }
+  }
+
+    function patchQuizAccessFns(){
     if (typeof window.renderQuizAccessEditor === 'function') {
       const orig = window.renderQuizAccessEditor;
       window.renderQuizAccessEditor = function(){ try { orig(); } catch(e){} rebuildQuizAccess(); };
@@ -214,6 +349,9 @@
         ensureQuizTranslations();
         translateIdentityFields();
         rebuildQuizAccess();
+        rebuildTimerSettings();
+        patchCommandCenter();
+        patchPlayEndless();
         updateQuestionCount();
         hideSnapshot();
         return result;
@@ -225,15 +363,26 @@
     patchStudentCloud();
     patchLang();
     patchQuizAccessFns();
+    patchTimerFns();
     patchQuestionFns();
     forceQuizIdentity();
     rebuildQuizAccess();
+    rebuildTimerSettings();
+    patchCommandCenter();
+    patchPlayEndless();
     rebuildStoredQuestions();
     updateQuestionCount();
     hideSnapshot();
   }
   document.addEventListener('DOMContentLoaded', run);
   window.addEventListener('load', run);
-  window.addEventListener('kg:langchange', function(){ translateIdentityFields(); rebuildQuizAccess(); updateQuestionCount(); hideSnapshot(); });
+  window.addEventListener('kg:langchange', function(){ translateIdentityFields(); rebuildQuizAccess(); rebuildTimerSettings(); patchCommandCenter(); patchPlayEndless(); updateQuestionCount(); hideSnapshot(); });
   window.addEventListener('kg:quizmeta', forceQuizIdentity);
+  document.addEventListener('click', function(){ setTimeout(function(){ rebuildQuizAccess(); rebuildTimerSettings(); patchCommandCenter(); hideSnapshot(); }, 120); });
+  if (document.body?.dataset?.page === 'admin') {
+    const panel = document.getElementById('adminPanel');
+    if (panel) {
+      new MutationObserver(function(){ setTimeout(function(){ rebuildQuizAccess(); rebuildTimerSettings(); patchCommandCenter(); }, 120); }).observe(panel,{attributes:true,attributeFilter:['class']});
+    }
+  }
 })();

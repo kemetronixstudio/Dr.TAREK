@@ -100,13 +100,25 @@
       chips.appendChild(chip);
     }
   }
-  function setAllCollapsed(collapsed){
-    if (typeof window.ADMIN_COLLAPSIBLE_CONFIGS === 'undefined' || typeof window.setCollapsed !== 'function') return false;
-    window.ADMIN_COLLAPSIBLE_CONFIGS.forEach(cfg => {
-      const btn = document.getElementById(cfg.buttonId);
-      if (document.getElementById(cfg.bodyId)) window.setCollapsed(cfg.bodyId, btn, collapsed);
+  
+function setAllCollapsed(collapsed){
+    let changed = false;
+    if (Array.isArray(window.ADMIN_COLLAPSIBLE_CONFIGS) && typeof window.setCollapsed === 'function') {
+      window.ADMIN_COLLAPSIBLE_CONFIGS.forEach(cfg => {
+        const btn = document.getElementById(cfg.buttonId);
+        if (document.getElementById(cfg.bodyId)) {
+          window.setCollapsed(cfg.bodyId, btn, collapsed);
+          changed = true;
+        }
+      });
+    }
+    document.querySelectorAll('.admin-collapsible-body').forEach(body => {
+      body.classList.toggle('collapsed-body', collapsed);
+      body.hidden = collapsed;
+      body.style.display = collapsed ? 'none' : '';
+      changed = true;
     });
-    return true;
+    return changed;
   }
   function collectBackup(){
     const payload = { exportedAt: new Date().toISOString(), source: 'kg-v38.10-final-polish-pack', data: {} };
