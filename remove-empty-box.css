@@ -1,0 +1,12 @@
+
+/* remove empty leftover snapshot container */
+.quick-school-snapshot,
+[data-section*="snapshot"],
+.snapshot {
+  display:none !important;
+}
+
+/* remove empty spacer box */
+div:empty {
+  display:none !important;
+}
