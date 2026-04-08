@@ -373,7 +373,7 @@
       enhanceActivitySection();
     }
     enforceStudentVisibility();
-    enhanceHomeDashboard();
+    /* snapshot disabled */
   }
 
   window.addEventListener('load', () => setTimeout(init, 220));
