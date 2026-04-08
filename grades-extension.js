@@ -32,6 +32,14 @@
     const meta = gradeMetaFor(grade);
     if (!meta) return;
     document.body.dataset.grade = grade;
+    try {
+      if (window.studentCloud && typeof window.studentCloud.ensureQuizIdentityFields === 'function') {
+        window.studentCloud.ensureQuizIdentityFields(String(grade || '').toUpperCase());
+      }
+      if (typeof window.initQuiz === 'function') {
+        window.initQuiz();
+      }
+    } catch (e) {}
     const badge = document.querySelector('.badge-pill');
     const title = document.querySelector('h1');
     const subtitle = document.querySelector('p');

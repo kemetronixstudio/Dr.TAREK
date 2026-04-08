@@ -1,10 +1,10 @@
 const backend = require('../../lib/access-accounts-backend');
-const apiSecurity = require('../../lib/api-security');
 
+function setAuthCookie(res, token) {
+  if (token) res.setHeader('Set-Cookie', `kgAccessToken=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=43200`);
+}
 
 module.exports = async function handler(req, res) {
-  if (apiSecurity.handlePreflight(req, res)) return;
-  apiSecurity.applyApiHeaders(req, res);
   if (req.method !== 'POST') {
     res.statusCode = 405;
     res.setHeader('Content-Type', 'application/json');
@@ -19,7 +19,7 @@ module.exports = async function handler(req, res) {
       res.end(JSON.stringify({ ok: false, error: auth.error }));
       return;
     }
-    apiSecurity.setAuthCookie(req, res, auth.token);
+    setAuthCookie(res, auth.token);
     const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
     const result = await backend.changePassword(body, auth.account);
     res.statusCode = 200;
