@@ -181,15 +181,13 @@
     if (!grade || grade === 'kg1' || grade === 'kg2') return;
     document.body.dataset.grade = grade;
     const meta = classMeta(grade);
-    if (meta){
-      const badge = document.querySelector('[data-i18n="customClassBadge"]') || document.querySelector('.badge-pill');
-      const title = document.querySelector('[data-i18n="customClassTitle"]') || document.querySelector('h1');
-      const subtitle = document.querySelector('[data-i18n="customClassSubtitle"]') || document.querySelector('p');
-      if (badge) badge.textContent = meta.name || T('customClassBadge');
-      if (title) title.textContent = meta.name || T('customClassTitle');
-      if (subtitle) subtitle.textContent = meta.description || T('customClassSubtitle');
-      document.title = String(meta.name || T('customClassTitle'));
-    }
+    const badge = document.querySelector('[data-i18n="customClassBadge"]') || document.querySelector('.badge-pill');
+    const title = document.querySelector('[data-i18n="customClassTitle"]') || document.querySelector('h1');
+    const subtitle = document.querySelector('[data-i18n="customClassSubtitle"]') || document.querySelector('p');
+    if (badge) badge.textContent = meta?.name || T('customClassBadge');
+    if (title) title.textContent = meta?.name || T('customClassTitle');
+    if (subtitle) subtitle.textContent = meta?.description || T('customClassSubtitle');
+    document.title = `${meta?.name || T('customClassTitle')}`;
     if (typeof window.initQuiz === 'function') window.initQuiz();
   }
 

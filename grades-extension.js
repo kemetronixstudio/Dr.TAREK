@@ -39,7 +39,6 @@
     if (title) title.textContent = meta.title;
     if (subtitle) subtitle.textContent = meta.desc;
     document.title = meta.title;
-    if (typeof window.initQuiz === 'function') window.initQuiz();
   }
 
 
