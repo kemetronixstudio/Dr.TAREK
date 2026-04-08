@@ -78,15 +78,6 @@
     return identity;
   }
 
-  function autoEnsureIdentityFields(){
-    const body = document.body;
-    if (!body || body.dataset.page !== 'quiz') return;
-    const grade = String(body.dataset.grade || body.dataset.class || '').trim();
-    if (!grade) return;
-    if (!$('studentName')) return;
-    ensureQuizIdentityFields(String(grade).toUpperCase());
-  }
-
   window.studentCloud = {
     ensureQuizIdentityFields,
     collectIdentity,
@@ -95,14 +86,6 @@
     saveProgress(payload){ return post('/save-progress', payload); },
     submitResult(payload){ return post('/submit', payload); },
     readIdentity,
-    renderInviteCard,
-    autoEnsureIdentityFields
+    renderInviteCard
   };
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', autoEnsureIdentityFields, { once:true });
-  } else {
-    autoEnsureIdentityFields();
-  }
-  window.addEventListener('load', autoEnsureIdentityFields);
 })();

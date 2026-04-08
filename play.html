@@ -19,10 +19,7 @@
       <input id="playStudentName" data-placeholder-i18n="playStudentNamePlaceholder" placeholder="Student name" maxlength="60">
       <select id="playStudentGrade" aria-label="Grade"></select>
       <input id="playStudentId" data-placeholder-i18n="playStudentIdPlaceholder" placeholder="Student ID (optional)" maxlength="40">
-      <input id="playStudentClass" data-placeholder-i18n="playClassPlaceholder" placeholder="Class / Course" maxlength="80">
-      <label class="student-cloud-check play-guest-toggle"><input type="checkbox" id="playOutsideStudent"> <span data-i18n="playOutsideStudent">I am not in your class / course / school</span></label>
-      <p class="student-cloud-note play-entry-note" data-i18n="playIdentityNote">Name is required. Student ID is optional. Class is required unless the outside-student option is checked.</p>
-
+      
 <div class="game-mode-cards-wrap" id="gameModeCardsWrap">
   <label class="field-label">Choose Game Mode</label>
   <div class="game-mode-cards">
@@ -42,7 +39,7 @@
       <input type="radio" name="gameModeCards" value="endless">
       <span class="mode-card-icon">♾</span>
       <span class="mode-card-title">Endless</span>
-      <span class="mode-card-sub">Elapsed timer runs until all questions are finished</span>
+      <span class="mode-card-sub">No timer, keep playing freely</span>
     </label>
   </div>
 </div>
@@ -77,7 +74,6 @@
     <div class="play-quiz-toolbar"><label class="play-auto-next-toggle"><input type="checkbox" id="playAutoNextToggle" checked> <span data-i18n="autoNext">Auto next after answer</span></label><button class="ghost-btn small-btn sound-toggle-btn" id="playSoundToggleBtn" type="button" aria-label="Toggle sounds">🔊 Sounds</button></div>
     <div class="play-progress-track"><div class="play-progress-fill" id="playProgressFill"></div></div>
     <h2 class="play-question-text" id="playQuestionText" data-i18n="playQuestionText">Question text</h2>
-    <div class="question-image-wrap hidden" id="playQuestionImageWrap"><img id="playQuestionImage" alt="Question image"></div>
     <div class="play-options" id="playOptions"></div>
     <div class="action-row"><button class="ghost-btn" id="playNextBtn" type="button" data-i18n="playNextQuestion">Next Question</button></div>
   </section>
