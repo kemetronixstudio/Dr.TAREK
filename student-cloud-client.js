@@ -3,7 +3,7 @@
   const IDENTITY_KEY = 'kgStudentIdentityV1';
 
   function $(id){ return document.getElementById(id); }
-  function slugify(value){ return String(value || '').trim().toLowerCase().replace(/[^a-z0-9\u0600-\u06ff]+/g,'-').replace(/^-+|-+$/g,''); }
+  function slugify(value){ return String(value || '').trim().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
   function readIdentity(){
     try { return JSON.parse(localStorage.getItem(IDENTITY_KEY) || 'null'); } catch (error) { return null; }
   }
@@ -19,26 +19,17 @@
     const nameEl = $('guestInviteName');
     if (nameEl) nameEl.textContent = data.studentName || data.name || 'Dear student';
   }
-  async function request(path, options){
-    const method = String((options && options.method) || 'GET').toUpperCase();
-    const res = await fetch(API_BASE + path, Object.assign({
-      method,
-      headers: Object.assign({ 'Content-Type':'application/json' }, (options && options.headers) || {}),
-      credentials: 'same-origin',
-      cache: 'no-store'
-    }, options || {}));
-    const data = await res.json().catch(()=>({ ok:false, error:'Request failed' }));
-    if (!res.ok || !data.ok) {
-      const err = new Error(data.error || ('Request failed: ' + res.status));
-      if (data.code) err.code = data.code;
-      err.status = res.status;
-      err.payload = data;
-      throw err;
-    }
-    return data;
-  }
   async function post(path, payload){
-    return request(path, { method:'POST', body: JSON.stringify(payload || {}) });
+    const res = await fetch(API_BASE + path, {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json' },
+      credentials: 'same-origin',
+      cache: 'no-store',
+      body: JSON.stringify(payload || {})
+    });
+    const data = await res.json().catch(()=>({ ok:false, error:'Request failed' }));
+    if (!res.ok || !data.ok) throw new Error(data.error || ('Request failed: ' + res.status));
+    return data;
   }
   function buildQuizKey(info){
     const grade = String(info.grade || '').trim().toUpperCase();
@@ -91,12 +82,9 @@
     ensureQuizIdentityFields,
     collectIdentity,
     buildQuizKey,
-    request,
-    startSession(payload){ return post('/start', payload); },
-    answerQuestion(payload){ return post('/answer', payload); },
+    startOrResume(payload){ return post('/start', payload); },
     saveProgress(payload){ return post('/save-progress', payload); },
     submitResult(payload){ return post('/submit', payload); },
-    startOrResume(payload){ return post('/start', payload); },
     readIdentity,
     renderInviteCard
   };

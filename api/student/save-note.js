@@ -1,17 +1,33 @@
 const backend = require('../../lib/student-cloud-backend');
 const access = require('../../lib/access-accounts-backend');
-const { parseJsonBody, sendJson, setAuthCookie } = require('../../lib/http-utils');
+
+function setAuthCookie(res, token) {
+  if (token) res.setHeader('Set-Cookie', `kgAccessToken=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=43200`);
+}
 
 module.exports = async function handler(req, res) {
-  if (req.method !== 'POST') return sendJson(res, 405, { ok: false, error: 'Method not allowed' });
+  if (req.method !== 'POST') {
+    res.statusCode = 405;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ ok: false, error: 'Method not allowed' }));
+    return;
+  }
   try {
     const auth = await access.requireAuthorized(req, 'dashboard');
-    if (!auth.ok) return sendJson(res, auth.status, { ok: false, error: auth.error });
+    if (!auth.ok) {
+      res.statusCode = auth.status;
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({ ok: false, error: auth.error }));
+      return;
+    }
     setAuthCookie(res, auth.token);
-    const body = parseJsonBody(req);
-    const result = await backend.saveTeacherNote({ ...body, author: auth.account && auth.account.user ? auth.account.user : '' });
-    return sendJson(res, 200, { ...result, token: auth.token, account: auth.account });
+    const result = await backend.saveTeacherNote({ ...(req.body || {}), author: auth.account && auth.account.username ? auth.account.username : '' });
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ ...result, token: auth.token, account: auth.account }));
   } catch (error) {
-    return sendJson(res, error.status || 500, { ok: false, error: error.message || 'Request failed' });
+    res.statusCode = error.status || 500;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ ok: false, error: error.message || 'Request failed' }));
   }
 };

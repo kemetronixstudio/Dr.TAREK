@@ -1,9 +1,9 @@
-const translations = {"en": {"homeBadge": "", "homeTitle": "Fun English Quiz for Kids", "homeText": "Play, learn, and grow with colorful English questions.", "teacherLabel": "Your Teacher", "sourceNote": "", "kg1Desc": "Letters, phonics, colors, feelings, body parts, and simple picture words.", "kg2Desc": "Step Ahead KG2 topics: food, phonics, numbers, and good manners.", "startKg1": "Start KG1", "startKg2": "Start KG2", "homeBtn": "⬅ Home", "kg1Subtitle": "Easy English questions for young learners.", "kg2Subtitle": "Book-based English questions from Step Ahead KG2.", "step1": "Step 1", "step2": "Step 2", "enterName": "Enter Student Name", "studentPlaceholder": "Type student name", "continueBtn": "Continue", "chooseLevel": "Choose Quiz Level", "pickQuestionCount": "Pick how many questions you want.", "level1": "Level 1", "level2": "Level 2", "level3": "Level 3", "level4": "Level 4", "level5": "Level 5", "q10": "10 Questions", "q20": "20 Questions", "q30": "30 Questions", "q40": "40 Questions", "q50": "50 Questions", "studentLabel": "Student", "quizLabel": "Quiz", "questionLabel": "Question", "timeLeft": "Time Left", "scoreLabel": "Score", "nextQuestion": "Next Question", "autoNext": "Auto next after answer", "manualNext": "Use manual Next button", "certificateActions": "Certificate Actions", "downloadPdf": "Download PDF", "shareCertificate": "Share Certificate", "shareNote": "On supported mobile browsers, the PDF can be shared directly. If file sharing is not supported, WhatsApp text sharing will open as a fallback.", "enterNameAlert": "Please enter the student name first.", "progressTitle": "Progress", "bestScore": "Best Score", "lastScore": "Last Score", "attempts": "Attempts", "badge": "Badge", "resetProgress": "Reset Progress", "badgeStarter": "Starter Star", "badgeRising": "Rising Reader", "badgeMaster": "English Master", "progressEmpty": "No saved progress yet.", "improvedFrom": "Improved from", "to": "to", "historyWeak": "Focus skills", "grade": "Grade", "level": "Quiz Level", "score": "Score", "date": "Date", "strengths": "Strengths", "focus": "Focus More On", "advice": "Teacher Advice", "teacher": "Teacher", "result": "Result", "certificateTitle": "Certificate of Achievement", "presentedTo": "Proudly presented to", "completedMsg": "has successfully completed the English quiz.", "excellent": "Excellent", "veryGood": "Very Good", "good": "Good", "keepPracticing": "Keep Practicing", "noMajor": "No major weak area", "dashboard": "Teacher Dashboard", "teacherTopline": "Dr. TAREK ABDALAZIZ 📞 01032188008", "readAloud": "🔊 Read aloud", "questionTypeDefault": "Question", "teacherDashboard": "Teacher Dashboard", "kg1Badge": "KG1 English", "kg2Badge": "KG2 English", "kg1Title": "KG1 English Quiz", "kg2Title": "KG2 English Quiz", "adminsLabel": "Admins:", "adminsNames": "KEMETRONIX / Dr. Tarek", "adminNamePlaceholder": "Admin name", "passwordPlaceholder": "Password", "openDashboard": "Open Dashboard", "adminIntro": "Use one of the admin accounts to manage records and questions.", "adminClientNote": "This dashboard now uses backend APIs for accounts, analytics, classes, and quiz control.", "totalStudents": "Total Students", "totalAttempts": "Total Attempts", "averageScore": "Average Score", "mostMissedSkill": "Most Missed Skill", "studentProgress": "Student Progress", "allDates": "All Dates", "exportJpeg": "Export JPEG", "exportExcel": "Export Excel", "exportJson": "Export JSON", "resetData": "Reset Data", "weakAreas": "Weak Areas", "mostMissedQuestions": "Most Missed Questions", "missesLabel": "Misses", "levelVisibility": "Level Visibility", "showAllLevels": "Show All Levels", "chooseWhichLevels": "Choose which quiz levels students can see on KG1 and KG2 pages.", "saveLevelVisibility": "Save Level Visibility", "timerSettings": "Timer Settings", "turnTimersOn": "Turn Timers On", "timerInfo": "Turn the timer on or off for each grade. When timer is off, students answer without countdown and each correct answer gives fixed points.", "saveTimerSettings": "Save Timer Settings", "quizAccessPassword": "Quiz Access Password", "noPassword": "No Password", "setPasswordInfo": "Set a password for KG1 or KG2. Students will be asked for it before entering the quiz. Leave blank to disable password.", "kg1Short": "KG1", "kg2Short": "KG2", "protectKg1": "Protect KG1 with password", "protectKg2": "Protect KG2 with password", "kg1Password": "KG1 password", "kg2Password": "KG2 password", "saveQuizPassword": "Save Quiz Password", "teacherTestBuilder": "Teacher Test Builder", "clearTest": "Clear Test", "teacherTestInfo": "Create a named test for KG1 or KG2. Choose random questions or paste exact question texts line by line.", "gradePlaceholder": "Grade (KG1 or KG2)", "testName": "Test name", "randomQuestions": "Random Questions", "chooseByQuestionText": "Choose by Question Text", "chooseExistingQuestions": "Choose Existing Questions", "selectAll": "Select All", "clear": "Clear", "saveTeacherTest": "Save Teacher Test", "questionBankEditor": "Question Bank Editor", "refreshQuestionList": "Refresh Question List", "uploadImage": "Upload image", "addQuestion": "Add Question", "modifyExistingQuestions": "Modify Existing Questions", "allLabel": "All", "nameLabel": "Name", "starStudent": "STAR STUDENT", "testLabel": "Test", "teacherTestTitle": "Teacher Test", "teacherTestActive": "A teacher test is active for this grade.", "startTeacherTest": "Start Teacher Test", "usernamePlaceholder": "Username", "userRole": "User", "adminRole": "Admin", "collapseEditor": "Collapse", "expandEditor": "Expand", "collapseQuestions": "Collapse Questions", "expandQuestions": "Expand Questions", "deleteAccount": "Delete", "noExtraAccounts": "No extra accounts yet.", "howManyQuestions": "How many questions", "manualModePaste": "For manual mode: paste exact question texts, one per line", "editQuestionNote": "Edit any question below, then press save. Changes sync through the backend when an authorized account is signed in.", "noQuestionsFoundForGrade": "No questions found for this grade.", "noPermissionsAvailable": "No permissions available.", "excelLibraryMissingCsv": "Excel library not loaded. Downloading CSV instead.", "downloadQuestionsFailed": "Could not download current questions.", "staffRole": "Staff", "classManagerTitle": "Class Manager", "classManagerInfo": "Create extra classes like Class 1 or Class 2. You can build them from existing questions or upload a filled question file for the class.", "classNamePlaceholder": "Class name (example: Class 1)", "classDescPlaceholder": "Short description for home page", "classQuestionCountPlaceholder": "Question count shown on test builder (optional)", "uploadFilledForm": "Upload Filled Form", "saveClass": "Save Class", "hideClassFromHome": "Hide class from main page", "accountSaved": "Account saved.", "accountSaveFailed": "Could not save account.", "chooseOnePermission": "Please choose at least one permission for this staff account.", "usernamePasswordRequired": "Please enter username and password.", "playBadge": "Mixed English Challenge", "playTitle": "Play & Test With Dr. Tarek", "playHeroText": "Every start gives a different mixed quiz in English. Play, score high, and race to the top of the live leaderboard.", "playTop3": "Top 3 Champions", "refresh": "Refresh", "playStartTitle": "Start a New Mixed Quiz", "playStudentNamePlaceholder": "Student name", "playStudentIdPlaceholder": "Student ID (optional)", "playStartBtn": "Start Playing", "playChooseStage": "Choose your age stage", "playStageStarter": "Starter", "playStageStarterRange": "KG - Grade 2", "playStageStarterDesc": "Easy words + quick math", "playStageExplorer": "Explorer", "playStageExplorerRange": "Grade 3 - 4", "playStageExplorerDesc": "Mixed reading + logic", "playStageChampion": "Champion", "playStageChampionRange": "Grade 5 - 6", "playStageChampionDesc": "Longer reading + trickier thinking", "playStartNote": "Before you start, check the live Top 3. Your score will be shared with all players on the leaderboard.", "playPlayer": "Player", "playStage": "Stage", "playQuestion": "Question", "playScore": "Score", "playTime": "Time", "playSounds": "Sounds", "playMuted": "Muted", "playResultTitle": "Your Result", "playAgain": "Play Again", "playLiveLeaderboard": "Live Leaderboard", "playLoadingLeaderboard": "Loading leaderboard...", "playNoLeaderboard": "No leaderboard data yet.", "playNoTop3": "No scores yet. Be the first champion!", "playEnterName": "Please enter the student name first.", "playPreparing": "Preparing your mixed quiz...", "playTimeOver": "Time is over. Your quiz is being submitted.", "playWrongSaved": "Wrong answer. Your score has been saved to the leaderboard.", "playTimeOverResult": "Time is over. You scored {score} points in {stage}.", "playWrongResult": "Wrong answer. Game over with {score} points. Try again and climb higher!", "playGreatResult": "Fantastic! You finished the {stage} challenge with {score} points.", "playRisingStar": "Rising Star", "playQuestionText": "Question text", "playNextQuestion": "Next Question"}, "ar": {"homeBadge": "", "homeTitle": "اختبار إنجليزي ممتع للأطفال", "homeText": "العب وتعلّم وتطوّر من خلال أسئلة إنجليزية ملوّنة.", "teacherLabel": "المعلم", "sourceNote": "", "kg1Desc": "حروف وأصوات وألوان ومشاعر وأجزاء الجسم وكلمات صور بسيطة.", "kg2Desc": "الحروف والقواعد والمفرد والجمع وهناك مفرد وجمع والقراءة والمفردات.", "startKg1": "ابدأ KG1", "startKg2": "ابدأ KG2", "homeBtn": "الرئيسية ⮌", "kg1Subtitle": "أسئلة إنجليزية سهلة للمتعلمين الصغار.", "kg2Subtitle": "أسئلة إنجليزية أقوى للمتعلمين الأكبر.", "step1": "الخطوة 1", "step2": "الخطوة 2", "enterName": "اكتب اسم الطالب", "studentPlaceholder": "اكتب اسم الطالب", "continueBtn": "متابعة", "chooseLevel": "اختر مستوى الاختبار", "pickQuestionCount": "اختر عدد الأسئلة.", "level1": "المستوى 1", "level2": "المستوى 2", "level3": "المستوى 3", "level4": "المستوى 4", "level5": "المستوى 5", "q10": "10 أسئلة", "q20": "20 سؤال", "q30": "30 سؤال", "q40": "40 سؤال", "q50": "50 سؤال", "studentLabel": "الطالب", "quizLabel": "الاختبار", "questionLabel": "السؤال", "timeLeft": "الوقت المتبقي", "scoreLabel": "النتيجة", "nextQuestion": "السؤال التالي", "autoNext": "الانتقال التلقائي بعد الإجابة", "manualNext": "استخدم زر التالي", "certificateActions": "خيارات الشهادة", "downloadPdf": "تحميل PDF", "shareCertificate": "مشاركة الشهادة", "shareNote": "في المتصفحات التي تدعم مشاركة الملفات يمكن مشاركة ملف PDF مباشرة، وإذا لم يدعم المتصفح ذلك سيتم فتح مشاركة واتساب كنص بديل.", "enterNameAlert": "من فضلك اكتب اسم الطالب أولاً.", "progressTitle": "التقدم", "bestScore": "أفضل نتيجة", "lastScore": "آخر نتيجة", "attempts": "عدد المحاولات", "badge": "الشارة", "resetProgress": "إعادة التقدم", "badgeStarter": "نجمة البداية", "badgeRising": "قارئ صاعد", "badgeMaster": "بطل الإنجليزية", "progressEmpty": "لا يوجد تقدم محفوظ بعد.", "improvedFrom": "تحسن من", "to": "إلى", "historyWeak": "مهارات تحتاج تركيز", "grade": "الصف", "level": "مستوى الاختبار", "score": "النتيجة", "date": "التاريخ", "strengths": "نقاط القوة", "focus": "ركّز أكثر على", "advice": "نصيحة المعلم", "teacher": "المعلم", "result": "التقدير", "certificateTitle": "شهادة تقدير", "presentedTo": "تُقدَّم بكل فخر إلى", "completedMsg": "لقد أكمل اختبار اللغة الإنجليزية بنجاح.", "excellent": "ممتاز", "veryGood": "جيد جدًا", "good": "جيد", "keepPracticing": "استمر في التدريب", "noMajor": "لا توجد نقطة ضعف رئيسية", "dashboard": "لوحة المعلم", "teacherTopline": "Dr. TAREK ABDALAZIZ 📞 01032188008", "readAloud": "🔊 اقرأ السؤال", "questionTypeDefault": "السؤال", "teacherDashboard": "لوحة المعلم", "kg1Badge": "إنجليزي KG1", "kg2Badge": "إنجليزي KG2", "kg1Title": "اختبار إنجليزي KG1", "kg2Title": "اختبار إنجليزي KG2", "adminsLabel": "المشرفون:", "adminsNames": "KEMETRONIX / Dr. Tarek", "adminNamePlaceholder": "اسم المشرف", "passwordPlaceholder": "كلمة المرور", "openDashboard": "فتح اللوحة", "adminIntro": "استخدم أحد حسابات المشرفين لإدارة النتائج والأسئلة.", "adminClientNote": "هذه اللوحة تستخدم الآن واجهات خلفية للحسابات والتحليلات والصفوف والتحكم في الاختبارات.", "totalStudents": "إجمالي الطلاب", "totalAttempts": "إجمالي المحاولات", "averageScore": "متوسط النتيجة", "mostMissedSkill": "أكثر مهارة تم الخطأ فيها", "studentProgress": "تقدم الطلاب", "allDates": "كل التواريخ", "exportJpeg": "تصدير JPEG", "exportExcel": "تصدير Excel", "exportJson": "تصدير JSON", "resetData": "مسح البيانات", "weakAreas": "نقاط الضعف", "mostMissedQuestions": "الأسئلة الأكثر خطأ", "missesLabel": "عدد الأخطاء", "levelVisibility": "إظهار المستويات", "showAllLevels": "إظهار كل المستويات", "chooseWhichLevels": "اختر المستويات التي يمكن للطلاب رؤيتها في صفحات KG1 و KG2.", "saveLevelVisibility": "حفظ إظهار المستويات", "timerSettings": "إعدادات المؤقت", "turnTimersOn": "تشغيل كل المؤقتات", "timerInfo": "يمكنك تشغيل أو إيقاف المؤقت لكل صف. عند إيقافه يجيب الطالب بدون عد تنازلي وتحصل كل إجابة صحيحة على نقاط ثابتة.", "saveTimerSettings": "حفظ إعدادات المؤقت", "quizAccessPassword": "كلمة مرور دخول الاختبار", "noPassword": "بدون كلمة مرور", "setPasswordInfo": "يمكنك ضبط كلمة مرور لـ KG1 أو KG2. سيُطلب من الطالب إدخالها قبل بدء الاختبار. اترك الحقل فارغاً لإلغاء كلمة المرور.", "kg1Short": "KG1", "kg2Short": "KG2", "protectKg1": "حماية KG1 بكلمة مرور", "protectKg2": "حماية KG2 بكلمة مرور", "kg1Password": "كلمة مرور KG1", "kg2Password": "كلمة مرور KG2", "saveQuizPassword": "حفظ كلمة مرور الاختبار", "teacherTestBuilder": "منشئ اختبار المعلم", "clearTest": "مسح الاختبار", "teacherTestInfo": "أنشئ اختباراً باسم محدد لـ KG1 أو KG2. اختر أسئلة عشوائية أو الصق نصوص الأسئلة سطراً سطراً.", "gradePlaceholder": "الصف (KG1 أو KG2)", "testName": "اسم الاختبار", "randomQuestions": "أسئلة عشوائية", "chooseByQuestionText": "اختيار بنص السؤال", "chooseExistingQuestions": "اختيار من الأسئلة الموجودة", "selectAll": "تحديد الكل", "clear": "مسح", "saveTeacherTest": "حفظ اختبار المعلم", "questionBankEditor": "محرر بنك الأسئلة", "refreshQuestionList": "تحديث قائمة الأسئلة", "uploadImage": "رفع صورة", "addQuestion": "إضافة سؤال", "modifyExistingQuestions": "تعديل الأسئلة الحالية", "allLabel": "الكل", "nameLabel": "الاسم", "starStudent": "طالب متميز", "testLabel": "اختبار", "teacherTestTitle": "اختبار المعلم", "teacherTestActive": "يوجد اختبار معلم مفعّل لهذا الصف.", "startTeacherTest": "ابدأ اختبار المعلم", "usernamePlaceholder": "اسم المستخدم", "userRole": "مستخدم", "adminRole": "مشرف", "collapseEditor": "إخفاء", "expandEditor": "إظهار", "collapseQuestions": "إخفاء الأسئلة", "expandQuestions": "إظهار الأسئلة", "deleteAccount": "حذف", "noExtraAccounts": "لا توجد حسابات إضافية بعد.", "howManyQuestions": "عدد الأسئلة", "manualModePaste": "في الوضع اليدوي: الصق نصوص الأسئلة الدقيقة، كل سؤال في سطر", "editQuestionNote": "عدّل أي سؤال بالأسفل ثم اضغط حفظ. تتم مزامنة التغييرات عبر الخادم عند تسجيل الدخول بحساب مصرح له.", "noQuestionsFoundForGrade": "لا توجد أسئلة لهذا الصف.", "noPermissionsAvailable": "لا توجد صلاحيات متاحة.", "excelLibraryMissingCsv": "مكتبة الإكسل غير متاحة. سيتم تنزيل ملف CSV بدلًا من ذلك.", "downloadQuestionsFailed": "تعذر تنزيل الأسئلة الحالية.", "staffRole": "مستخدم", "classManagerTitle": "إدارة الصفوف", "classManagerInfo": "أنشئ صفوفًا إضافية مثل Class 1 أو Class 2. يمكنك بناؤها من الأسئلة الموجودة أو رفع ملف أسئلة جاهز لهذا الصف.", "classNamePlaceholder": "اسم الصف (مثال: Class 1)", "classDescPlaceholder": "وصف قصير للصف في الصفحة الرئيسية", "classQuestionCountPlaceholder": "عدد الأسئلة الظاهر في منشئ الاختبار (اختياري)", "uploadFilledForm": "رفع النموذج المعبأ", "saveClass": "حفظ الصف", "hideClassFromHome": "إخفاء الصف من الصفحة الرئيسية", "accountSaved": "تم حفظ الحساب.", "accountSaveFailed": "تعذر حفظ الحساب.", "chooseOnePermission": "اختر صلاحية واحدة على الأقل لهذا الحساب.", "usernamePasswordRequired": "أدخل اسم المستخدم وكلمة المرور."}};
+const translations = {"en": {"homeBadge": "", "homeTitle": "Fun English Quiz for Kids", "homeText": "Play, learn, and grow with colorful English questions.", "teacherLabel": "Your Teacher", "sourceNote": "", "kg1Desc": "Letters, phonics, colors, feelings, body parts, and simple picture words.", "kg2Desc": "Step Ahead KG2 topics: food, phonics, numbers, and good manners.", "startKg1": "Start KG1", "startKg2": "Start KG2", "homeBtn": "⬅ Home", "kg1Subtitle": "Easy English questions for young learners.", "kg2Subtitle": "Book-based English questions from Step Ahead KG2.", "step1": "Step 1", "step2": "Step 2", "enterName": "Enter Student Name", "studentPlaceholder": "Type student name", "continueBtn": "Continue", "chooseLevel": "Choose Quiz Level", "pickQuestionCount": "Pick how many questions you want.", "level1": "Level 1", "level2": "Level 2", "level3": "Level 3", "level4": "Level 4", "level5": "Level 5", "q10": "10 Questions", "q20": "20 Questions", "q30": "30 Questions", "q40": "40 Questions", "q50": "50 Questions", "studentLabel": "Student", "quizLabel": "Quiz", "questionLabel": "Question", "timeLeft": "Time Left", "scoreLabel": "Score", "nextQuestion": "Next Question", "autoNext": "Auto next after answer", "manualNext": "Use manual Next button", "certificateActions": "Certificate Actions", "downloadPdf": "Download PDF", "shareCertificate": "Share Certificate", "shareNote": "On supported mobile browsers, the PDF can be shared directly. If file sharing is not supported, WhatsApp text sharing will open as a fallback.", "enterNameAlert": "Please enter the student name first.", "progressTitle": "Progress", "bestScore": "Best Score", "lastScore": "Last Score", "attempts": "Attempts", "badge": "Badge", "resetProgress": "Reset Progress", "badgeStarter": "Starter Star", "badgeRising": "Rising Reader", "badgeMaster": "English Master", "progressEmpty": "No saved progress yet.", "improvedFrom": "Improved from", "to": "to", "historyWeak": "Focus skills", "grade": "Grade", "level": "Quiz Level", "score": "Score", "date": "Date", "strengths": "Strengths", "focus": "Focus More On", "advice": "Teacher Advice", "teacher": "Teacher", "result": "Result", "certificateTitle": "Certificate of Achievement", "presentedTo": "Proudly presented to", "completedMsg": "has successfully completed the English quiz.", "excellent": "Excellent", "veryGood": "Very Good", "good": "Good", "keepPracticing": "Keep Practicing", "noMajor": "No major weak area", "dashboard": "Teacher Dashboard", "teacherTopline": "Dr. TAREK ABDALAZIZ 📞 01032188008", "readAloud": "🔊 Read aloud", "questionTypeDefault": "Question", "teacherDashboard": "Teacher Dashboard", "kg1Badge": "KG1 English", "kg2Badge": "KG2 English", "kg1Title": "KG1 English Quiz", "kg2Title": "KG2 English Quiz", "adminsLabel": "Admins:", "adminsNames": "KEMETRONIX / Dr. Tarek", "adminNamePlaceholder": "Admin name", "passwordPlaceholder": "Password", "openDashboard": "Open Dashboard", "adminIntro": "Use one of the admin accounts to manage records and questions.", "adminClientNote": "This is a client-side demo dashboard. For real security, use a backend later.", "totalStudents": "Total Students", "totalAttempts": "Total Attempts", "averageScore": "Average Score", "mostMissedSkill": "Most Missed Skill", "studentProgress": "Student Progress", "allDates": "All Dates", "exportJpeg": "Export JPEG", "exportExcel": "Export Excel", "exportJson": "Export JSON", "resetData": "Reset Data", "weakAreas": "Weak Areas", "mostMissedQuestions": "Most Missed Questions", "missesLabel": "Misses", "levelVisibility": "Level Visibility", "showAllLevels": "Show All Levels", "chooseWhichLevels": "Choose which quiz levels students can see on KG1 and KG2 pages.", "saveLevelVisibility": "Save Level Visibility", "timerSettings": "Timer Settings", "turnTimersOn": "Turn Timers On", "timerInfo": "Turn the timer on or off for each grade. When timer is off, students answer without countdown and each correct answer gives fixed points.", "saveTimerSettings": "Save Timer Settings", "quizAccessPassword": "Quiz Access Password", "noPassword": "No Password", "setPasswordInfo": "Set a password for KG1 or KG2. Students will be asked for it before entering the quiz. Leave blank to disable password.", "kg1Short": "KG1", "kg2Short": "KG2", "protectKg1": "Protect KG1 with password", "protectKg2": "Protect KG2 with password", "kg1Password": "KG1 password", "kg2Password": "KG2 password", "saveQuizPassword": "Save Quiz Password", "teacherTestBuilder": "Teacher Test Builder", "clearTest": "Clear Test", "teacherTestInfo": "Create a named test for KG1 or KG2. Choose random questions or paste exact question texts line by line.", "gradePlaceholder": "Grade (KG1 or KG2)", "testName": "Test name", "randomQuestions": "Random Questions", "chooseByQuestionText": "Choose by Question Text", "chooseExistingQuestions": "Choose Existing Questions", "selectAll": "Select All", "clear": "Clear", "saveTeacherTest": "Save Teacher Test", "questionBankEditor": "Question Bank Editor", "refreshQuestionList": "Refresh Question List", "uploadImage": "Upload image", "addQuestion": "Add Question", "modifyExistingQuestions": "Modify Existing Questions", "allLabel": "All", "nameLabel": "Name", "starStudent": "STAR STUDENT", "testLabel": "Test", "teacherTestTitle": "Teacher Test", "teacherTestActive": "A teacher test is active for this grade.", "startTeacherTest": "Start Teacher Test", "usernamePlaceholder": "Username", "userRole": "User", "adminRole": "Admin", "collapseEditor": "Collapse", "expandEditor": "Expand", "collapseQuestions": "Collapse Questions", "expandQuestions": "Expand Questions", "deleteAccount": "Delete", "noExtraAccounts": "No extra accounts yet.", "howManyQuestions": "How many questions", "manualModePaste": "For manual mode: paste exact question texts, one per line", "editQuestionNote": "Edit any question below, then press save. Changes are stored locally and apply directly inside the app.", "noQuestionsFoundForGrade": "No questions found for this grade.", "noPermissionsAvailable": "No permissions available.", "excelLibraryMissingCsv": "Excel library not loaded. Downloading CSV instead.", "downloadQuestionsFailed": "Could not download current questions.", "staffRole": "Staff", "classManagerTitle": "Class Manager", "classManagerInfo": "Create extra classes like Class 1 or Class 2. You can build them from existing questions or upload a filled question file for the class.", "classNamePlaceholder": "Class name (example: Class 1)", "classDescPlaceholder": "Short description for home page", "classQuestionCountPlaceholder": "Question count shown on test builder (optional)", "uploadFilledForm": "Upload Filled Form", "saveClass": "Save Class", "hideClassFromHome": "Hide class from main page", "accountSaved": "Account saved.", "accountSaveFailed": "Could not save account.", "chooseOnePermission": "Please choose at least one permission for this staff account.", "usernamePasswordRequired": "Please enter username and password.", "playBadge": "Mixed English Challenge", "playTitle": "Play & Test With Dr. Tarek", "playHeroText": "Every start gives a different mixed quiz in English. Play, score high, and race to the top of the live leaderboard.", "playTop3": "Top 3 Champions", "refresh": "Refresh", "playStartTitle": "Start a New Mixed Quiz", "playStudentNamePlaceholder": "Student name", "playStudentIdPlaceholder": "Student ID (optional)", "playStartBtn": "Start Playing", "playChooseStage": "Choose your age stage", "playStageStarter": "Starter", "playStageStarterRange": "KG - Grade 2", "playStageStarterDesc": "Easy words + quick math", "playStageExplorer": "Explorer", "playStageExplorerRange": "Grade 3 - 4", "playStageExplorerDesc": "Mixed reading + logic", "playStageChampion": "Champion", "playStageChampionRange": "Grade 5 - 6", "playStageChampionDesc": "Longer reading + trickier thinking", "playStartNote": "Before you start, check the live Top 3. Your score will be shared with all players on the leaderboard.", "playPlayer": "Player", "playStage": "Stage", "playQuestion": "Question", "playScore": "Score", "playTime": "Time", "playSounds": "Sounds", "playMuted": "Muted", "playResultTitle": "Your Result", "playAgain": "Play Again", "playLiveLeaderboard": "Live Leaderboard", "playLoadingLeaderboard": "Loading leaderboard...", "playNoLeaderboard": "No leaderboard data yet.", "playNoTop3": "No scores yet. Be the first champion!", "playEnterName": "Please enter the student name first.", "playPreparing": "Preparing your mixed quiz...", "playTimeOver": "Time is over. Your quiz is being submitted.", "playWrongSaved": "Wrong answer. Your score has been saved to the leaderboard.", "playTimeOverResult": "Time is over. You scored {score} points in {stage}.", "playWrongResult": "Wrong answer. Game over with {score} points. Try again and climb higher!", "playGreatResult": "Fantastic! You finished the {stage} challenge with {score} points.", "playRisingStar": "Rising Star", "playQuestionText": "Question text", "playNextQuestion": "Next Question"}, "ar": {"homeBadge": "", "homeTitle": "اختبار إنجليزي ممتع للأطفال", "homeText": "العب وتعلّم وتطوّر من خلال أسئلة إنجليزية ملوّنة.", "teacherLabel": "المعلم", "sourceNote": "", "kg1Desc": "حروف وأصوات وألوان ومشاعر وأجزاء الجسم وكلمات صور بسيطة.", "kg2Desc": "الحروف والقواعد والمفرد والجمع وهناك مفرد وجمع والقراءة والمفردات.", "startKg1": "ابدأ KG1", "startKg2": "ابدأ KG2", "homeBtn": "الرئيسية ⮌", "kg1Subtitle": "أسئلة إنجليزية سهلة للمتعلمين الصغار.", "kg2Subtitle": "أسئلة إنجليزية أقوى للمتعلمين الأكبر.", "step1": "الخطوة 1", "step2": "الخطوة 2", "enterName": "اكتب اسم الطالب", "studentPlaceholder": "اكتب اسم الطالب", "continueBtn": "متابعة", "chooseLevel": "اختر مستوى الاختبار", "pickQuestionCount": "اختر عدد الأسئلة.", "level1": "المستوى 1", "level2": "المستوى 2", "level3": "المستوى 3", "level4": "المستوى 4", "level5": "المستوى 5", "q10": "10 أسئلة", "q20": "20 سؤال", "q30": "30 سؤال", "q40": "40 سؤال", "q50": "50 سؤال", "studentLabel": "الطالب", "quizLabel": "الاختبار", "questionLabel": "السؤال", "timeLeft": "الوقت المتبقي", "scoreLabel": "النتيجة", "nextQuestion": "السؤال التالي", "autoNext": "الانتقال التلقائي بعد الإجابة", "manualNext": "استخدم زر التالي", "certificateActions": "خيارات الشهادة", "downloadPdf": "تحميل PDF", "shareCertificate": "مشاركة الشهادة", "shareNote": "في المتصفحات التي تدعم مشاركة الملفات يمكن مشاركة ملف PDF مباشرة، وإذا لم يدعم المتصفح ذلك سيتم فتح مشاركة واتساب كنص بديل.", "enterNameAlert": "من فضلك اكتب اسم الطالب أولاً.", "progressTitle": "التقدم", "bestScore": "أفضل نتيجة", "lastScore": "آخر نتيجة", "attempts": "عدد المحاولات", "badge": "الشارة", "resetProgress": "إعادة التقدم", "badgeStarter": "نجمة البداية", "badgeRising": "قارئ صاعد", "badgeMaster": "بطل الإنجليزية", "progressEmpty": "لا يوجد تقدم محفوظ بعد.", "improvedFrom": "تحسن من", "to": "إلى", "historyWeak": "مهارات تحتاج تركيز", "grade": "الصف", "level": "مستوى الاختبار", "score": "النتيجة", "date": "التاريخ", "strengths": "نقاط القوة", "focus": "ركّز أكثر على", "advice": "نصيحة المعلم", "teacher": "المعلم", "result": "التقدير", "certificateTitle": "شهادة تقدير", "presentedTo": "تُقدَّم بكل فخر إلى", "completedMsg": "لقد أكمل اختبار اللغة الإنجليزية بنجاح.", "excellent": "ممتاز", "veryGood": "جيد جدًا", "good": "جيد", "keepPracticing": "استمر في التدريب", "noMajor": "لا توجد نقطة ضعف رئيسية", "dashboard": "لوحة المعلم", "teacherTopline": "Dr. TAREK ABDALAZIZ 📞 01032188008", "readAloud": "🔊 اقرأ السؤال", "questionTypeDefault": "السؤال", "teacherDashboard": "لوحة المعلم", "kg1Badge": "إنجليزي KG1", "kg2Badge": "إنجليزي KG2", "kg1Title": "اختبار إنجليزي KG1", "kg2Title": "اختبار إنجليزي KG2", "adminsLabel": "المشرفون:", "adminsNames": "KEMETRONIX / Dr. Tarek", "adminNamePlaceholder": "اسم المشرف", "passwordPlaceholder": "كلمة المرور", "openDashboard": "فتح اللوحة", "adminIntro": "استخدم أحد حسابات المشرفين لإدارة النتائج والأسئلة.", "adminClientNote": "هذه لوحة تجريبية تعمل داخل المتصفح. للحماية الفعلية استخدم خادماً لاحقاً.", "totalStudents": "إجمالي الطلاب", "totalAttempts": "إجمالي المحاولات", "averageScore": "متوسط النتيجة", "mostMissedSkill": "أكثر مهارة تم الخطأ فيها", "studentProgress": "تقدم الطلاب", "allDates": "كل التواريخ", "exportJpeg": "تصدير JPEG", "exportExcel": "تصدير Excel", "exportJson": "تصدير JSON", "resetData": "مسح البيانات", "weakAreas": "نقاط الضعف", "mostMissedQuestions": "الأسئلة الأكثر خطأ", "missesLabel": "عدد الأخطاء", "levelVisibility": "إظهار المستويات", "showAllLevels": "إظهار كل المستويات", "chooseWhichLevels": "اختر المستويات التي يمكن للطلاب رؤيتها في صفحات KG1 و KG2.", "saveLevelVisibility": "حفظ إظهار المستويات", "timerSettings": "إعدادات المؤقت", "turnTimersOn": "تشغيل كل المؤقتات", "timerInfo": "يمكنك تشغيل أو إيقاف المؤقت لكل صف. عند إيقافه يجيب الطالب بدون عد تنازلي وتحصل كل إجابة صحيحة على نقاط ثابتة.", "saveTimerSettings": "حفظ إعدادات المؤقت", "quizAccessPassword": "كلمة مرور دخول الاختبار", "noPassword": "بدون كلمة مرور", "setPasswordInfo": "يمكنك ضبط كلمة مرور لـ KG1 أو KG2. سيُطلب من الطالب إدخالها قبل بدء الاختبار. اترك الحقل فارغاً لإلغاء كلمة المرور.", "kg1Short": "KG1", "kg2Short": "KG2", "protectKg1": "حماية KG1 بكلمة مرور", "protectKg2": "حماية KG2 بكلمة مرور", "kg1Password": "كلمة مرور KG1", "kg2Password": "كلمة مرور KG2", "saveQuizPassword": "حفظ كلمة مرور الاختبار", "teacherTestBuilder": "منشئ اختبار المعلم", "clearTest": "مسح الاختبار", "teacherTestInfo": "أنشئ اختباراً باسم محدد لـ KG1 أو KG2. اختر أسئلة عشوائية أو الصق نصوص الأسئلة سطراً سطراً.", "gradePlaceholder": "الصف (KG1 أو KG2)", "testName": "اسم الاختبار", "randomQuestions": "أسئلة عشوائية", "chooseByQuestionText": "اختيار بنص السؤال", "chooseExistingQuestions": "اختيار من الأسئلة الموجودة", "selectAll": "تحديد الكل", "clear": "مسح", "saveTeacherTest": "حفظ اختبار المعلم", "questionBankEditor": "محرر بنك الأسئلة", "refreshQuestionList": "تحديث قائمة الأسئلة", "uploadImage": "رفع صورة", "addQuestion": "إضافة سؤال", "modifyExistingQuestions": "تعديل الأسئلة الحالية", "allLabel": "الكل", "nameLabel": "الاسم", "starStudent": "طالب متميز", "testLabel": "اختبار", "teacherTestTitle": "اختبار المعلم", "teacherTestActive": "يوجد اختبار معلم مفعّل لهذا الصف.", "startTeacherTest": "ابدأ اختبار المعلم", "usernamePlaceholder": "اسم المستخدم", "userRole": "مستخدم", "adminRole": "مشرف", "collapseEditor": "إخفاء", "expandEditor": "إظهار", "collapseQuestions": "إخفاء الأسئلة", "expandQuestions": "إظهار الأسئلة", "deleteAccount": "حذف", "noExtraAccounts": "لا توجد حسابات إضافية بعد.", "howManyQuestions": "عدد الأسئلة", "manualModePaste": "في الوضع اليدوي: الصق نصوص الأسئلة الدقيقة، كل سؤال في سطر", "editQuestionNote": "عدّل أي سؤال بالأسفل ثم اضغط حفظ. يتم حفظ التغييرات محليًا وتُطبق مباشرة داخل التطبيق.", "noQuestionsFoundForGrade": "لا توجد أسئلة لهذا الصف.", "noPermissionsAvailable": "لا توجد صلاحيات متاحة.", "excelLibraryMissingCsv": "مكتبة الإكسل غير متاحة. سيتم تنزيل ملف CSV بدلًا من ذلك.", "downloadQuestionsFailed": "تعذر تنزيل الأسئلة الحالية.", "staffRole": "مستخدم", "classManagerTitle": "إدارة الصفوف", "classManagerInfo": "أنشئ صفوفًا إضافية مثل Class 1 أو Class 2. يمكنك بناؤها من الأسئلة الموجودة أو رفع ملف أسئلة جاهز لهذا الصف.", "classNamePlaceholder": "اسم الصف (مثال: Class 1)", "classDescPlaceholder": "وصف قصير للصف في الصفحة الرئيسية", "classQuestionCountPlaceholder": "عدد الأسئلة الظاهر في منشئ الاختبار (اختياري)", "uploadFilledForm": "رفع النموذج المعبأ", "saveClass": "حفظ الصف", "hideClassFromHome": "إخفاء الصف من الصفحة الرئيسية", "accountSaved": "تم حفظ الحساب.", "accountSaveFailed": "تعذر حفظ الحساب.", "chooseOnePermission": "اختر صلاحية واحدة على الأقل لهذا الحساب.", "usernamePasswordRequired": "أدخل اسم المستخدم وكلمة المرور."}};
 const skillLabels = {"en": {"Vocabulary": "Vocabulary", "Feelings": "Feelings", "School Vocabulary": "School Vocabulary", "Body Parts": "Body Parts", "Colors": "Colors", "Shapes": "Shapes", "Food": "Food", "Good Manners": "Good Manners", "Numbers": "Numbers", "Spelling": "Spelling", "Review": "Review", "Transport": "Transport", "Letters": "Letters", "Phonics": "Phonics", "Speaking": "Speaking", "Reading": "Reading", "Grammar": "Grammar", "Alphabet": "Alphabet", "There is / There are": "There is / There are", "Singular & Plural": "Singular & Plural"}, "ar": {"Vocabulary": "المفردات", "Feelings": "المشاعر", "School Vocabulary": "مفردات المدرسة", "Body Parts": "أجزاء الجسم", "Colors": "الألوان", "Shapes": "الأشكال", "Food": "الطعام", "Good Manners": "السلوكيات الجيدة", "Numbers": "الأرقام", "Spelling": "التهجئة", "Review": "المراجعة", "Transport": "المواصلات", "Letters": "الحروف", "Phonics": "الأصوات", "Speaking": "التحدث", "Reading": "القراءة", "Grammar": "القواعد", "Alphabet": "الحروف", "There is / There are": "هناك مفرد / جمع", "Singular & Plural": "المفرد والجمع"}};
 const adviceMap = {"en": {"Phonics": "Focus on letter sounds like A, E, and I with short picture words.", "Vocabulary": "Review picture words and name objects around the home every day.", "Reading": "Read one short sentence and two picture words every day.", "Speaking": "Use greetings and short polite sentences in English daily.", "Grammar": "Practice one thing / many things and simple sentence forms.", "Alphabet": "Revise letter names and order with songs and flashcards.", "There is / There are": "Practice using There is for one thing and There are for many things.", "Singular & Plural": "Practice one book / two books and one cat / two cats.", "Body Parts": "Point to body parts and say their names in English.", "Feelings": "Use happy, sad, angry, and sleepy in daily speaking.", "Colors": "Name colors in clothes, toys, and books.", "Shapes": "Find circles, squares, and triangles at home.", "Food": "Revise food words like fruits, vegetables, chicken, and meat with pictures.", "Good Manners": "Practice polite actions like wash your hands, say please, and take your seat.", "Numbers": "Count objects and revise number words every day.", "Spelling": "Practice one missing-letter word at a time with clear picture clues.", "Review": "Go back to the review pages and revise the core words again."}, "ar": {"Phonics": "ركز على أصوات الحروف مثل A و E و I مع كلمات وصور قصيرة.", "Vocabulary": "راجع كلمات الصور وسمِّ الأشياء الموجودة في البيت كل يوم.", "Reading": "اقرأ جملة قصيرة وكلمتين من كلمات الصور يوميًا.", "Speaking": "استخدم التحيات والجمل المهذبة القصيرة بالإنجليزية كل يوم.", "Grammar": "تدرّب على المفرد والجمع وعلى تكوين الجملة البسيطة.", "Alphabet": "راجع أسماء الحروف وترتيبها بالأغاني والبطاقات.", "There is / There are": "تدرّب على استخدام There is للمفرد و There are للجمع.", "Singular & Plural": "تدرّب على one book / two books و one cat / two cats.", "Body Parts": "أشر إلى أجزاء الجسم وقل أسماءها بالإنجليزية.", "Feelings": "استخدم happy و sad و angry و sleepy في الحديث اليومي.", "Colors": "سمِّ الألوان في الملابس والألعاب والكتب.", "Shapes": "ابحث عن الدائرة والمربع والمثلث في البيت.", "Food": "راجع كلمات الطعام مثل fruits و vegetables و chicken و meat بالصور.", "Good Manners": "تدرّب على السلوكيات الجيدة مثل wash your hands و say please و take your seat.", "Numbers": "عدّ الأشياء وراجع كلمات الأرقام كل يوم.", "Spelling": "تدرّب على كلمة واحدة ناقصة الحرف في كل مرة مع صورة واضحة.", "Review": "ارجع إلى صفحات المراجعة وراجع الكلمات الأساسية مرة أخرى."}};
-const baseQuestionPools = {};
+const baseQuestionPools = {"kg1": [{"grade": "KG1", "skill": "Feelings", "type": "Picture", "text": "How does the child feel?", "options": ["Happy", "Sad", "Angry", "Sleepy"], "answer": "Happy", "image": null, "difficulty": 1, "note": "Feeling words"}, {"grade": "KG1", "skill": "Feelings", "type": "Picture", "text": "How does the face feel?", "options": ["Sad", "Happy", "Hungry", "Hot"], "answer": "Sad", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Vocabulary", "type": "Picture", "text": "What animal is this?", "options": ["Cat", "Rat", "Horse", "Dog"], "answer": "Cat", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Vocabulary", "type": "Picture", "text": "What is this?", "options": ["Apple", "Ball", "Book", "Bag"], "answer": "Apple", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "School Vocabulary", "type": "Picture", "text": "What is this school item?", "options": ["Book", "Apple", "Bus", "Cat"], "answer": "Book", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "School Vocabulary", "type": "Picture", "text": "What do we carry to school?", "options": ["School bag", "Ball", "Tree", "Dog"], "answer": "School bag", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Body Parts", "type": "Choice", "text": "Which part helps you see?", "options": ["Eyes", "Nose", "Hands", "Feet"], "answer": "Eyes", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Body Parts", "type": "Choice", "text": "Which part helps you hear?", "options": ["Ears", "Eyes", "Knees", "Hair"], "answer": "Ears", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Colors", "type": "Choice", "text": "What color is the apple?", "options": ["Red", "Blue", "Black", "Purple"], "answer": "Red", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Colors", "type": "Choice", "text": "What color is the school bus?", "options": ["Yellow", "Pink", "Gray", "Brown"], "answer": "Yellow", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Shapes", "type": "Picture", "text": "How many sides does a triangle have?", "options": ["3", "2", "4", "5"], "answer": "3", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Shapes", "type": "Choice", "text": "Which shape has 3 sides?", "options": ["Circle", "Square", "Triangle", "Rectangle"], "answer": "Triangle", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Phonics", "type": "Choice", "text": "Which word starts with the sound /b/?", "options": ["Ball", "Apple", "Cat", "Dog"], "answer": "Ball", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Phonics", "type": "Choice", "text": "Which word starts with the sound /c/?", "options": ["Cat", "Bus", "Apple", "Book"], "answer": "Cat", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Phonics", "type": "Choice", "text": "Which word starts with the sound /a/?", "options": ["Apple", "Book", "Dog", "Ball"], "answer": "Apple", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Alphabet", "type": "Choice", "text": "What letter comes after A?", "options": ["B", "C", "D", "Z"], "answer": "B", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Alphabet", "type": "Choice", "text": "What letter comes after B?", "options": ["C", "D", "E", "A"], "answer": "C", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Alphabet", "type": "Choice", "text": "Which letter is missing? A, B, __, D", "options": ["E", "C", "F", "A"], "answer": "C", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Reading", "type": "Choice", "text": "Choose the correct word for the picture.", "options": ["cat", "dog", "book", "ball"], "answer": "cat", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Reading", "type": "Choice", "text": "Choose the correct word.", "options": ["apple", "bus", "book", "bag"], "answer": "apple", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Speaking", "type": "Choice", "text": "What do you say in the morning?", "options": ["Good morning", "Good night", "Bye bye", "Thank you"], "answer": "Good morning", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Speaking", "type": "Choice", "text": "What do you say when you leave?", "options": ["Goodbye", "Hello", "Apple", "Blue"], "answer": "Goodbye", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Vocabulary", "type": "Choice", "text": "Which animal says meow?", "options": ["Cat", "Dog", "Cow", "Duck"], "answer": "Cat", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Vocabulary", "type": "Choice", "text": "Which animal says woof?", "options": ["Dog", "Cat", "Fish", "Bird"], "answer": "Dog", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Vocabulary", "type": "Choice", "text": "What do we read?", "options": ["Book", "Ball", "Bus", "Apple"], "answer": "Book", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Vocabulary", "type": "Choice", "text": "What do you throw and catch?", "options": ["Ball", "Book", "Apple", "Bag"], "answer": "Ball", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Grammar", "type": "TrueFalse", "text": "This is a cat. Is this sentence correct for one cat?", "options": ["True", "False"], "answer": "True", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Grammar", "type": "TrueFalse", "text": "We say an apple. Is this correct?", "options": ["True", "False"], "answer": "True", "image": null, "difficulty": 2, "note": ""}, {"grade": "KG1", "skill": "Reading", "type": "Choice", "text": "Choose the first letter in dog.", "options": ["D", "G", "O", "B"], "answer": "D", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Reading", "type": "Choice", "text": "Choose the first letter in book.", "options": ["B", "D", "K", "C"], "answer": "B", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "School Vocabulary", "type": "Choice", "text": "Where do children learn?", "options": ["At school", "At the zoo", "At the beach", "On the bus"], "answer": "At school", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "School Vocabulary", "type": "Choice", "text": "Which one is a classroom thing?", "options": ["Book", "Fish", "Train", "Tree"], "answer": "Book", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Colors", "type": "Choice", "text": "What color is grass?", "options": ["Green", "Blue", "Pink", "Black"], "answer": "Green", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Colors", "type": "Choice", "text": "What color is the sky?", "options": ["Blue", "Brown", "Orange", "Gray"], "answer": "Blue", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Speaking", "type": "Choice", "text": "How do you answer: What is your name?", "options": ["My name is ...", "I am blue", "I have a ball", "There are two"], "answer": "My name is ...", "image": null, "difficulty": 2, "note": ""}, {"grade": "KG1", "skill": "Phonics", "type": "Choice", "text": "Which word starts like sun?", "options": ["Star", "Apple", "Dog", "Book"], "answer": "Star", "image": null, "difficulty": 2, "note": ""}, {"grade": "KG1", "skill": "Body Parts", "type": "Choice", "text": "Which part helps you walk?", "options": ["Feet", "Eyes", "Hair", "Mouth"], "answer": "Feet", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Body Parts", "type": "Choice", "text": "Which part helps you eat?", "options": ["Mouth", "Arm", "Leg", "Ear"], "answer": "Mouth", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Vocabulary", "type": "TrueFalse", "text": "There is an apple. Is this sentence correct for one apple?", "options": ["True", "False"], "answer": "True", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Singular & Plural", "type": "Choice", "text": "One cat, two ...", "options": ["catts", "cats", "cat", "cates"], "answer": "cats", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Alphabet", "type": "TrueFalse", "text": "Lemon starts with the letter L.", "options": ["True", "False"], "answer": "True", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Singular & Plural", "type": "Choice", "text": "One book, two ...", "options": ["bookes", "books", "book", "bookies"], "answer": "books", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "There is / There are", "type": "Choice", "text": "We use There is with ...", "options": ["Many things", "One thing", "Both", "None"], "answer": "One thing", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Singular & Plural", "type": "Choice", "text": "We use ___ when we talk about more than one thing.", "options": ["None", "Singular", "Plural", "Both"], "answer": "Plural", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Alphabet", "type": "TrueFalse", "text": "House starts with the letter H.", "options": ["True", "False"], "answer": "True", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Alphabet", "type": "Choice", "text": "What letter does Apple start with?", "options": ["A", "C", "B", "D"], "answer": "A", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Singular & Plural", "type": "Choice", "text": "One car, three ...", "options": ["cars", "carres", "caros", "car"], "answer": "cars", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Alphabet", "type": "TrueFalse", "text": "Star starts with the letter S.", "options": ["True", "False"], "answer": "True", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Alphabet", "type": "Choice", "text": "Cat starts with the letter ...", "options": ["B", "A", "D", "C"], "answer": "C", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Singular & Plural", "type": "Choice", "text": "We use ___ when we talk about one thing.", "options": ["Singular", "None", "Both", "Plural"], "answer": "Singular", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Alphabet", "type": "Choice", "text": "Ice cream starts with the letter ...", "options": ["H", "I", "A", "J"], "answer": "I", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "There is / There are", "type": "Choice", "text": "There ___ one ball.", "options": ["be", "am", "are", "is"], "answer": "is", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Singular & Plural", "type": "Choice", "text": "One apple, many ...", "options": ["applys", "apples", "applees", "apple"], "answer": "apples", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Alphabet", "type": "TrueFalse", "text": "Duck starts with the letter D.", "options": ["True", "False"], "answer": "True", "image": null, "difficulty": 1, "note": ""}, {"grade": "KG1", "skill": "Alphabet", "type": "Choice", "text": "B is for something you play with.", "options": ["Bus", "Banana", "Ball", "Book"], "answer": "Ball", "image": null, "difficulty": 1, "note": ""}], "kg2": [{"grade": "KG2", "skill": "Vocabulary", "type": "Picture", "text": "What is this fruit?", "options": ["Orange", "Carrots", "Banana", "Meat"], "answer": "Orange", "image": null, "difficulty": 1, "note": "Step Ahead Unit 1"}, {"grade": "KG2", "skill": "Vocabulary", "type": "Picture", "text": "What are these vegetables?", "options": ["Cucumbers", "Bananas", "Chickens", "Apricots"], "answer": "Cucumbers", "image": null, "difficulty": 1, "note": "Step Ahead Unit 1"}, {"grade": "KG2", "skill": "Vocabulary", "type": "Picture", "text": "What is this healthy food?", "options": ["Chicken", "Truck", "Tooth", "Head"], "answer": "Chicken", "image": null, "difficulty": 1, "note": "Step Ahead Unit 1"}, {"grade": "KG2", "skill": "Vocabulary", "type": "Picture", "text": "What are these orange vegetables?", "options": ["Carrots", "Meat", "Hippos", "Trucks"], "answer": "Carrots", "image": null, "difficulty": 1, "note": "Step Ahead Unit 1"}, {"grade": "KG2", "skill": "Vocabulary", "type": "Picture", "text": "What fruit is this?", "options": ["Banana", "Orange", "Apricot", "Head"], "answer": "Banana", "image": null, "difficulty": 1, "note": "Step Ahead Unit 1"}, {"grade": "KG2", "skill": "Vocabulary", "type": "Picture", "text": "What food is this?", "options": ["Meat", "Healthy", "Truck", "Alligator"], "answer": "Meat", "image": null, "difficulty": 1, "note": "Step Ahead Unit 1"}, {"grade": "KG2", "skill": "Reading", "type": "TrueFalse", "text": "Fruits are healthy.", "options": ["True", "False"], "answer": "True", "image": null, "difficulty": 1, "note": "Step Ahead Unit 1"}, {"grade": "KG2", "skill": "Reading", "type": "TrueFalse", "text": "Vegetables are healthy, too.", "options": ["True", "False"], "answer": "True", "image": null, "difficulty": 1, "note": "Step Ahead Unit 1"}, {"grade": "KG2", "skill": "Reading", "type": "Choice", "text": "Complete the sentence: I like _____.", "options": ["oranges", "truck", "head", "seat"], "answer": "oranges", "image": null, "difficulty": 1, "note": "Language in use"}, {"grade": "KG2", "skill": "Reading", "type": "Choice", "text": "Complete the sentence: I eat _____.", "options": ["carrots", "hippo", "tooth", "truck"], "answer": "carrots", "image": null, "difficulty": 1, "note": "Language in use"}, {"grade": "KG2", "skill": "Grammar", "type": "Choice", "text": "Choose the correct sentence.", "options": ["Apples are red.", "Apples is red.", "Apples am red.", "Apple are red."], "answer": "Apples are red.", "image": null, "difficulty": 2, "note": "Language in use"}, {"grade": "KG2", "skill": "Vocabulary", "type": "Choice", "text": "Choose the healthy food.", "options": ["Fruits", "Rocks", "Shoes", "Clock"], "answer": "Fruits", "image": null, "difficulty": 1, "note": "Step Ahead Unit 1"}, {"grade": "KG2", "skill": "Spelling", "type": "Choice", "text": "Write the missing letter: fru_ts", "options": ["i", "a", "o", "u"], "answer": "i", "image": null, "difficulty": 2, "note": "Page 13"}, {"grade": "KG2", "skill": "Spelling", "type": "Choice", "text": "Write the missing letter: cu_umbers", "options": ["c", "k", "m", "t"], "answer": "c", "image": null, "difficulty": 2, "note": "Page 13"}, {"grade": "KG2", "skill": "Spelling", "type": "Choice", "text": "Write the missing letter: chi_ken", "options": ["i", "o", "e", "a"], "answer": "i", "image": null, "difficulty": 2, "note": "Page 13"}, {"grade": "KG2", "skill": "Spelling", "type": "Choice", "text": "Write the missing letter: hea_thy", "options": ["l", "a", "i", "o"], "answer": "l", "image": null, "difficulty": 2, "note": "Page 13"}, {"grade": "KG2", "skill": "Spelling", "type": "Choice", "text": "Rearrange the letters: ongrae", "options": ["orange", "oragne", "groane", "ongera"], "answer": "orange", "image": null, "difficulty": 2, "note": "Page 13"}, {"grade": "KG2", "skill": "Spelling", "type": "Choice", "text": "Rearrange the letters: eamt", "options": ["meat", "team", "mate", "tame"], "answer": "meat", "image": null, "difficulty": 2, "note": "Page 13"}, {"grade": "KG2", "skill": "Phonics", "type": "Choice", "text": "Which A word matches the picture?", "options": ["Alligator", "Truck", "Head", "Hippo"], "answer": "Alligator", "image": null, "difficulty": 1, "note": "Aa phonics"}, {"grade": "KG2", "skill": "Phonics", "type": "Choice", "text": "Which A food word matches the picture?", "options": ["Apricot", "Truck", "Tooth", "Head"], "answer": "Apricot", "image": null, "difficulty": 1, "note": "Aa phonics"}, {"grade": "KG2", "skill": "Phonics", "type": "Choice", "text": "Which T word matches the picture?", "options": ["Tooth", "Head", "Hippo", "Alligator"], "answer": "Tooth", "image": null, "difficulty": 1, "note": "Tt phonics"}, {"grade": "KG2", "skill": "Phonics", "type": "Choice", "text": "Which T transport word matches the picture?", "options": ["Truck", "Apricot", "Hippo", "Banana"], "answer": "Truck", "image": null, "difficulty": 1, "note": "Tt phonics"}, {"grade": "KG2", "skill": "Phonics", "type": "Choice", "text": "Which H body word matches the picture?", "options": ["Head", "Truck", "Alligator", "Tooth"], "answer": "Head", "image": null, "difficulty": 1, "note": "Hh phonics"}, {"grade": "KG2", "skill": "Phonics", "type": "Choice", "text": "Which H animal word matches the picture?", "options": ["Hippo", "Apricot", "Cucumbers", "Orange"], "answer": "Hippo", "image": null, "difficulty": 1, "note": "Hh phonics"}, {"grade": "KG2", "skill": "Spelling", "type": "Choice", "text": "Write the missing first letter: __lligator", "options": ["A", "T", "H", "O"], "answer": "A", "image": null, "difficulty": 2, "note": "Page 21"}, {"grade": "KG2", "skill": "Spelling", "type": "Choice", "text": "Write the missing first letter: __ooth", "options": ["T", "H", "A", "M"], "answer": "T", "image": null, "difficulty": 2, "note": "Page 21"}, {"grade": "KG2", "skill": "Spelling", "type": "Choice", "text": "Write the missing first letter: __ippo", "options": ["H", "T", "A", "C"], "answer": "H", "image": null, "difficulty": 2, "note": "Page 21"}, {"grade": "KG2", "skill": "Spelling", "type": "Choice", "text": "Write the missing first letter: __ruck", "options": ["T", "H", "A", "B"], "answer": "T", "image": null, "difficulty": 2, "note": "Page 21"}, {"grade": "KG2", "skill": "Numbers", "type": "Choice", "text": "Which number is eleven?", "options": ["11", "12", "13", "10"], "answer": "11", "image": null, "difficulty": 1, "note": "Page 16"}, {"grade": "KG2", "skill": "Numbers", "type": "Choice", "text": "Which number is twelve?", "options": ["12", "11", "10", "9"], "answer": "12", "image": null, "difficulty": 1, "note": "Page 16"}, {"grade": "KG2", "skill": "Numbers", "type": "TrueFalse", "text": "I see 11 oranges.", "options": ["True", "False"], "answer": "True", "image": null, "difficulty": 1, "note": "Page 17"}, {"grade": "KG2", "skill": "Numbers", "type": "TrueFalse", "text": "I see 12 carrots.", "options": ["True", "False"], "answer": "True", "image": null, "difficulty": 1, "note": "Page 17"}, {"grade": "KG2", "skill": "Good Manners", "type": "Choice", "text": "What should you do before and after eating?", "options": ["Wash your hands", "Jump high", "Run fast", "Sleep"], "answer": "Wash your hands", "image": null, "difficulty": 1, "note": "Lesson 3"}, {"grade": "KG2", "skill": "Good Manners", "type": "Choice", "text": "Which sentence is polite?", "options": ["Say please", "Throw food", "Shout loudly", "Push friends"], "answer": "Say please", "image": null, "difficulty": 1, "note": "Lesson 3"}, {"grade": "KG2", "skill": "Good Manners", "type": "Choice", "text": "What is the good action?", "options": ["Take your seat", "Waste food", "Skip washing", "Be rude"], "answer": "Take your seat", "image": null, "difficulty": 1, "note": "Lesson 3"}, {"grade": "KG2", "skill": "Good Manners", "type": "TrueFalse", "text": "Don’t waste food.", "options": ["True", "False"], "answer": "True", "image": null, "difficulty": 1, "note": "Lesson 3"}, {"grade": "KG2", "skill": "Good Manners", "type": "TrueFalse", "text": "Eat slowly.", "options": ["True", "False"], "answer": "True", "image": null, "difficulty": 1, "note": "Lesson 3"}, {"grade": "KG2", "skill": "Reading", "type": "Choice", "text": "Hesham likes ____ most.", "options": ["oranges", "trucks", "books", "chairs"], "answer": "oranges", "image": null, "difficulty": 2, "note": "Story page 25"}, {"grade": "KG2", "skill": "Reading", "type": "Choice", "text": "Amina likes _____.", "options": ["fruits", "trucks", "chairs", "cats"], "answer": "fruits", "image": null, "difficulty": 2, "note": "Story page 25"}, {"grade": "KG2", "skill": "Reading", "type": "Choice", "text": "Hesham also likes vegetables. Which ones are named in the story?", "options": ["cucumbers and carrots", "bananas and oranges", "meat and chicken", "head and tooth"], "answer": "cucumbers and carrots", "image": null, "difficulty": 3, "note": "Story page 25"}, {"grade": "KG2", "skill": "Reading", "type": "TrueFalse", "text": "Fruits and vegetables make us strong.", "options": ["True", "False"], "answer": "True", "image": null, "difficulty": 2, "note": "Story page 25"}, {"grade": "KG2", "skill": "Good Manners", "type": "Choice", "text": "Complete the sentence: Say please and ____ you.", "options": ["thank", "eat", "run", "jump"], "answer": "thank", "image": null, "difficulty": 2, "note": "Page 24"}, {"grade": "KG2", "skill": "Spelling", "type": "Choice", "text": "Write the missing letter: fo_d", "options": ["o", "a", "e", "u"], "answer": "o", "image": null, "difficulty": 2, "note": "Page 29"}, {"grade": "KG2", "skill": "Spelling", "type": "Choice", "text": "Write the missing letter: wa_h", "options": ["s", "t", "r", "n"], "answer": "s", "image": null, "difficulty": 2, "note": "Page 29"}, {"grade": "KG2", "skill": "Spelling", "type": "Choice", "text": "Write the missing letter: p_ease", "options": ["l", "r", "n", "t"], "answer": "l", "image": null, "difficulty": 2, "note": "Page 29"}, {"grade": "KG2", "skill": "Review", "type": "Choice", "text": "Choose the review word that starts with H.", "options": ["head", "banana", "orange", "truck"], "answer": "head", "image": null, "difficulty": 1, "note": "Review 1"}, {"grade": "KG2", "skill": "Review", "type": "Choice", "text": "Choose the review word that starts with T.", "options": ["tooth", "apricot", "alligator", "hippo"], "answer": "tooth", "image": null, "difficulty": 1, "note": "Review 1"}, {"grade": "KG2", "skill": "Food", "type": "Choice", "text": "Which food is a fruit?", "options": ["Orange", "Truck", "Tooth", "Seat"], "answer": "Orange", "image": null, "difficulty": 1, "note": "Unit 1 review"}, {"grade": "KG2", "skill": "Food", "type": "Choice", "text": "Which food is meat?", "options": ["Chicken", "Truck", "Hippo", "Head"], "answer": "Chicken", "image": null, "difficulty": 1, "note": "Unit 1 review"}, {"grade": "KG2", "skill": "Numbers", "type": "Choice", "text": "What comes after 11?", "options": ["12", "10", "13", "9"], "answer": "12", "image": null, "difficulty": 1, "note": "Numbers review"}, {"grade": "KG2", "skill": "Good Manners", "type": "Choice", "text": "Which action is polite at the table?", "options": ["Eat slowly", "Waste food", "Shout loudly", "Throw food"], "answer": "Eat slowly", "image": null, "difficulty": 1, "note": "Lesson 3 review"}, {"grade": "KG2", "skill": "Reading", "type": "TrueFalse", "text": "Chicken and meat are healthy.", "options": ["True", "False"], "answer": "True", "image": null, "difficulty": 2, "note": "Page 7"}]};
 
-const ADMINS = [];
+const ADMINS = [{user:'KEMETRONIX', pass:'01002439054'},{user:'Dr. Tarek', pass:'T01032188008'}];
 const typeLabels = {en:{Choice:'Choice', TrueFalse:'True or False', Picture:'Picture'}, ar:{Choice:'اختر', TrueFalse:'صح أم خطأ', Picture:'صورة'}};
 
 translations.en.bulkQuestionsTitle='Bulk Question Import';
@@ -1154,21 +1154,1255 @@ function isDuplicateQuestionEnhanced(text, list){
 
 /* === v38.2 admin upgrade === */
 (function(){
+  const BUILTIN_ADMINS_V382 = [
+    { user:'KEMETRONIX', pass:'01002439054', role:'admin', permissions:defaultAdminPermissions(), builtIn:true },
+    { user:'Dr. Tarek', pass:'T01032188008', role:'admin', permissions:defaultAdminPermissions(), builtIn:true }
+  ];
   function norm(v){ return String(v||'').trim().toLowerCase(); }
   function allAccessAccountsV382(){
-    return getAccessAccounts().map(a => ({...a,builtIn:false}));
+    const extras = getAccessAccounts().map(a => ({...a,builtIn:false}));
+    return [...BUILTIN_ADMINS_V382, ...extras];
   }
   window.getLoginAccount = function(user, pass){
     const u = norm(user), p = String(pass||'').trim();
+    const hard = BUILTIN_ADMINS_V382.find(a => norm(a.user) === u);
+    if(hard && hard.pass === p) return {user:hard.user, role:'admin', permissions:defaultAdminPermissions(), builtIn:true};
     const match = getAccessAccounts().find(a => norm(a.user) === u && String(a.pass||'').trim() === p);
     return match || null;
   };
   window.renderAccessAccountsList = function(){
     const box=document.getElementById('accessAccountsList'); if(!box) return;
     const accounts=allAccessAccountsV382();
-    if(!accounts.length){ box.innerHTML=`<div class="small">${T('noExtraAccounts')}</div>`; return; }
-    box.innerHTML = accounts.map(acc => `<div class="q-item"><div><b>${escapeHtml(acc.user||'')}</b> <span class="muted">(${escapeHtml(acc.role||'user')})</span></div></div>`).join('');
+    box.innerHTML = accounts.length ? accounts.map((a)=>`<div class="account-card"><div class="meta-line"><span class="pill"><strong>${escapeHtml(a.user)}</strong></span><span class="pill">${escapeHtml(a.role)}</span><span class="pill">${escapeHtml((a.permissions||[]).map(permissionLabel).join(', ')||'-')}</span>${a.builtIn?'<span class="pill">Built-in</span>':''}</div><div class="account-actions"><button class="ghost-btn edit-access-account" data-user="${escapeHtml(a.user)}">Edit</button><button class="ghost-btn pass-access-account" data-user="${escapeHtml(a.user)}">Password</button>${a.builtIn?'':`<button class="ghost-btn delete-access-account" data-user="${escapeHtml(a.user)}">${translations[getLang()].deleteAccount || 'Delete'}</button>`}</div></div>`).join('') : `<div class="stored-question"><h4>${translations[getLang()].noExtraAccounts || 'No accounts yet.'}</h4></div>`;
+    box.querySelectorAll('.edit-access-account').forEach(btn=>btn.onclick=()=>{
+      const acc=allAccessAccountsV382().find(a=>norm(a.user)===norm(btn.dataset.user)); if(!acc) return;
+      const u=document.getElementById('accessAccountUser'), p=document.getElementById('accessAccountPass'), r=document.getElementById('accessAccountRole');
+      if(u) u.value=acc.user; if(p) p.value=acc.pass || ''; if(r) r.value=acc.role || 'user';
+      renderAccessPermissions(Array.isArray(acc.permissions)?acc.permissions:[]);
+    });
+    box.querySelectorAll('.pass-access-account').forEach(btn=>btn.onclick=()=>{
+      const newPass=prompt(getLang()==='ar'?'أدخل كلمة المرور الجديدة':'Enter new password'); if(!newPass) return;
+      const extras=getAccessAccounts(); const idx=extras.findIndex(a=>norm(a.user)===norm(btn.dataset.user));
+      if(idx>=0){ extras[idx].pass=newPass; setAccessAccounts(extras); }
+      else {
+        const built=BUILTIN_ADMINS_V382.find(a=>norm(a.user)===norm(btn.dataset.user));
+        if(built){
+          const existing=extras.findIndex(a=>norm(a.user)===norm(built.user));
+          const payload={user:built.user, pass:newPass, role:'admin', permissions:defaultAdminPermissions()};
+          if(existing>=0) extras[existing]=payload; else extras.push(payload);
+          setAccessAccounts(extras);
+        }
+      }
+      renderAccessAccountsList();
+      alert(getLang()==='ar'?'تم تحديث كلمة المرور.':'Password updated.');
+    });
+    box.querySelectorAll('.delete-access-account').forEach(btn=>btn.onclick=()=>{
+      if(!confirm(getLang()==='ar'?'هل تريد حذف هذا الحساب؟':'Delete this account?')) return;
+      const extras=getAccessAccounts().filter(a=>norm(a.user)!==norm(btn.dataset.user)); setAccessAccounts(extras); renderAccessAccountsList();
+      alert(getLang()==='ar'?'تم حذف الحساب.':'Account deleted.');
+    });
   };
+  window.saveAccessAccountFromAdmin = function(){
+    try{
+      const user=(document.getElementById('accessAccountUser')?.value || '').trim();
+      const pass=(document.getElementById('accessAccountPass')?.value || '').trim();
+      const role=(document.getElementById('accessAccountRole')?.value || 'user').trim();
+      if(!user || !pass){ alert((translations[getLang()]&&translations[getLang()].usernamePasswordRequired) || 'Please enter username and password.'); return; }
+      const permissions = role==='admin' ? defaultAdminPermissions() : Array.from(document.querySelectorAll('.perm-check:checked')).map(el=>el.value);
+      if(role!=='admin' && permissions.length===0){ alert((translations[getLang()]&&translations[getLang()].chooseOnePermission)||'Please choose at least one permission.'); return; }
+      const extras=getAccessAccounts();
+      const idx=extras.findIndex(a=>norm(a.user)===norm(user));
+      const payload={user, pass, role, permissions};
+      if(idx>=0) extras[idx]=payload; else extras.push(payload);
+      setAccessAccounts(extras);
+      renderAccessAccountsList();
+      const u=document.getElementById('accessAccountUser'), p=document.getElementById('accessAccountPass'), r=document.getElementById('accessAccountRole');
+      if(u) u.value=''; if(p) p.value=''; if(r) r.value='user';
+      renderAccessPermissions([]);
+      alert((translations[getLang()]&&translations[getLang()].accountSaved)||'Account saved.');
+    }catch(err){ alert((translations[getLang()]&&translations[getLang()].accountSaveFailed)||'Could not save account.'); }
+  };
+  window.filterQuestionCards = function(grade){
+    const wrap = document.getElementById('storedQuestionsWrap'); if(!wrap) return;
+    wrap.hidden=false; wrap.style.display=''; wrap.classList.remove('collapsed-body');
+    const search=(document.getElementById('qSearchInput')?.value || '').toLowerCase().trim();
+    const skill=(document.getElementById('qSkillFilterInput')?.value || '').toLowerCase().trim();
+    const klass=(document.getElementById('qClassFilterInput')?.value || '').toLowerCase().trim();
+    const cards = wrap.querySelectorAll('.question-edit-card');
+    cards.forEach(card=>{
+      const cardGrade=(card.dataset.grade || '').toLowerCase();
+      const text=(card.querySelector('.qe-text')?.value || '').toLowerCase();
+      const qskill=(card.querySelector('.qe-skill')?.value || '').toLowerCase();
+      const byGrade=(grade==='all' || cardGrade===String(grade).toLowerCase());
+      const bySearch=(!search || text.includes(search));
+      const bySkill=(!skill || qskill.includes(skill));
+      const byClass=(!klass || cardGrade.includes(klass));
+      card.style.display = (byGrade && bySearch && bySkill && byClass) ? '' : 'none';
+    });
+    document.querySelectorAll('[data-filter-grade]').forEach(btn=>{
+      const active=(btn.dataset.filterGrade || 'all').toLowerCase()===grade;
+      btn.classList.toggle('active',active);
+    });
+  };
+  window.wireQuestionFilterButtons = function(){
+    document.querySelectorAll('[data-filter-grade]').forEach(btn=>{
+      if(btn.dataset.wired==='1') return;
+      btn.dataset.wired='1';
+      btn.onclick=(e)=>{ e.preventDefault(); e.stopPropagation(); filterQuestionCards((btn.dataset.filterGrade||'all').toLowerCase()); };
+    });
+    ['qSearchInput','qSkillFilterInput','qClassFilterInput'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el && !el.dataset.wired){ el.dataset.wired='1'; el.addEventListener('input',()=>filterQuestionCards((document.querySelector('[data-filter-grade].active')?.dataset.filterGrade || 'all').toLowerCase())); }
+    });
+  };
+  window.addCustomQuestion = function(){
+    const grade = ((document.getElementById('newQGrade')?.value || '').trim().toLowerCase());
+    const skill = document.getElementById('newQSkill')?.value.trim() || 'Vocabulary';
+    const type = document.getElementById('newQType')?.value.trim() || 'Choice';
+    const text = document.getElementById('newQText')?.value.trim();
+    const options = (document.getElementById('newQOptions')?.value || '').split('|').map(s=>s.trim()).filter(Boolean);
+    const answer = document.getElementById('newQAnswer')?.value.trim();
+    const difficulty = clamp(Number(document.getElementById('newQDifficulty')?.value || 1),1,3);
+    const image = (document.getElementById('newQImage')?.value || '').trim() || document.getElementById('newQImageFile')?.dataset.savedImage || null;
+    if (!text || !answer || !options.length){ alert(getLang()==='ar'?'أكمل بيانات السؤال.':'Please fill question text, options, and answer.'); return; }
+    if (!validateQuestionEnhanced({text, options, answer})){ alert(getLang()==='ar'?'الإجابة الصحيحة غير موجودة ضمن الاختيارات.':'Answer must match one of the options.'); return; }
+    const gradePool = (grade && typeof sanitizedPool==='function') ? sanitizedPool(grade) : [];
+    if (isDuplicateQuestionEnhanced(text, gradePool)){ alert(getLang()==='ar'?'هذا السؤال مكرر.':'Duplicate question found.'); return; }
+    const custom = getCustomQuestions();
+    if(!custom[grade]) custom[grade]=[];
+    custom[grade].push({grade:grade.toUpperCase(), skill, type, text, options, answer, image, difficulty});
+    writeJson(storeKeys.customQuestions, custom);
+    ['newQGrade','newQSkill','newQType','newQText','newQOptions','newQAnswer','newQDifficulty','newQImage'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+    const imgFile=document.getElementById('newQImageFile'); if(imgFile){ imgFile.value=''; imgFile.dataset.savedImage=''; }
+    renderStoredQuestions(); renderTeacherQuestionPicker();
+    alert(getLang()==='ar'?'تمت إضافة السؤال.':'Question added.');
+  };
+  const _origRenderStoredQuestions = window.renderStoredQuestions;
+  window.renderStoredQuestions = function(){
+    const list = document.getElementById('storedQuestionsList'); if(!list) return;
+    let items = [...collectQuestionsWithMeta('kg1'), ...collectQuestionsWithMeta('kg2')];
+    try {
+      const extraClasses = Array.isArray(readJson('kgEnglishCustomClassesV29', null))
+        ? readJson('kgEnglishCustomClassesV29', [])
+        : (typeof window.getCustomClasses === 'function' ? window.getCustomClasses() : []);
+      (Array.isArray(extraClasses) ? extraClasses : []).forEach(cls => {
+        if (cls && cls.key) items = items.concat(collectQuestionsWithMeta(cls.key));
+      });
+    } catch(err) {
+      console.warn('Skipping custom class question merge', err);
+    }
+    items = items.map(applyQuestionOverrides);
+    list.innerHTML = items.length ? items.map(questionEditorCard).join('') : '<div class="stored-question"><h4>No questions yet.</h4><p>Add questions from the editor above.</p></div>';
+    bindQuestionEditorActions();
+    wireQuestionFilterButtons();
+    filterQuestionCards((document.querySelector('[data-filter-grade].active')?.dataset.filterGrade || 'all').toLowerCase());
+  };
+  const _origQuestionEditorCard = window.questionEditorCard;
+  window.questionEditorCard = function(question){
+    const html = _origQuestionEditorCard(question);
+    return html.replace('<div class="meta-line">', `<div class="meta-line"><span class="pill">${escapeHtml(question.grade || '')}</span>`);
+  };
+  const _origSaveTeacherTestFromAdmin = window.saveTeacherTestFromAdmin;
+  window.saveTeacherTestFromAdmin = function(){
+    _origSaveTeacherTestFromAdmin();
+    populateCloneOptionsV382();
+  };
+  window.clearTeacherTestFromAdmin = function(){
+    const grade = ((document.getElementById('testGrade')?.value || 'KG1').trim().toLowerCase() === 'kg2') ? 'kg2' : (document.getElementById('testGrade')?.value || 'kg1').trim().toLowerCase();
+    const tests = getTeacherTests();
+    tests[grade] = null;
+    setTeacherTests(tests);
+    const listEl = document.getElementById('testQuestionList'); if(listEl) listEl.value='';
+    renderTeacherTestEditor(); populateCloneOptionsV382();
+  };
+  function populateCloneOptionsV382(){
+    const tests = getTeacherTests();
+    const from=document.getElementById('cloneTestNameInput');
+    const cloneBtn=document.getElementById('cloneTeacherTestBtn');
+    const archiveBtn=document.getElementById('archiveTeacherTestBtn');
+    if(!from || !cloneBtn || !archiveBtn) return;
+    if(!cloneBtn.dataset.bound){
+      cloneBtn.dataset.bound='1';
+      cloneBtn.onclick=()=>{
+        const grade=((document.getElementById('testGrade')?.value||'KG1').trim().toLowerCase()==='kg2')?'kg2':(document.getElementById('testGrade')?.value||'kg1').trim().toLowerCase();
+        const cfg=tests[grade];
+        if(!cfg){ alert(getLang()==='ar'?'لا يوجد اختبار حالي لنسخه.':'No current test to clone.'); return; }
+        const cloneName=(from.value||'').trim() || `${cfg.name || grade.toUpperCase()} Copy`;
+        const archived = readJson(storeKeys.archivedTeacherTestsV382, []);
+        archived.push({ ...cfg, grade, archived:false, cloned:true, name:cloneName, createdAt:new Date().toISOString() });
+        writeJson(storeKeys.archivedTeacherTestsV382, archived);
+        alert(getLang()==='ar'?'تم نسخ الاختبار وحفظه.':'Quiz cloned and saved.');
+      };
+    }
+    if(!archiveBtn.dataset.bound){
+      archiveBtn.dataset.bound='1';
+      archiveBtn.onclick=()=>{
+        const grade=((document.getElementById('testGrade')?.value||'KG1').trim().toLowerCase()==='kg2')?'kg2':(document.getElementById('testGrade')?.value||'kg1').trim().toLowerCase();
+        const cfg=getTeacherTests()[grade];
+        if(!cfg){ alert(getLang()==='ar'?'لا يوجد اختبار لأرشفته.':'No current test to archive.'); return; }
+        const archived = readJson(storeKeys.archivedTeacherTestsV382, []);
+        archived.push({ ...cfg, grade, archived:true, createdAt:new Date().toISOString() });
+        writeJson(storeKeys.archivedTeacherTestsV382, archived);
+        const tests = getTeacherTests(); tests[grade]=null; setTeacherTests(tests); renderTeacherTestEditor();
+        alert(getLang()==='ar'?'تمت أرشفة الاختبار.':'Test archived.');
+      };
+    }
+  }
+  function rebindV382(){
+    if(document.body.dataset.page !== 'admin') return;
+    const saveBtn=document.getElementById('saveAccessAccountBtn');
+    if(saveBtn && !saveBtn.dataset.v382){ saveBtn.dataset.v382='1'; saveBtn.onclick=(e)=>{ e.preventDefault(); saveAccessAccountFromAdmin(); }; }
+    const addBtn=document.getElementById('addQuestionBtn');
+    if(addBtn && !addBtn.dataset.v382){ addBtn.dataset.v382='1'; addBtn.onclick=(e)=>{ e.preventDefault(); addCustomQuestion(); }; }
+    document.getElementById('showStoredQuestionsBtn') && (document.getElementById('showStoredQuestionsBtn').onclick=()=>renderStoredQuestions());
+    populateCloneOptionsV382();
+    wireQuestionFilterButtons();
+  }
+  window.addEventListener('load', ()=> setTimeout(rebindV382, 50));
+})();
+
+
+
+/* === v38.10 final account admin fix === */
+(function(){
+  function accNorm(v){ return String(v || '').trim().toLowerCase(); }
+
+  function builtInAdminRows(){
+    const perms = (typeof defaultAdminPermissions === 'function') ? defaultAdminPermissions() : (Array.isArray(PERMISSIONS) ? [...PERMISSIONS] : []);
+    const base = (typeof ADMINS !== 'undefined' && Array.isArray(ADMINS)) ? ADMINS : [];
+    return base.map(a => ({ user:a.user, pass:a.pass, role:'admin', permissions:perms, builtIn:true }));
+  }
+
+  function editableAccounts(){
+    try{
+      const raw = (typeof getAccessAccounts === 'function') ? getAccessAccounts() : [];
+      return Array.isArray(raw) ? raw.map(a => ({
+        user: a.user || a.username || '',
+        pass: a.pass || a.password || '',
+        role: a.role || 'user',
+        permissions: Array.isArray(a.permissions) ? a.permissions : []
+      })) : [];
+    }catch(e){ return []; }
+  }
+
+  function saveEditableAccounts(list){
+    const safe = Array.isArray(list) ? list : [];
+    if (typeof setAccessAccounts === 'function') setAccessAccounts(safe);
+  }
+
+  function combinedAccounts(){
+    const built = builtInAdminRows();
+    const extra = editableAccounts();
+    const merged = [...built];
+    extra.forEach(acc => {
+      const idx = merged.findIndex(x => accNorm(x.user) === accNorm(acc.user));
+      if (idx >= 0) merged[idx] = { ...acc, builtIn:true, override:true };
+      else merged.push({ ...acc, builtIn:false });
+    });
+    return merged;
+  }
+
+  window.getLoginAccount = function(user, pass){
+    const u = accNorm(user);
+    const p = String(pass || '').trim();
+
+    const extra = editableAccounts().find(a => accNorm(a.user) === u && String(a.pass || '').trim() === p);
+    if (extra) return extra;
+
+    const built = builtInAdminRows().find(a => accNorm(a.user) === u && a.pass === p);
+    if (built) return { user:built.user, role:'admin', permissions:built.permissions, builtIn:true };
+
+    return null;
+  };
+
+  function restorePermissions(perms){
+    const set = new Set(Array.isArray(perms) ? perms : []);
+    document.querySelectorAll('.perm-check').forEach(cb => cb.checked = set.has(cb.value));
+  }
+
+  window.accEditByUser = function(user){
+    const acc = combinedAccounts().find(a => accNorm(a.user) === accNorm(user));
+    if (!acc) return;
+    const u = document.getElementById('accessAccountUser');
+    const p = document.getElementById('accessAccountPass');
+    const r = document.getElementById('accessAccountRole');
+    if (u) u.value = acc.user || '';
+    if (p) p.value = acc.pass || '';
+    if (r){
+      r.value = acc.role || 'user';
+      if (typeof renderAccessPermissions === 'function') renderAccessPermissions(acc.permissions || []);
+    }
+    setTimeout(() => restorePermissions(acc.permissions || []), 20);
+  };
+
+  window.accDeleteByUser = function(user){
+    const built = builtInAdminRows().find(a => accNorm(a.user) === accNorm(user));
+    let list = editableAccounts();
+    if (built){
+      if (!confirm((typeof getLang === 'function' && getLang() === 'ar') ? 'سيتم حذف التعديل فقط والرجوع إلى بيانات المشرف الأساسية. هل تريد المتابعة؟' : 'This will remove only the override and return to the built-in admin data. Continue?')) return;
+      list = list.filter(a => accNorm(a.user) !== accNorm(user));
+    } else {
+      if (!confirm((typeof getLang === 'function' && getLang() === 'ar') ? 'هل تريد حذف هذا الحساب؟' : 'Delete this account?')) return;
+      list = list.filter(a => accNorm(a.user) !== accNorm(user));
+    }
+    saveEditableAccounts(list);
+    renderAccessAccountsList();
+  };
+
+  window.accChangePassByUser = function(user){
+    const next = prompt((typeof getLang === 'function' && getLang() === 'ar') ? 'أدخل كلمة المرور الجديدة' : 'New password:');
+    if (!next) return;
+    let list = editableAccounts();
+    const idx = list.findIndex(a => accNorm(a.user) === accNorm(user));
+    if (idx >= 0){
+      list[idx].pass = next;
+    } else {
+      const built = builtInAdminRows().find(a => accNorm(a.user) === accNorm(user));
+      if (!built) return;
+      list.push({ user:built.user, pass:next, role:'admin', permissions:built.permissions || [] });
+    }
+    saveEditableAccounts(list);
+    renderAccessAccountsList();
+    alert((typeof getLang === 'function' && getLang() === 'ar') ? 'تم تحديث كلمة المرور.' : 'Password updated.');
+  };
+
+  window.renderAccessAccountsList = function(){
+    const box = document.getElementById('accessAccountsList');
+    if (!box) return;
+    const list = combinedAccounts();
+    if (!list.length){
+      box.innerHTML = `<div class="stored-question"><h4>${(translations[getLang()] && translations[getLang()].noExtraAccounts) || 'No accounts yet.'}</h4></div>`;
+      return;
+    }
+    box.innerHTML = list.map(acc => `
+      <div class="account-card account-realfix-card">
+        <div class="meta-line">
+          <span><strong>${escapeHtml(acc.user || '')}</strong></span>
+          <span>${escapeHtml(acc.role || '')}</span>
+          ${acc.builtIn ? `<span>${acc.override ? 'Built-in + Override' : 'Built-in'}</span>` : '<span>Saved</span>'}
+        </div>
+        <div class="account-perms-line">${escapeHtml((acc.permissions || []).map(permissionLabel).join(', ') || '-')}</div>
+        <div class="account-actions">
+          <button class="ghost-btn" onclick="accEditByUser('${String(acc.user || '').replace(/'/g, "\\'")}')">Edit</button>
+          <button class="ghost-btn" onclick="accChangePassByUser('${String(acc.user || '').replace(/'/g, "\\'")}')">Password</button>
+          <button class="danger-btn" onclick="accDeleteByUser('${String(acc.user || '').replace(/'/g, "\\'")}')">${(translations[getLang()] && translations[getLang()].deleteAccount) || 'Delete'}</button>
+        </div>
+      </div>
+    `).join('');
+  };
+
+  window.saveAccessAccountFromAdmin = function(){
+    const user = (document.getElementById('accessAccountUser')?.value || '').trim();
+    const pass = (document.getElementById('accessAccountPass')?.value || '').trim();
+    const role = (document.getElementById('accessAccountRole')?.value || 'user').trim();
+
+    if (!user || !pass){
+      alert((translations[getLang()] && translations[getLang()].usernamePasswordRequired) || 'Please enter username and password.');
+      return;
+    }
+
+    const permissions = role === 'admin'
+      ? ((typeof defaultAdminPermissions === 'function') ? defaultAdminPermissions() : [...PERMISSIONS])
+      : Array.from(document.querySelectorAll('.perm-check:checked')).map(el => el.value);
+
+    if (role !== 'admin' && permissions.length === 0){
+      alert((translations[getLang()] && translations[getLang()].chooseOnePermission) || 'Please choose at least one permission for this staff account.');
+      return;
+    }
+
+    const list = editableAccounts();
+    const idx = list.findIndex(a => accNorm(a.user) === accNorm(user));
+    const payload = { user, pass, role, permissions };
+    if (idx >= 0) list[idx] = payload;
+    else list.push(payload);
+
+    saveEditableAccounts(list);
+
+    const userEl = document.getElementById('accessAccountUser');
+    const passEl = document.getElementById('accessAccountPass');
+    const roleEl = document.getElementById('accessAccountRole');
+    if (userEl) userEl.value = '';
+    if (passEl) passEl.value = '';
+    if (roleEl) roleEl.value = 'user';
+    if (typeof renderAccessPermissions === 'function') renderAccessPermissions([]);
+    setTimeout(() => restorePermissions([]), 20);
+
+    renderAccessAccountsList();
+    alert((translations[getLang()] && translations[getLang()].accountSaved) || 'Account saved.');
+  };
+
+  function bindAccountSystem(){
+    const saveBtn = document.getElementById('saveAccessAccountBtn');
+    if (saveBtn && !saveBtn.dataset.v3810){
+      const fresh = saveBtn.cloneNode(true);
+      saveBtn.parentNode.replaceChild(fresh, saveBtn);
+      fresh.dataset.v3810 = '1';
+      fresh.addEventListener('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        saveAccessAccountFromAdmin();
+      });
+    }
+    const roleEl = document.getElementById('accessAccountRole');
+    if (roleEl && !roleEl.dataset.v3810){
+      roleEl.dataset.v3810 = '1';
+      roleEl.addEventListener('change', function(){
+        if (typeof renderAccessPermissions === 'function') renderAccessPermissions([]);
+      });
+    }
+    renderAccessAccountsList();
+  }
+
+  window.addEventListener('load', function(){
+    setTimeout(bindAccountSystem, 120);
+    const adminBtn = document.getElementById('adminLoginBtn');
+    if (adminBtn && !adminBtn.dataset.v3810){
+      adminBtn.dataset.v3810 = '1';
+      adminBtn.addEventListener('click', function(){
+        setTimeout(bindAccountSystem, 220);
+      });
+    }
+  });
+})();
+
+/* === v38.11 access accounts admin-only CRUD hardening === */
+(function(){
+  function accNorm(v){ return String(v || '').trim().toLowerCase(); }
+  function allPerms(){
+    return (typeof defaultAdminPermissions === 'function') ? defaultAdminPermissions() : (Array.isArray(PERMISSIONS) ? [...PERMISSIONS] : []);
+  }
+  function builtIns(){
+    const base = (typeof ADMINS !== 'undefined' && Array.isArray(ADMINS)) ? ADMINS : [];
+    const perms = allPerms();
+    return base.map(a => ({ user:a.user, pass:a.pass, role:'admin', permissions:[...perms], builtIn:true, originalUser:a.user }));
+  }
+  function editableAccounts(){
+    try{
+      const raw = (typeof getAccessAccounts === 'function') ? getAccessAccounts() : [];
+      if (!Array.isArray(raw)) return [];
+      return raw.map(a => ({
+        user: String(a.user || a.username || '').trim(),
+        pass: String(a.pass || a.password || '').trim(),
+        role: String(a.role || 'user').trim() || 'user',
+        permissions: Array.isArray(a.permissions) ? [...a.permissions] : [],
+        originalUser: String(a.originalUser || a.user || a.username || '').trim(),
+        builtInOverride: !!a.builtInOverride
+      })).filter(a => a.user);
+    }catch(e){ return []; }
+  }
+  function saveEditableAccounts(list){
+    const safe = (Array.isArray(list) ? list : []).map(a => ({
+      user: String(a.user || '').trim(),
+      pass: String(a.pass || '').trim(),
+      role: String(a.role || 'user').trim() || 'user',
+      permissions: Array.isArray(a.permissions) ? [...a.permissions] : [],
+      originalUser: String(a.originalUser || a.user || '').trim(),
+      builtInOverride: !!a.builtInOverride
+    })).filter(a => a.user);
+    if (typeof setAccessAccounts === 'function') setAccessAccounts(safe);
+  }
+  function isAdminOnlySection(key){ return key === 'accountManager'; }
+  function combinedAccounts(){
+    const merged = builtIns();
+    editableAccounts().forEach(acc => {
+      const key = accNorm(acc.originalUser || acc.user);
+      const idx = merged.findIndex(item => accNorm(item.originalUser || item.user) === key || accNorm(item.user) === key);
+      if (idx >= 0){
+        merged[idx] = {
+          ...merged[idx],
+          ...acc,
+          builtIn:true,
+          builtInOverride:true,
+          originalUser: merged[idx].originalUser || acc.originalUser || acc.user
+        };
+      } else {
+        merged.push({ ...acc, builtIn:false, originalUser: acc.originalUser || acc.user });
+      }
+    });
+    return merged;
+  }
+  function getCurrentAccount(){ return window.__currentAccessAccount || null; }
+  function setCurrentAccount(account){ window.__currentAccessAccount = account || null; }
+  function currentIsAdmin(){ return (getCurrentAccount()?.role || '') === 'admin'; }
+  function canManageAccounts(){ return currentIsAdmin(); }
+  function clearAccessAccountForm(){
+    const userEl = document.getElementById('accessAccountUser');
+    const passEl = document.getElementById('accessAccountPass');
+    const roleEl = document.getElementById('accessAccountRole');
+    const saveBtn = document.getElementById('saveAccessAccountBtn');
+    if (userEl){ userEl.value = ''; delete userEl.dataset.originalUser; delete userEl.dataset.originalBuiltIn; }
+    if (passEl) passEl.value = '';
+    if (roleEl) roleEl.value = 'user';
+    if (saveBtn) saveBtn.textContent = (translations[getLang()] && translations[getLang()].saveAccessAccount) || saveBtn.textContent || 'Save';
+    if (typeof renderAccessPermissions === 'function') renderAccessPermissions([]);
+    setTimeout(function(){
+      document.querySelectorAll('.perm-check').forEach(cb => cb.checked = false);
+    }, 10);
+  }
+
+  window.getLoginAccount = function(user, pass){
+    const u = accNorm(user);
+    const p = String(pass || '').trim();
+    const extra = editableAccounts().find(a => accNorm(a.user) === u && String(a.pass || '').trim() === p);
+    if (extra) return { ...extra, permissions: extra.role === 'admin' ? allPerms() : extra.permissions };
+    const built = builtIns().find(a => accNorm(a.user) === u && String(a.pass || '').trim() === p);
+    if (built) return built;
+    return null;
+  };
+
+  window.applySectionPermissions = function(account){
+    const resolved = account || getCurrentAccount() || null;
+    const rawPerms = resolved?.role === 'admin' ? allPerms() : (Array.isArray(resolved?.permissions) ? resolved.permissions : []);
+    const perms = rawPerms.filter(key => !isAdminOnlySection(key) || resolved?.role === 'admin');
+    document.querySelectorAll('[data-section-key]').forEach(sec => {
+      const key = sec.dataset.sectionKey;
+      const show = perms.includes(key) && (!isAdminOnlySection(key) || resolved?.role === 'admin');
+      sec.classList.toggle('hidden', !show);
+      sec.style.display = show ? '' : 'none';
+    });
+  };
+
+  window.renderAccessPermissions = function(selected){
+    const wrap = document.getElementById('accessPermissionsWrap');
+    if (!wrap) return;
+    const role = (document.getElementById('accessAccountRole')?.value || 'user').trim();
+    if (role === 'admin'){
+      wrap.innerHTML = '<div class="muted-note">' + ((getLang()==='ar') ? 'المشرف يملك كل الصلاحيات بما فيها إدارة الحسابات.' : 'Admin gets full access, including account management.') + '</div>';
+      return;
+    }
+    const set = new Set(Array.isArray(selected) ? selected.filter(key => !isAdminOnlySection(key)) : []);
+    const html = allPerms().filter(key => !isAdminOnlySection(key)).map(function(key){
+      return '<label class="level-toggle admin-toggle-row"><input type="checkbox" class="perm-check" value="' + key + '" ' + (set.has(key) ? 'checked' : '') + '><span>' + escapeHtml(permissionLabel(key)) + '</span></label>';
+    }).join('');
+    wrap.innerHTML = html || '<div class="muted-note">' + (((translations[getLang()] || {}).noPermissionsAvailable) || 'No permissions available.') + '</div>';
+  };
+
+  window.accEditByUser = function(user){
+    if (!canManageAccounts()){
+      alert(getLang()==='ar' ? 'إدارة الحسابات متاحة للمشرف فقط.' : 'Only admins can manage accounts.');
+      return;
+    }
+    const acc = combinedAccounts().find(a => accNorm(a.user) === accNorm(user));
+    if (!acc) return;
+    const userEl = document.getElementById('accessAccountUser');
+    const passEl = document.getElementById('accessAccountPass');
+    const roleEl = document.getElementById('accessAccountRole');
+    const saveBtn = document.getElementById('saveAccessAccountBtn');
+    if (userEl){
+      userEl.value = acc.user || '';
+      userEl.dataset.originalUser = acc.originalUser || acc.user || '';
+      userEl.dataset.originalBuiltIn = acc.builtIn ? '1' : '0';
+    }
+    if (passEl) passEl.value = acc.pass || '';
+    if (roleEl) roleEl.value = acc.role || 'user';
+    if (saveBtn) saveBtn.textContent = getLang()==='ar' ? 'تحديث الحساب' : 'Update Account';
+    window.renderAccessPermissions(acc.role === 'admin' ? [] : (acc.permissions || []));
+    setTimeout(function(){
+      const set = new Set(acc.role === 'admin' ? [] : (acc.permissions || []));
+      document.querySelectorAll('.perm-check').forEach(cb => cb.checked = set.has(cb.value));
+    }, 10);
+  };
+
+  window.accDeleteByUser = function(user){
+    if (!canManageAccounts()){
+      alert(getLang()==='ar' ? 'إدارة الحسابات متاحة للمشرف فقط.' : 'Only admins can manage accounts.');
+      return;
+    }
+    const acc = combinedAccounts().find(a => accNorm(a.user) === accNorm(user));
+    if (!acc) return;
+    let list = editableAccounts();
+    if (acc.builtIn){
+      if (!confirm(getLang()==='ar' ? 'سيتم حذف التعديل فقط والرجوع إلى بيانات المشرف الأساسية. هل تريد المتابعة؟' : 'This removes only the override and restores the built-in admin. Continue?')) return;
+      list = list.filter(a => accNorm(a.originalUser || a.user) !== accNorm(acc.originalUser || acc.user));
+    } else {
+      if (!confirm(getLang()==='ar' ? 'هل تريد حذف هذا الحساب؟' : 'Delete this account?')) return;
+      list = list.filter(a => accNorm(a.user) !== accNorm(acc.user));
+    }
+    saveEditableAccounts(list);
+    clearAccessAccountForm();
+    window.renderAccessAccountsList();
+  };
+
+  window.accChangePassByUser = function(user){
+    if (!canManageAccounts()){
+      alert(getLang()==='ar' ? 'إدارة الحسابات متاحة للمشرف فقط.' : 'Only admins can manage accounts.');
+      return;
+    }
+    const acc = combinedAccounts().find(a => accNorm(a.user) === accNorm(user));
+    if (!acc) return;
+    const next = prompt(getLang()==='ar' ? 'أدخل كلمة المرور الجديدة' : 'New password:', acc.pass || '');
+    if (!next) return;
+    let list = editableAccounts();
+    if (acc.builtIn){
+      const idx = list.findIndex(a => accNorm(a.originalUser || a.user) === accNorm(acc.originalUser || acc.user));
+      const payload = {
+        user: acc.user,
+        pass: next,
+        role: 'admin',
+        permissions: allPerms(),
+        originalUser: acc.originalUser || acc.user,
+        builtInOverride: true
+      };
+      if (idx >= 0) list[idx] = payload; else list.push(payload);
+    } else {
+      const idx = list.findIndex(a => accNorm(a.user) === accNorm(acc.user));
+      if (idx < 0) return;
+      list[idx].pass = next;
+    }
+    saveEditableAccounts(list);
+    window.renderAccessAccountsList();
+    alert(getLang()==='ar' ? 'تم تحديث كلمة المرور.' : 'Password updated.');
+  };
+
+  window.renderAccessAccountsList = function(){
+    const box = document.getElementById('accessAccountsList');
+    if (!box) return;
+    if (!canManageAccounts()){
+      box.innerHTML = '<div class="stored-question"><h4>' + (getLang()==='ar' ? 'إدارة الحسابات متاحة للمشرف فقط.' : 'Account management is available to admins only.') + '</h4></div>';
+      return;
+    }
+    const list = combinedAccounts();
+    if (!list.length){
+      box.innerHTML = '<div class="stored-question"><h4>' + (((translations[getLang()] || {}).noExtraAccounts) || 'No accounts yet.') + '</h4></div>';
+      return;
+    }
+    box.innerHTML = list.map(function(acc){
+      const safeUserAttr = String(acc.user || '').replace(/'/g, "\\'");
+      const perms = acc.role === 'admin' ? (getLang()==='ar' ? 'كل الصلاحيات' : 'Full access') : ((acc.permissions || []).map(permissionLabel).join(', ') || '-');
+      const state = acc.builtIn ? (acc.builtInOverride ? (getLang()==='ar' ? 'مشرف أساسي + تعديل' : 'Built-in + Override') : (getLang()==='ar' ? 'مشرف أساسي' : 'Built-in')) : (getLang()==='ar' ? 'محفوظ' : 'Saved');
+      return '<div class="account-card account-realfix-card">'
+        + '<div class="meta-line"><span><strong>' + escapeHtml(acc.user || '') + '</strong></span><span>' + escapeHtml(acc.role || '') + '</span><span>' + escapeHtml(state) + '</span></div>'
+        + '<div class="account-perms-line">' + escapeHtml(perms) + '</div>'
+        + '<div class="account-actions">'
+        + '<button class="ghost-btn" onclick="accEditByUser(\'' + safeUserAttr + '\')">' + (getLang()==='ar' ? 'تعديل' : 'Edit') + '</button>'
+        + '<button class="ghost-btn" onclick="accChangePassByUser(\'' + safeUserAttr + '\')">' + (getLang()==='ar' ? 'كلمة المرور' : 'Password') + '</button>'
+        + '<button class="danger-btn" onclick="accDeleteByUser(\'' + safeUserAttr + '\')">' + ((((translations[getLang()] || {}).deleteAccount)) || 'Delete') + '</button>'
+        + '</div></div>';
+    }).join('');
+  };
+
+  window.saveAccessAccountFromAdmin = function(){
+    if (!canManageAccounts()){
+      alert(getLang()==='ar' ? 'إدارة الحسابات متاحة للمشرف فقط.' : 'Only admins can manage accounts.');
+      return;
+    }
+    const userEl = document.getElementById('accessAccountUser');
+    const passEl = document.getElementById('accessAccountPass');
+    const roleEl = document.getElementById('accessAccountRole');
+    const user = String(userEl?.value || '').trim();
+    const pass = String(passEl?.value || '').trim();
+    const role = String(roleEl?.value || 'user').trim() || 'user';
+    const originalUser = String(userEl?.dataset.originalUser || '').trim();
+    const originalBuiltIn = String(userEl?.dataset.originalBuiltIn || '') === '1';
+
+    if (!user || !pass){
+      alert((((translations[getLang()] || {}).usernamePasswordRequired)) || 'Please enter username and password.');
+      return;
+    }
+
+    const permissions = role === 'admin' ? allPerms() : Array.from(document.querySelectorAll('.perm-check:checked')).map(function(el){ return el.value; }).filter(key => !isAdminOnlySection(key));
+    if (role !== 'admin' && permissions.length === 0){
+      alert((((translations[getLang()] || {}).chooseOnePermission)) || 'Please choose at least one permission for this staff account.');
+      return;
+    }
+
+    const list = editableAccounts();
+    const finalPayload = {
+      user: user,
+      pass: pass,
+      role: role,
+      permissions: role === 'admin' ? allPerms() : permissions,
+      originalUser: originalBuiltIn ? (originalUser || user) : user,
+      builtInOverride: originalBuiltIn
+    };
+
+    if (originalBuiltIn){
+      const idx = list.findIndex(a => accNorm(a.originalUser || a.user) === accNorm(originalUser || user));
+      finalPayload.role = 'admin';
+      finalPayload.permissions = allPerms();
+      finalPayload.builtInOverride = true;
+      if (idx >= 0) list[idx] = finalPayload; else list.push(finalPayload);
+    } else {
+      const existingSameUser = list.findIndex(a => accNorm(a.user) === accNorm(user));
+      const existingOriginal = originalUser ? list.findIndex(a => accNorm(a.user) === accNorm(originalUser)) : -1;
+      const builtConflict = builtIns().find(a => accNorm(a.user) === accNorm(user));
+      if (builtConflict && !originalBuiltIn){
+        finalPayload.role = 'admin';
+        finalPayload.permissions = allPerms();
+        finalPayload.originalUser = builtConflict.user;
+        finalPayload.builtInOverride = true;
+        const idx = list.findIndex(a => accNorm(a.originalUser || a.user) === accNorm(builtConflict.user));
+        if (idx >= 0) list[idx] = finalPayload; else list.push(finalPayload);
+      } else if (existingOriginal >= 0 && originalUser && accNorm(originalUser) !== accNorm(user)){
+        list.splice(existingOriginal, 1, finalPayload);
+      } else if (existingSameUser >= 0) {
+        list.splice(existingSameUser, 1, finalPayload);
+      } else {
+        list.push(finalPayload);
+      }
+    }
+
+    saveEditableAccounts(list);
+    clearAccessAccountForm();
+    window.renderAccessAccountsList();
+    alert((((translations[getLang()] || {}).accountSaved)) || 'Account saved.');
+  };
+
+  function bindAccessAccountManager(){
+    const roleEl = document.getElementById('accessAccountRole');
+    const saveBtn = document.getElementById('saveAccessAccountBtn');
+    if (roleEl && !roleEl.dataset.v3811){
+      roleEl.dataset.v3811 = '1';
+      roleEl.addEventListener('change', function(){
+        window.renderAccessPermissions([]);
+      });
+    }
+    if (saveBtn && !saveBtn.dataset.v3811){
+      saveBtn.dataset.v3811 = '1';
+      saveBtn.addEventListener('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        window.saveAccessAccountFromAdmin();
+      }, true);
+    }
+    window.applySectionPermissions(getCurrentAccount());
+    window.renderAccessAccountsList();
+  }
+
+  window.addEventListener('load', function(){
+    const loginBtn = document.getElementById('adminLoginBtn');
+    if (loginBtn && !loginBtn.dataset.v3811capture){
+      loginBtn.dataset.v3811capture = '1';
+      loginBtn.addEventListener('click', function(){
+        const account = window.getLoginAccount(document.getElementById('adminUser')?.value || '', document.getElementById('adminPass')?.value || '');
+        if (account){
+          setCurrentAccount(account);
+          setTimeout(function(){
+            window.applySectionPermissions(account);
+            bindAccessAccountManager();
+          }, 50);
+        }
+      }, true);
+    }
+    setTimeout(bindAccessAccountManager, 150);
+  });
+})();
+
+
+/* === v38.12 pro access account manager === */
+(function(){
+  const ACCOUNT_SESSION_KEY = 'kgEnglishAccessSessionV1';
+  const ACCOUNT_STATUS_AUTO_CLEAR_MS = 5000;
+  const accountSectionKey = 'accountManager';
+
+  function adminPageReady(){
+    return typeof document !== 'undefined' && document.body && document.body.dataset && document.body.dataset.page === 'admin';
+  }
+  function normUser(value){ return String(value || '').trim().toLowerCase(); }
+  function allPerms(){ return Array.isArray(PERMISSIONS) ? [...PERMISSIONS] : ['dashboard','levelVisibility','timerSettings','quizAccess','teacherTest','bulkQuestions','questionBank','classManager','accountManager']; }
+  function nonAdminPerms(){ return allPerms().filter(key => key !== accountSectionKey); }
+  function isAdminOnlyPermission(key){ return key === accountSectionKey; }
+  function statusEl(){ return document.getElementById('accessAccountsStatus'); }
+  function showAccountStatus(message, state){
+    const el = statusEl();
+    if (!el) return;
+    el.textContent = String(message || '').trim();
+    if (message){
+      el.dataset.state = state || 'info';
+      if (showAccountStatus._timer) clearTimeout(showAccountStatus._timer);
+      showAccountStatus._timer = setTimeout(function(){
+        if (el.textContent === message) {
+          el.textContent = '';
+          delete el.dataset.state;
+        }
+      }, ACCOUNT_STATUS_AUTO_CLEAR_MS);
+    } else {
+      delete el.dataset.state;
+    }
+  }
+
+  function builtInAdmins(){
+    const base = (typeof ADMINS !== 'undefined' && Array.isArray(ADMINS)) ? ADMINS : [];
+    return base.map(function(item){
+      return {
+        user: String(item.user || '').trim(),
+        pass: String(item.pass || '').trim(),
+        role: 'admin',
+        permissions: allPerms(),
+        builtIn: true,
+        originalUser: String(item.user || '').trim(),
+        builtInOverride: false
+      };
+    }).filter(function(item){ return !!item.user; });
+  }
+
+  function sanitizePermissions(role, permissions){
+    if (role === 'admin') return allPerms();
+    const allowed = new Set(nonAdminPerms());
+    return Array.from(new Set((Array.isArray(permissions) ? permissions : []).filter(function(key){ return allowed.has(key); })));
+  }
+
+  function sanitizeAccount(raw){
+    if (!raw) return null;
+    const user = String(raw.user || raw.username || '').trim();
+    const pass = String(raw.pass || raw.password || '').trim();
+    let role = String(raw.role || 'user').trim().toLowerCase();
+    if (role !== 'admin') role = 'user';
+    if (!user || !pass) return null;
+    const originalUser = String(raw.originalUser || user).trim();
+    const sanitized = {
+      user: user,
+      pass: pass,
+      role: role,
+      permissions: sanitizePermissions(role, raw.permissions),
+      originalUser: originalUser,
+      builtInOverride: !!raw.builtInOverride
+    };
+    if (sanitized.role === 'admin') sanitized.permissions = allPerms();
+    return sanitized;
+  }
+
+  const localStorageAdapter = {
+    mode: 'local-storage',
+    listAccounts: function(){
+      try{
+        const raw = (typeof getAccessAccounts === 'function') ? getAccessAccounts() : [];
+        return Array.isArray(raw) ? raw.map(sanitizeAccount).filter(Boolean) : [];
+      }catch(err){
+        console.error('Access account read failed', err);
+        return [];
+      }
+    },
+    saveAccounts: function(accounts){
+      const safe = Array.isArray(accounts) ? accounts.map(sanitizeAccount).filter(Boolean) : [];
+      if (typeof setAccessAccounts === 'function') setAccessAccounts(safe);
+      return safe;
+    }
+  };
+
+  function getAccountAdapter(){
+    const external = window.KGAccessAccountsAdapter;
+    if (external && typeof external.listAccounts === 'function' && typeof external.saveAccounts === 'function') return external;
+    return localStorageAdapter;
+  }
+  window.KGAccessAccountsAdapter = window.KGAccessAccountsAdapter || localStorageAdapter;
+
+  function loadEditableAccounts(){
+    return getAccountAdapter().listAccounts().map(sanitizeAccount).filter(Boolean);
+  }
+  function saveEditableAccountsPro(list){
+    return getAccountAdapter().saveAccounts((Array.isArray(list) ? list : []).map(sanitizeAccount).filter(Boolean));
+  }
+
+  function mergedAccounts(){
+    const map = new Map();
+    builtInAdmins().forEach(function(admin){
+      map.set(normUser(admin.originalUser || admin.user), { ...admin, builtIn: true, builtInOverride: false });
+    });
+    loadEditableAccounts().forEach(function(account){
+      const key = normUser(account.originalUser || account.user);
+      const builtIn = map.get(key);
+      if (builtIn){
+        map.set(key, {
+          ...builtIn,
+          ...account,
+          role: 'admin',
+          permissions: allPerms(),
+          builtIn: true,
+          builtInOverride: true,
+          originalUser: builtIn.originalUser || builtIn.user
+        });
+      } else {
+        map.set(normUser(account.user), { ...account, builtIn: false, builtInOverride: false, originalUser: account.user });
+      }
+    });
+    return Array.from(map.values()).sort(function(a,b){ return String(a.user || '').localeCompare(String(b.user || '')); });
+  }
+
+  function findAccountByUser(user){
+    return mergedAccounts().find(function(account){ return normUser(account.user) === normUser(user); }) || null;
+  }
+
+  function persistSession(account){
+    window.__currentAccessAccount = account || null;
+    try{
+      if (account) sessionStorage.setItem(ACCOUNT_SESSION_KEY, JSON.stringify({ user: account.user, originalUser: account.originalUser || account.user }));
+      else sessionStorage.removeItem(ACCOUNT_SESSION_KEY);
+    }catch(err){}
+  }
+  function restoreSession(){
+    try{
+      const raw = sessionStorage.getItem(ACCOUNT_SESSION_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (!parsed) return null;
+      const target = parsed.originalUser || parsed.user;
+      return mergedAccounts().find(function(account){
+        return normUser(account.originalUser || account.user) === normUser(target) || normUser(account.user) === normUser(parsed.user);
+      }) || null;
+    }catch(err){
+      return null;
+    }
+  }
+  function currentAccount(){ return window.__currentAccessAccount || null; }
+  function currentIsAdmin(){ return (currentAccount() && currentAccount().role === 'admin'); }
+
+  function permissionLabelSafe(key){
+    try{ return typeof permissionLabel === 'function' ? permissionLabel(key) : key; }
+    catch(err){ return key; }
+  }
+
+  window.getLoginAccount = function(user, pass){
+    const lookupUser = normUser(user);
+    const lookupPass = String(pass || '').trim();
+    if (!lookupUser || !lookupPass) return null;
+    return mergedAccounts().find(function(account){
+      return normUser(account.user) === lookupUser && String(account.pass || '').trim() === lookupPass;
+    }) || null;
+  };
+
+  window.applySectionPermissions = function(account){
+    const resolved = account || currentAccount() || null;
+    const perms = resolved && resolved.role === 'admin'
+      ? allPerms()
+      : sanitizePermissions('user', resolved && resolved.permissions ? resolved.permissions : []);
+    document.querySelectorAll('[data-section-key]').forEach(function(section){
+      const key = section.dataset.sectionKey;
+      const canShow = perms.includes(key) && (!isAdminOnlyPermission(key) || (resolved && resolved.role === 'admin'));
+      section.classList.toggle('hidden', !canShow);
+      section.style.display = canShow ? '' : 'none';
+    });
+  };
+
+  window.renderAccessPermissions = function(selected){
+    const wrap = document.getElementById('accessPermissionsWrap');
+    if (!wrap) return;
+    const role = String(document.getElementById('accessAccountRole')?.value || 'user').trim().toLowerCase();
+    if (role === 'admin'){
+      wrap.innerHTML = '<div class="muted-note">' + (getLang() === 'ar' ? 'المشرف يملك كل الصلاحيات بما فيها إدارة الحسابات.' : 'Admin gets full access, including account management.') + '</div>';
+      return;
+    }
+    const selectedSet = new Set(Array.isArray(selected) ? selected : []);
+    const items = nonAdminPerms().map(function(key){
+      return '<label class="level-toggle admin-toggle-row"><input type="checkbox" class="perm-check" value="' + key + '" ' + (selectedSet.has(key) ? 'checked' : '') + '><span>' + escapeHtml(permissionLabelSafe(key)) + '</span></label>';
+    }).join('');
+    wrap.innerHTML = items || '<div class="muted-note">' + (((translations[getLang()] || {}).noPermissionsAvailable) || 'No permissions available.') + '</div>';
+  };
+
+  function clearAccessAccountFormPro(){
+    const userEl = document.getElementById('accessAccountUser');
+    const passEl = document.getElementById('accessAccountPass');
+    const roleEl = document.getElementById('accessAccountRole');
+    const saveBtn = document.getElementById('saveAccessAccountBtn');
+    if (userEl){
+      userEl.value = '';
+      userEl.dataset.originalUser = '';
+      userEl.dataset.originalBuiltIn = '';
+    }
+    if (passEl) passEl.value = '';
+    if (roleEl) roleEl.value = 'user';
+    if (saveBtn) saveBtn.textContent = ((translations[getLang()] || {}).saveAccessAccount) || 'Save Account';
+    window.renderAccessPermissions([]);
+  }
+  window.clearAccessAccountForm = clearAccessAccountFormPro;
+
+  function normalizeEditableListForSave(list){
+    const seen = new Set();
+    return (Array.isArray(list) ? list : []).map(sanitizeAccount).filter(function(account){
+      if (!account) return false;
+      const key = normUser(account.originalUser || account.user);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }
+
+  function upsertEditableAccount(list, payload, options){
+    const next = Array.isArray(list) ? list.slice() : [];
+    const originalLookup = normUser((options && options.originalUser) || payload.originalUser || payload.user);
+    const userLookup = normUser(payload.user);
+    let replaced = false;
+    for (let i = 0; i < next.length; i += 1){
+      const item = sanitizeAccount(next[i]);
+      if (!item) continue;
+      const itemOriginal = normUser(item.originalUser || item.user);
+      const itemUser = normUser(item.user);
+      if (itemOriginal === originalLookup || itemUser === originalLookup || itemUser === userLookup){
+        next[i] = payload;
+        replaced = true;
+        break;
+      }
+    }
+    if (!replaced) next.push(payload);
+    return normalizeEditableListForSave(next);
+  }
+
+  window.accEditByUser = function(user){
+    if (!currentIsAdmin()){
+      showAccountStatus(getLang()==='ar' ? 'إدارة الحسابات متاحة للمشرف فقط.' : 'Only admins can manage accounts.', 'error');
+      return;
+    }
+    const account = findAccountByUser(user);
+    if (!account) return;
+    const userEl = document.getElementById('accessAccountUser');
+    const passEl = document.getElementById('accessAccountPass');
+    const roleEl = document.getElementById('accessAccountRole');
+    const saveBtn = document.getElementById('saveAccessAccountBtn');
+    if (userEl){
+      userEl.value = account.user || '';
+      userEl.dataset.originalUser = account.originalUser || account.user || '';
+      userEl.dataset.originalBuiltIn = account.builtIn ? '1' : '';
+    }
+    if (passEl) passEl.value = account.pass || '';
+    if (roleEl) roleEl.value = account.role || 'user';
+    if (saveBtn) saveBtn.textContent = getLang()==='ar' ? 'تحديث الحساب' : 'Update Account';
+    window.renderAccessPermissions(account.role === 'admin' ? [] : (account.permissions || []));
+    showAccountStatus(getLang()==='ar' ? 'يمكنك الآن تعديل الحساب ثم الضغط على حفظ.' : 'You can now modify the account and save.', 'info');
+  };
+
+  window.accDeleteByUser = function(user){
+    if (!currentIsAdmin()){
+      showAccountStatus(getLang()==='ar' ? 'إدارة الحسابات متاحة للمشرف فقط.' : 'Only admins can manage accounts.', 'error');
+      return;
+    }
+    const account = findAccountByUser(user);
+    if (!account) return;
+    let list = loadEditableAccounts();
+    if (account.builtIn){
+      if (!confirm(getLang()==='ar' ? 'سيتم حذف التعديل فقط والرجوع إلى بيانات المشرف الأساسية. هل تريد المتابعة؟' : 'This removes only the override and restores the built-in admin. Continue?')) return;
+      list = list.filter(function(item){ return normUser(item.originalUser || item.user) !== normUser(account.originalUser || account.user); });
+    } else {
+      if (!confirm(getLang()==='ar' ? 'هل تريد حذف هذا الحساب؟' : 'Delete this account?')) return;
+      list = list.filter(function(item){ return normUser(item.user) !== normUser(account.user); });
+    }
+    saveEditableAccountsPro(list);
+    clearAccessAccountFormPro();
+    window.renderAccessAccountsList();
+    showAccountStatus(getLang()==='ar' ? 'تم حذف الحساب بنجاح.' : 'Account deleted successfully.', 'success');
+  };
+
+  window.accChangePassByUser = function(user){
+    if (!currentIsAdmin()){
+      showAccountStatus(getLang()==='ar' ? 'إدارة الحسابات متاحة للمشرف فقط.' : 'Only admins can manage accounts.', 'error');
+      return;
+    }
+    const account = findAccountByUser(user);
+    if (!account) return;
+    const nextPass = prompt(getLang()==='ar' ? 'أدخل كلمة المرور الجديدة' : 'New password:', account.pass || '');
+    if (!nextPass) return;
+    const payload = sanitizeAccount({
+      user: account.user,
+      pass: nextPass,
+      role: account.role,
+      permissions: account.role === 'admin' ? allPerms() : account.permissions,
+      originalUser: account.originalUser || account.user,
+      builtInOverride: !!account.builtIn
+    });
+    let list = loadEditableAccounts();
+    list = upsertEditableAccount(list, payload, { originalUser: account.originalUser || account.user });
+    saveEditableAccountsPro(list);
+    window.renderAccessAccountsList();
+    showAccountStatus(getLang()==='ar' ? 'تم تحديث كلمة المرور بنجاح.' : 'Password updated successfully.', 'success');
+  };
+
+  window.renderAccessAccountsList = function(){
+    const box = document.getElementById('accessAccountsList');
+    if (!box) return;
+    if (!currentIsAdmin()){
+      box.innerHTML = '<div class="stored-question"><h4>' + (getLang()==='ar' ? 'إدارة الحسابات متاحة للمشرف فقط.' : 'Account management is available to admins only.') + '</h4></div>';
+      return;
+    }
+    const accounts = mergedAccounts();
+    if (!accounts.length){
+      box.innerHTML = '<div class="stored-question"><h4>' + ((((translations[getLang()] || {}).noExtraAccounts)) || 'No accounts yet.') + '</h4></div>';
+      return;
+    }
+    box.innerHTML = accounts.map(function(account){
+      const safeUser = String(account.user || '').replace(/'/g, "\\'");
+      const roleText = account.role === 'admin' ? (((translations[getLang()] || {}).adminRole) || 'Admin') : (((translations[getLang()] || {}).staffRole) || 'Staff');
+      const stateText = account.builtIn
+        ? (account.builtInOverride ? (getLang()==='ar' ? 'مشرف أساسي + تعديل' : 'Built-in + Override') : (getLang()==='ar' ? 'مشرف أساسي' : 'Built-in'))
+        : (getLang()==='ar' ? 'حساب مخصص' : 'Custom account');
+      const perms = account.role === 'admin'
+        ? (getLang()==='ar' ? 'كل الصلاحيات' : 'Full access')
+        : ((account.permissions || []).map(permissionLabelSafe).join(', ') || '-');
+      return '<div class="account-card account-realfix-card account-pro-card">'
+        + '<div class="account-meta-top"><strong class="account-name">' + escapeHtml(account.user || '') + '</strong><div class="account-badges"><span class="role-badge">' + escapeHtml(roleText) + '</span> <span class="state-badge">' + escapeHtml(stateText) + '</span></div></div>'
+        + '<div class="account-perms-line">' + escapeHtml(perms) + '</div>'
+        + '<div class="account-actions">'
+        + '<button class="ghost-btn" type="button" onclick="accEditByUser(\'' + safeUser + '\')">' + (getLang()==='ar' ? 'تعديل' : 'Edit') + '</button>'
+        + '<button class="ghost-btn" type="button" onclick="accChangePassByUser(\'' + safeUser + '\')">' + (getLang()==='ar' ? 'كلمة المرور' : 'Password') + '</button>'
+        + '<button class="danger-btn" type="button" onclick="accDeleteByUser(\'' + safeUser + '\')">' + ((((translations[getLang()] || {}).deleteAccount)) || 'Delete') + '</button>'
+        + '</div></div>';
+    }).join('');
+  };
+
+  window.saveAccessAccountFromAdmin = function(){
+    if (!currentIsAdmin()){
+      showAccountStatus(getLang()==='ar' ? 'إدارة الحسابات متاحة للمشرف فقط.' : 'Only admins can manage accounts.', 'error');
+      return false;
+    }
+    const userEl = document.getElementById('accessAccountUser');
+    const passEl = document.getElementById('accessAccountPass');
+    const roleEl = document.getElementById('accessAccountRole');
+    const user = String(userEl?.value || '').trim();
+    const pass = String(passEl?.value || '').trim();
+    const role = String(roleEl?.value || 'user').trim().toLowerCase() === 'admin' ? 'admin' : 'user';
+    const originalUser = String(userEl?.dataset.originalUser || '').trim();
+    const originalBuiltIn = String(userEl?.dataset.originalBuiltIn || '') === '1';
+
+    if (!user || !pass){
+      showAccountStatus((((translations[getLang()] || {}).usernamePasswordRequired)) || 'Please enter username and password.', 'error');
+      return false;
+    }
+
+    const builtInConflict = builtInAdmins().find(function(account){ return normUser(account.user) === normUser(user); }) || null;
+    let permissions = role === 'admin'
+      ? allPerms()
+      : Array.from(document.querySelectorAll('.perm-check:checked')).map(function(el){ return el.value; });
+    permissions = sanitizePermissions(role, permissions);
+    if (role !== 'admin' && permissions.length === 0){
+      showAccountStatus((((translations[getLang()] || {}).chooseOnePermission)) || 'Please choose at least one permission for this staff account.', 'error');
+      return false;
+    }
+
+    let payload = sanitizeAccount({
+      user: user,
+      pass: pass,
+      role: role,
+      permissions: permissions,
+      originalUser: originalBuiltIn ? (originalUser || user) : user,
+      builtInOverride: originalBuiltIn
+    });
+
+    let list = loadEditableAccounts();
+    if (originalBuiltIn || builtInConflict){
+      const builtInBase = builtInConflict || builtInAdmins().find(function(account){ return normUser(account.originalUser || account.user) === normUser(originalUser || user); });
+      payload = sanitizeAccount({
+        user: user,
+        pass: pass,
+        role: 'admin',
+        permissions: allPerms(),
+        originalUser: (builtInBase && (builtInBase.originalUser || builtInBase.user)) || originalUser || user,
+        builtInOverride: true
+      });
+      list = upsertEditableAccount(list, payload, { originalUser: payload.originalUser });
+    } else {
+      payload = sanitizeAccount({
+        user: user,
+        pass: pass,
+        role: role,
+        permissions: permissions,
+        originalUser: originalUser || user,
+        builtInOverride: false
+      });
+      list = upsertEditableAccount(list, payload, { originalUser: originalUser || user });
+    }
+
+    saveEditableAccountsPro(list);
+    clearAccessAccountFormPro();
+    window.renderAccessAccountsList();
+    showAccountStatus((((translations[getLang()] || {}).accountSaved)) || 'Account saved.', 'success');
+    return true;
+  };
+
+  function openAdminPanel(account){
+    const loginCard = document.getElementById('adminLoginCard');
+    const panel = document.getElementById('adminPanel');
+    if (!account || !loginCard || !panel) return;
+    persistSession(account);
+    loginCard.classList.add('hidden');
+    panel.classList.remove('hidden');
+    window.applySectionPermissions(account);
+    if (typeof populateDashboardDateFilter === 'function') populateDashboardDateFilter();
+    if (typeof renderAdminDashboard === 'function') renderAdminDashboard();
+    if (typeof renderLevelVisibilityEditor === 'function') renderLevelVisibilityEditor();
+    if (typeof renderTimerSettingsEditor === 'function') renderTimerSettingsEditor();
+    if (typeof renderQuizAccessEditor === 'function') renderQuizAccessEditor();
+    if (typeof renderTeacherTestEditor === 'function') renderTeacherTestEditor();
+    if (typeof renderTeacherQuestionPicker === 'function') renderTeacherQuestionPicker();
+    if (typeof wireCollapseButtons === 'function') wireCollapseButtons();
+    if (typeof wireQuestionFilterButtons === 'function') wireQuestionFilterButtons();
+    window.renderAccessPermissions([]);
+    window.renderAccessAccountsList();
+  }
+
+  function handleLoginClick(event){
+    event.preventDefault();
+    const user = document.getElementById('adminUser')?.value || '';
+    const pass = document.getElementById('adminPass')?.value || '';
+    const account = window.getLoginAccount(user, pass);
+    if (!account){
+      alert(getLang()==='ar' ? 'اسم المشرف أو كلمة المرور غير صحيحة.' : 'Wrong admin name or password.');
+      return;
+    }
+    openAdminPanel(account);
+  }
+
+  function replaceNodeWithClone(id){
+    const node = document.getElementById(id);
+    if (!node || !node.parentNode) return node;
+    const clone = node.cloneNode(true);
+    node.parentNode.replaceChild(clone, node);
+    return clone;
+  }
+
+  function bindProAccountManager(){
+    if (!adminPageReady()) return;
+
+    const loginBtn = replaceNodeWithClone('adminLoginBtn');
+    if (loginBtn) loginBtn.addEventListener('click', handleLoginClick);
+
+    const saveBtn = replaceNodeWithClone('saveAccessAccountBtn');
+    if (saveBtn) saveBtn.addEventListener('click', function(event){
+      event.preventDefault();
+      window.saveAccessAccountFromAdmin();
+    });
+
+    const clearBtn = replaceNodeWithClone('clearAccessAccountBtn');
+    if (clearBtn) clearBtn.addEventListener('click', function(event){
+      event.preventDefault();
+      clearAccessAccountFormPro();
+      showAccountStatus(getLang()==='ar' ? 'تم مسح النموذج.' : 'Form cleared.', 'info');
+    });
+
+    const roleEl = replaceNodeWithClone('accessAccountRole');
+    if (roleEl) roleEl.addEventListener('change', function(){
+      window.renderAccessPermissions(Array.from(document.querySelectorAll('.perm-check:checked')).map(function(el){ return el.value; }));
+    });
+
+    const restored = restoreSession();
+    if (restored) openAdminPanel(restored);
+    else {
+      window.applySectionPermissions(currentAccount());
+      window.renderAccessPermissions([]);
+      window.renderAccessAccountsList();
+    }
+  }
+
+  if (adminPageReady()) {
+    setTimeout(bindProAccountManager, 0);
+    window.addEventListener('load', bindProAccountManager);
+  }
+})();
+
+/* === v38.13 access account manager fallback fix === */
+(function(){
+  if (typeof document === 'undefined' || !document.body || document.body.dataset.page !== 'admin') return;
+  const SESSION_KEY = 'kgEnglishAccessSessionV1';
+
+  function adminPanelVisible(){
+    const panel = document.getElementById('adminPanel');
+    return !!(panel && !panel.classList.contains('hidden'));
+  }
+  function persistAccount(account){
+    if (!account) return null;
+    window.__currentAccessAccount = account;
+    try {
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ user: account.user, originalUser: account.originalUser || account.user }));
+    } catch(err) {}
+    return account;
+  }
   function readSession(){
     try {
       const raw = sessionStorage.getItem(SESSION_KEY);
@@ -1176,6 +2410,25 @@ function isDuplicateQuestionEnhanced(text, list){
     } catch(err) {
       return null;
     }
+  }
+  function builtInLookup(user, pass){
+    const u = String(user || '').trim().toLowerCase();
+    const p = String(pass || '').trim();
+    if (!u || !p || typeof ADMINS === 'undefined' || !Array.isArray(ADMINS)) return null;
+    const match = ADMINS.find(function(item){
+      return String(item.user || '').trim().toLowerCase() === u && String(item.pass || '').trim() === p;
+    });
+    if (!match) return null;
+    const perms = Array.isArray(window.PERMISSIONS) ? window.PERMISSIONS.slice() : ['dashboard','levelVisibility','timerSettings','quizAccess','teacherTest','bulkQuestions','questionBank','classManager','accountManager'];
+    return {
+      user: String(match.user || '').trim(),
+      pass: String(match.pass || '').trim(),
+      role: 'admin',
+      permissions: perms,
+      originalUser: String(match.user || '').trim(),
+      builtIn: true,
+      builtInOverride: false
+    };
   }
   function resolveCurrentAccount(){
     const current = window.__currentAccessAccount;
@@ -1187,6 +2440,7 @@ function isDuplicateQuestionEnhanced(text, list){
     if (loginUser && loginPass && typeof window.getLoginAccount === 'function') {
       try { candidate = window.getLoginAccount(loginUser, loginPass); } catch(err) {}
     }
+    if (!candidate && loginUser && loginPass) candidate = builtInLookup(loginUser, loginPass);
 
     if (!candidate) {
       const stored = readSession();

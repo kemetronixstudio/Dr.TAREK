@@ -1,15 +1,21 @@
 const backend = require('../../lib/student-cloud-backend');
-const { parseJsonBody, sendJson } = require('../../lib/http-utils');
 
 module.exports = async function handler(req, res) {
-  if (req.method !== 'POST') return sendJson(res, 405, { ok: false, error: 'Method not allowed' });
+  if (req.method !== 'POST') {
+    res.statusCode = 405;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ ok: false, error: 'Method not allowed' }));
+    return;
+  }
   try {
-    const body = parseJsonBody(req);
-    const result = await backend.startQuizSession(body);
-    return sendJson(res, 200, result);
+    const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
+    const result = await backend.getStudentQuiz(body.identity || body, body.quizKey || body.quizId || body.quiz);
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ ok: true, progress: result.progress, result: result.result, quizKey: result.quizKey, identity: result.identity }));
   } catch (error) {
-    const payload = { ok: false, error: error.message || 'Request failed' };
-    if (error.code) payload.code = error.code;
-    return sendJson(res, error.status || 500, payload);
+    res.statusCode = error.status || 500;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ ok: false, error: error.message || 'Request failed' }));
   }
 };
