@@ -791,6 +791,8 @@ function adaptiveQuestionSet(pool, count, studentName='', grade=''){
   return result;
 }
 function initQuiz(){
+  if (window.__quizInitOnceKey === String(document.body?.dataset?.grade || "") + "|" + String(location.search||"")) return;
+  window.__quizInitOnceKey = String(document.body?.dataset?.grade || "") + "|" + String(location.search||"");
   const grade = document.body.dataset.grade; if (!grade) return; const setupCard = $('#setupCard'); const studentNameInput = $('#studentName'); const goBtn = $('#goToLevelBtn'); const levelChooser = $('#levelChooser'); applyLevelVisibilityUI(grade); const levelBtns = [...levelChooser.querySelectorAll('.level-btn[data-count]')].filter(btn => !btn.classList.contains('hidden'));
   const quizSection = $('#quizSection'); const studentPreview = $('#studentPreview'); const quizLevelLabel = $('#quizLevelLabel'); const questionProgressEl = $('#questionProgress'); const timerValueEl = $('#timerValue'); const scoreValueEl = $('#scoreValue'); const skillBadge = $('#skillBadge'); const typeBadge = $('#questionTypeBadge'); const questionText = $('#questionText'); const questionImageWrap = $('#questionImageWrap'); const questionImage = $('#questionImage'); const optionsWrap = $('#optionsWrap'); const nextBtn = $('#nextBtn'); const autoNext = $('#autoNextToggle'); const voiceBtn = $('#voiceBtn'); const testLaunchWrap = $('#testLaunchWrap'); const startAssignedTestBtn = $('#startAssignedTestBtn');
   let selectedCount = 10, selectedLevelLabel = translations[getLang()].level1, studentName = '', questions = [], currentIndex = 0, score = 0, timer = 15, interval = null, autoAdvanceTimeout = null, answered = false, skillStats = {}, missedQuestions=[], adaptiveIndex = 0, sessionUsed = new Set(), activeTestConfig = null, quizDeadlineTs = 0;
@@ -1116,7 +1118,7 @@ function registerPwa(){
 }
 window.addEventListener('pagehide', ()=>{ try { if ('speechSynthesis' in window) speechSynthesis.cancel(); } catch(e){} });
 document.addEventListener('visibilitychange', ()=>{ if (document.hidden) { try { if ('speechSynthesis' in window) speechSynthesis.cancel(); } catch(e){} } });
-initThemeButtons(); initLangButtons(); applyTranslations(); renderHomeProgress(); initQuiz(); window.initQuiz = initQuiz; renderCertificate(); initAdmin(); registerPwa();
+window.initQuiz = initQuiz; initThemeButtons(); initLangButtons(); applyTranslations(); renderHomeProgress(); initQuiz(); renderCertificate(); initAdmin(); registerPwa();
 
 
 window.addEventListener('error', (event) => { try { console.error('App error', event.error || event.message); } catch(e){} });

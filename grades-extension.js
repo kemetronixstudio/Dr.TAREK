@@ -31,7 +31,6 @@
     const grade = String(params.get('grade') || document.body.dataset.grade || '').trim().toLowerCase();
     const meta = gradeMetaFor(grade);
     if (!meta) return;
-    const wasGrade = String(document.body.dataset.grade || '').trim().toLowerCase();
     document.body.dataset.grade = grade;
     const badge = document.querySelector('.badge-pill');
     const title = document.querySelector('h1');
@@ -40,9 +39,7 @@
     if (title) title.textContent = meta.title;
     if (subtitle) subtitle.textContent = meta.desc;
     document.title = meta.title;
-    if (grade !== wasGrade && typeof window.initQuiz === 'function') {
-      try { window.initQuiz(); } catch (error) { console.warn('initQuiz retry failed', error); }
-    }
+    try { if (typeof window.initQuiz === 'function') window.initQuiz(); } catch (e) {}
   }
 
 
