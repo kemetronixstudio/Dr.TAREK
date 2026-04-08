@@ -1,5 +1,8 @@
+
 (function(){
-  function lang(){ return (typeof getLang === 'function' ? getLang() : (localStorage.getItem('kgQuizLang') || 'en')) === 'ar' ? 'ar' : 'en'; }
+  function lang(){
+    return ((typeof window.getLang === 'function' ? window.getLang() : (localStorage.getItem('kgQuizLang') || 'en')) === 'ar') ? 'ar' : 'en';
+  }
   function t(key, fallback){
     const dict = (window.translations && window.translations[lang()]) || {};
     return dict[key] || fallback || key;
@@ -7,7 +10,7 @@
   function normGrade(value){
     const v = String(value || '').trim().toLowerCase();
     if (!v || v === 'all') return 'all';
-    return v.replace(/\s+/g,'').replace(/^grade(\d)$/,'grade$1').replace(/^grade-(\d)$/,'grade$1');
+    return v.replace(/\s+/g,'').replace(/^grade-(\d)$/,'grade$1').replace(/^grade(\d)$/,'grade$1');
   }
   function prettyGrade(key){
     const k = normGrade(key);
@@ -15,25 +18,26 @@
     if (k === 'kg2') return 'KG2';
     const m = k.match(/^grade(\d)$/);
     if (m) return 'Grade ' + m[1];
-    return key;
+    return String(key || '').trim() || key;
   }
-
-  function allManagedKeys(){
-    return allPasswordKeys();
-  }
-  function prettyLabel(key){
-    return prettyGrade(key);
-  }
-  function allPasswordKeys(){
-    const keys = ['kg1','kg2','grade1','grade2','grade3','grade4','grade5','grade6'];
+  function customClassKeys(){
     try {
-      const classes = typeof window.getCustomClasses === 'function' ? (window.getCustomClasses() || []) : [];
-      classes.forEach(cls => { if (cls && cls.key) keys.push(String(cls.key).trim().toLowerCase()); });
+      if (typeof window.getCustomClasses === 'function') {
+        return (window.getCustomClasses() || []).map(function(cls){ return cls && cls.key ? String(cls.key).trim().toLowerCase() : ''; }).filter(Boolean);
+      }
     } catch (e) {}
-    return Array.from(new Set(keys.filter(Boolean)));
+    return [];
   }
-  function ensureQuizTranslations(){
-    if (!window.translations) return;
+  function allGradeKeys(){
+    return Array.from(new Set(['kg1','kg2','grade1','grade2','grade3','grade4','grade5','grade6'].concat(customClassKeys())));
+  }
+  function escapeHtml(v){
+    return String(v == null ? '' : v).replace(/[&<>"']/g, function(ch){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[ch];
+    });
+  }
+  function ensureTranslations(){
+    if (!window.translations) window.translations = { en:{}, ar:{} };
     const en = window.translations.en || (window.translations.en = {});
     const ar = window.translations.ar || (window.translations.ar = {});
     Object.assign(en, {
@@ -42,7 +46,7 @@
       outsideStudent: 'I am not in your class / course / school',
       studentIdentityNote: 'Name is required. Student ID is optional. Class is required unless the outside-student option is checked.',
       classRequired: 'Please enter the class or course, or check the outside-student option.',
-      dynamicPasswordInfo: 'Set a password for any grade or class. New built-in grades and custom classes appear here automatically. Students will be asked for it before entering the quiz. Leave blank to disable password.',
+      quizPasswordsSaved: 'Quiz password settings saved.',
       noQuestionsFound: 'No questions found.',
       noQuestionsYet: 'No questions yet.',
       addQuestionsAbove: 'Add questions from the editor above.'
@@ -53,336 +57,258 @@
       outsideStudent: 'أنا لست ضمن صفك / كورسك / مدرستك',
       studentIdentityNote: 'الاسم مطلوب. كود الطالب اختياري. الصف / الكورس مطلوب إلا إذا تم اختيار أنك من خارج الصف / الكورس / المدرسة.',
       classRequired: 'من فضلك أدخل الصف أو الكورس أو فعّل خيار أنك لست ضمن الصف / الكورس / المدرسة.',
-      dynamicPasswordInfo: 'اضبط كلمة مرور لأي صف أو فصل. ستظهر هنا تلقائيًا الصفوف الأساسية والفصول المخصصة الجديدة. سيُطلب من الطلاب إدخالها قبل دخول الاختبار. اترك الحقل فارغًا لتعطيل كلمة المرور.',
+      quizPasswordsSaved: 'تم حفظ كلمات مرور الاختبارات.',
       noQuestionsFound: 'لا توجد أسئلة.',
       noQuestionsYet: 'لا توجد أسئلة بعد.',
       addQuestionsAbove: 'أضف الأسئلة من المحرر بالأعلى.'
     });
   }
   function translateIdentityFields(){
-    const idInput = document.getElementById('studentId');
-    const classInput = document.getElementById('studentClass');
-    const guest = document.getElementById('studentGuest');
-    const guestText = guest && guest.parentNode ? guest.parentNode.querySelector('span') : null;
-    const note = document.querySelector('.student-cloud-note');
-    if (idInput) idInput.placeholder = t('studentIdOptional', 'Student ID (optional)');
-    if (classInput) classInput.placeholder = t('classCourse', 'Class / Course');
-    if (guestText) guestText.textContent = t('outsideStudent', 'I am not in your class / course / school');
-    if (note) note.textContent = t('studentIdentityNote', 'Name is required. Student ID is optional. Class is required unless the outside-student option is checked.');
+    var idInput = document.getElementById('studentId');
+    var classInput = document.getElementById('studentClass');
+    var guest = document.getElementById('studentGuest');
+    var guestText = guest && guest.parentNode ? guest.parentNode.querySelector('span') : null;
+    var note = document.querySelector('.student-cloud-note');
+    if (idInput) idInput.placeholder = t('studentIdOptional','Student ID (optional)');
+    if (classInput) classInput.placeholder = t('classCourse','Class / Course');
+    if (guestText) guestText.textContent = t('outsideStudent','I am not in your class / course / school');
+    if (note) note.textContent = t('studentIdentityNote','Name is required. Student ID is optional. Class is required unless the outside-student option is checked.');
   }
-  function forceQuizIdentity(){
+  function ensureIdentityFields(){
     if (!document.body || document.body.dataset.page !== 'quiz') return;
-    const grade = String(document.body.dataset.grade || new URLSearchParams(location.search).get('grade') || '').trim();
-    if (!grade || !window.studentCloud || typeof window.studentCloud.ensureQuizIdentityFields !== 'function') return;
-    window.studentCloud.ensureQuizIdentityFields(grade.toUpperCase());
+    var box = document.querySelector('.student-form-box');
+    if (!box) return;
+    if (!document.getElementById('studentId')) {
+      var wrap = document.createElement('div');
+      wrap.className = 'student-cloud-grid';
+      wrap.innerHTML =
+        '<input id="studentId" maxlength="40">' +
+        '<input id="studentClass" maxlength="40">' +
+        '<label class="student-cloud-check"><input type="checkbox" id="studentGuest"> <span></span></label>' +
+        '<p class="student-cloud-note"></p>';
+      var nameInput = document.getElementById('studentName');
+      if (nameInput && nameInput.parentNode) nameInput.insertAdjacentElement('afterend', wrap);
+      var guest = document.getElementById('studentGuest');
+      guest && guest.addEventListener('change', function(){
+        var classInput = document.getElementById('studentClass');
+        if (classInput) {
+          classInput.disabled = !!this.checked;
+          if (this.checked) classInput.value = '';
+        }
+      });
+    }
     translateIdentityFields();
   }
-  
+  function patchStudentCloud(){
+    if (!window.studentCloud) return;
+    if (typeof window.studentCloud.ensureQuizIdentityFields === 'function') {
+      var origEnsure = window.studentCloud.ensureQuizIdentityFields;
+      window.studentCloud.ensureQuizIdentityFields = function(grade){
+        try { origEnsure.call(this, grade); } catch (e) {}
+        ensureIdentityFields();
+      };
+    }
+    if (typeof window.studentCloud.collectIdentity === 'function') {
+      var origCollect = window.studentCloud.collectIdentity;
+      window.studentCloud.collectIdentity = function(grade){
+        ensureIdentityFields();
+        var name = String(document.getElementById('studentName')?.value || '').trim();
+        var studentId = String(document.getElementById('studentId')?.value || '').trim();
+        var isGuest = !!document.getElementById('studentGuest')?.checked;
+        var className = String(document.getElementById('studentClass')?.value || '').trim();
+        if (!name) throw new Error(lang() === 'ar' ? 'من فضلك اكتب اسم الطالب أولاً.' : 'Please enter the student name first.');
+        if (!isGuest && !className) throw new Error(t('classRequired','Please enter the class or course, or check the outside-student option.'));
+        var identity = origCollect.call(this, grade);
+        identity.studentId = studentId;
+        identity.className = className || 'Guest';
+        identity.isGuest = isGuest;
+        return identity;
+      };
+    }
+  }
   function hideSnapshot(){
-    if (document.body?.dataset?.page !== 'home') return;
-    document.querySelectorAll('#studentSummaryUpgrade, .home-snapshot-card, .quick-school-snapshot').forEach(el => el.remove());
-    document.querySelectorAll('section.card').forEach(section => {
-      const text = (section.textContent || '').toLowerCase();
-      if (text.includes('quick school snapshot') || text.includes('students with progress') || text.includes('visible quizzes')) {
-        section.remove();
+    document.querySelectorAll('h2,h3').forEach(function(el){
+      var text = String(el.textContent || '').trim().toLowerCase();
+      if (text === 'quick school snapshot') {
+        var card = el.closest('.card') || el.parentElement;
+        if (card) card.remove();
       }
     });
   }
-
-  
   function rebuildQuizAccess(){
     if (!document.body || document.body.dataset.page !== 'admin') return;
-    const body = document.getElementById('quizAccessBody');
+    var body = document.getElementById('quizAccessBody');
     if (!body) return;
-    const cfg = (typeof getQuizAccess === 'function' ? getQuizAccess() : {}) || {};
-    const info = body.querySelector('p');
-    if (info) info.textContent = t('dynamicPasswordInfo', info.textContent);
-    const legacy = body.querySelector('#adminQuizAccess');
-    if (legacy) legacy.remove();
-    let grid = body.querySelector('.quiz-access-grid-dynamic');
-    if (!grid) {
-      grid = document.createElement('div');
-      grid.className = 'quiz-access-grid-dynamic';
-      grid.style.display = 'grid';
-      grid.style.gridTemplateColumns = 'repeat(auto-fit,minmax(280px,1fr))';
-      grid.style.gap = '16px';
-      const saveBtn = document.getElementById('saveQuizPasswordBtn');
-      body.insertBefore(grid, saveBtn ? saveBtn.parentElement : null);
-    }
-    const keys = allManagedKeys();
-    grid.innerHTML = keys.map(key => {
-      const rec = cfg[key] || {enabled:false,password:''};
-      const label = prettyLabel(key);
-      const safeVal = String(rec.password || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;');
-      return '<div class="level-visibility-card">' +
-        '<h3>' + label + '</h3>' +
-        '<label class="level-toggle admin-toggle-row"><input type="checkbox" id="quizPasswordEnabled_' + key + '" ' + (rec.enabled ? 'checked' : '') + '><span>' + (lang()==='ar' ? ('حماية ' + label + ' بكلمة مرور') : ('Protect ' + label + ' with password')) + '</span></label>' +
-        '<input class="admin-text-input" id="quizPasswordValue_' + key + '" placeholder="' + (lang()==='ar' ? ('كلمة مرور ' + label) : (label + ' password')) + '" value="' + safeVal + '">' +
-      '</div>';
-    }).join('');
-  }
-
-
-  function rebuildTimerSettings(){
-    if (!document.body || document.body.dataset.page !== 'admin') return;
-    const wrap = document.getElementById('adminTimerSettings');
-    if (!wrap) return;
-    const cfg = (typeof getTimerSettings === 'function' ? getTimerSettings() : {}) || {};
-    const keys = allManagedKeys();
-    wrap.innerHTML = keys.map(key => {
-      const label = prettyLabel(key);
-      const checked = cfg[key] !== false;
-      return '<div class="level-visibility-card">' +
-        '<h3>' + label + '</h3>' +
-        '<label class="level-toggle admin-toggle-row">' +
-        '<input type="checkbox" data-timer-grade="' + key + '" ' + (checked ? 'checked' : '') + '>' +
-        '<span>' + (checked ? (lang()==='ar' ? 'المؤقت مفعل' : 'Timer enabled') : (lang()==='ar' ? 'المؤقت متوقف' : 'Timer disabled')) + '</span>' +
-        '</label></div>';
-    }).join('');
-    wrap.querySelectorAll('input[data-timer-grade]').forEach(input => {
-      input.addEventListener('change', () => {
-        const span = input.closest('label')?.querySelector('span');
-        if (span) span.textContent = input.checked ? (lang()==='ar' ? 'المؤقت مفعل' : 'Timer enabled') : (lang()==='ar' ? 'المؤقت متوقف' : 'Timer disabled');
-      });
+    var cfg = (typeof window.getQuizAccess === 'function' ? window.getQuizAccess() : {}) || {};
+    var info = body.querySelector('p');
+    if (info) info.textContent = lang() === 'ar'
+      ? 'اضبط كلمة مرور لأي صف أو فصل. ستظهر هنا تلقائيًا الصفوف الأساسية والفصول المخصصة الجديدة. سيُطلب من الطلاب إدخالها قبل دخول الاختبار. اترك الحقل فارغًا لتعطيل كلمة المرور.'
+      : 'Set a password for any grade or class. New built-in grades and custom classes appear here automatically. Students will be asked for it before entering the quiz. Leave blank to disable password.';
+    var saveBtn = document.getElementById('saveQuizPasswordBtn');
+    var old = body.querySelector('.quiz-access-grid-dynamic');
+    if (old) old.remove();
+    var grid = document.createElement('div');
+    grid.className = 'quiz-access-grid-dynamic';
+    grid.style.display = 'grid';
+    grid.style.gridTemplateColumns = 'repeat(auto-fit,minmax(280px,1fr))';
+    grid.style.gap = '16px';
+    allGradeKeys().forEach(function(key){
+      var rec = cfg[key] || { enabled:false, password:'' };
+      var label = prettyGrade(key);
+      var card = document.createElement('div');
+      card.className = 'admin-subcard';
+      card.innerHTML = '<h3>' + escapeHtml(label) + '</h3>' +
+        '<label class="toggle-row"><input type="checkbox" id="quizPasswordEnabled_' + key + '"' + (rec.enabled ? ' checked' : '') + '><span>' +
+        escapeHtml(lang()==='ar' ? ('حماية ' + label + ' بكلمة مرور') : ('Protect ' + label + ' with password')) +
+        '</span></label>' +
+        '<input id="quizPasswordValue_' + key + '" value="' + escapeHtml(rec.password || '') + '" placeholder="' + escapeHtml(lang()==='ar' ? ('كلمة مرور ' + label) : (label + ' password')) + '">';
+      grid.appendChild(card);
     });
+    body.insertBefore(grid, saveBtn || body.lastElementChild);
   }
-  function patchTimerFns(){
-    window.renderTimerSettingsEditor = function(){ rebuildTimerSettings(); };
-    window.saveTimerSettingsFromAdmin = function(){
-      const next = {};
-      allManagedKeys().forEach(key => {
-        const input = document.querySelector('#adminTimerSettings input[data-timer-grade="' + key + '"]');
-        next[key] = input ? !!input.checked : true;
-      });
-      if (typeof setTimerSettings === 'function') setTimerSettings(next);
-      rebuildTimerSettings();
-      alert(lang()==='ar' ? 'تم حفظ إعدادات المؤقت.' : 'Timer settings saved.');
-    };
-    window.resetTimerSettingsFromAdmin = function(){
-      const next = {};
-      allManagedKeys().forEach(key => next[key] = true);
-      if (typeof setTimerSettings === 'function') setTimerSettings(next);
-      rebuildTimerSettings();
-    };
-  }
-  function patchCommandCenter(){
-    if (!document.body || document.body.dataset.page !== 'admin') return;
-    const setAll = (collapsed) => {
-      const rows = (window.ADMIN_COLLAPSIBLE_CONFIGS || []).filter(Boolean);
-      if (typeof window.setCollapsed === 'function' && rows.length) {
-        rows.forEach(cfg => {
-          const btn = document.getElementById(cfg.buttonId);
-          if (document.getElementById(cfg.bodyId)) window.setCollapsed(cfg.bodyId, btn, collapsed);
-        });
-      } else {
-        document.querySelectorAll('.admin-collapsible-body').forEach(body => {
-          body.classList.toggle('collapsed-body', collapsed);
-          body.hidden = collapsed;
-          body.style.display = collapsed ? 'none' : '';
-        });
-      }
-    };
-    const expandBtn = document.getElementById('expandAllAdminBtn');
-    const collapseBtn = document.getElementById('collapseAllAdminBtn');
-    if (expandBtn && !expandBtn.dataset.runtimeBound) {
-      expandBtn.dataset.runtimeBound = '1';
-      expandBtn.addEventListener('click', () => setAll(false));
-    }
-    if (collapseBtn && !collapseBtn.dataset.runtimeBound) {
-      collapseBtn.dataset.runtimeBound = '1';
-      collapseBtn.addEventListener('click', () => setAll(true));
-    }
-  }
-  function patchPlayEndless(){
-    if (document.body?.dataset?.page !== 'playtest') return;
-    const endlessSub = document.querySelector('.mode-card[data-mode-value="endless"] .mode-card-sub');
-    if (endlessSub) endlessSub.textContent = lang()==='ar' ? 'يبدأ المؤقت في العد التصاعدي حتى تنتهي من كل الأسئلة' : 'Elapsed timer counts up until all questions are finished';
-    if (typeof window !== 'undefined') {
-      const APP = window;
-      APP.playEndlessStartedAt = APP.playEndlessStartedAt || 0;
-      APP.playEndlessInterval = APP.playEndlessInterval || null;
-      APP.stopEndlessTimer = function(){
-        if (APP.playEndlessInterval){ clearInterval(APP.playEndlessInterval); APP.playEndlessInterval = null; }
-      };
-      APP.startEndlessTimer = function(){
-        APP.stopEndlessTimer();
-        APP.playEndlessStartedAt = Date.now();
-        const tick = () => {
-          const secs = Math.max(0, Math.floor((Date.now() - APP.playEndlessStartedAt)/1000));
-          const badge = document.querySelector('#timerBadge, #timeBadge, #timeLeftValue, #playTimerBadge');
-          if (badge) {
-            const mins = Math.floor(secs / 60);
-            const rem = secs % 60;
-            const label = (document.getElementById('playTimerBadge') === badge || badge.id === 'playTimerBadge') ? (lang()==='ar' ? 'الوقت: ' : 'Time: ') : '';
-            badge.textContent = label + String(mins).padStart(2,'0') + ':' + String(rem).padStart(2,'0');
-          }
-        };
-        tick();
-        APP.playEndlessInterval = setInterval(tick, 1000);
-      };
-      const origRender = APP.renderMixedQuestion;
-      if (typeof origRender === 'function' && !origRender.__endlessCountPatched) {
-        APP.renderMixedQuestion = function(){
-          const result = origRender.apply(this, arguments);
-          if (APP.playGameMode === 'endless') APP.startEndlessTimer();
-          return result;
-        };
-        APP.renderMixedQuestion.__endlessCountPatched = true;
-      }
-      const origFinish = APP.finishMixedQuiz;
-      if (typeof origFinish === 'function' && !origFinish.__endlessCountPatched) {
-        APP.finishMixedQuiz = function(){
-          APP.stopEndlessTimer();
-          return origFinish.apply(this, arguments);
-        };
-        APP.finishMixedQuiz.__endlessCountPatched = true;
-      }
-      const startBtn = document.getElementById('startMixedQuizBtn');
-      if (startBtn && !startBtn.dataset.endlessCountPatched) {
-        startBtn.dataset.endlessCountPatched = '1';
-        startBtn.addEventListener('click', () => {
-          setTimeout(() => {
-            if (APP.playGameMode === 'endless') APP.startEndlessTimer();
-            else if (APP.stopEndlessTimer) APP.stopEndlessTimer();
-          }, 50);
-        }, true);
-      }
-    }
-  }
-
-    function patchQuizAccessFns(){
-    if (typeof window.renderQuizAccessEditor === 'function') {
-      const orig = window.renderQuizAccessEditor;
-      window.renderQuizAccessEditor = function(){ try { orig(); } catch(e){} rebuildQuizAccess(); };
-    }
+  function patchQuizAccessFns(){
     window.saveQuizAccessFromAdmin = function(){
-      const next = {};
-      allPasswordKeys().forEach(key => {
-        const enabled = document.getElementById('quizPasswordEnabled_' + key);
-        const value = document.getElementById('quizPasswordValue_' + key);
-        next[key] = { enabled: !!(enabled && enabled.checked && value && value.value.trim()), password: value && value.value.trim() || '' };
+      var next = {};
+      allGradeKeys().forEach(function(key){
+        var en = document.getElementById('quizPasswordEnabled_' + key);
+        var val = document.getElementById('quizPasswordValue_' + key);
+        var password = String(val && val.value || '').trim();
+        next[key] = { enabled: !!(en && en.checked && password), password: password };
       });
-      if (typeof setQuizAccess === 'function') setQuizAccess(next);
+      if (typeof window.setQuizAccess === 'function') window.setQuizAccess(next);
       rebuildQuizAccess();
-      alert(lang()==='ar' ? 'تم حفظ كلمات مرور الاختبارات.' : 'Quiz password settings saved.');
+      alert(t('quizPasswordsSaved','Quiz password settings saved.'));
     };
     window.clearQuizAccessFromAdmin = function(){
-      if (typeof setQuizAccess === 'function') setQuizAccess({});
+      if (typeof window.setQuizAccess === 'function') window.setQuizAccess({});
       rebuildQuizAccess();
     };
   }
-  function rebuildStoredQuestions(){
+  function ensureQuestionFilters(){
     if (!document.body || document.body.dataset.page !== 'admin') return;
-    const list = document.getElementById('storedQuestionsList');
-    const count = document.getElementById('questionResultsCount');
-    const noRes = document.getElementById('questionNoResults');
-    if (!list || typeof window.collectQuestionsWithMeta !== 'function' || typeof window.applyQuestionOverrides !== 'function') return;
-    let items = [];
-    const builtins = ['kg1','kg2','grade1','grade2','grade3','grade4','grade5','grade6'];
-    builtins.forEach(key => { try { items = items.concat(window.collectQuestionsWithMeta(key)); } catch(e){} });
-    try {
-      const classes = typeof window.getCustomClasses === 'function' ? (window.getCustomClasses() || []) : [];
-      classes.forEach(cls => { if (cls && cls.key) items = items.concat(window.collectQuestionsWithMeta(cls.key)); });
-    } catch(e){}
-    const dedupe = new Set();
-    items = items.map(window.applyQuestionOverrides).filter(q => {
+    var row = document.querySelector('.editor-filters');
+    if (!row) return;
+    if (row.querySelector('[data-filter-grade="Grade 6"]') || row.querySelector('[data-filter-grade="grade6"]')) return;
+    var existing = Array.from(row.querySelectorAll('[data-filter-grade]')).map(function(btn){ return normGrade(btn.dataset.filterGrade); });
+    allGradeKeys().forEach(function(key){
+      if (existing.indexOf(normGrade(key)) !== -1) return;
+      var btn = document.createElement('button');
+      btn.className = 'level-btn';
+      btn.dataset.filterGrade = key;
+      btn.textContent = prettyGrade(key);
+      row.appendChild(btn);
+    });
+    if (typeof window.wireQuestionFilterButtons === 'function') window.wireQuestionFilterButtons();
+  }
+  function collectAllQuestions(){
+    var items = [];
+    if (typeof window.collectQuestionsWithMeta !== 'function' || typeof window.applyQuestionOverrides !== 'function') return items;
+    allGradeKeys().forEach(function(key){
+      try { items = items.concat(window.collectQuestionsWithMeta(key)); } catch (e) {}
+    });
+    var dedupe = new Set();
+    return items.map(function(q){ try { return window.applyQuestionOverrides(q); } catch (e) { return q; } }).filter(function(q){
       if (!q || q._deleted) return false;
-      const sig = String((q._meta && q._meta.id) || q.text || Math.random());
+      var sig = String((q._meta && q._meta.id) || q.id || q.text || Math.random());
       if (dedupe.has(sig)) return false;
       dedupe.add(sig);
       return true;
     });
-    list.innerHTML = items.length ? items.map(window.questionEditorCard).join('') : '<div class="stored-question"><h4>' + t('noQuestionsYet','No questions yet.') + '</h4><p>' + t('addQuestionsAbove','Add questions from the editor above.') + '</p></div>';
+  }
+  function rebuildStoredQuestions(){
+    if (!document.body || document.body.dataset.page !== 'admin') return;
+    var list = document.getElementById('storedQuestionsList');
+    if (!list || typeof window.questionEditorCard !== 'function') return;
+    ensureQuestionFilters();
+    var items = collectAllQuestions();
+    list.innerHTML = items.length ? items.map(function(q){ return window.questionEditorCard(q); }).join('') :
+      '<div class="stored-question"><h4>' + escapeHtml(t('noQuestionsYet','No questions yet.')) + '</h4><p>' + escapeHtml(t('addQuestionsAbove','Add questions from the editor above.')) + '</p></div>';
     if (typeof window.bindQuestionEditorActions === 'function') window.bindQuestionEditorActions();
     if (typeof window.wireQuestionFilterButtons === 'function') window.wireQuestionFilterButtons();
-    updateQuestionCount();
+    setTimeout(updateQuestionCount, 0);
   }
   function updateQuestionCount(){
-    const count = document.getElementById('questionResultsCount');
-    const noRes = document.getElementById('questionNoResults');
-    if (!count) return;
-    const visible = Array.from(document.querySelectorAll('#storedQuestionsList .question-edit-card')).filter(card => card.style.display !== 'none' && !card.hidden).length;
-    count.textContent = (lang()==='ar' ? (visible + ' سؤال') : (visible + ' questions found'));
-    if (noRes) noRes.classList.toggle('hidden', visible !== 0), noRes.textContent = t('noQuestionsFound', 'No questions found.');
+    var count = document.getElementById('questionResultsCount');
+    var noRes = document.getElementById('questionNoResults');
+    var cards = Array.from(document.querySelectorAll('#storedQuestionsList .question-edit-card'));
+    var visible = cards.filter(function(card){ return card.offsetParent !== null && !card.hidden && card.style.display !== 'none'; }).length;
+    if (count) count.textContent = lang()==='ar' ? (visible + ' سؤال') : (visible + ' questions found');
+    if (noRes) {
+      noRes.textContent = t('noQuestionsFound','No questions found.');
+      noRes.classList.toggle('hidden', visible !== 0);
+    }
   }
   function patchQuestionFns(){
-    if (typeof window.filterQuestionCards === 'function') {
-      const orig = window.filterQuestionCards;
-      window.filterQuestionCards = function(grade){
-        const normalized = normGrade(grade);
-        document.querySelectorAll('#storedQuestionsList .question-edit-card').forEach(card => {
-          const cardGrade = normGrade(card.dataset.grade || '');
-          const show = normalized === 'all' || cardGrade === normalized || prettyGrade(cardGrade).toLowerCase() === String(grade || '').toLowerCase();
-          if (card.style.display !== 'none') card.dataset.preFilterVisible = '1';
-          card.style.display = show ? '' : 'none';
+    if (typeof window.filterQuestionCards === 'function' && !window.filterQuestionCards.__patchedByRuntime) {
+      var orig = window.filterQuestionCards;
+      var fn = function(grade){
+        var normalized = normGrade(grade);
+        document.querySelectorAll('#storedQuestionsList .question-edit-card').forEach(function(card){
+          var cardGrade = normGrade(card.dataset.grade || '');
+          card.style.display = (normalized === 'all' || cardGrade === normalized) ? '' : 'none';
         });
-        document.querySelectorAll('[data-filter-grade]').forEach(btn => btn.classList.toggle('active', normGrade(btn.dataset.filterGrade) === normalized));
+        document.querySelectorAll('[data-filter-grade]').forEach(function(btn){
+          btn.classList.toggle('active', normGrade(btn.dataset.filterGrade) === normalized);
+        });
         updateQuestionCount();
       };
+      fn.__patchedByRuntime = true;
+      window.filterQuestionCards = fn;
     }
-    const oldRender = window.renderStoredQuestions;
-    window.renderStoredQuestions = function(){ rebuildStoredQuestions(); };
+    window.renderStoredQuestions = rebuildStoredQuestions;
   }
-  function patchStudentCloud(){
-    if (!window.studentCloud || !window.studentCloud.ensureQuizIdentityFields) return;
-    const origEnsure = window.studentCloud.ensureQuizIdentityFields;
-    window.studentCloud.ensureQuizIdentityFields = function(grade){
-      origEnsure(grade);
-      translateIdentityFields();
+  function patchLeaderboard(){
+    if (!document.body || document.body.dataset.page !== 'play') return;
+    if (!window.renderLeaderboard || !window.requestAnimationFrame) return;
+    var orig = window.renderLeaderboard;
+    window.renderLeaderboard = function(data){
+      try { localStorage.setItem('kgPlayLeaderboardCache', JSON.stringify(data || {})); } catch (e) {}
+      return orig.apply(this, arguments);
     };
-    const origCollect = window.studentCloud.collectIdentity;
-    window.studentCloud.collectIdentity = function(grade){
-      const name = String(document.getElementById('studentName')?.value || '').trim();
-      const studentId = String(document.getElementById('studentId')?.value || '').trim();
-      const isGuest = !!document.getElementById('studentGuest')?.checked;
-      const className = String(document.getElementById('studentClass')?.value || '').trim();
-      if (!name) throw new Error(lang()==='ar' ? 'من فضلك اكتب اسم الطالب أولاً.' : 'Please enter the student name first.');
-      if (!isGuest && !className) throw new Error(t('classRequired', 'Please enter the class or course, or check the outside-student option.'));
-      return origCollect(grade);
-    };
-  }
-  function patchLang(){
-    const orig = window.applyTranslations;
-    if (typeof orig === 'function') {
-      window.applyTranslations = function(){
-        const result = orig.apply(this, arguments);
-        ensureQuizTranslations();
-        translateIdentityFields();
-        rebuildQuizAccess();
-        rebuildTimerSettings();
-        patchCommandCenter();
-        patchPlayEndless();
-        updateQuestionCount();
-        hideSnapshot();
-        return result;
-      };
+    var body = document.getElementById('playLeaderboardBody');
+    if (body && /Loading leaderboard/i.test(body.textContent || '')) {
+      try {
+        var cached = JSON.parse(localStorage.getItem('kgPlayLeaderboardCache') || 'null');
+        if (cached && typeof orig === 'function') orig(cached);
+      } catch (e) {}
     }
+  }
+  function patchEndlessModeUi(){
+    if (!document.body || document.body.dataset.page !== 'play') return;
+    var endlessCard = Array.from(document.querySelectorAll('.mode-card, .game-mode-card')).find(function(el){
+      return /endless/i.test(el.textContent || '');
+    });
+    if (endlessCard) {
+      var desc = endlessCard.querySelector('p, .muted-note, .mode-desc');
+      if (desc) desc.textContent = lang()==='ar' ? 'مؤقت تصاعدي يحسب الزمن حتى تنتهي من جميع الأسئلة' : 'Elapsed timer runs until all questions are finished';
+    }
+  }
+  function applyLanguage(){
+    ensureTranslations();
+    ensureIdentityFields();
+    translateIdentityFields();
+    rebuildQuizAccess();
+    updateQuestionCount();
+    patchEndlessModeUi();
+    hideSnapshot();
   }
   function run(){
-    ensureQuizTranslations();
+    ensureTranslations();
+    ensureIdentityFields();
     patchStudentCloud();
-    patchLang();
     patchQuizAccessFns();
-    patchTimerFns();
     patchQuestionFns();
-    forceQuizIdentity();
+    patchLeaderboard();
     rebuildQuizAccess();
-    rebuildTimerSettings();
-    patchCommandCenter();
-    patchPlayEndless();
     rebuildStoredQuestions();
+    patchEndlessModeUi();
     updateQuestionCount();
     hideSnapshot();
   }
   document.addEventListener('DOMContentLoaded', run);
   window.addEventListener('load', run);
-  window.addEventListener('kg:langchange', function(){ translateIdentityFields(); rebuildQuizAccess(); rebuildTimerSettings(); patchCommandCenter(); patchPlayEndless(); updateQuestionCount(); hideSnapshot(); });
-  window.addEventListener('kg:quizmeta', forceQuizIdentity);
-  document.addEventListener('click', function(){ setTimeout(function(){ rebuildQuizAccess(); rebuildTimerSettings(); patchCommandCenter(); hideSnapshot(); }, 120); });
-  if (document.body?.dataset?.page === 'admin') {
-    const panel = document.getElementById('adminPanel');
-    if (panel) {
-      new MutationObserver(function(){ setTimeout(function(){ rebuildQuizAccess(); rebuildTimerSettings(); patchCommandCenter(); }, 120); }).observe(panel,{attributes:true,attributeFilter:['class']});
-    }
-  }
+  window.addEventListener('kg:quizmeta', function(){ ensureIdentityFields(); translateIdentityFields(); });
+  window.addEventListener('kg:langchange', applyLanguage);
+  setTimeout(run, 400);
+  setTimeout(run, 1200);
 })();

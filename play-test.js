@@ -4,6 +4,8 @@
   const SOUND_STORAGE_KEY = 'kgPlayTestSound';
   const AUTO_NEXT_STORAGE_KEY = 'kgPlayTestAutoNext';
   const QUESTION_SECONDS = 20;
+  function currentMode(){ const el = document.getElementById('gameMode'); return String(el && el.value || 'question_timer').trim().toLowerCase(); }
+  function isEndlessMode(){ return currentMode() === 'endless'; }
   const GRADE_OPTIONS = [
     ['KG1','KG1'],['KG2','KG2'],['Grade 1','Grade 1'],['Grade 2','Grade 2'],['Grade 3','Grade 3'],['Grade 4','Grade 4'],['Grade 5','Grade 5'],['Grade 6','Grade 6']
   ];
@@ -116,17 +118,51 @@
   }
   async function loadLeaderboard(){ const data = await request('?action=leaderboard'); renderLeaderboard(data); return data; }
   function stopTimer(){ timerVersion += 1; if (timerId) { clearInterval(timerId); timerId = null; } if (autoNextTimer) { clearTimeout(autoNextTimer); autoNextTimer = null; } playDeadlineTs = 0; }
-  function startTimer(){ stopTimer(); if (!state) return; const version = timerVersion; const renderToken = questionRenderToken; const startLeft = Math.max(0, Number(state.timeLeft || QUESTION_SECONDS) || QUESTION_SECONDS); state.timeLeft = startLeft; playDeadlineTs = Date.now() + (startLeft * 1000); updateBadges(); timerId = setInterval(async function(){ if (!state || version !== timerVersion || renderToken !== questionRenderToken) return stopTimer(); const remaining = Math.max(0, Math.floor((playDeadlineTs - Date.now() + 999) / 1000)); if (remaining !== state.timeLeft) { state.timeLeft = remaining; updateBadges(); } if (remaining <= 0) { stopTimer(); await finishQuiz(true, false); } }, 200); }
-  async function saveProgress(){ if (!state) return; state.updatedAt = new Date().toISOString(); saveLocal(); await request('?action=save-progress', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ identity:state.identity, sessionId:state.sessionId, state:{ currentIndex:state.currentIndex, score:state.score, answers:state.answers, questions:state.questions.map(questionPayload), startedAt:state.startedAt, updatedAt:state.updatedAt, completed:false, stage:state.stage, stageLabel:getStageLabel(state.stage), timeLeft:state.timeLeft, totalSeconds:QUESTION_SECONDS } }) }); }
+  
+function startTimer(){
+  stopTimer();
+  if (!state) return;
+  const version = timerVersion;
+  const renderToken = questionRenderToken;
+  if (isEndlessMode()) {
+    const elapsedStart = Number(state.elapsedSeconds || 0) || 0;
+    const startedAtMs = Date.now() - (elapsedStart * 1000);
+    timerId = setInterval(function(){
+      if (!state || version !== timerVersion || renderToken !== questionRenderToken) return stopTimer();
+      state.elapsedSeconds = Math.max(0, Math.floor((Date.now() - startedAtMs) / 1000));
+      state.timeLeft = state.elapsedSeconds;
+      updateBadges();
+    }, 200);
+    updateBadges();
+    return;
+  }
+  const startLeft = Math.max(0, Number(state.timeLeft || QUESTION_SECONDS) || QUESTION_SECONDS);
+  state.timeLeft = startLeft;
+  playDeadlineTs = Date.now() + (startLeft * 1000);
+  updateBadges();
+  timerId = setInterval(async function(){
+    if (!state || version !== timerVersion || renderToken !== questionRenderToken) return stopTimer();
+    const remaining = Math.max(0, Math.floor((playDeadlineTs - Date.now() + 999) / 1000));
+    if (remaining !== state.timeLeft) {
+      state.timeLeft = remaining;
+      updateBadges();
+    }
+    if (remaining <= 0) {
+      stopTimer();
+      await finishQuiz(true, false);
+    }
+  }, 200);
+}
+async function saveProgress(){ if (!state) return; state.updatedAt = new Date().toISOString(); saveLocal(); await request('?action=save-progress', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ identity:state.identity, sessionId:state.sessionId, state:{ currentIndex:state.currentIndex, score:state.score, answers:state.answers, questions:state.questions.map(questionPayload), startedAt:state.startedAt, updatedAt:state.updatedAt, completed:false, stage:state.stage, stageLabel:getStageLabel(state.stage), timeLeft:state.timeLeft, elapsedSeconds: state.elapsedSeconds || 0, totalSeconds: isEndlessMode() ? 0 : QUESTION_SECONDS, mode: currentMode() } }) }); }
   function markAnsweredUi(option, correct){ const q = state.questions[state.currentIndex]; [...document.querySelectorAll('#playOptions .play-option-btn')].forEach(btn => { const idx = Number(btn.dataset.optionIndex || 0); const opt = q.options[idx]; btn.disabled = true; if (opt === q.answer) btn.classList.add('correct'); if (opt === option && !correct) btn.classList.add('wrong'); }); $('playNextBtn').disabled = false; }
   async function chooseAnswer(option){ if (!state || answerLock) return; const q = state.questions[state.currentIndex]; if (!q) return; if (state.answers.find(a => a.index === state.currentIndex)) return; answerLock = true; stopTimer(); const correct = option === q.answer; state.answers.push({ index:state.currentIndex, questionText:q.text, chosen:option, correct, expected:q.answer, answeredAt:new Date().toISOString(), difficulty:q.difficulty || 1 }); if (correct) { state.score += 1; playCorrect(); } else { playWrong(); }
     markAnsweredUi(option, correct); updateBadges(); saveProgress().catch(()=>{});
     if (!correct) { setStatus(tr('playWrongSaved')); autoNextTimer = setTimeout(() => { finishQuiz(false, true).catch(()=>{}); }, 450); return; }
     if (autoNextEnabled) autoNextTimer = setTimeout(() => { nextQuestion(); }, 320); else answerLock = false;
   }
-  function renderQuestion(){ if (!state) return; questionRenderToken += 1; answerLock = false; if (autoNextTimer) { clearTimeout(autoNextTimer); autoNextTimer = null; } if (state.currentIndex >= state.questions.length) { finishQuiz(false, false).catch(()=>{}); return; } showSection('playQuizCard'); const q = state.questions[state.currentIndex]; const resumingSameQuestion = state._resumeIndex === state.currentIndex && !state.answers.find(a => a.index === state.currentIndex); if (!resumingSameQuestion || !Number.isFinite(Number(state.timeLeft)) || Number(state.timeLeft) <= 0 || state.answers.find(a => a.index === state.currentIndex)) state.timeLeft = QUESTION_SECONDS; state._resumeIndex = null; updateBadges(); $('playQuestionText').textContent = q.text; $('playOptions').innerHTML = q.options.map((opt, idx) => `<button type="button" class="play-option-btn" data-option-index="${idx}" onclick="window.__playChooseAnswer(${idx})">${escapeHtml(opt)}</button>`).join(''); $('playNextBtn').disabled = true; startTimer(); }
-  function nextQuestion(){ if (!state) return; if (!state.answers.find(a => a.index === state.currentIndex)) return; stopTimer(); state.currentIndex += 1; state.timeLeft = QUESTION_SECONDS; saveProgress().catch(()=>{}); renderQuestion(); }
-  async function finishQuiz(timeUp, wrongStop){ if (!state || state.completed) return; state.completed = true; stopTimer(); const score = Number(state.score || 0); const badge = getBadgeMeta(score); const result = await request('?action=submit', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ identity:state.identity, sessionId:state.sessionId, result:{ score, total:state.answers.length, percent: state.answers.length ? Math.round((score / state.answers.length) * 100) : 0, answers:state.answers, questionCount:state.answers.length, completedAt:new Date().toISOString(), quizLevel:'Play & Test', stage:state.stage, stageLabel:getStageLabel(state.stage), badgeTitle:badge.title }, progress:{ completed:true, currentIndex:state.currentIndex, questions:state.questions.map(questionPayload) } }) }); playFinish(); $('playResultMedal').textContent = badge.medal; $('playResultBadge').textContent = badge.title; $('playResultBadge').className = 'play-result-badge ' + badge.cls; $('playResultScore').textContent = String(score); $('playResultText').textContent = timeUp ? tr('playTimeOverResult',{score}) : wrongStop ? tr('playWrongResult',{score}) : tr('playGreatResult',{score}); saveLocal(); showSection('playResultCard'); if (result && result.leaderboard) renderLeaderboard(result.leaderboard); else loadLeaderboard().catch(()=>{}); }
+  function renderQuestion(){ if (!state) return; questionRenderToken += 1; answerLock = false; if (autoNextTimer) { clearTimeout(autoNextTimer); autoNextTimer = null; } if (state.currentIndex >= state.questions.length) { finishQuiz(false, false).catch(()=>{}); return; } showSection('playQuizCard'); const q = state.questions[state.currentIndex]; const resumingSameQuestion = state._resumeIndex === state.currentIndex && !state.answers.find(a => a.index === state.currentIndex); if (!isEndlessMode() && (!resumingSameQuestion || !Number.isFinite(Number(state.timeLeft)) || Number(state.timeLeft) <= 0 || state.answers.find(a => a.index === state.currentIndex))) state.timeLeft = QUESTION_SECONDS; state._resumeIndex = null; updateBadges(); $('playQuestionText').textContent = q.text; $('playOptions').innerHTML = q.options.map((opt, idx) => `<button type="button" class="play-option-btn" data-option-index="${idx}" onclick="window.__playChooseAnswer(${idx})">${escapeHtml(opt)}</button>`).join(''); $('playNextBtn').disabled = true; startTimer(); }
+  function nextQuestion(){ if (!state) return; if (!state.answers.find(a => a.index === state.currentIndex)) return; stopTimer(); state.currentIndex += 1; if (!isEndlessMode()) state.timeLeft = QUESTION_SECONDS; saveProgress().catch(()=>{}); renderQuestion(); }
+  async function finishQuiz(timeUp, wrongStop){ if (!state || state.completed) return; state.completed = true; stopTimer(); const score = Number(state.score || 0); const badge = getBadgeMeta(score); const result = await request('?action=submit', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ identity:state.identity, sessionId:state.sessionId, result:{ score, total:state.questions.length || state.answers.length, percent: (state.questions.length || state.answers.length) ? Math.round((score / (state.questions.length || state.answers.length)) * 100) : 0, answers:state.answers, elapsedSeconds: state.elapsedSeconds || 0, questionCount:state.answers.length, completedAt:new Date().toISOString(), quizLevel:'Play & Test', stage:state.stage, stageLabel:getStageLabel(state.stage), badgeTitle:badge.title }, progress:{ completed:true, currentIndex:state.currentIndex, questions:state.questions.map(questionPayload) } }) }); playFinish(); $('playResultMedal').textContent = badge.medal; $('playResultBadge').textContent = badge.title; $('playResultBadge').className = 'play-result-badge ' + badge.cls; $('playResultScore').textContent = String(score); $('playResultText').textContent = timeUp ? tr('playTimeOverResult',{score}) : wrongStop ? tr('playWrongResult',{score}) : tr('playGreatResult',{score}); saveLocal(); showSection('playResultCard'); if (result && result.leaderboard) renderLeaderboard(result.leaderboard); else loadLeaderboard().catch(()=>{}); }
   window.__playChooseAnswer = function(index){ if (!state) return; const q=state.questions[state.currentIndex]; const idx=Number(index||0); if (!q || Number.isNaN(idx) || idx<0 || idx>=q.options.length) return; chooseAnswer(q.options[idx]); };
   async function startOrResume(){ try{ setStatus(tr('playPreparing')); const identity = buildIdentity(); const stage = getStageFromGrade(identity.grade); const local = loadLocal(); const same = local && local.identity && local.identity.name === identity.name && String(local.identity.studentId||'').trim() === identity.studentId && String(local.identity.grade||'') === identity.grade; const startData = await request('?action=start',{ method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ identity, sessionId: same ? local.sessionId : '' }) }); if (startData.progress && Array.isArray(startData.progress.questions) && startData.progress.questions.length && !startData.progress.completed) { state = { identity:startData.identity, sessionId:startData.sessionId, questions:startData.progress.questions, currentIndex:Number(startData.progress.currentIndex||0)||0, score:Number(startData.progress.score||0)||0, answers:Array.isArray(startData.progress.answers)?startData.progress.answers:[], startedAt:startData.progress.startedAt || new Date().toISOString(), completed:false, stage:startData.progress.stage||stage, timeLeft:Number(startData.progress.timeLeft||QUESTION_SECONDS)||QUESTION_SECONDS, _resumeIndex:Number(startData.progress.currentIndex||0)||0 }; setStatus(tr('playResuming')); } else { const questions = (window.PlayQuestionBank && window.PlayQuestionBank.createMixedQuiz) ? window.PlayQuestionBank.createMixedQuiz(STAGE_POOL_SIZE[stage], stage, identity.grade) : []; state = { identity:startData.identity, sessionId:startData.sessionId, questions, currentIndex:0, score:0, answers:[], startedAt:new Date().toISOString(), completed:false, stage, timeLeft:QUESTION_SECONDS, _resumeIndex:null }; await saveProgress(); setStatus(tr('playReady')); } renderQuestion(); updateAutoNextToggle(); } catch(error){ setStatus(error.message || 'Could not start the quiz.'); } }
   function wireOptionFallbacks(){ const wrap = $('playOptions'); if (!wrap) return; const handler = function(event){ const btn = event.target && event.target.closest ? event.target.closest('.play-option-btn') : null; if (!btn || btn.disabled || answerLock) return; event.preventDefault(); event.stopPropagation(); const index = Number(btn.dataset.optionIndex || 0); if (!Number.isNaN(index)) window.__playChooseAnswer(index); }; wrap.addEventListener('click', handler, true); wrap.addEventListener('pointerup', handler, true); wrap.addEventListener('touchend', handler, true); }
@@ -134,3 +170,5 @@
   document.addEventListener('DOMContentLoaded', init);
 })();
 window.addEventListener('kg:langchange', function(){ if (typeof window.kgPlayHandleLangChange === 'function') window.kgPlayHandleLangChange(); });
+
+window.renderLeaderboard = renderLeaderboard;

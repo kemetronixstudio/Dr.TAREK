@@ -315,7 +315,6 @@
   }
 
   function enhanceHomeDashboard(){
-    return;
     const host = document.querySelector('.progress-card');
     if (!host || document.getElementById('studentSummaryUpgrade')) return;
     const wrap = document.createElement('section');
