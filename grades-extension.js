@@ -45,7 +45,6 @@
     } catch (error) {}
   }
 
-
   function refreshHomeHeroText(){
     if (!document.body || document.body.dataset.page !== 'home') return;
     const badge = document.querySelector('[data-i18n="homeBadge"]');
@@ -114,7 +113,6 @@
     refreshAdminGradeFilters();
   });
 })();
-
 
 (function(){
   const GRADE_CARD_I18N = {

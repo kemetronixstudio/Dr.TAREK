@@ -61,7 +61,6 @@ translations.ar.deleteAccount='حذف';
 translations.ar.noExtraAccounts='لا توجد حسابات محفوظة بعد.';
 translations.ar.clearAccessAccountForm='مسح النموذج';
 
-
 function inferLegacyPictureImage(question){
   if (!question) return null;
   const answer = String(question.answer || '').trim().toLowerCase();
@@ -186,8 +185,6 @@ function sanitizedPool(grade){
     return true;
   });
 }
-
-
 
 const THEME_KEY = 'kgKidsThemeV1';
 const THEME_PACKS = {
@@ -1002,7 +999,6 @@ function clearQuizAccessFromAdmin(){
   renderQuizAccessEditor();
 }
 
-
 function escapeHtml(text){
   return String(text ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 }
@@ -1068,7 +1064,6 @@ function renderTeacherTestEditor(){
   renderTeacherQuestionPicker();
 }
 
-
 function saveTeacherTestFromAdmin(){
   const grade = ((document.getElementById('testGrade')?.value || 'KG1').trim().toLowerCase() === 'kg2') ? 'kg2' : 'kg1';
   const name = (document.getElementById('testName')?.value || '').trim() || `${grade.toUpperCase()} Test`;
@@ -1089,7 +1084,6 @@ function saveTeacherTestFromAdmin(){
   alert('Teacher test saved.');
 }
 
-
 function clearTeacherTestFromAdmin(){
   const tests = getTeacherTests();
   tests.kg1 = null; tests.kg2 = null;
@@ -1098,7 +1092,6 @@ function clearTeacherTestFromAdmin(){
   if (listEl) listEl.value = '';
   renderTeacherTestEditor();
 }
-
 
 function addCustomQuestion(){ const grade = ($('#newQGrade').value || '').trim().toLowerCase(); const skill = $('#newQSkill').value.trim() || 'Vocabulary'; const type = $('#newQType').value.trim() || 'Choice'; const text = $('#newQText').value.trim(); const options = ($('#newQOptions').value || '').split('|').map(s=>s.trim()).filter(Boolean); const answer = $('#newQAnswer').value.trim(); const difficulty = clamp(Number($('#newQDifficulty').value || 1),1,3); const image = ($('#newQImage').value || '').trim() || $('#newQImageFile').dataset.savedImage || null; if (!['kg1','kg2'].includes(grade) || !text || !options.length || !answer){ alert('Please fill grade, question text, options, and answer.'); return; } const custom = getCustomQuestions(); custom[grade].push({grade:grade.toUpperCase(), skill, type, text, options, answer, image, difficulty}); writeJson(storeKeys.customQuestions, custom); ['#newQGrade','#newQSkill','#newQType','#newQText','#newQOptions','#newQAnswer','#newQDifficulty','#newQImage'].forEach(id=> $(id).value=''); $('#newQImageFile').value=''; $('#newQImageFile').dataset.savedImage=''; renderStoredQuestions(); alert('Question added.'); }
 function questionEditorCard(question){ const meta = question._meta; const opts = (question.options || []).join(' | '); const srcLabel = meta.source === 'base' ? 'Base' : 'Custom'; return `<div class="question-edit-card" data-qid="${meta.id}" data-grade="${question.grade || meta.grade.toUpperCase()}"><div class="meta-line"><span>${question.grade || meta.grade.toUpperCase()}</span><span>${question.skill || '-'}</span><span>${question.type || 'Choice'}</span><span>${srcLabel}</span></div><div class="question-edit-grid"><textarea class="qe-text full">${question.text || ''}</textarea><input class="qe-skill" value="${question.skill || ''}" placeholder="Skill"><input class="qe-type" value="${question.type || ''}" placeholder="Type"><textarea class="qe-options full" placeholder="Options separated by |">${opts}</textarea><input class="qe-answer" value="${question.answer || ''}" placeholder="Answer"><input class="qe-difficulty" value="${question.difficulty || 1}" placeholder="Difficulty 1-3"><input class="qe-image full" value="${question.image || ''}" placeholder="Image filename or data URL"></div><div class="question-edit-actions"><button class="main-btn save-question-btn">Save Changes</button><button class="ghost-btn reset-question-btn">Reset</button><button class="danger-btn delete-question-btn">${((translations[getLang()] || {}).deleteQuestion) || 'Delete'}</button></div></div>`; }
@@ -1118,7 +1111,6 @@ window.addEventListener('pagehide', ()=>{ try { if ('speechSynthesis' in window)
 document.addEventListener('visibilitychange', ()=>{ if (document.hidden) { try { if ('speechSynthesis' in window) speechSynthesis.cancel(); } catch(e){} } });
 window.translations = translations; window.initQuiz = initQuiz;
 initThemeButtons(); initLangButtons(); applyTranslations(); renderHomeProgress(); initQuiz(); renderCertificate(); initAdmin(); registerPwa();
-
 
 window.addEventListener('error', (event) => { try { console.error('App error', event.error || event.message); } catch(e){} });
 window.addEventListener('unhandledrejection', (event) => { try { console.error('Unhandled promise rejection', event.reason); } catch(e){} });
@@ -1166,7 +1158,6 @@ function isDuplicateQuestionEnhanced(text, list){
   const t=(text||"").toLowerCase().trim();
   return list.some(q=> (q.text||"").toLowerCase().trim()===t);
 }
-
 
 /* === v38.2 admin upgrade === */
 (function(){
@@ -1376,8 +1367,6 @@ function isDuplicateQuestionEnhanced(text, list){
   }
   window.addEventListener('load', ()=> setTimeout(rebindV382, 50));
 })();
-
-
 
 /* === v38.10 final account admin fix === */
 (function(){
@@ -1903,7 +1892,6 @@ function isDuplicateQuestionEnhanced(text, list){
     setTimeout(bindAccessAccountManager, 150);
   });
 })();
-
 
 /* === v38.12 pro access account manager === */
 (function(){
@@ -2559,7 +2547,6 @@ function isDuplicateQuestionEnhanced(text, list){
   }
 })();
 
-
 /* === v38.14 dashboard missing-functions recovery === */
 function populateDashboardDateFilter(){
   const select = document.getElementById('dashboardDateFilter');
@@ -2675,7 +2662,6 @@ async function resetDashboardData(){
   }
 }
 
-
 function ensureStudioFooter(){
   try {
     if (document.querySelector('.site-credit-footer')) return;
@@ -2688,7 +2674,6 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 window.kgTranslations = translations; window.kgGetLang = getLang;
-
 
 Object.assign(translations.en, {
   leaderName:'Name',
@@ -2741,7 +2726,6 @@ Object.assign(translations.ar, {
   startGrade6:'ابدأ Grade 6'
 });
 
-
 /* v11 mobile header helper */
 (function(){
   function normalizeMobileHeader(){
@@ -2778,7 +2762,6 @@ Object.assign(translations.ar, {
   document.addEventListener('DOMContentLoaded', normalizeMobileHeader);
   window.addEventListener('resize', normalizeMobileHeader, {passive:true});
 })();
-
 
 /* v12 play modes upgrade */
 (function(){
@@ -3118,7 +3101,6 @@ Object.assign(translations.ar, {
   });
 })();
 
-
 /* visible mode cards sync */
 (function(){
   function syncModeCardsUI(){
@@ -3148,7 +3130,6 @@ Object.assign(translations.ar, {
     syncModeCardsUI();
   });
 })();
-
 
 /* visible mode cards final sync */
 (function(){

@@ -183,8 +183,6 @@
     }
   }
 
-
-
   async function refreshLogs(){
     const payload = await api('?action=logs&ts=' + Date.now(), { method: 'GET' });
     return Array.isArray(payload.logs) ? payload.logs : [];

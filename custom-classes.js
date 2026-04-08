@@ -511,8 +511,6 @@
   });
 })();
 
-
-
 /* === v38.2 class manager enhancements === */
 (function(){
   if (typeof window === 'undefined') return;
@@ -549,7 +547,6 @@
   window.getCustomClasses = function(){ return getCustomClasses(); };
   window.setCustomClasses = function(v){ return setCustomClasses(v); };
 })();
-
 
 /* === v38.11 quiz visibility controls === */
 (function(){
