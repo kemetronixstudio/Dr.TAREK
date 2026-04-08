@@ -307,7 +307,7 @@ function setTimerSettings(value){ writeJson(storeKeys.timerSettings, value); }
 function getAttemptsLog(){ return readJson(storeKeys.attemptsLog, []); }
 function setAttemptsLog(value){ writeJson(storeKeys.attemptsLog, value); }
 
-function getQuizAccess(){ return readJson(storeKeys.quizAccess, {kg1:{enabled:false,password:''}, kg2:{enabled:false,password:''}}); }
+function getQuizAccess(){ return readJson(storeKeys.quizAccess, {}); }
 function setQuizAccess(value){ writeJson(storeKeys.quizAccess, value); }
 function getTeacherTests(){ return readJson(storeKeys.teacherTests, {kg1:null, kg2:null}); }
 function setTeacherTests(value){ writeJson(storeKeys.teacherTests, value); }
@@ -1116,6 +1116,7 @@ function registerPwa(){
 }
 window.addEventListener('pagehide', ()=>{ try { if ('speechSynthesis' in window) speechSynthesis.cancel(); } catch(e){} });
 document.addEventListener('visibilitychange', ()=>{ if (document.hidden) { try { if ('speechSynthesis' in window) speechSynthesis.cancel(); } catch(e){} } });
+window.translations = translations; window.initQuiz = initQuiz;
 initThemeButtons(); initLangButtons(); applyTranslations(); renderHomeProgress(); initQuiz(); renderCertificate(); initAdmin(); registerPwa();
 
 

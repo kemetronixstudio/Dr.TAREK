@@ -39,6 +39,10 @@
     if (title) title.textContent = meta.title;
     if (subtitle) subtitle.textContent = meta.desc;
     document.title = meta.title;
+    try {
+      if (typeof window.initQuiz === 'function') window.initQuiz();
+      window.dispatchEvent(new CustomEvent('kg:quizmeta'));
+    } catch (error) {}
   }
 
 
