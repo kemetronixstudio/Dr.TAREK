@@ -81,7 +81,7 @@ module.exports = async function handler(req, res) {
       const leaderboard = await backend.getPlayLeaderboard();
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(Object.assign({}, result, leaderboard)));
+      res.end(JSON.stringify(Object.assign({}, result, { leaderboard })));
       return;
     }
     res.statusCode = 400;
