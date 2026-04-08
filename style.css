@@ -2525,3 +2525,10 @@ body[data-page="playtest"] .play-top3-item{
 .question-edit-card .class-chip{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;background:#eef6ff;color:#45658b;font-size:12px;font-weight:800}
 .class-frozen-note{margin-top:14px}
 @media (max-width:640px){.quiz-status-toolbar,.class-status-actions{flex-direction:column;align-items:stretch}.quiz-state-badge{justify-content:center}}
+
+/* patch: play identity + image + hide snapshot */
+#studentSummaryUpgrade { display:none !important; }
+.play-guest-toggle{grid-column:1 / -1;}
+.play-entry-note{grid-column:1 / -1; margin-top:-8px;}
+#playQuestionImageWrap{margin:18px 0 10px; text-align:center;}
+#playQuestionImage{max-width:100%; max-height:280px; border-radius:18px; box-shadow:0 10px 30px rgba(21,42,84,.12);}
