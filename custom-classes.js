@@ -549,3 +549,222 @@
   window.getCustomClasses = function(){ return getCustomClasses(); };
   window.setCustomClasses = function(v){ return setCustomClasses(v); };
 })();
+
+
+/* === v38.11 quiz visibility controls === */
+(function(){
+  if (typeof window === 'undefined') return;
+  const KEY_CLASSES = 'kgEnglishCustomClassesV29';
+  const KEY_TESTS = 'kgEnglishTeacherTestsV23';
+
+  function readJson(key, fallback){
+    try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; }
+    catch (e) { return fallback; }
+  }
+  function writeJson(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
+  function getClasses(){ return readJson(KEY_CLASSES, []); }
+  function setClasses(v){ writeJson(KEY_CLASSES, v); }
+  function getTests(){
+    return (typeof window.getTeacherTests === 'function') ? window.getTeacherTests() : readJson(KEY_TESTS, {kg1:null, kg2:null});
+  }
+  function setTests(v){
+    if (typeof window.setTeacherTests === 'function') window.setTeacherTests(v);
+    else writeJson(KEY_TESTS, v);
+  }
+  function getClassMeta(key){ return getClasses().find(c => c && c.key === key) || null; }
+  function currentTeacherGrade(){ return String(document.getElementById('testGrade')?.value || 'KG1').trim().toLowerCase(); }
+  function gradeLabel(key){
+    if (key === 'kg1' || key === 'kg2') return key.toUpperCase();
+    const meta = getClassMeta(key);
+    return meta?.name || key.toUpperCase();
+  }
+
+  function ensureTeacherTestVisibilityControls(){
+    if (document.body.dataset.page !== 'admin') return;
+    const body = document.getElementById('teacherTestBody');
+    const saveBtn = document.getElementById('saveTeacherTestBtn');
+    if (!body || !saveBtn) return;
+
+    let wrap = document.getElementById('teacherTestVisibilityTools');
+    if (!wrap){
+      wrap = document.createElement('div');
+      wrap.id = 'teacherTestVisibilityTools';
+      wrap.className = 'action-row wrap-row';
+      wrap.innerHTML = '' +
+        '<button type="button" class="ghost-btn" id="hideTeacherQuizBtn">Freeze / Hide Quiz</button>' +
+        '<button type="button" class="ghost-btn" id="showTeacherQuizBtn">Unhide Quiz</button>' +
+        '<span class="muted-note" id="teacherQuizVisibilityStatus"></span>';
+      const actionRow = saveBtn.closest('.action-row') || saveBtn.parentNode;
+      if (actionRow && actionRow.parentNode) actionRow.parentNode.insertBefore(wrap, actionRow.nextSibling);
+      else body.appendChild(wrap);
+    }
+
+    const hideBtn = document.getElementById('hideTeacherQuizBtn');
+    const showBtn = document.getElementById('showTeacherQuizBtn');
+    const status = document.getElementById('teacherQuizVisibilityStatus');
+
+    function refreshStatus(){
+      const grade = currentTeacherGrade();
+      const tests = getTests();
+      const cfg = tests && tests[grade];
+      if (!status) return;
+      if (!cfg){
+        status.textContent = 'No saved quiz for ' + gradeLabel(grade) + '.';
+        if (hideBtn) hideBtn.disabled = true;
+        if (showBtn) showBtn.disabled = true;
+        return;
+      }
+      const visible = cfg.enabled !== false;
+      status.textContent = visible
+        ? ('Quiz for ' + gradeLabel(grade) + ' is visible to students.')
+        : ('Quiz for ' + gradeLabel(grade) + ' is hidden from students.');
+      if (hideBtn) hideBtn.disabled = !visible;
+      if (showBtn) showBtn.disabled = visible;
+    }
+
+    if (hideBtn && !hideBtn.dataset.bound){
+      hideBtn.dataset.bound = '1';
+      hideBtn.addEventListener('click', () => {
+        const grade = currentTeacherGrade();
+        const tests = getTests();
+        const cfg = tests && tests[grade];
+        if (!cfg){
+          alert('Save the quiz first, then you can hide it.');
+          refreshStatus();
+          return;
+        }
+        cfg.enabled = false;
+        tests[grade] = cfg;
+        setTests(tests);
+        refreshStatus();
+        alert('Quiz hidden from students.');
+      });
+    }
+    if (showBtn && !showBtn.dataset.bound){
+      showBtn.dataset.bound = '1';
+      showBtn.addEventListener('click', () => {
+        const grade = currentTeacherGrade();
+        const tests = getTests();
+        const cfg = tests && tests[grade];
+        if (!cfg){
+          alert('No saved quiz to unhide.');
+          refreshStatus();
+          return;
+        }
+        cfg.enabled = true;
+        tests[grade] = cfg;
+        setTests(tests);
+        refreshStatus();
+        alert('Quiz is visible to students again.');
+      });
+    }
+
+    ['testGrade','testName','testMode','testCount','testQuestionList'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el && !el.dataset.visibilityWatch){
+        el.dataset.visibilityWatch = '1';
+        el.addEventListener('change', refreshStatus);
+        el.addEventListener('input', refreshStatus);
+      }
+    });
+    ['saveTeacherTestBtn','clearTeacherTestBtn','archiveTeacherTestBtn'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el && !el.dataset.visibilityRefresh){
+        el.dataset.visibilityRefresh = '1';
+        el.addEventListener('click', () => setTimeout(refreshStatus, 30));
+      }
+    });
+
+    refreshStatus();
+  }
+
+  function toggleClassHidden(key, hidden){
+    const classes = getClasses();
+    const idx = classes.findIndex(c => c && c.key === key);
+    if (idx < 0) return false;
+    classes[idx].hidden = !!hidden;
+    setClasses(classes);
+    return true;
+  }
+
+  function decorateClassManagerCards(){
+    if (document.body.dataset.page !== 'admin') return;
+    const list = document.getElementById('customClassesList');
+    if (!list) return;
+    const classes = getClasses();
+    list.querySelectorAll('.question-edit-card').forEach((card) => {
+      const delBtn = card.querySelector('.delete-class-btn');
+      if (!delBtn) return;
+      const key = delBtn.dataset.classKey;
+      const meta = classes.find(c => c && c.key === key);
+      const actions = card.querySelector('.question-edit-actions');
+      const infoRow = card.querySelector('.class-manager-meta');
+      if (!actions || !key) return;
+
+      let toggleBtn = actions.querySelector('.toggle-class-visibility-btn');
+      if (!toggleBtn){
+        toggleBtn = document.createElement('button');
+        toggleBtn.type = 'button';
+        toggleBtn.className = 'ghost-btn toggle-class-visibility-btn';
+        actions.insertBefore(toggleBtn, delBtn);
+        toggleBtn.addEventListener('click', () => {
+          const current = getClassMeta(key);
+          if (!current) return;
+          const nextHidden = !current.hidden;
+          toggleClassHidden(key, nextHidden);
+          decorateClassManagerCards();
+          if (document.body.dataset.page === 'home'){
+            document.querySelectorAll('.custom-class-card').forEach(el => el.remove());
+          }
+          alert(nextHidden ? 'Class quiz hidden from students.' : 'Class quiz is visible to students again.');
+        });
+      }
+      const hidden = !!(meta && meta.hidden);
+      toggleBtn.textContent = hidden ? 'Show Quiz' : 'Hide Quiz';
+
+      let badge = infoRow && infoRow.querySelector('.class-manager-hidden-badge');
+      if (hidden && infoRow && !badge){
+        badge = document.createElement('span');
+        badge.className = 'class-manager-hidden-badge';
+        badge.textContent = 'Hidden';
+        infoRow.appendChild(badge);
+      } else if (!hidden && badge) {
+        badge.remove();
+      }
+    });
+  }
+
+  function watchClassManagerList(){
+    if (document.body.dataset.page !== 'admin') return;
+    const list = document.getElementById('customClassesList');
+    if (!list || list.dataset.visibilityObserver) return;
+    list.dataset.visibilityObserver = '1';
+    const obs = new MutationObserver(() => decorateClassManagerCards());
+    obs.observe(list, { childList:true, subtree:true });
+    decorateClassManagerCards();
+  }
+
+  function blockHiddenClassDirectAccess(){
+    if (document.body.dataset.page !== 'quiz') return;
+    const params = new URLSearchParams(location.search);
+    const grade = String(params.get('grade') || document.body.dataset.grade || '').trim().toLowerCase();
+    if (!grade || grade === 'kg1' || grade === 'kg2') return;
+    const meta = getClassMeta(grade);
+    if (!meta || !meta.hidden) return;
+    const shell = document.querySelector('main.container') || document.body;
+    if (shell){
+      shell.innerHTML = '<section class="card"><h2>Quiz Hidden</h2><p>This class quiz is hidden by the teacher.</p><p><a class="main-btn" href="index.html">Back Home</a></p></section>';
+    }
+    try { history.replaceState({}, '', 'index.html'); } catch (e) {}
+  }
+
+  window.addEventListener('load', () => {
+    ensureTeacherTestVisibilityControls();
+    watchClassManagerList();
+    blockHiddenClassDirectAccess();
+    setTimeout(() => {
+      ensureTeacherTestVisibilityControls();
+      decorateClassManagerCards();
+    }, 120);
+  });
+})();

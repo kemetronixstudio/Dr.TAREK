@@ -207,6 +207,17 @@ translations.en = Object.assign({}, translations.en || {}, {
   themeSpaceText:'Stars, planets, and magical cosmic colors.',
   themeQuickLabel:'Theme'
 });
+translations.en = Object.assign({}, translations.en || {}, {
+  deleteQuestion:'Delete',
+  deleteQuestionConfirm:'Delete this question from the Question Bank?',
+  questionDeleted:'Question deleted.'
+});
+translations.ar = Object.assign({}, translations.ar || {}, {
+  deleteQuestion:'حذف',
+  deleteQuestionConfirm:'هل تريد حذف هذا السؤال من بنك الأسئلة؟',
+  questionDeleted:'تم حذف السؤال.'
+});
+
 translations.ar = Object.assign({}, translations.ar || {}, {
   themePackTitle:'اختَر مظهراً ممتعاً',
   themePackBadge:'مجموعة الثيمات 1',
@@ -255,6 +266,7 @@ const storeKeys = {
   cert:'kgEnglishCertificateV7',
   customQuestions:'kgEnglishCustomQuestionsV7',
   questionOverrides:'kgEnglishQuestionOverridesV7',
+  deletedQuestions:'kgEnglishDeletedQuestionsV1',
   levelVisibility:'kgEnglishLevelVisibilityV7',
   attemptsLog:'kgEnglishAttemptsLogV22',
   timerSettings:'kgEnglishTimerSettingsV23',
@@ -286,6 +298,8 @@ function getRecords(){ return readJson(storeKeys.records, {}); }
 function getAnalytics(){ return readJson(storeKeys.analytics, {questionMisses:{}, skillMisses:{}}); }
 function getCustomQuestions(){ return readJson(storeKeys.customQuestions, {kg1:[], kg2:[]}); }
 function getQuestionOverrides(){ return readJson(storeKeys.questionOverrides, {}); }
+function getDeletedQuestions(){ return readJson(storeKeys.deletedQuestions, {}); }
+function isQuestionDeleted(id){ const deleted = getDeletedQuestions(); return !!(id && deleted && deleted[id]); }
 function getLevelVisibility(){ return readJson(storeKeys.levelVisibility, {kg1:[10,20,30,40,50], kg2:[10,20,30,40,50]}); }
 function setLevelVisibility(value){ writeJson(storeKeys.levelVisibility, value); }
 function getTimerSettings(){ return readJson(storeKeys.timerSettings, {kg1:true, kg2:true}); }
@@ -597,7 +611,7 @@ function collectQuestionsWithMeta(grade){
   const extra = (custom[grade] || []).map((q,idx)=> ({...q, _meta:{id:questionId(grade,q,idx,'custom'), grade, idx, source:'custom'}}));
   return [...base, ...extra];
 }
-function applyQuestionOverrides(question){ const overrides = getQuestionOverrides(); const meta = question._meta || {}; const patch = overrides[meta.id] || {}; return {...question, ...patch, _meta:meta}; }
+function applyQuestionOverrides(question){ const overrides = getQuestionOverrides(); const meta = question._meta || {}; const patch = overrides[meta.id] || {}; if (meta.id && isQuestionDeleted(meta.id)) return {...question, ...patch, _meta:meta, _deleted:true}; return {...question, ...patch, _meta:meta}; }
 function questionSignature(q){ return [q.grade || '', q.skill || '', q.text || '', q.answer || '', q.image || ''].join('||'); }
 const LEGACY_IMAGE_MAP = {
   'kg1||what color is the sky?':'assets/quiz-bulk/kg2_sky.png',
@@ -664,7 +678,7 @@ function sanitizeQuestions(list){
     return true;
   });
 }
-function allQuestionsFor(grade){ return sanitizeQuestions(collectQuestionsWithMeta(grade).map(applyQuestionOverrides).map(({_meta,...q})=> q)); }
+function allQuestionsFor(grade){ return sanitizeQuestions(collectQuestionsWithMeta(grade).map(applyQuestionOverrides).filter(q => !(q && q._deleted)).map(({_meta,_deleted,...q})=> q)); }
 function badgeFor(score){ const lang = getLang(); if (score >= 85) return translations[lang].badgeMaster; if (score >= 55) return translations[lang].badgeRising; return translations[lang].badgeStarter; }
 function recordStudentAttempt(data){
   const progress = getProgress(); const records = getRecords(); const analytics = getAnalytics(); const attemptsLog = getAttemptsLog();
@@ -1087,11 +1101,12 @@ function clearTeacherTestFromAdmin(){
 
 
 function addCustomQuestion(){ const grade = ($('#newQGrade').value || '').trim().toLowerCase(); const skill = $('#newQSkill').value.trim() || 'Vocabulary'; const type = $('#newQType').value.trim() || 'Choice'; const text = $('#newQText').value.trim(); const options = ($('#newQOptions').value || '').split('|').map(s=>s.trim()).filter(Boolean); const answer = $('#newQAnswer').value.trim(); const difficulty = clamp(Number($('#newQDifficulty').value || 1),1,3); const image = ($('#newQImage').value || '').trim() || $('#newQImageFile').dataset.savedImage || null; if (!['kg1','kg2'].includes(grade) || !text || !options.length || !answer){ alert('Please fill grade, question text, options, and answer.'); return; } const custom = getCustomQuestions(); custom[grade].push({grade:grade.toUpperCase(), skill, type, text, options, answer, image, difficulty}); writeJson(storeKeys.customQuestions, custom); ['#newQGrade','#newQSkill','#newQType','#newQText','#newQOptions','#newQAnswer','#newQDifficulty','#newQImage'].forEach(id=> $(id).value=''); $('#newQImageFile').value=''; $('#newQImageFile').dataset.savedImage=''; renderStoredQuestions(); alert('Question added.'); }
-function questionEditorCard(question){ const meta = question._meta; const opts = (question.options || []).join(' | '); const srcLabel = meta.source === 'base' ? 'Base' : 'Custom'; return `<div class="question-edit-card" data-qid="${meta.id}" data-grade="${question.grade || meta.grade.toUpperCase()}"><div class="meta-line"><span>${question.grade || meta.grade.toUpperCase()}</span><span>${question.skill || '-'}</span><span>${question.type || 'Choice'}</span><span>${srcLabel}</span></div><div class="question-edit-grid"><textarea class="qe-text full">${question.text || ''}</textarea><input class="qe-skill" value="${question.skill || ''}" placeholder="Skill"><input class="qe-type" value="${question.type || ''}" placeholder="Type"><textarea class="qe-options full" placeholder="Options separated by |">${opts}</textarea><input class="qe-answer" value="${question.answer || ''}" placeholder="Answer"><input class="qe-difficulty" value="${question.difficulty || 1}" placeholder="Difficulty 1-3"><input class="qe-image full" value="${question.image || ''}" placeholder="Image filename or data URL"></div><div class="question-edit-actions"><button class="main-btn save-question-btn">Save Changes</button><button class="ghost-btn reset-question-btn">Reset</button></div></div>`; }
-function bindQuestionEditorActions(){ document.querySelectorAll('[data-filter-grade]').forEach(btn => btn.onclick = ()=>{ document.querySelectorAll('[data-filter-grade]').forEach(b=>b.classList.toggle('active', b===btn)); const grade = btn.dataset.filterGrade; document.querySelectorAll('.question-edit-card').forEach(card=>{ card.style.display = grade === 'all' || card.dataset.grade === grade ? '' : 'none'; }); }); document.querySelectorAll('.save-question-btn').forEach(btn => btn.onclick = ()=> saveQuestionEdits(btn.closest('.question-edit-card'))); document.querySelectorAll('.reset-question-btn').forEach(btn => btn.onclick = ()=> resetQuestionEdits(btn.closest('.question-edit-card'))); }
+function questionEditorCard(question){ const meta = question._meta; const opts = (question.options || []).join(' | '); const srcLabel = meta.source === 'base' ? 'Base' : 'Custom'; return `<div class="question-edit-card" data-qid="${meta.id}" data-grade="${question.grade || meta.grade.toUpperCase()}"><div class="meta-line"><span>${question.grade || meta.grade.toUpperCase()}</span><span>${question.skill || '-'}</span><span>${question.type || 'Choice'}</span><span>${srcLabel}</span></div><div class="question-edit-grid"><textarea class="qe-text full">${question.text || ''}</textarea><input class="qe-skill" value="${question.skill || ''}" placeholder="Skill"><input class="qe-type" value="${question.type || ''}" placeholder="Type"><textarea class="qe-options full" placeholder="Options separated by |">${opts}</textarea><input class="qe-answer" value="${question.answer || ''}" placeholder="Answer"><input class="qe-difficulty" value="${question.difficulty || 1}" placeholder="Difficulty 1-3"><input class="qe-image full" value="${question.image || ''}" placeholder="Image filename or data URL"></div><div class="question-edit-actions"><button class="main-btn save-question-btn">Save Changes</button><button class="ghost-btn reset-question-btn">Reset</button><button class="danger-btn delete-question-btn">${((translations[getLang()] || {}).deleteQuestion) || 'Delete'}</button></div></div>`; }
+function bindQuestionEditorActions(){ document.querySelectorAll('[data-filter-grade]').forEach(btn => btn.onclick = ()=>{ document.querySelectorAll('[data-filter-grade]').forEach(b=>b.classList.toggle('active', b===btn)); const grade = btn.dataset.filterGrade; document.querySelectorAll('.question-edit-card').forEach(card=>{ card.style.display = grade === 'all' || card.dataset.grade === grade ? '' : 'none'; }); }); document.querySelectorAll('.save-question-btn').forEach(btn => btn.onclick = ()=> saveQuestionEdits(btn.closest('.question-edit-card'))); document.querySelectorAll('.reset-question-btn').forEach(btn => btn.onclick = ()=> resetQuestionEdits(btn.closest('.question-edit-card'))); document.querySelectorAll('.delete-question-btn').forEach(btn => btn.onclick = ()=> deleteQuestionEdits(btn.closest('.question-edit-card'))); }
 function saveQuestionEdits(card){ if (!card) return; const id = card.dataset.qid; const grade = (card.dataset.grade || 'KG1').toLowerCase(); const payload = { text: $('.qe-text',card).value.trim(), skill: $('.qe-skill',card).value.trim() || 'Vocabulary', type: $('.qe-type',card).value.trim() || 'Choice', options: $('.qe-options',card).value.split('|').map(s=>s.trim()).filter(Boolean), answer: $('.qe-answer',card).value.trim(), difficulty: clamp(Number($('.qe-difficulty',card).value || 1),1,3), image: $('.qe-image',card).value.trim() || null }; if (!payload.text || !payload.options.length || !payload.answer){ alert('Question text, options, and answer are required.'); return; } const overrides = getQuestionOverrides(); overrides[id] = payload; writeJson(storeKeys.questionOverrides, overrides); alert('Question updated.'); }
 function resetQuestionEdits(card){ if (!card) return; const id = card.dataset.qid; const overrides = getQuestionOverrides(); delete overrides[id]; writeJson(storeKeys.questionOverrides, overrides); renderStoredQuestions(); }
-function renderStoredQuestions(){ const list = $('#storedQuestionsList'); if (!list) return; const items = [...collectQuestionsWithMeta('kg1'), ...collectQuestionsWithMeta('kg2')].map(applyQuestionOverrides); list.innerHTML = items.length ? items.map(questionEditorCard).join('') : '<div class="stored-question"><h4>No questions yet.</h4><p>Add questions from the editor above.</p></div>'; bindQuestionEditorActions(); }
+function deleteQuestionEdits(card){ if (!card) return; const id = card.dataset.qid; if (!id) return; const ok = window.confirm(((translations[getLang()] || {}).deleteQuestionConfirm) || 'Delete this question from the Question Bank?'); if (!ok) return; const deleted = getDeletedQuestions(); deleted[id] = { deletedAt:new Date().toISOString() }; writeJson(storeKeys.deletedQuestions, deleted); const overrides = getQuestionOverrides(); delete overrides[id]; writeJson(storeKeys.questionOverrides, overrides); renderStoredQuestions(); if (typeof renderTeacherQuestionPicker === 'function') renderTeacherQuestionPicker(); alert(((translations[getLang()] || {}).questionDeleted) || 'Question deleted.'); }
+function renderStoredQuestions(){ const list = $('#storedQuestionsList'); if (!list) return; const items = [...collectQuestionsWithMeta('kg1'), ...collectQuestionsWithMeta('kg2')].map(applyQuestionOverrides).filter(q => !(q && q._deleted)); list.innerHTML = items.length ? items.map(questionEditorCard).join('') : '<div class="stored-question"><h4>No questions yet.</h4><p>Add questions from the editor above.</p></div>'; bindQuestionEditorActions(); }
 document.addEventListener('change', (e)=>{ if (e.target && e.target.id === 'newQImageFile'){ const file = e.target.files?.[0]; if (!file) return; const reader = new FileReader(); reader.onload = ()=>{ e.target.dataset.savedImage = reader.result; }; reader.readAsDataURL(file); } });
 function registerPwa(){
   if (!('serviceWorker' in navigator)) return;
@@ -1291,7 +1306,7 @@ function isDuplicateQuestionEnhanced(text, list){
     } catch(err) {
       console.warn('Skipping custom class question merge', err);
     }
-    items = items.map(applyQuestionOverrides);
+    items = items.map(applyQuestionOverrides).filter(q => !(q && q._deleted));
     list.innerHTML = items.length ? items.map(questionEditorCard).join('') : '<div class="stored-question"><h4>No questions yet.</h4><p>Add questions from the editor above.</p></div>';
     bindQuestionEditorActions();
     wireQuestionFilterButtons();
