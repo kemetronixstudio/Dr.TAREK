@@ -1,7 +1,10 @@
 const backend = require('../../lib/student-cloud-backend');
 const accessBackend = require('../../lib/access-accounts-backend');
+const apiSecurity = require('../../lib/api-security');
 
 module.exports = async function handler(req, res) {
+  if (apiSecurity.handlePreflight(req, res)) return;
+  apiSecurity.applyApiHeaders(req, res);
   const url = new URL(req.url, 'http://localhost');
   const action = String(url.searchParams.get('action') || '').trim().toLowerCase();
   try {

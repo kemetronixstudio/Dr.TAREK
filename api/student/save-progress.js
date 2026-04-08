@@ -1,6 +1,9 @@
 const backend = require('../../lib/student-cloud-backend');
+const apiSecurity = require('../../lib/api-security');
 
 module.exports = async function handler(req, res) {
+  if (apiSecurity.handlePreflight(req, res)) return;
+  apiSecurity.applyApiHeaders(req, res);
   if (req.method !== 'POST') {
     res.statusCode = 405;
     res.setHeader('Content-Type', 'application/json');
