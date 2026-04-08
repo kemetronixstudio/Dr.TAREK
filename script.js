@@ -791,7 +791,7 @@ function adaptiveQuestionSet(pool, count, studentName='', grade=''){
   return result;
 }
 function initQuiz(){
-  const grade = document.body.dataset.grade; if (!grade) return; const setupCard = $('#setupCard'); const studentNameInput = $('#studentName'); const goBtn = $('#goToLevelBtn'); const levelChooser = $('#levelChooser'); applyLevelVisibilityUI(grade); const levelBtns = [...levelChooser.querySelectorAll('.level-btn[data-count]')].filter(btn => !btn.classList.contains('hidden'));
+  const grade = document.body.dataset.grade; if (!grade) return; const setupCard = $('#setupCard'); if (setupCard && setupCard.dataset.quizInitDone === grade) { if (window.studentCloud && typeof window.studentCloud.ensureQuizIdentityFields === 'function') window.studentCloud.ensureQuizIdentityFields(grade.toUpperCase()); return; } if (setupCard) setupCard.dataset.quizInitDone = grade; const studentNameInput = $('#studentName'); const goBtn = $('#goToLevelBtn'); const levelChooser = $('#levelChooser'); applyLevelVisibilityUI(grade); const levelBtns = [...levelChooser.querySelectorAll('.level-btn[data-count]')].filter(btn => !btn.classList.contains('hidden'));
   const quizSection = $('#quizSection'); const studentPreview = $('#studentPreview'); const quizLevelLabel = $('#quizLevelLabel'); const questionProgressEl = $('#questionProgress'); const timerValueEl = $('#timerValue'); const scoreValueEl = $('#scoreValue'); const skillBadge = $('#skillBadge'); const typeBadge = $('#questionTypeBadge'); const questionText = $('#questionText'); const questionImageWrap = $('#questionImageWrap'); const questionImage = $('#questionImage'); const optionsWrap = $('#optionsWrap'); const nextBtn = $('#nextBtn'); const autoNext = $('#autoNextToggle'); const voiceBtn = $('#voiceBtn'); const testLaunchWrap = $('#testLaunchWrap'); const startAssignedTestBtn = $('#startAssignedTestBtn');
   let selectedCount = 10, selectedLevelLabel = translations[getLang()].level1, studentName = '', questions = [], currentIndex = 0, score = 0, timer = 15, interval = null, autoAdvanceTimeout = null, answered = false, skillStats = {}, missedQuestions=[], adaptiveIndex = 0, sessionUsed = new Set(), activeTestConfig = null, quizDeadlineTs = 0;
   let studentProfile = null, currentQuizKey = '', answerLog = [], quizStartedAt = '';
@@ -1116,6 +1116,7 @@ function registerPwa(){
 }
 window.addEventListener('pagehide', ()=>{ try { if ('speechSynthesis' in window) speechSynthesis.cancel(); } catch(e){} });
 document.addEventListener('visibilitychange', ()=>{ if (document.hidden) { try { if ('speechSynthesis' in window) speechSynthesis.cancel(); } catch(e){} } });
+window.initQuiz = initQuiz;
 initThemeButtons(); initLangButtons(); applyTranslations(); renderHomeProgress(); initQuiz(); renderCertificate(); initAdmin(); registerPwa();
 
 
