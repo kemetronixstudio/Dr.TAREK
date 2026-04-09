@@ -1,8 +1,10 @@
 const backend = require('../../lib/access-accounts-backend');
-const security = require('../../lib/api-security');
+
+function setAuthCookie(res, token) {
+  if (token) res.setHeader('Set-Cookie', `kgAccessToken=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=43200`);
+}
 
 module.exports = async function handler(req, res) {
-  if (security.applyCors(req, res)) return;
   try {
     if (req.method === 'GET') {
       const auth = await backend.requireAdmin(req);
@@ -12,7 +14,7 @@ module.exports = async function handler(req, res) {
         res.end(JSON.stringify({ ok: false, error: auth.error }));
         return;
       }
-      security.setAuthCookie(req, res, auth.token);
+      setAuthCookie(res, auth.token);
       const action = String((req.query && (req.query.action || req.query.mode)) || '').trim().toLowerCase();
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
@@ -38,7 +40,7 @@ module.exports = async function handler(req, res) {
         res.end(JSON.stringify({ ok: false, error: auth.error }));
         return;
       }
-      security.setAuthCookie(req, res, auth.token);
+      setAuthCookie(res, auth.token);
       const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
       const result = await backend.saveAccount(body, auth.account);
       res.statusCode = 200;
@@ -55,7 +57,7 @@ module.exports = async function handler(req, res) {
         res.end(JSON.stringify({ ok: false, error: auth.error }));
         return;
       }
-      security.setAuthCookie(req, res, auth.token);
+      setAuthCookie(res, auth.token);
       const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
       const result = await backend.deleteAccount(body, auth.account);
       res.statusCode = 200;

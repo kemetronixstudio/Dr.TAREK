@@ -3180,25 +3180,3 @@ Object.assign(translations.ar, {
 })();
 
 /* quiz-bulk image candidates */
-
-
-;(() => {
-  try {
-    if (window.translations) {
-      Object.assign(window.translations.en || {}, {
-        studentIdOptional: 'Student ID (optional)',
-        classCourse: 'Class / Course',
-        outsideStudent: 'I am not in your class / course / school',
-        studentIdentityNote: 'Name is required. Student ID is optional. Class is required unless the outside-student option is checked.',
-        classRequired: 'Please enter the class or course, or check the outside-student option.'
-      });
-      Object.assign(window.translations.ar || {}, {
-        studentIdOptional: 'كود الطالب (اختياري)',
-        classCourse: 'الصف / الكورس',
-        outsideStudent: 'أنا لست ضمن صفك / كورسك / مدرستك',
-        studentIdentityNote: 'الاسم مطلوب. كود الطالب اختياري. الصف / الكورس مطلوب إلا إذا تم اختيار أنك من خارج الصف / الكورس / المدرسة.',
-        classRequired: 'من فضلك أدخل الصف أو الكورس أو فعّل خيار أنك لست ضمن الصف / الكورس / المدرسة.'
-      });
-    }
-  } catch (e) {}
-})();
