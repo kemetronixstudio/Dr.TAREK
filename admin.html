@@ -145,6 +145,41 @@
       <div class="action-row"><button class="main-btn" id="saveTeacherTestBtn" data-i18n="saveTeacherTest">Save Teacher Test</button></div>
       </div>
     </section>
+    <section class="card admin-level-card collapsible-section" data-section-key="teacherTest" id="homeworkBuilderSection">
+      <div class="section-head"><h2>Homework Builder</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleHomeworkBuilderBtn" type="button">Expand</button></div></div>
+      <div id="homeworkBuilderBody" class="admin-collapsible-body collapsed-body">
+      <p class="muted-note">Create homework for one or many classes, choose the date, set timer or password, and define tries from 0 to 5. Students will answer without seeing instant correct or wrong feedback.</p>
+      <div class="editor-grid">
+        <input id="homeworkTitle" placeholder="Homework title">
+        <select id="homeworkGrade"><option value="KG1">KG1</option><option value="KG2">KG2</option><option value="GRADE1">Grade 1</option><option value="GRADE2">Grade 2</option><option value="GRADE3">Grade 3</option><option value="GRADE4">Grade 4</option><option value="GRADE5">Grade 5</option><option value="GRADE6">Grade 6</option></select>
+        <input id="homeworkClasses" placeholder="Classes, separated by commas">
+        <input id="homeworkDate" type="date">
+        <select id="homeworkMode"><option value="select">Choose Existing Questions</option><option value="manual">Enter New Questions</option></select>
+        <select id="homeworkTryLimit"><option value="0">0 tries</option><option value="1">1 try</option><option value="2">2 tries</option><option value="3">3 tries</option><option value="4">4 tries</option><option value="5">5 tries</option></select>
+        <label class="level-toggle admin-toggle-row"><input type="checkbox" id="homeworkTimerToggle"><span>Use timer</span></label>
+        <input id="homeworkTimerMinutes" type="number" min="1" max="180" placeholder="Timer minutes">
+        <label class="level-toggle admin-toggle-row"><input type="checkbox" id="homeworkPasswordToggle"><span>Use password</span></label>
+        <input id="homeworkPassword" type="text" placeholder="Homework password">
+        <textarea id="homeworkQuestionList" class="full" placeholder="Manual mode: enter one question per line using this format: Question | Option 1 | Option 2 | Option 3 | Option 4 | Correct answer"></textarea>
+        <div id="homeworkQuestionPickerWrap" class="full teacher-question-picker">
+          <div class="teacher-picker-head">
+            <strong>Available Questions</strong>
+            <div class="teacher-picker-actions">
+              <button type="button" class="ghost-btn small-btn" id="selectAllHomeworkQuestionsBtn">Select All</button>
+              <button type="button" class="ghost-btn small-btn" id="clearHomeworkQuestionsBtn">Clear</button>
+            </div>
+          </div>
+          <div id="homeworkQuestionPickerList" class="teacher-question-picker-list"></div>
+        </div>
+      </div>
+      <div class="action-row wrap-row">
+        <button class="main-btn" id="saveHomeworkBtn" type="button">Save Homework</button>
+        <button class="ghost-btn" id="clearHomeworkBtn" type="button">Clear Homework Form</button>
+      </div>
+      <div id="homeworkAdminStatus" class="muted-note"></div>
+      <div id="homeworkAdminList" class="stored-questions question-editor-list"></div>
+      </div>
+    </section>
 
     <section class="card admin-level-card collapsible-section" data-section-key="bulkQuestions" id="bulkQuestionsSection">
       <div class="section-head"><h2 data-i18n="bulkQuestionsTitle">Bulk Question Import</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleBulkQuestionsBtn" type="button">Expand</button></div></div>
@@ -241,4 +276,4 @@
     </section>
   </div></section>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script><script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><script src="script.js"></script><script src="custom-classes.js"></script><script src="grades-extension.js"></script><script src="backend-access.js"></script><script src="student-cloud-admin.js"></script><script src="quiz-bulk-package.js"></script><script src="kg1-grade6-support.js"></script><script src="hobby-upgrades.js"></script><script src="next-upgrade-pack.js"></script><script src="final-polish-pack.js"></script><script src="adaptive-access-admin.js"></script><script src="runtime-ui-fixes.js"></script><script src="latest-admin-dynamic-fix.js"></script></body></html>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script><script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><script src="script.js"></script><script src="custom-classes.js"></script><script src="grades-extension.js"></script><script src="backend-access.js"></script><script src="student-cloud-admin.js"></script><script src="homework-admin.js"></script><script src="quiz-bulk-package.js"></script><script src="kg1-grade6-support.js"></script><script src="hobby-upgrades.js"></script><script src="next-upgrade-pack.js"></script><script src="final-polish-pack.js"></script><script src="adaptive-access-admin.js"></script><script src="runtime-ui-fixes.js"></script><script src="latest-admin-dynamic-fix.js"></script></body></html>
