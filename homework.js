@@ -60,8 +60,6 @@
     $('homeworkTimerValue').textContent = state.timeLeft == null ? 'Off' : String(state.timeLeft);
   }
 
-
-
   function resolveQuestionImage(image){
     const value = String(image || '').trim();
     if (!value) return '';
@@ -69,6 +67,7 @@
     if (value.startsWith('assets/')) return '/' + value;
     return '/assets/' + value.replace(/^\.\//, '');
   }
+
   function renderQuestion(){
     const q = state.assignment.questions[state.index];
     if (!q) return finishHomework(false);
