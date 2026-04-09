@@ -2594,3 +2594,175 @@ body[data-page="home"] .home-levels .playtest-card .playtest-card-art{
 @media (max-width: 900px){
   body[data-page="home"] .home-levels{grid-template-columns:1fr !important;gap:18px !important;}
 }
+
+/* === homework colorful kid-friendly refresh === */
+body[data-page="homework"]{
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255,214,102,.28), transparent 120px),
+    radial-gradient(circle at 88% 24%, rgba(110,231,255,.28), transparent 140px),
+    radial-gradient(circle at 18% 82%, rgba(255,153,204,.22), transparent 150px),
+    linear-gradient(180deg,#f4ffd7 0%,#dff6d6 42%,#d9efff 100%);
+}
+body[data-page="homework"] .setup-card,
+body[data-page="homework"] .quiz-card-main,
+body[data-page="homework"] #homeworkDoneSection,
+body[data-page="homework"] .status-card,
+body[data-page="homework"] .stored-question.homework-card-item{
+  border:none;
+  box-shadow:0 18px 40px rgba(57,88,127,.10), inset 0 0 0 1px rgba(255,255,255,.85);
+}
+body[data-page="homework"] .setup-card{
+  background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(255,249,235,.92));
+  border-radius:34px;
+  overflow:hidden;
+  position:relative;
+}
+body[data-page="homework"] .setup-card::before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto 0;
+  height:12px;
+  background:linear-gradient(90deg,#7bd7ff,#ffd76f,#ff9bc8,#8fe388,#7e8cff);
+}
+body[data-page="homework"] .homework-intro-column h1,
+body[data-page="homework"] #homeworkDoneSection h2,
+body[data-page="homework"] .quiz-card-main h2{
+  color:#245126;
+  text-shadow:0 2px 0 rgba(255,255,255,.85);
+}
+body[data-page="homework"] .student-form-box{
+  background:linear-gradient(180deg,#fff8ef 0%,#fff0da 100%);
+  border:3px dashed #ffbf61;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.7);
+}
+body[data-page="homework"] .student-form-box input,
+body[data-page="homework"] .student-form-box select,
+body[data-page="homework"] .homework-password-input{
+  border:2px solid #cfe3ff;
+  border-radius:18px;
+  background:#fff;
+  box-shadow:0 6px 14px rgba(83,113,155,.06);
+}
+body[data-page="homework"] #homeworkStudentGrade{
+  width:100%;
+  padding:14px 16px;
+  border-radius:18px;
+  outline:none;
+  margin:10px 0;
+  font:inherit;
+}
+body[data-page="homework"] .homework-list-column{
+  background:linear-gradient(180deg,#f3fbff 0%,#eef9ff 100%);
+  border-radius:28px;
+  padding:18px;
+  position:relative;
+}
+body[data-page="homework"] .homework-list-column::after{
+  content:"⭐ 📚 ✏️";
+  position:absolute;
+  top:16px;
+  right:18px;
+  font-size:1.1rem;
+  opacity:.85;
+}
+body[data-page="homework"] .stored-questions.question-editor-list{
+  gap:16px;
+}
+body[data-page="homework"] .stored-question.homework-card-item{
+  background:linear-gradient(180deg,#ffffff 0%,#fffaf1 100%);
+  border-radius:24px;
+  padding:18px;
+  position:relative;
+}
+body[data-page="homework"] .stored-question.homework-card-item::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:8px;
+  border-radius:24px 0 0 24px;
+  background:linear-gradient(180deg,#65d6ff,#ffd166,#ff8fc8,#8de27f);
+}
+body[data-page="homework"] .stored-question.homework-card-item h4{
+  color:#284b7a;
+  font-size:1.28rem;
+  margin-bottom:10px;
+}
+body[data-page="homework"] .stored-question.homework-card-item p{
+  color:#56708f;
+  margin:4px 0;
+}
+body[data-page="homework"] .status-card{
+  background:linear-gradient(180deg,#fff,#f8fcff);
+  border-radius:24px;
+}
+body[data-page="homework"] .status-card:nth-child(1){background:linear-gradient(180deg,#fff4ea,#fffdf9)}
+body[data-page="homework"] .status-card:nth-child(2){background:linear-gradient(180deg,#eef8ff,#fbfdff)}
+body[data-page="homework"] .status-card:nth-child(3){background:linear-gradient(180deg,#f6efff,#fcf9ff)}
+body[data-page="homework"] .status-card:nth-child(4){background:linear-gradient(180deg,#fff9dd,#fffef8)}
+body[data-page="homework"] .status-card:nth-child(5){background:linear-gradient(180deg,#efffea,#fbfff8)}
+body[data-page="homework"] .status-card span{
+  font-weight:700;
+}
+body[data-page="homework"] .quiz-card-main{
+  background:linear-gradient(180deg,#fffdfa 0%,#fff5e7 100%);
+  border-radius:32px;
+  position:relative;
+  overflow:hidden;
+}
+body[data-page="homework"] .quiz-card-main::after{
+  content:"🌈 🖍️ 🚀";
+  position:absolute;
+  top:18px;
+  right:22px;
+  font-size:1.2rem;
+  opacity:.9;
+}
+body[data-page="homework"] .quiz-badges{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:14px;
+}
+body[data-page="homework"] #homeworkQuestionText{
+  background:linear-gradient(135deg,#ffffff,#f9fdff);
+  border-radius:24px;
+  padding:18px 20px;
+  box-shadow:inset 0 0 0 2px rgba(217,234,255,.75);
+}
+body[data-page="homework"] .option-btn{
+  border-radius:24px;
+  min-height:86px;
+  border:2px solid transparent;
+  box-shadow:0 12px 26px rgba(36,68,111,.08);
+  transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+}
+body[data-page="homework"] .option-btn:hover{
+  transform:translateY(-3px) scale(1.01);
+}
+body[data-page="homework"] #homeworkOptionsWrap .option-btn:nth-child(4n+1){background:linear-gradient(180deg,#e9f6ff,#dff2ff);border-color:#a9dfff}
+body[data-page="homework"] #homeworkOptionsWrap .option-btn:nth-child(4n+2){background:linear-gradient(180deg,#fff4df,#ffecbf);border-color:#ffd27b}
+body[data-page="homework"] #homeworkOptionsWrap .option-btn:nth-child(4n+3){background:linear-gradient(180deg,#f7ebff,#eedcff);border-color:#d3b3ff}
+body[data-page="homework"] #homeworkOptionsWrap .option-btn:nth-child(4n+4){background:linear-gradient(180deg,#ebffe8,#daf8d7);border-color:#a8e6a2}
+body[data-page="homework"] .option-btn.selected{
+  border-color:#ff9a3e !important;
+  box-shadow:0 16px 30px rgba(255,154,62,.18);
+}
+body[data-page="homework"] .main-btn{
+  min-height:54px;
+}
+body[data-page="homework"] #homeworkDoneSection{
+  background:linear-gradient(180deg,#fffef4,#fff2dd);
+  border-radius:32px;
+  text-align:center;
+}
+body[data-page="homework"] #homeworkDoneSection::before{
+  content:"🎉";
+  display:block;
+  font-size:2.6rem;
+  margin-bottom:10px;
+}
+@media (max-width:640px){
+  body[data-page="homework"] .quiz-card-main::after,
+  body[data-page="homework"] .homework-list-column::after{position:static;display:block;margin-bottom:10px}
+  body[data-page="homework"] .option-btn{min-height:74px}
+}
