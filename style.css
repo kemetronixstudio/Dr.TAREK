@@ -2525,3 +2525,72 @@ body[data-page="playtest"] .play-top3-item{
 .question-edit-card .class-chip{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;background:#eef6ff;color:#45658b;font-size:12px;font-weight:800}
 .class-frozen-note{margin-top:14px}
 @media (max-width:640px){.quiz-status-toolbar,.class-status-actions{flex-direction:column;align-items:stretch}.quiz-state-badge{justify-content:center}}
+
+
+/* === homework + dreamers overrides === */
+body[data-page="home"] .home-levels{
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:24px !important;
+  align-items:stretch;
+}
+body[data-page="home"] .home-levels .playtest-card,
+body[data-page="home"] .home-levels .home-feature-card{
+  width:100% !important;
+  max-width:none !important;
+  grid-column:auto !important;
+  justify-self:stretch;
+  height:100%;
+}
+body[data-page="home"] .home-levels .playtest-card .playtest-card-art{
+  max-width:100%;
+}
+.homework-entry-grid{
+  display:grid;
+  grid-template-columns:minmax(320px,420px) minmax(0,1fr);
+  gap:24px;
+  align-items:start;
+}
+.homework-list-column{
+  min-height:100%;
+}
+.homework-list-column .badge-pill{
+  margin-bottom:14px;
+}
+.homework-password-row{
+  display:grid;
+  gap:8px;
+  margin:12px 0 4px;
+  color:var(--ink);
+  font-weight:700;
+}
+.homework-password-row span{
+  font-size:.96rem;
+}
+.homework-password-input{
+  width:100%;
+  border:2px solid #d9e9ff;
+  border-radius:16px;
+  padding:12px 14px;
+  background:#fff;
+}
+.signature-logo-card img,
+.cert-logo{
+  background:#fff;
+  border-radius:18px;
+  padding:8px;
+}
+.cert-logo{
+  width:128px;
+  height:102px;
+}
+.signature-logo-card img{
+  width:min(300px,100%);
+  max-height:132px;
+}
+@media (max-width: 1024px){
+  .homework-entry-grid{grid-template-columns:1fr;}
+}
+@media (max-width: 900px){
+  body[data-page="home"] .home-levels{grid-template-columns:1fr !important;gap:18px !important;}
+}

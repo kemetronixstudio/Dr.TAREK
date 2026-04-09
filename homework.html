@@ -1,22 +1,27 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Cairo:wght@400;600;700;800&family=Noto+Naskh+Arabic:wght@600;700&display=swap" rel="stylesheet"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#ffd54f"><link rel="stylesheet" href="style.css"><title>Homework</title></head><body data-page="homework">
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Cairo:wght@400;600;700;800&family=Noto+Naskh+Arabic:wght@600;700&display=swap" rel="stylesheet"><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" sizes="192x192" href="assets/icons/dreamers-192.png"><link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png"><meta name="theme-color" content="#ffd54f"><link rel="stylesheet" href="style.css"><title>Homework</title></head><body data-page="homework">
 <div class="floating-shapes"></div>
 <header class="top-shell subpage-top-shell top-shell-inline"><div class="header-left"><a class="back-link top-home-link" href="index.html">⬅ Home</a></div><div class="header-center"><div class="teacher-topline">Dr. TAREK ABDALAZIZ 📞 01032188008</div></div><div class="header-right"><a class="tiny-admin-link" href="admin.html" title="Teacher Area">★</a></div></header>
 <main class="container page-wrap">
   <section class="card setup-card" id="homeworkStartCard">
     <div class="setup-grid">
-      <div>
-        <span class="badge-pill">Homework</span>
-        <h1>Homework With Dr. Tarek</h1>
-        <p>Choose your grade and class to open available homework.</p>
-        <div class="student-form-box">
-          <input id="homeworkStudentName" placeholder="Student name" maxlength="60">
-          <input id="homeworkStudentId" placeholder="Student ID (optional)" maxlength="40">
-          <select id="homeworkStudentGrade"><option value="KG1">KG1</option><option value="KG2">KG2</option><option value="GRADE1">Grade 1</option><option value="GRADE2">Grade 2</option><option value="GRADE3">Grade 3</option><option value="GRADE4">Grade 4</option><option value="GRADE5">Grade 5</option><option value="GRADE6">Grade 6</option></select>
-          <input id="homeworkStudentClass" placeholder="Class name">
-          <button class="main-btn" id="loadHomeworkBtn" type="button">Show Homework</button>
-          <div id="homeworkStatus" class="muted-note"></div>
+      <div class="homework-entry-grid">
+        <div class="homework-intro-column">
+          <span class="badge-pill">Homework</span>
+          <h1>Homework With Dr. Tarek</h1>
+          <p>Choose your grade and class to open available homework.</p>
+          <div class="student-form-box">
+            <input id="homeworkStudentName" placeholder="Student name" maxlength="60">
+            <input id="homeworkStudentId" placeholder="Student ID (optional)" maxlength="40">
+            <select id="homeworkStudentGrade"><option value="KG1">KG1</option><option value="KG2">KG2</option><option value="GRADE1">Grade 1</option><option value="GRADE2">Grade 2</option><option value="GRADE3">Grade 3</option><option value="GRADE4">Grade 4</option><option value="GRADE5">Grade 5</option><option value="GRADE6">Grade 6</option></select>
+            <input id="homeworkStudentClass" placeholder="Class name">
+            <button class="main-btn" id="loadHomeworkBtn" type="button">Show Homework</button>
+            <div id="homeworkStatus" class="muted-note"></div>
+          </div>
         </div>
-        <div id="homeworkAvailableList" class="stored-questions question-editor-list"></div>
+        <div class="homework-list-column">
+          <span class="badge-pill secondary">Available Homework</span>
+          <div id="homeworkAvailableList" class="stored-questions question-editor-list"></div>
+        </div>
       </div>
     </div>
   </section>

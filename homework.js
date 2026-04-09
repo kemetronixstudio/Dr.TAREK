@@ -40,7 +40,7 @@
         const limit = Number(hw.tryLimit || 0) || 0;
         const blocked = !!hw.blocked;
         const tryText = limit > 0 ? `${used} / ${limit}` : `${used}`;
-        return `<div class="stored-question"><h4>${esc(hw.title)}</h4><p><strong>Date:</strong> ${esc(hw.date || '-')}</p><p><strong>Classes:</strong> ${esc((hw.classes || []).join(', ') || 'All')}</p><p><strong>Questions:</strong> ${esc(String((hw.questions || []).length))}</p><p><strong>Timer:</strong> ${hw.useTimer ? esc(String(hw.timerMinutes) + ' min') : 'No'}</p><p><strong>Password:</strong> ${hw.usePassword ? 'Required' : 'No'}</p><p><strong>Tries used:</strong> ${esc(tryText)}${limit === 0 ? ' <span class="muted-note">(no limit)</span>' : ''}</p><div class="action-row"><button class="main-btn homework-open-btn" data-id="${esc(hw.id)}" ${blocked ? 'disabled' : ''}>${blocked ? 'No tries left' : 'Start homework'}</button></div></div>`;
+        return `<div class="stored-question homework-card-item"><h4>${esc(hw.title)}</h4><p><strong>Date:</strong> ${esc(hw.date || '-')}</p><p><strong>Classes:</strong> ${esc((hw.classes || []).join(', ') || 'All')}</p><p><strong>Questions:</strong> ${esc(String((hw.questions || []).length))}</p><p><strong>Timer:</strong> ${hw.useTimer ? esc(String(hw.timerMinutes) + ' min') : 'No'}</p><p><strong>Password:</strong> ${hw.usePassword ? 'Required' : 'No'}</p>${hw.usePassword ? `<label class="homework-password-row"><span>Homework password</span><input type="password" class="homework-password-input" data-homework-password-for="${esc(hw.id)}" placeholder="Enter homework password"></label>` : ''}<p><strong>Tries used:</strong> ${esc(tryText)}${limit === 0 ? ' <span class="muted-note">(no limit)</span>' : ''}</p><div class="action-row"><button class="main-btn homework-open-btn" data-id="${esc(hw.id)}" ${blocked ? 'disabled' : ''}>${blocked ? 'No tries left' : 'Start homework'}</button></div></div>`;
       }).join('') || '<div class="muted-note">No homework available for this grade and class.</div>';
       setStatus(availableRows.length ? `${availableRows.length} homework item(s) found.` : 'No homework found.');
     } catch (error) {
@@ -171,7 +171,9 @@
     try {
       const identity = studentIdentity();
       const assignment = availableRows.find((row) => row.id === id);
-      const password = assignment && assignment.usePassword ? prompt('Enter homework password') : '';
+      const passwordField = document.querySelector(`[data-homework-password-for="${CSS.escape(String(id || ''))}"]`);
+      const password = assignment && assignment.usePassword ? String(passwordField?.value || '').trim() : '';
+      if (assignment && assignment.usePassword && !password) throw new Error('Please enter the homework password.');
       const data = await api('start', {
         method:'POST',
         body: JSON.stringify({

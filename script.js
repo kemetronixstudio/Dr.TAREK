@@ -392,6 +392,8 @@ const ADMIN_COLLAPSIBLE_CONFIGS = [
   { buttonId:'toggleTimerSettingsBtn', bodyId:'timerSettingsBody', sectionId:'timerSettingsSection' },
   { buttonId:'toggleQuizAccessBtn', bodyId:'quizAccessBody', sectionId:'quizAccessSection' },
   { buttonId:'toggleTeacherTestBtn', bodyId:'teacherTestBody', sectionId:'teacherTestSection' },
+  { buttonId:'toggleHomeworkBuilderBtn', bodyId:'homeworkBuilderBody', sectionId:'homeworkBuilderSection' },
+  { buttonId:'toggleHomeworkReportsBtn', bodyId:'homeworkReportsBody', sectionId:'homeworkReportsSection' },
   { buttonId:'toggleBulkQuestionsBtn', bodyId:'bulkQuestionsBody', sectionId:'bulkQuestionsSection' },
   { buttonId:'toggleClassManagerBtn', bodyId:'classManagerBody', sectionId:'classManagerSection' },
   { buttonId:'toggleAccountManagerBtn', bodyId:'accountManagerBody', sectionId:'accountManagerSection' },
@@ -446,7 +448,7 @@ function ensureAdminShortcutUI(){
   const grid = document.getElementById('adminShortcutsGrid') || gridCard.querySelector('.admin-shortcuts-grid');
   const iconMap = {
     studentCloudSection:'☁️', studentAnalyticsSection:'📊', levelVisibilitySection:'👁️', timerSettingsSection:'⏱️', quizAccessSection:'🔐', teacherTestSection:'🧪',
-    bulkQuestionsSection:'📥', classManagerSection:'🏫', accountManagerSection:'👥', activityLogsSection:'📝', questionBankSection:'📚'
+    homeworkBuilderSection:'📘', homeworkReportsSection:'🧾', bulkQuestionsSection:'📥', classManagerSection:'🏫', accountManagerSection:'👥', activityLogsSection:'📝', questionBankSection:'📚'
   };
   if (sticky && !sticky.children.length) {
     ADMIN_COLLAPSIBLE_CONFIGS.forEach(cfg => {
