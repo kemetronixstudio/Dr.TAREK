@@ -11,7 +11,7 @@ module.exports = async function handler(req, res){
     const url = new URL(req.url || '/api/homework', 'http://localhost');
     const action = String(url.searchParams.get('action') || '').trim().toLowerCase();
     const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
-    const isStudentAction = action === 'available' || action === 'start' || action === 'submit';
+    const isStudentAction = action === 'available' || action === 'start' || action === 'submit' || action === 'identify';
     if (!isStudentAction) {
       const auth = await access.requireAuthorized(req, 'teacherTest');
       if (!auth.ok) {
@@ -38,6 +38,10 @@ module.exports = async function handler(req, res){
         const data = await backend.reportDetail(url.searchParams.get('id') || '');
         res.statusCode = 200; res.end(JSON.stringify(data)); return;
       }
+      if (action === 'students') {
+        const data = await backend.listStudents({ q: url.searchParams.get('q') || '', grade: url.searchParams.get('grade') || '', className: url.searchParams.get('className') || '' });
+        res.statusCode = 200; res.end(JSON.stringify(data)); return;
+      }
       if (action === 'analytics') {
         const data = await backend.analytics({
           className: url.searchParams.get('className') || '',
@@ -52,6 +56,10 @@ module.exports = async function handler(req, res){
     }
 
     if (req.method === 'POST') {
+      if (action === 'identify') {
+        const data = await backend.identifyStudent(body);
+        res.statusCode = 200; res.end(JSON.stringify(data)); return;
+      }
       if (action === 'available') {
         const data = await backend.listForStudent(body.identity || body);
         res.statusCode = 200; res.end(JSON.stringify(data)); return;
@@ -64,11 +72,19 @@ module.exports = async function handler(req, res){
         const data = await backend.submit(body);
         res.statusCode = 200; res.end(JSON.stringify(data)); return;
       }
+      if (action === 'student-save') {
+        const data = await backend.saveStudent(body);
+        res.statusCode = 200; res.end(JSON.stringify(data)); return;
+      }
       const data = await backend.save(body);
       res.statusCode = 200; res.end(JSON.stringify(data)); return;
     }
 
     if (req.method === 'DELETE') {
+      if (action === 'student-delete') {
+        const data = await backend.deleteStudent(body.id || url.searchParams.get('id') || '');
+        res.statusCode = 200; res.end(JSON.stringify(data)); return;
+      }
       const data = await backend.remove(body.id || url.searchParams.get('id') || '');
       res.statusCode = 200; res.end(JSON.stringify(data)); return;
     }

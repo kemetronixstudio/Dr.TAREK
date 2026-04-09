@@ -10,11 +10,15 @@
           <h1 data-i18n="homeworkPageTitle">Homework With Dr. Tarek</h1>
           <p data-i18n="homeworkPageText">Choose your grade and class to open available homework.</p>
           <div class="student-form-box">
-            <input id="homeworkStudentName" data-placeholder-i18n="studentNamePlaceholder" placeholder="Student name" maxlength="60">
-            <input id="homeworkStudentId" data-placeholder-i18n="studentIdOptional" placeholder="Student ID (optional)" maxlength="40">
-            <select id="homeworkStudentGrade"><option value="KG1">KG1</option><option value="KG2">KG2</option><option value="GRADE1">Grade 1</option><option value="GRADE2">Grade 2</option><option value="GRADE3">Grade 3</option><option value="GRADE4">Grade 4</option><option value="GRADE5">Grade 5</option><option value="GRADE6">Grade 6</option></select>
-            <input id="homeworkStudentClass" data-placeholder-i18n="classNamePlaceholder" placeholder="Class name">
-            <button class="main-btn" id="loadHomeworkBtn" type="button" data-i18n="showHomeworkBtn">Show Homework</button>
+            <input id="homeworkStudentId" placeholder="Student ID" maxlength="40">
+            <input id="homeworkStudentPin" placeholder="PIN" maxlength="4" inputmode="numeric">
+            <button class="main-btn" id="loadHomeworkBtn" type="button">Show Homework</button>
+            <div class="muted-note">Enter the student ID and 4-digit PIN given by the teacher.</div>
+            <div class="student-verified-box hidden" id="homeworkVerifiedBox">
+              <div><strong>Name:</strong> <span id="homeworkStudentName">-</span></div>
+              <div><strong>Grade:</strong> <span id="homeworkStudentGrade">-</span></div>
+              <div><strong>Class:</strong> <span id="homeworkStudentClass">-</span></div>
+            </div>
             <div id="homeworkStatus" class="muted-note"></div>
           </div>
         </div>
