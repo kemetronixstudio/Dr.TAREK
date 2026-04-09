@@ -5,6 +5,7 @@
   const esc = (v) => String(v || '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   let cachedPickerRows = [];
   let cachedAssignments = [];
+  const selectedQuestionIds = new Set();
 
   async function api(path = '', options){
     const res = await fetch(API + path, Object.assign({ headers:{ 'Content-Type':'application/json' }, cache:'no-store' }, options || {}));
@@ -45,21 +46,31 @@
     status.textContent = q ? `${rows.length} question(s) match "${q}".` : `${rows.length} question(s) available.`;
   }
 
+  function syncSelectedQuestionState(){
+    document.querySelectorAll('.homework-question-check').forEach((el) => {
+      const key = String(el.value || '');
+      el.checked = selectedQuestionIds.has(key);
+    });
+  }
+
   function renderPicker(){
     const list = $('homeworkQuestionPickerList');
     if (!list) return;
     const grade = $('homeworkGrade')?.value || 'KG1';
     cachedPickerRows = allQuestionsForGrade(grade).slice(0, 500).map((q, i) => Object.assign({ __index:i }, q || {}));
+    const validIds = new Set(cachedPickerRows.map((row) => String(row.__index)));
+    [...selectedQuestionIds].forEach((id) => { if (!validIds.has(id)) selectedQuestionIds.delete(id); });
     const rows = filteredPickerRows();
     list.innerHTML = rows.map((q) => `<label class="teacher-picker-item"><input type="checkbox" class="homework-question-check" value="${q.__index}"><span><strong>${esc(q.skill || 'Question')}</strong><br>${esc(q.text || '')}</span></label>`).join('') || '<div class="muted-note">No questions found for this grade.</div>';
+    syncSelectedQuestionState();
     updatePickerStatus(rows);
   }
 
   function selectedQuestions(){
     const source = cachedPickerRows.length ? cachedPickerRows : allQuestionsForGrade($('homeworkGrade')?.value || 'KG1').map((q, i) => Object.assign({ __index:i }, q || {}));
     const mapByIndex = new Map(source.map((row) => [String(row.__index), row]));
-    return [...document.querySelectorAll('.homework-question-check:checked')]
-      .map((el) => mapByIndex.get(String(el.value)))
+    return [...selectedQuestionIds]
+      .map((id) => mapByIndex.get(String(id)))
       .filter(Boolean)
       .map((q) => ({ text:q.text, options:[...(q.options || [])], answer:q.answer, skill:q.skill || '', type:q.type || 'Question', image:q.image || null }));
   }
@@ -140,11 +151,12 @@
     $('reuseHomeworkSelect') && ($('reuseHomeworkSelect').value = row.id);
     $('reuseHomeworkSelect') && ($('reuseHomeworkSelect').dataset.loadedHomeworkId = row.id);
     renderPicker();
+    selectedQuestionIds.clear();
     const normalized = new Set((row.questions || []).map((q) => String(q.text || '').trim().toLowerCase()));
-    document.querySelectorAll('.homework-question-check').forEach((el) => {
-      const question = cachedPickerRows.find((item) => String(item.__index) === String(el.value));
-      el.checked = !!question && normalized.has(String(question.text || '').trim().toLowerCase());
+    cachedPickerRows.forEach((item) => {
+      if (normalized.has(String(item.text || '').trim().toLowerCase())) selectedQuestionIds.add(String(item.__index));
     });
+    syncSelectedQuestionState();
     updateModeVisibility();
     const status = $('homeworkAdminStatus');
     if (status) status.textContent = 'Saved homework loaded into the form. You can change date, classes, or questions and save again.';
@@ -210,6 +222,7 @@
     if ($('homeworkTryLimit')) $('homeworkTryLimit').value = '0';
     if ($('homeworkMode')) $('homeworkMode').value = 'select';
     if ($('reuseHomeworkSelect')) { $('reuseHomeworkSelect').value = ''; delete $('reuseHomeworkSelect').dataset.loadedHomeworkId; }
+    selectedQuestionIds.clear();
     document.querySelectorAll('.homework-question-check').forEach((el) => { el.checked = false; });
     if ($('homeworkAdminStatus')) $('homeworkAdminStatus').textContent = '';
     renderPicker();
@@ -223,12 +236,12 @@
   }
 
   function wire(){
-    $('homeworkGrade')?.addEventListener('change', () => { renderPicker(); updateModeVisibility(); });
+    $('homeworkGrade')?.addEventListener('change', () => { selectedQuestionIds.clear(); renderPicker(); updateModeVisibility(); });
     $('homeworkMode')?.addEventListener('change', updateModeVisibility);
     $('homeworkQuestionSearch')?.addEventListener('input', renderPicker);
     $('searchHomeworkQuestionsBtn')?.addEventListener('click', renderPicker);
-    $('selectAllHomeworkQuestionsBtn')?.addEventListener('click', () => document.querySelectorAll('.homework-question-check').forEach((el) => { el.checked = true; }));
-    $('clearHomeworkQuestionsBtn')?.addEventListener('click', () => document.querySelectorAll('.homework-question-check').forEach((el) => { el.checked = false; }));
+    $('selectAllHomeworkQuestionsBtn')?.addEventListener('click', () => { filteredPickerRows().forEach((row) => selectedQuestionIds.add(String(row.__index))); syncSelectedQuestionState(); });
+    $('clearHomeworkQuestionsBtn')?.addEventListener('click', () => { filteredPickerRows().forEach((row) => selectedQuestionIds.delete(String(row.__index))); syncSelectedQuestionState(); });
     $('saveHomeworkBtn')?.addEventListener('click', saveHomework);
     $('clearHomeworkBtn')?.addEventListener('click', clearForm);
     $('refreshHomeworkReportsBtn')?.addEventListener('click', renderReports);
@@ -237,6 +250,12 @@
     $('homeworkReportClassFilter')?.addEventListener('keydown', (e) => { if (e.key === 'Enter') renderReports(); });
     $('loadReuseHomeworkBtn')?.addEventListener('click', () => loadHomeworkIntoForm($('reuseHomeworkSelect')?.value || ''));
     document.addEventListener('click', (e) => {
+      const questionCheck = e.target.closest('.homework-question-check');
+      if (questionCheck) {
+        const key = String(questionCheck.value || '');
+        if (questionCheck.checked) selectedQuestionIds.add(key);
+        else selectedQuestionIds.delete(key);
+      }
       const deleteBtn = e.target.closest('.homework-delete-btn');
       if (deleteBtn) {
         api('', { method:'DELETE', body: JSON.stringify({ id: deleteBtn.dataset.id }) }).then(() => renderList()).catch((error) => { $('homeworkAdminStatus').textContent = error.message || 'Could not delete homework.'; });

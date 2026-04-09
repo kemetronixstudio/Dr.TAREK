@@ -1,0 +1,100 @@
+{
+  "assignments": [
+    {
+      "id": "HW-1",
+      "title": "Test Homework",
+      "grade": "KG1",
+      "classes": [
+        "A"
+      ],
+      "date": "2026-04-11",
+      "mode": "select",
+      "questions": [
+        {
+          "text": "Q1",
+          "options": [
+            "a",
+            "b"
+          ],
+          "answer": "a",
+          "skill": "Test",
+          "type": "Question",
+          "image": null
+        }
+      ],
+      "useTimer": false,
+      "timerMinutes": 0,
+      "usePassword": false,
+      "password": "",
+      "tryLimit": 0,
+      "createdAt": "2026-04-09T17:59:50.914Z"
+    }
+  ],
+  "submissions": [
+    {
+      "id": "HWR-1775757590924-8885bghz",
+      "homeworkId": "HW-1",
+      "homeworkTitle": "Test Homework",
+      "date": "2026-04-11",
+      "studentName": "Ali",
+      "studentId": "1",
+      "className": "A",
+      "grade": "KG1",
+      "identity": {
+        "name": "Ali",
+        "studentId": "1",
+        "grade": "KG1",
+        "className": "A",
+        "identityKey": "KG1::a::1::ali"
+      },
+      "token": "HWS-1775757590923-6g4x008t",
+      "score": 1,
+      "percent": 100,
+      "questionCount": 1,
+      "triesUsed": 1,
+      "wrongAnswersCount": 0,
+      "wrongAnswers": [],
+      "answers": [
+        {
+          "index": 0,
+          "questionText": "Q1",
+          "chosen": "a",
+          "correct": true,
+          "expected": "a",
+          "timedOut": false,
+          "answeredAt": "2026-04-09T17:59:50.924Z"
+        }
+      ],
+      "questions": [
+        {
+          "text": "Q1",
+          "options": [
+            "a",
+            "b"
+          ],
+          "answer": "a",
+          "skill": "Test",
+          "type": "Question",
+          "image": null
+        }
+      ],
+      "submittedAt": "2026-04-09T17:59:50.924Z",
+      "timeUp": false,
+      "timerMinutes": 0,
+      "usedTimer": false
+    }
+  ],
+  "attempts": {
+    "KG1::a::1::ali::HW-1": {
+      "count": 1,
+      "sessions": [
+        {
+          "token": "HWS-1775757590923-6g4x008t",
+          "startedAt": "2026-04-09T17:59:50.923Z",
+          "submittedAt": "2026-04-09T17:59:50.924Z",
+          "submissionId": "HWR-1775757590924-8885bghz"
+        }
+      ]
+    }
+  }
+}
