@@ -1,4 +1,9 @@
 const backend = require('../../lib/homework-backend');
+const access = require('../../lib/access-accounts-backend');
+
+function setAuthCookie(res, token) {
+  if (token) res.setHeader('Set-Cookie', `kgAccessToken=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=43200`);
+}
 
 module.exports = async function handler(req, res){
   res.setHeader('Content-Type', 'application/json');
@@ -6,17 +11,40 @@ module.exports = async function handler(req, res){
     const url = new URL(req.url || '/api/homework', 'http://localhost');
     const action = String(url.searchParams.get('action') || '').trim().toLowerCase();
     const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
+    const isStudentAction = action === 'available' || action === 'start' || action === 'submit';
+    if (!isStudentAction) {
+      const auth = await access.requireAuthorized(req, 'teacherTest');
+      if (!auth.ok) {
+        res.statusCode = auth.status;
+        res.end(JSON.stringify({ ok:false, error:auth.error }));
+        return;
+      }
+      setAuthCookie(res, auth.token);
+    }
 
     if (req.method === 'GET') {
       if (action === 'reports') {
         const data = await backend.listReports({
           q: url.searchParams.get('q') || '',
-          className: url.searchParams.get('className') || ''
+          className: url.searchParams.get('className') || '',
+          grade: url.searchParams.get('grade') || '',
+          fromDate: url.searchParams.get('fromDate') || '',
+          toDate: url.searchParams.get('toDate') || '',
+          homeworkId: url.searchParams.get('homeworkId') || ''
         });
         res.statusCode = 200; res.end(JSON.stringify(data)); return;
       }
       if (action === 'report-detail') {
         const data = await backend.reportDetail(url.searchParams.get('id') || '');
+        res.statusCode = 200; res.end(JSON.stringify(data)); return;
+      }
+      if (action === 'analytics') {
+        const data = await backend.analytics({
+          className: url.searchParams.get('className') || '',
+          grade: url.searchParams.get('grade') || '',
+          fromDate: url.searchParams.get('fromDate') || '',
+          toDate: url.searchParams.get('toDate') || ''
+        });
         res.statusCode = 200; res.end(JSON.stringify(data)); return;
       }
       const data = await backend.list();
@@ -47,6 +75,6 @@ module.exports = async function handler(req, res){
 
     res.statusCode = 405; res.end(JSON.stringify({ ok:false, error:'Method not allowed' }));
   } catch (error) {
-    res.statusCode = 400; res.end(JSON.stringify({ ok:false, error:error.message || 'Request failed' }));
+    res.statusCode = error.status || 400; res.end(JSON.stringify({ ok:false, error:error.message || 'Request failed' }));
   }
 };

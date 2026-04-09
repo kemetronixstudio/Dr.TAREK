@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Cairo:wght@400;600;700;800&family=Noto+Naskh+Arabic:wght@600;700&display=swap" rel="stylesheet"><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" sizes="192x192" href="assets/icons/dreamers-192.png"><link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png"><meta name="theme-color" content="#ffd54f"><link rel="stylesheet" href="style.css"><title>Teacher Dashboard</title></head><body data-page="admin">
 <div class="floating-shapes"></div>
-<header class="top-shell subpage-top-shell"><a class="back-link top-home-link" href="index.html" data-i18n="homeBtn">⬅ Home</a><div class="teacher-topline" data-i18n="teacherTopline">Dr. TAREK ABDALAZIZ 📞 01032188008</div><div class="lang-switch"><button class="lang-btn active" data-lang="en">EN</button><button class="lang-btn" data-lang="ar">AR</button></div></header>
+<header class="top-shell subpage-top-shell"><a class="back-link top-home-link" href="index.html" data-i18n="homeBtn">⬅ Home</a><div class="teacher-topline" data-i18n="teacherTopline">Dr. TAREK ABDALAZIZ 📞 01032188008</div><div class="admin-session-mini" id="adminSessionMini"></div><div class="lang-switch"><button class="lang-btn active" data-lang="en">EN</button><button class="lang-btn" data-lang="ar">AR</button></div></header>
 <main class="container page-wrap">
   <div class="nav-row nav-row-hidden"></div>
   <section class="card admin-login-card" id="adminLoginCard">
@@ -43,7 +43,7 @@
         <button type="button" class="shortcut-chip" data-shortcut-target="questionBankSection"><span class="shortcut-icon">📚</span><span class="shortcut-text">Question Bank Editor</span></button>
       </div>
     </section>
-    <div class="admin-top-grid">
+    <section class="card admin-table-card" id="adminSecuritySection"><div class="section-head"><h2>Admin Security</h2><div class="section-head-actions"><button class="ghost-btn" id="adminLogoutBtn" type="button">Logout</button></div></div><div class="editor-grid"><input id="selfCurrentPassword" type="password" placeholder="Current password"><input id="selfNewPassword" type="password" placeholder="New password"><button class="main-btn" id="selfChangePasswordBtn" type="button">Change My Password</button></div><div id="adminSecurityStatus" class="muted-note"></div><p class="muted-note">Login is now protected with temporary lockout after too many wrong attempts, and homework/report actions require authenticated admin access.</p></section><div class="admin-top-grid">
       <div class="card metric-card"><span data-i18n="totalStudents">Total Students</span><strong id="metricStudents">0</strong></div>
       <div class="card metric-card"><span data-i18n="totalAttempts">Total Attempts</span><strong id="metricAttempts">0</strong></div>
       <div class="card metric-card"><span data-i18n="averageScore">Average Score</span><strong id="metricAverage">0%</strong></div>
@@ -96,6 +96,30 @@
           <div class="table-wrap"><table><thead><tr><th>#</th><th>Name</th><th>Student ID</th><th>Class</th><th>Best</th><th>Average</th><th>Attempts</th></tr></thead><tbody id="studentLeaderboardTableBody"></tbody></table></div>
         </div>
       </div>
+      </div>
+    </section>
+
+    <section class="card admin-table-card collapsible-section" data-section-key="teacherTest" id="homeworkAnalyticsSection">
+      <div class="section-head"><h2>Homework Analytics</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleHomeworkAnalyticsBtn" type="button">Expand</button><button class="ghost-btn" id="refreshHomeworkAnalyticsBtn" type="button">Refresh</button><button class="ghost-btn" id="exportHomeworkReportsExcelBtn" type="button">Export Homework Excel</button></div></div>
+      <div id="homeworkAnalyticsBody" class="admin-collapsible-body collapsed-body">
+      <div class="editor-grid">
+        <select id="homeworkAnalyticsGradeFilter"><option value="">All grades</option><option value="KG1">KG1</option><option value="KG2">KG2</option></select>
+        <input id="homeworkAnalyticsClassFilter" placeholder="Filter by class">
+        <input id="homeworkAnalyticsFromDate" type="date">
+        <input id="homeworkAnalyticsToDate" type="date">
+      </div>
+      <div id="homeworkAnalyticsStatus" class="muted-note"></div>
+      <div class="admin-top-grid mini-metrics">
+        <div class="card metric-card"><span>Assignments</span><strong id="hwMetricAssignments">0</strong></div>
+        <div class="card metric-card"><span>Submissions</span><strong id="hwMetricSubmissions">0</strong></div>
+        <div class="card metric-card"><span>Students</span><strong id="hwMetricStudents">0</strong></div>
+        <div class="card metric-card"><span>On-time Rate</span><strong id="hwMetricOnTime">0%</strong></div>
+      </div>
+      <div class="admin-grid analytics-grid">
+        <div><h3>Daily Trend (last 14 days)</h3><div id="homeworkTrendBars" class="simple-bar-chart"></div></div>
+        <div><h3>Top Homework</h3><div class="table-wrap"><table><thead><tr><th>Homework</th><th>Submissions</th><th>Average</th><th>Avg Wrong</th></tr></thead><tbody id="homeworkTopTableBody"></tbody></table></div></div>
+      </div>
+      <div><h3>Class Breakdown</h3><div class="table-wrap"><table><thead><tr><th>Class</th><th>Grade</th><th>Students</th><th>Submissions</th><th>Average</th></tr></thead><tbody id="homeworkClassBreakdownBody"></tbody></table></div></div>
       </div>
     </section>
 

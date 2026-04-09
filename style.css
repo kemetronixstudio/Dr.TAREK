@@ -2766,3 +2766,14 @@ body[data-page="homework"] #homeworkDoneSection::before{
   body[data-page="homework"] .homework-list-column::after{position:static;display:block;margin-bottom:10px}
   body[data-page="homework"] .option-btn{min-height:74px}
 }
+
+
+.admin-session-mini{font-weight:700;color:#5d4037;background:#fff7cf;padding:8px 12px;border-radius:999px;box-shadow:0 4px 12px rgba(0,0,0,.08);margin-inline:10px}
+.simple-bar-chart{display:grid;gap:10px;margin-top:8px}
+.simple-bar-row{display:grid;grid-template-columns:110px 1fr 80px;gap:10px;align-items:center}
+.bar-label,.bar-value{font-size:12px;font-weight:700;color:#6d4c41}
+.bar-track{height:14px;background:#fff3d6;border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,.06)}
+.bar-fill{height:100%;background:linear-gradient(90deg,#ffb74d,#ff7043);border-radius:999px}
+#adminSecuritySection .editor-grid{align-items:end}
+#adminSecurityStatus[data-state="success"], .account-status-note[data-state="success"]{color:#1b5e20}
+#adminSecurityStatus[data-state="error"], .account-status-note[data-state="error"]{color:#b71c1c}

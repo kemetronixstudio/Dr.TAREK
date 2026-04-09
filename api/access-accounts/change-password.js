@@ -21,7 +21,7 @@ module.exports = async function handler(req, res) {
     }
     setAuthCookie(res, auth.token);
     const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
-    const result = await backend.changePassword(body, auth.account);
+    const result = body && body.currentPass ? await backend.changeOwnPassword(body, auth.account) : await backend.changePassword(body, auth.account);
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({ ...result, token: result.token || auth.token }));

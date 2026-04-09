@@ -54,6 +54,7 @@
   }
   function persistSession(account, token){
     window.__currentAccessAccount = account || null;
+    updateSessionMini();
     try {
       if (token) { sessionStorage.setItem(TOKEN_KEY, token); try { localStorage.setItem(TOKEN_KEY, token); localStorage.setItem(LEGACY_TOKEN_KEY, token); } catch (e) {} }
       if (account) sessionStorage.setItem(ACCOUNT_KEY, JSON.stringify({ user: account.user, originalUser: account.originalUser || account.user, role: account.role }));
@@ -78,6 +79,20 @@
     if (panel) panel.classList.add('hidden');
     if (loginCard) loginCard.classList.remove('hidden');
   }
+  function sessionMini(){ return document.getElementById('adminSessionMini'); }
+  function securityStatus(){ return document.getElementById('adminSecurityStatus'); }
+  function updateSessionMini(){
+    const box = sessionMini();
+    const account = currentAccount();
+    if (!box) return;
+    box.textContent = account ? ('Signed in: ' + account.user + ' (' + account.role + ')') : '';
+  }
+  function showSecurityStatus(message, state){
+    const el = securityStatus();
+    if (!el) return;
+    el.textContent = message || '';
+    el.dataset.state = state || 'info';
+  }
   function clearStaleFrontendSession(){
     try {
       sessionStorage.removeItem(ACCOUNT_KEY);
@@ -86,6 +101,7 @@
       localStorage.removeItem(LEGACY_TOKEN_KEY);
     } catch (error) {}
     window.__currentAccessAccount = null;
+    updateSessionMini();
   }
   function authHeaders(){
     const token = readToken();
@@ -122,6 +138,7 @@
     const loginCard = document.getElementById('adminLoginCard');
     const panel = document.getElementById('adminPanel');
     if (loginCard) loginCard.classList.add('hidden');
+    updateSessionMini();
     if (panel) panel.classList.remove('hidden');
     if (typeof window.applySectionPermissions === 'function') {
       try { window.applySectionPermissions(account); } catch (error) {}
@@ -377,6 +394,32 @@
     }
   };
 
+
+  async function logout(){
+    try { await fetch(API_BASE + '/logout', { method:'POST', credentials:'same-origin', headers:{ 'Content-Type':'application/json' } }); } catch (error) {}
+    clearStaleFrontendSession();
+    forceLoginView();
+    showSecurityStatus('Logged out.', 'info');
+  }
+
+  async function changeMyPassword(){
+    const currentPass = document.getElementById('selfCurrentPassword') && document.getElementById('selfCurrentPassword').value || '';
+    const newPass = document.getElementById('selfNewPassword') && document.getElementById('selfNewPassword').value || '';
+    if (!currentPass || !newPass) {
+      showSecurityStatus('Enter current password and new password.', 'error');
+      return;
+    }
+    try {
+      const payload = await api('/change-password', { method:'POST', body: JSON.stringify({ currentPass: currentPass, newPass: newPass }) });
+      if (payload.token && payload.currentAccount) persistSession(payload.currentAccount, payload.token);
+      document.getElementById('selfCurrentPassword') && (document.getElementById('selfCurrentPassword').value = '');
+      document.getElementById('selfNewPassword') && (document.getElementById('selfNewPassword').value = '');
+      showSecurityStatus('Password changed successfully.', 'success');
+    } catch (error) {
+      showSecurityStatus(error.message || 'Could not change password.', 'error');
+    }
+  }
+
   async function handleLogin(event){
     if (event) event.preventDefault();
     const user = document.getElementById('adminUser') && document.getElementById('adminUser').value || '';
@@ -466,6 +509,12 @@
       clearForm();
       showStatus(lang()==='ar' ? 'تم مسح النموذج.' : 'Form cleared.', 'info');
     });
+
+    const adminLogoutBtn = cloneButton('adminLogoutBtn');
+    if (adminLogoutBtn) adminLogoutBtn.addEventListener('click', function(event){ event.preventDefault(); logout(); });
+
+    const selfChangePasswordBtn = cloneButton('selfChangePasswordBtn');
+    if (selfChangePasswordBtn) selfChangePasswordBtn.addEventListener('click', function(event){ event.preventDefault(); changeMyPassword(); });
 
     const refreshLogsBtn = cloneButton('refreshAccessLogsBtn');
     if (refreshLogsBtn) refreshLogsBtn.addEventListener('click', function(event){ event.preventDefault(); if (typeof window.renderAccessLogs === 'function') window.renderAccessLogs(); });
