@@ -60,11 +60,32 @@
     $('homeworkTimerValue').textContent = state.timeLeft == null ? 'Off' : String(state.timeLeft);
   }
 
+  function resolveQuestionImage(image){
+    const value = String(image || '').trim();
+    if (!value) return '';
+    if (/^(https?:)?\/\//i.test(value) || value.startsWith('data:') || value.startsWith('/')) return value;
+    if (value.startsWith('assets/')) return '/' + value;
+    return '/assets/' + value.replace(/^\.\//, '');
+  }
+
   function renderQuestion(){
     const q = state.assignment.questions[state.index];
     if (!q) return finishHomework(false);
     updateQuizHead();
     $('homeworkQuestionText').textContent = q.text || 'Question';
+    const imageWrap = $('homeworkQuestionMediaWrap');
+    const imageEl = $('homeworkQuestionImage');
+    const imageSrc = resolveQuestionImage(q.image);
+    if (imageWrap && imageEl) {
+      if (imageSrc) {
+        imageEl.src = imageSrc;
+        imageEl.alt = q.text || 'Question image';
+        imageWrap.classList.remove('hidden');
+      } else {
+        imageEl.removeAttribute('src');
+        imageWrap.classList.add('hidden');
+      }
+    }
     $('homeworkOptionsWrap').innerHTML = (q.options || []).map((opt, idx) => `<button type="button" class="option-btn" data-option="${idx}">${esc(opt)}</button>`).join('');
     document.querySelectorAll('#homeworkOptionsWrap .option-btn').forEach((btn) => {
       btn.addEventListener('click', function(){
@@ -86,13 +107,20 @@
       btn.classList.add(String(btn.textContent || '').trim() === String(choice || '').trim() ? 'selected' : 'disabled');
     });
     updateQuizHead();
+    window.clearTimeout(state.autoNextTimer);
+    state.autoNextTimer = window.setTimeout(() => {
+      if (!state || state.submitting) return;
+      if (state.index >= state.assignment.questions.length - 1) finishHomework(false);
+      else nextQuestion(true);
+    }, 650);
   }
 
-  function nextQuestion(){
+  function nextQuestion(skipPrompt){
     if (!state.answers[state.index]) {
-      alert('Please choose an answer first.');
+      if (!skipPrompt) alert('Please choose an answer first.');
       return;
     }
+    window.clearTimeout(state.autoNextTimer);
     state.index += 1;
     if (state.index >= state.assignment.questions.length) return finishHomework(false);
     renderQuestion();
@@ -189,7 +217,8 @@
         index: 0,
         answers: [],
         timeLeft: data.assignment.useTimer ? Number(data.assignment.timerMinutes || 0) * 60 : null,
-        submitting: false
+        submitting: false,
+        autoNextTimer: null
       };
       $('homeworkStartCard').classList.add('hidden');
       $('homeworkDoneSection').classList.add('hidden');
