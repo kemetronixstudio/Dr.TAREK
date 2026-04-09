@@ -1,4 +1,3 @@
-
 const backend = require('../../lib/access-accounts-backend');
 
 function setJson(res, status, payload) {
@@ -9,7 +8,8 @@ function setJson(res, status, payload) {
 
 function setAuthCookie(res, token) {
   if (token) {
-    res.setHeader('Set-Cookie',
+    res.setHeader(
+      'Set-Cookie',
       `kgAccessToken=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=43200`
     );
   }
@@ -36,22 +36,22 @@ module.exports = async function handler(req, res) {
 
     if (req.method === 'GET') {
       const auth = await backend.requireAdmin(req);
-      if (!auth.ok) return setJson(res, auth.status, { ok:false, error:auth.error });
+      if (!auth.ok) return setJson(res, auth.status, { ok: false, error: auth.error });
 
       setAuthCookie(res, auth.token);
 
       if (action === 'me') {
-        return setJson(res, 200, { ok:true, account:auth.account, token:auth.token });
+        return setJson(res, 200, { ok: true, account: auth.account, token: auth.token });
       }
 
       if (action === 'logs') {
         const logs = await backend.readLogs();
-        return setJson(res, 200, { ok:true, logs, token:auth.token });
+        return setJson(res, 200, { ok: true, logs, token: auth.token });
       }
 
       const accounts = await backend.mergedAccounts();
       return setJson(res, 200, {
-        ok:true,
+        ok: true,
         accounts: accounts.map(backend.publicAccount),
         token: auth.token
       });
@@ -62,23 +62,32 @@ module.exports = async function handler(req, res) {
 
       if (action === 'login') {
         const account = await backend.authenticate(body.user, body.pass, req);
-        if (!account) return setJson(res, 401, { ok:false, error:'Wrong credentials' });
+        if (!account) return setJson(res, 401, { ok: false, error: 'Wrong admin name or password.' });
 
         const token = backend.createTokenForAccount(account);
-        setAuthCookie(res, token);
+        await backend.appendLog({
+          action: 'login',
+          actor: account.user,
+          target: account.user,
+          role: account.role,
+          detail: `Logged in as ${account.role || 'admin'}`,
+          createdAt: new Date().toISOString()
+        });
 
-        return setJson(res, 200, { ok:true, account, token });
+        setAuthCookie(res, token);
+        return setJson(res, 200, { ok: true, account, token });
       }
 
       if (action === 'logout') {
-        res.setHeader('Set-Cookie',
+        res.setHeader(
+          'Set-Cookie',
           'kgAccessToken=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0'
         );
-        return setJson(res, 200, { ok:true });
+        return setJson(res, 200, { ok: true });
       }
 
       const auth = await backend.requireAdmin(req);
-      if (!auth.ok) return setJson(res, auth.status, { ok:false, error:auth.error });
+      if (!auth.ok) return setJson(res, auth.status, { ok: false, error: auth.error });
 
       setAuthCookie(res, auth.token);
 
@@ -96,7 +105,7 @@ module.exports = async function handler(req, res) {
 
     if (req.method === 'DELETE') {
       const auth = await backend.requireAdmin(req);
-      if (!auth.ok) return setJson(res, auth.status, { ok:false, error:auth.error });
+      if (!auth.ok) return setJson(res, auth.status, { ok: false, error: auth.error });
 
       setAuthCookie(res, auth.token);
 
@@ -106,11 +115,10 @@ module.exports = async function handler(req, res) {
       return setJson(res, 200, { ...result, token: auth.token });
     }
 
-    return setJson(res, 405, { ok:false, error:'Method not allowed' });
-
+    return setJson(res, 405, { ok: false, error: 'Method not allowed' });
   } catch (error) {
     return setJson(res, error.status || 500, {
-      ok:false,
+      ok: false,
       error: error.message || 'Request failed'
     });
   }

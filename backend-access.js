@@ -332,7 +332,7 @@
     const nextPass = prompt(lang()==='ar' ? 'أدخل كلمة المرور الجديدة' : 'New password:', '');
     if (!nextPass) return;
     try {
-      const payload = await api('/change-password', { method: 'POST', body: JSON.stringify({ user: account.user, pass: nextPass }) });
+      const payload = await api('?action=change-password', { method: 'POST', body: JSON.stringify({ user: account.user, pass: nextPass }) });
       if (payload.token && payload.currentAccount) persistSession(payload.currentAccount, payload.token);
       await window.renderAccessAccountsList();
       if (typeof window.renderAccessLogs === 'function') await window.renderAccessLogs();
@@ -396,7 +396,7 @@
 
 
   async function logout(){
-    try { await fetch(API_BASE + '/logout', { method:'POST', credentials:'same-origin', headers:{ 'Content-Type':'application/json' } }); } catch (error) {}
+    try { await fetch(API_BASE + '?action=logout', { method:'POST', credentials:'same-origin', headers:{ 'Content-Type':'application/json' } }); } catch (error) {}
     clearStaleFrontendSession();
     forceLoginView();
     showSecurityStatus('Logged out.', 'info');
@@ -410,7 +410,7 @@
       return;
     }
     try {
-      const payload = await api('/change-password', { method:'POST', body: JSON.stringify({ currentPass: currentPass, newPass: newPass }) });
+      const payload = await api('?action=change-password', { method:'POST', body: JSON.stringify({ currentPass: currentPass, newPass: newPass }) });
       if (payload.token && payload.currentAccount) persistSession(payload.currentAccount, payload.token);
       document.getElementById('selfCurrentPassword') && (document.getElementById('selfCurrentPassword').value = '');
       document.getElementById('selfNewPassword') && (document.getElementById('selfNewPassword').value = '');
@@ -425,7 +425,7 @@
     const user = document.getElementById('adminUser') && document.getElementById('adminUser').value || '';
     const pass = document.getElementById('adminPass') && document.getElementById('adminPass').value || '';
     try {
-      const payload = await api('/login', { method: 'POST', body: JSON.stringify({ user: user, pass: pass }), headers: { Authorization: '' } });
+      const payload = await api('?action=login', { method: 'POST', body: JSON.stringify({ user: user, pass: pass }), headers: { Authorization: '' } });
       persistSession(payload.account, payload.token);
       setPanelVisible(payload.account);
       if (typeof window.renderAccessPermissions === 'function') window.renderAccessPermissions([]);
