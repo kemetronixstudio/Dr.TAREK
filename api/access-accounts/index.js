@@ -1,3 +1,4 @@
+
 const backend = require('../../lib/access-accounts-backend');
 
 function setJson(res, status, payload) {
@@ -8,21 +9,25 @@ function setJson(res, status, payload) {
 
 function setAuthCookie(res, token) {
   if (token) {
-    res.setHeader('Set-Cookie', `kgAccessToken=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=43200`);
+    res.setHeader('Set-Cookie',
+      `kgAccessToken=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=43200`
+    );
   }
 }
 
 function getAction(req) {
   try {
     const url = new URL(req.url || '/api/access-accounts', 'http://localhost');
-    return String(url.searchParams.get('action') || url.searchParams.get('mode') || '').trim().toLowerCase();
-  } catch (error) {
-    return String((req.query && (req.query.action || req.query.mode)) || '').trim().toLowerCase();
+    return String(url.searchParams.get('action') || '').trim().toLowerCase();
+  } catch {
+    return String((req.query && req.query.action) || '').trim().toLowerCase();
   }
 }
 
 function readBody(req) {
-  return typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
+  return typeof req.body === 'string'
+    ? JSON.parse(req.body || '{}')
+    : (req.body || {});
 }
 
 module.exports = async function handler(req, res) {
@@ -31,18 +36,25 @@ module.exports = async function handler(req, res) {
 
     if (req.method === 'GET') {
       const auth = await backend.requireAdmin(req);
-      if (!auth.ok) return setJson(res, auth.status, { ok: false, error: auth.error });
+      if (!auth.ok) return setJson(res, auth.status, { ok:false, error:auth.error });
+
       setAuthCookie(res, auth.token);
 
       if (action === 'me') {
-        return setJson(res, 200, { ok: true, account: auth.account, token: auth.token });
+        return setJson(res, 200, { ok:true, account:auth.account, token:auth.token });
       }
+
       if (action === 'logs') {
         const logs = await backend.readLogs();
-        return setJson(res, 200, { ok: true, logs, token: auth.token });
+        return setJson(res, 200, { ok:true, logs, token:auth.token });
       }
+
       const accounts = await backend.mergedAccounts();
-      return setJson(res, 200, { ok: true, accounts: accounts.map(backend.publicAccount), token: auth.token });
+      return setJson(res, 200, {
+        ok:true,
+        accounts: accounts.map(backend.publicAccount),
+        token: auth.token
+      });
     }
 
     if (req.method === 'POST') {
@@ -50,53 +62,56 @@ module.exports = async function handler(req, res) {
 
       if (action === 'login') {
         const account = await backend.authenticate(body.user, body.pass, req);
-        if (!account) return setJson(res, 401, { ok: false, error: 'Wrong admin name or password.' });
+        if (!account) return setJson(res, 401, { ok:false, error:'Wrong credentials' });
+
         const token = backend.createTokenForAccount(account);
-        await backend.appendLog({
-          action: 'login',
-          actor: account.user,
-          target: account.user,
-          role: account.role,
-          detail: `Logged in as ${account.role || 'admin'}`,
-          createdAt: new Date().toISOString()
-        });
         setAuthCookie(res, token);
-        return setJson(res, 200, { ok: true, account, token });
+
+        return setJson(res, 200, { ok:true, account, token });
       }
 
       if (action === 'logout') {
-        res.setHeader('Set-Cookie', 'kgAccessToken=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0');
-        return setJson(res, 200, { ok: true });
-      }
-
-      if (action === 'change-password') {
-        const auth = await backend.requireAdmin(req);
-        if (!auth.ok) return setJson(res, auth.status, { ok: false, error: auth.error });
-        setAuthCookie(res, auth.token);
-        const result = body && body.currentPass
-          ? await backend.changeOwnPassword(body, auth.account)
-          : await backend.changePassword(body, auth.account);
-        return setJson(res, 200, { ...result, token: result.token || auth.token });
+        res.setHeader('Set-Cookie',
+          'kgAccessToken=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0'
+        );
+        return setJson(res, 200, { ok:true });
       }
 
       const auth = await backend.requireAdmin(req);
-      if (!auth.ok) return setJson(res, auth.status, { ok: false, error: auth.error });
+      if (!auth.ok) return setJson(res, auth.status, { ok:false, error:auth.error });
+
       setAuthCookie(res, auth.token);
+
+      if (action === 'change-password') {
+        const result = body.currentPass
+          ? await backend.changeOwnPassword(body, auth.account)
+          : await backend.changePassword(body, auth.account);
+
+        return setJson(res, 200, { ...result, token: result.token || auth.token });
+      }
+
       const result = await backend.saveAccount(body, auth.account);
-      return setJson(res, 200, { ...result, token: result.token || auth.token });
+      return setJson(res, 200, { ...result, token: auth.token });
     }
 
     if (req.method === 'DELETE') {
       const auth = await backend.requireAdmin(req);
-      if (!auth.ok) return setJson(res, auth.status, { ok: false, error: auth.error });
+      if (!auth.ok) return setJson(res, auth.status, { ok:false, error:auth.error });
+
       setAuthCookie(res, auth.token);
+
       const body = readBody(req);
       const result = await backend.deleteAccount(body, auth.account);
+
       return setJson(res, 200, { ...result, token: auth.token });
     }
 
-    return setJson(res, 405, { ok: false, error: 'Method not allowed' });
+    return setJson(res, 405, { ok:false, error:'Method not allowed' });
+
   } catch (error) {
-    return setJson(res, error.status || 500, { ok: false, error: error.message || 'Request failed' });
+    return setJson(res, error.status || 500, {
+      ok:false,
+      error: error.message || 'Request failed'
+    });
   }
 };
