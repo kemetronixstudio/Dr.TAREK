@@ -143,13 +143,16 @@ function loadQuestionImage(image, text=''){
     candidates.push(v);
   };
   push(normalized);
+  if (/^assets\/quiz-bulk\//i.test(normalized)) {
+    push('/' + normalized.replace(/^\/+/, ''));
+  }
   if (/^svg\//i.test(normalized)) push(normalized.replace(/^svg\//i, 'assets/svg/'));
   if (/^assets\/svg\//i.test(normalized)) push(normalized.replace(/^assets\/svg\//i, 'svg/'));
   if (/^assets\/quiz-bulk\//i.test(normalized)) {
     const fileName = normalized.split('/').pop();
     if (fileName) {
-      push('svg/' + fileName);
-      push('assets/svg/' + fileName);
+      push('assets/quiz-bulk/' + fileName);
+      push('quiz-bulk/' + fileName);
     }
   }
   if (!/\.(png|jpe?g|webp|gif)($|\?)/i.test(normalized)) {
@@ -157,9 +160,11 @@ function loadQuestionImage(image, text=''){
     if (/^svg\//i.test(normalized)) push(normalized.replace(/^svg\//i, 'assets/svg/') + '.png');
     if (/^assets\/svg\//i.test(normalized)) push(normalized.replace(/^assets\/svg\//i, 'svg/') + '.png');
     if (/^assets\/quiz-bulk\//i.test(normalized)) {
-      const fileName = normalized.split('/').pop() + '.png';
-      push('svg/' + fileName);
-      push('assets/svg/' + fileName);
+      const fileName = normalized.split('/').pop();
+      if (fileName) {
+        push('assets/quiz-bulk/' + fileName + '.png');
+        push('quiz-bulk/' + fileName + '.png');
+      }
     }
   }
   let idx = 0;
@@ -661,8 +666,7 @@ function normalizeQuestionImage(image, grade, text){
 
   /* quiz-bulk image path support */
   if (lower.startsWith('assets/quiz-bulk/')) {
-    const fileName = raw.split('/').pop();
-    if (fileName) return 'svg/' + fileName;
+    return raw;
   }
 
   return raw;
