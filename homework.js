@@ -60,6 +60,8 @@
     $('homeworkTimerValue').textContent = state.timeLeft == null ? 'Off' : String(state.timeLeft);
   }
 
+
+
   function resolveQuestionImage(image){
     const value = String(image || '').trim();
     if (!value) return '';
@@ -67,7 +69,6 @@
     if (value.startsWith('assets/')) return '/' + value;
     return '/assets/' + value.replace(/^\.\//, '');
   }
-
   function renderQuestion(){
     const q = state.assignment.questions[state.index];
     if (!q) return finishHomework(false);
@@ -89,6 +90,7 @@
     $('homeworkOptionsWrap').innerHTML = (q.options || []).map((opt, idx) => `<button type="button" class="option-btn" data-option="${idx}">${esc(opt)}</button>`).join('');
     document.querySelectorAll('#homeworkOptionsWrap .option-btn').forEach((btn) => {
       btn.addEventListener('click', function(){
+        if (state.answers[state.index]) return;
         chooseAnswer(this.textContent || '');
       });
     });
@@ -130,6 +132,10 @@
     if (timer) {
       clearInterval(timer);
       timer = null;
+    }
+    if (state && state.autoNextTimer) {
+      clearTimeout(state.autoNextTimer);
+      state.autoNextTimer = null;
     }
   }
 
