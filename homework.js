@@ -1,13 +1,3 @@
-
-function resolveQuestionImage(image){
-  const value = String(image || '').trim();
-  if (!value) return '';
-  if (/^(https?:)?\/\//i.test(value) || value.startsWith('data:') || value.startsWith('/')) return value;
-  if (value.startsWith('assets/')) return '/' + value;
-  return '/assets/' + value.replace(/^\.\//, '');
-}
-
-function renderQuestion()
 (function(){
   if (typeof document === 'undefined' || !document.body || document.body.dataset.page !== 'homework') return;
   const API = '/api/homework';
