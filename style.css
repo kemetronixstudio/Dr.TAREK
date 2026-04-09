@@ -2782,5 +2782,3 @@ body[data-page="homework"] #homeworkDoneSection::before{
 .homework-question-media-wrap{display:flex;justify-content:center;margin:14px 0 8px}
 .homework-question-image{display:block;max-width:min(100%,320px);max-height:260px;object-fit:contain;background:#fff;border-radius:18px;padding:10px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
 body[data-page="homework"] .next-row{display:flex;justify-content:center;gap:12px}
-
-.student-verified-box{background:#fff7cf;border-radius:16px;padding:10px 12px;display:grid;gap:6px;margin-top:8px}.student-verified-box.hidden{display:none}

@@ -6,7 +6,6 @@
   let state = null;
   let timer = null;
   let availableRows = [];
-  let verifiedStudent = null;
   const esc = (v) => String(v || '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 
   async function api(action, options){
@@ -21,30 +20,19 @@
     $('homeworkStatus').textContent = msg || '';
   }
 
-  async function loadVerifiedStudent(){
+  function studentIdentity(){
+    const name = String($('homeworkStudentName')?.value || '').trim();
     const studentId = String($('homeworkStudentId')?.value || '').trim();
-    const pin = String($('homeworkStudentPin')?.value || '').trim();
-    if (!studentId) throw new Error('Please enter student ID.');
-    if (!pin) throw new Error('Please enter PIN.');
-    const data = await api('identify', { method:'POST', body: JSON.stringify({ studentId, pin }) });
-    verifiedStudent = data.student || null;
-    if ($('homeworkVerifiedBox')) $('homeworkVerifiedBox').classList.toggle('hidden', !verifiedStudent);
-    if (verifiedStudent) {
-      $('homeworkStudentName').textContent = verifiedStudent.name || '-';
-      $('homeworkStudentGrade').textContent = verifiedStudent.grade || '-';
-      $('homeworkStudentClass').textContent = verifiedStudent.className || '-';
-    }
-    return data.identity;
-  }
-
-  async function studentIdentity(){
-    if (verifiedStudent) return { name: verifiedStudent.name, studentId: verifiedStudent.studentId, grade: verifiedStudent.grade, className: verifiedStudent.className, studentRecord: verifiedStudent };
-    return loadVerifiedStudent();
+    const grade = String($('homeworkStudentGrade')?.value || 'KG1').trim();
+    const className = String($('homeworkStudentClass')?.value || '').trim();
+    if (!name) throw new Error('Please enter student name.');
+    if (!className) throw new Error('Please enter class name.');
+    return { name, studentId, grade, className, isGuest:false };
   }
 
   async function renderAssignments(){
     try {
-      const identity = await studentIdentity();
+      const identity = studentIdentity();
       const data = await api('available', { method:'POST', body: JSON.stringify({ identity }) });
       availableRows = Array.isArray(data.rows) ? data.rows : [];
       $('homeworkAvailableList').innerHTML = availableRows.map((hw) => {
@@ -214,7 +202,7 @@
 
   async function startHomework(id){
     try {
-      const identity = await studentIdentity();
+      const identity = studentIdentity();
       const assignment = availableRows.find((row) => row.id === id);
       const passwordField = document.querySelector(`[data-homework-password-for="${CSS.escape(String(id || ''))}"]`);
       const password = assignment && assignment.usePassword ? String(passwordField?.value || '').trim() : '';

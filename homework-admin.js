@@ -308,42 +308,7 @@
     $('refreshHomeworkAnalyticsBtn')?.addEventListener('click', renderHomeworkAnalytics);
     $('exportHomeworkReportsExcelBtn')?.addEventListener('click', exportHomeworkExcel);
     ['homeworkAnalyticsGradeFilter','homeworkAnalyticsClassFilter','homeworkAnalyticsFromDate','homeworkAnalyticsToDate'].forEach((id) => $(id)?.addEventListener('change', () => { renderReports(); renderHomeworkAnalytics(); }));
-  
-async function renderStudents(){
-  const body = $('studentTableBody');
-  const status = $('studentManagerStatus');
-  if (!body) return;
-  try {
-    const data = await api('?action=students');
-    const rows = Array.isArray(data.rows) ? data.rows : [];
-    body.innerHTML = rows.map((row) => `<tr><td>${esc(row.studentId)}</td><td>${esc(row.pin)}</td><td>${esc(row.name)}</td><td>${esc(row.grade)}</td><td>${esc(row.className)}</td><td><button class="ghost-btn small-btn student-delete-btn" data-id="${esc(row.id)}" type="button">Delete</button></td></tr>`).join('') || '<tr><td colspan="6">No students yet.</td></tr>';
-    if (status) status.textContent = rows.length ? `${rows.length} student(s) saved.` : 'No students yet.';
-  } catch (error) {
-    body.innerHTML = `<tr><td colspan="6">${esc(error.message || 'Could not load students.')}</td></tr>`;
-  }
-}
-
-async function saveStudent(){
-  const name = String($('studentNameInput')?.value || '').trim();
-  const grade = String($('studentGradeInput')?.value || 'KG1').trim();
-  const className = String($('studentClassInput')?.value || '').trim();
-  const status = $('studentManagerStatus');
-  if (!name || !className) {
-    if (status) status.textContent = 'Enter student name and class.';
-    return;
-  }
-  try {
-    const data = await api('?action=student-save', { method:'POST', body: JSON.stringify({ name, grade, className }) });
-    if ($('studentNameInput')) $('studentNameInput').value = '';
-    if ($('studentClassInput')) $('studentClassInput').value = '';
-    if (status) status.textContent = `Saved ${data.row.name}. ID: ${data.row.studentId} PIN: ${data.row.pin}`;
-    renderStudents();
-  } catch (error) {
-    if (status) status.textContent = error.message || 'Could not save student.';
-  }
-}
-
-  $('loadReuseHomeworkBtn')?.addEventListener('click', () => loadHomeworkIntoForm($('reuseHomeworkSelect')?.value || ''));
+    $('loadReuseHomeworkBtn')?.addEventListener('click', () => loadHomeworkIntoForm($('reuseHomeworkSelect')?.value || ''));
     document.addEventListener('click', (e) => {
       const questionCheck = e.target.closest('.homework-question-check');
       if (questionCheck) {
@@ -370,7 +335,6 @@ async function saveStudent(){
   renderList();
   renderReports();
   renderHomeworkAnalytics();
-  renderStudents();
   wire();
   updateModeVisibility();
 })();
