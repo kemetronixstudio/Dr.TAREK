@@ -181,6 +181,21 @@
       </div>
     </section>
 
+    <section class="card admin-table-card collapsible-section" data-section-key="teacherTest" id="homeworkReportsSection">
+      <div class="section-head"><h2>Homework Reports</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleHomeworkReportsBtn" type="button">Expand</button><button class="ghost-btn" id="refreshHomeworkReportsBtn" type="button">Refresh</button></div></div>
+      <div id="homeworkReportsBody" class="admin-collapsible-body collapsed-body">
+      <p class="muted-note">See every homework submission with student name, class, time, answers, and wrong answers. Tries are now checked on the server, so the same student cannot bypass the limit by changing browser or device.</p>
+      <div class="editor-grid">
+        <input id="homeworkReportSearch" placeholder="Search by student, student ID, or homework title">
+        <input id="homeworkReportClassFilter" placeholder="Filter by class">
+        <button class="main-btn" id="homeworkReportSearchBtn" type="button">Search Homework Reports</button>
+      </div>
+      <div id="homeworkReportStatus" class="muted-note"></div>
+      <div class="table-wrap"><table><thead><tr><th>Student</th><th>Student ID</th><th>Class</th><th>Grade</th><th>Homework</th><th>Score</th><th>Percent</th><th>Wrong</th><th>Try</th><th>Submitted</th><th>Open</th></tr></thead><tbody id="homeworkReportTableBody"></tbody></table></div>
+      <div id="homeworkReportDetail" class="stored-questions question-editor-list"></div>
+      </div>
+    </section>
+
     <section class="card admin-level-card collapsible-section" data-section-key="bulkQuestions" id="bulkQuestionsSection">
       <div class="section-head"><h2 data-i18n="bulkQuestionsTitle">Bulk Question Import</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleBulkQuestionsBtn" type="button">Expand</button></div></div>
       <div id="bulkQuestionsBody" class="admin-collapsible-body collapsed-body">
