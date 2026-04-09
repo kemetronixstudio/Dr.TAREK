@@ -167,18 +167,25 @@
         <textarea id="homeworkQuestionList" class="full" placeholder="Manual mode: enter one question per line using this format: Question | Option 1 | Option 2 | Option 3 | Option 4 | Correct answer"></textarea>
         <div id="homeworkQuestionPickerWrap" class="full teacher-question-picker">
           <div class="teacher-picker-head">
-            <strong>Available Questions</strong>
+            <strong data-i18n="availableQuestionsLabel">Available Questions</strong>
             <div class="teacher-picker-actions">
+              <input id="homeworkQuestionSearch" class="mini-search-input" placeholder="Search questions">
+              <button type="button" class="ghost-btn small-btn" id="searchHomeworkQuestionsBtn">Search</button>
               <button type="button" class="ghost-btn small-btn" id="selectAllHomeworkQuestionsBtn">Select All</button>
               <button type="button" class="ghost-btn small-btn" id="clearHomeworkQuestionsBtn">Clear</button>
             </div>
           </div>
+          <div id="homeworkQuestionPickerStatus" class="muted-note"></div>
           <div id="homeworkQuestionPickerList" class="teacher-question-picker-list"></div>
         </div>
       </div>
       <div class="action-row wrap-row">
         <button class="main-btn" id="saveHomeworkBtn" type="button">Save Homework</button>
         <button class="ghost-btn" id="clearHomeworkBtn" type="button">Clear Homework Form</button>
+      </div>
+      <div class="editor-grid">
+        <select id="reuseHomeworkSelect"><option value="">Reuse saved homework</option></select>
+        <button class="ghost-btn" id="loadReuseHomeworkBtn" type="button">Load Saved Homework</button>
       </div>
       <div id="homeworkAdminStatus" class="muted-note"></div>
       <div id="homeworkAdminList" class="stored-questions question-editor-list"></div>
@@ -275,9 +282,9 @@
       <div class="section-head"><h2 data-i18n="questionBankEditor">Question Bank Editor</h2><div class="editor-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleQuestionBankEditorBtn" type="button">Expand</button><button class="ghost-btn" id="showStoredQuestionsBtn" data-i18n="refreshQuestionList">Refresh Question List</button></div></div>
       <div id="questionBankEditorBody" class="admin-collapsible-body collapsed-body">
       <div class="editor-grid">
-        <input id="newQGrade" placeholder="Grade (KG1 or KG2)">
-        <input id="newQSkill" placeholder="Skill (Vocabulary, Phonics...)">
-        <input id="newQType" placeholder="Type (Choice, TrueFalse, Picture)">
+        <select id="newQGrade"><option value="">Select grade</option><option value="KG1">KG1</option><option value="KG2">KG2</option></select>
+        <select id="newQSkill"><option value="">Select skill</option><option value="Vocabulary">Vocabulary</option><option value="Phonics">Phonics</option><option value="Alphabet">Alphabet</option><option value="Grammar">Grammar</option><option value="Reading">Reading</option><option value="Body Parts">Body Parts</option><option value="School Vocabulary">School Vocabulary</option></select>
+        <select id="newQType"><option value="">Select type</option><option value="Choice">Choice</option><option value="TrueFalse">True / False</option><option value="Picture">Picture</option></select>
         <input id="newQText" placeholder="Question text">
         <input id="newQOptions" placeholder="Options separated by |">
         <input id="newQAnswer" placeholder="Correct answer">
@@ -295,4 +302,4 @@
     </section>
   </div></section>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script><script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><script src="script.js"></script><script src="custom-classes.js"></script><script src="grades-extension.js"></script><script src="backend-access.js"></script><script src="student-cloud-admin.js"></script><script src="homework-admin.js"></script><script src="quiz-bulk-package.js"></script><script src="kg1-grade6-support.js"></script><script src="hobby-upgrades.js"></script><script src="next-upgrade-pack.js"></script><script src="final-polish-pack.js"></script><script src="adaptive-access-admin.js"></script><script src="runtime-ui-fixes.js"></script><script src="latest-admin-dynamic-fix.js"></script></body></html>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script><script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><script src="script.js"></script><script src="ui-language-patch.js"></script><script src="custom-classes.js"></script><script src="grades-extension.js"></script><script src="backend-access.js"></script><script src="student-cloud-admin.js"></script><script src="homework-admin.js"></script><script src="quiz-bulk-package.js"></script><script src="kg1-grade6-support.js"></script><script src="hobby-upgrades.js"></script><script src="next-upgrade-pack.js"></script><script src="final-polish-pack.js"></script><script src="adaptive-access-admin.js"></script><script src="runtime-ui-fixes.js"></script><script src="latest-admin-dynamic-fix.js"></script></body></html>
