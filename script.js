@@ -398,8 +398,7 @@ const ADMIN_COLLAPSIBLE_CONFIGS = [
   { buttonId:'toggleClassManagerBtn', bodyId:'classManagerBody', sectionId:'classManagerSection' },
   { buttonId:'toggleAccountManagerBtn', bodyId:'accountManagerBody', sectionId:'accountManagerSection' },
   { buttonId:'toggleActivityLogsBtn', bodyId:'activityLogsBody', sectionId:'activityLogsSection' },
-  { buttonId:'toggleQuestionBankEditorBtn', bodyId:'questionBankEditorBody', sectionId:'questionBankSection' },
-  { buttonId:'toggleStudentsManagerBtn', bodyId:'studentsManagerBody', sectionId:'studentsManagerSection' }
+  { buttonId:'toggleQuestionBankEditorBtn', bodyId:'questionBankEditorBody', sectionId:'questionBankSection' }
 ];
 
 function setCollapsed(targetId, button, collapsed){
@@ -449,7 +448,7 @@ function ensureAdminShortcutUI(){
   const grid = document.getElementById('adminShortcutsGrid') || gridCard.querySelector('.admin-shortcuts-grid');
   const iconMap = {
     studentCloudSection:'☁️', studentAnalyticsSection:'📊', levelVisibilitySection:'👁️', timerSettingsSection:'⏱️', quizAccessSection:'🔐', teacherTestSection:'🧪',
-    homeworkBuilderSection:'📘', homeworkReportsSection:'🧾', bulkQuestionsSection:'📥', classManagerSection:'🏫', accountManagerSection:'👥', activityLogsSection:'📝', questionBankSection:'📚', studentsManagerSection:'🧑‍🎓'
+    homeworkBuilderSection:'📘', homeworkReportsSection:'🧾', bulkQuestionsSection:'📥', classManagerSection:'🏫', accountManagerSection:'👥', activityLogsSection:'📝', questionBankSection:'📚'
   };
   if (sticky && !sticky.children.length) {
     ADMIN_COLLAPSIBLE_CONFIGS.forEach(cfg => {
@@ -3230,3 +3229,63 @@ try {
   });
 } catch (e) {}
 try { applyTranslations(); } catch (e) {}
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  const studentsSection = document.getElementById('studentsManagerSection');
+  const studentsBody = document.getElementById('studentsManagerBody');
+  const studentsShortcut = document.getElementById('studentsManagerShortcut');
+  const studentsToggle = document.getElementById('toggleStudentsManagerBtn');
+  const expandAllBtn = document.getElementById('expandAllAdminBtn');
+
+  if (studentsSection) {
+    studentsSection.style.display = 'block';
+    studentsSection.hidden = false;
+  }
+
+  if (studentsBody) {
+    studentsBody.style.display = 'block';
+    studentsBody.hidden = false;
+    studentsBody.classList.remove('collapsed-body');
+  }
+
+  if (studentsShortcut && studentsSection && studentsBody) {
+    studentsShortcut.addEventListener('click', function (event) {
+      event.preventDefault();
+      studentsBody.style.display = 'block';
+      studentsBody.hidden = false;
+      studentsBody.classList.remove('collapsed-body');
+      studentsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
+  if (studentsToggle && studentsBody) {
+    studentsToggle.addEventListener('click', function () {
+      const isHidden = studentsBody.style.display === 'none' || studentsBody.hidden;
+      if (isHidden) {
+        studentsBody.style.display = 'block';
+        studentsBody.hidden = false;
+        studentsBody.classList.remove('collapsed-body');
+        studentsToggle.textContent = 'Hide';
+      } else {
+        studentsBody.style.display = 'none';
+        studentsBody.hidden = true;
+        studentsToggle.textContent = 'Show';
+      }
+    });
+  }
+
+  if (expandAllBtn) {
+    expandAllBtn.addEventListener('click', function () {
+      if (studentsBody) {
+        studentsBody.style.display = 'block';
+        studentsBody.hidden = false;
+        studentsBody.classList.remove('collapsed-body');
+      }
+      if (studentsSection) {
+        studentsSection.style.display = 'block';
+        studentsSection.hidden = false;
+      }
+    });
+  }
+});
