@@ -1,6 +1,41 @@
-const CACHE = 'kg-quiz-v1000-dreamers-homework';
+const CACHE = 'kg-quiz-v1001-security-hardening';
 const ASSETS = [
-  './','./index.html','./kg1.html','./kg2.html','./class.html','./certificate.html','./admin.html','./style.css','./script.js','./custom-classes.js','./kg1-grade6-support.js','./manifest.json','./student-cloud-client.js','./hobby-upgrades.js','./next-upgrade-pack.js','./final-polish-pack.js','./adaptive-access-admin.js','./latest-admin-dynamic-fix.js','./homework.html','./homework.js','./homework-admin.js','./assets/icons/dreamers-192.png','./assets/icons/dreamers-512.png','./assets/icons/apple-touch-icon.png','./assets/img/dreamers-logo.png',
+  "./",
+  "./index.html",
+  "./kg1.html",
+  "./kg2.html",
+  "./class.html",
+  "./certificate.html",
+  "./admin.html",
+  "./play.html",
+  "./homework.html",
+  "./style.css",
+  "./remove-empty-box.css",
+  "./script.js",
+  "./custom-classes.js",
+  "./kg1-grade6-support.js",
+  "./grades-extension.js",
+  "./ui-language-patch.js",
+  "./quiz-bulk-package.js",
+  "./runtime-ui-fixes.js",
+  "./play-test.js",
+  "./play-question-bank.js",
+  "./backend-access.js",
+  "./student-cloud-admin.js",
+  "./student-cloud-client.js",
+  "./homework.js",
+  "./homework-admin.js",
+  "./play.html",
+  "./hobby-upgrades.js",
+  "./next-upgrade-pack.js",
+  "./final-polish-pack.js",
+  "./adaptive-access-admin.js",
+  "./latest-admin-dynamic-fix.js",
+  "./manifest.json",
+  "./assets/icons/dreamers-192.png",
+  "./assets/icons/dreamers-512.png",
+  "./assets/icons/apple-touch-icon.png",
+  "./assets/img/dreamers-logo.png"
 ];
 self.addEventListener('install', event => {
   self.skipWaiting();

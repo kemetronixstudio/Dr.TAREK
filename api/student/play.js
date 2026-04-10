@@ -2,6 +2,7 @@ const backend = require('../../lib/student-cloud-backend');
 const accessBackend = require('../../lib/access-accounts-backend');
 
 module.exports = async function handler(req, res) {
+  if (applyCors(req, res)) return;
   const url = new URL(req.url, 'http://localhost');
   const action = String(url.searchParams.get('action') || '').trim().toLowerCase();
   try {

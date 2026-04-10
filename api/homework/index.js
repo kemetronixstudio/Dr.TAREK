@@ -1,11 +1,10 @@
 const backend = require('../../lib/homework-backend');
 const access = require('../../lib/access-accounts-backend');
+const { applyCors, setAuthCookie } = require('../../lib/api-security');
 
-function setAuthCookie(res, token) {
-  if (token) res.setHeader('Set-Cookie', `kgAccessToken=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=43200`);
-}
 
 module.exports = async function handler(req, res){
+  if (applyCors(req, res)) return;
   res.setHeader('Content-Type', 'application/json');
   try {
     const url = new URL(req.url || '/api/homework', 'http://localhost');
@@ -19,7 +18,7 @@ module.exports = async function handler(req, res){
         res.end(JSON.stringify({ ok:false, error:auth.error }));
         return;
       }
-      setAuthCookie(res, auth.token);
+      setAuthCookie(req, res, auth.token);
     }
 
     if (req.method === 'GET') {

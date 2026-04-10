@@ -1,6 +1,7 @@
 const backend = require('../../lib/student-cloud-backend');
 
 module.exports = async function handler(req, res) {
+  if (applyCors(req, res)) return;
   if (req.method !== 'POST') {
     res.statusCode = 405;
     res.setHeader('Content-Type', 'application/json');
