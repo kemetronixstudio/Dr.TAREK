@@ -323,6 +323,50 @@
     $('homeworkQuestionPickerWrap')?.classList.toggle('hidden', manual);
   }
 
+
+  function ensureStudentsSectionVisible(){
+    const body = $('studentsManagerBody');
+    const btn = $('toggleStudentsManagerBtn');
+    const section = $('studentsManagerSection');
+    if (body){
+      body.classList.remove('collapsed-body');
+      body.hidden = false;
+      body.style.display = '';
+    }
+    if (btn){
+      btn.textContent = 'Collapse';
+      btn.dataset.collapsed = '0';
+      btn.setAttribute('aria-expanded', 'true');
+      btn.addEventListener('click', function(event){
+        event.preventDefault();
+        const isCollapsed = body.classList.contains('collapsed-body') || body.hidden;
+        if (isCollapsed){
+          body.classList.remove('collapsed-body');
+          body.hidden = false;
+          body.style.display = '';
+          btn.textContent = 'Collapse';
+        } else {
+          body.classList.add('collapsed-body');
+          body.hidden = true;
+          body.style.display = 'none';
+          btn.textContent = 'Expand';
+        }
+      });
+    }
+    document.querySelectorAll('[data-shortcut-target="studentsManagerSection"]').forEach((chip) => {
+      chip.addEventListener('click', function(event){
+        event.preventDefault();
+        if (body){
+          body.classList.remove('collapsed-body');
+          body.hidden = false;
+          body.style.display = '';
+        }
+        if (section) section.scrollIntoView({ behavior:'smooth', block:'start' });
+      });
+    });
+  }
+
+
   function wire(){
     $('homeworkGrade')?.addEventListener('change', () => { selectedQuestionIds.clear(); renderPicker(); updateModeVisibility(); });
     $('homeworkMode')?.addEventListener('change', updateModeVisibility);

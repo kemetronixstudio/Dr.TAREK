@@ -398,7 +398,8 @@ const ADMIN_COLLAPSIBLE_CONFIGS = [
   { buttonId:'toggleClassManagerBtn', bodyId:'classManagerBody', sectionId:'classManagerSection' },
   { buttonId:'toggleAccountManagerBtn', bodyId:'accountManagerBody', sectionId:'accountManagerSection' },
   { buttonId:'toggleActivityLogsBtn', bodyId:'activityLogsBody', sectionId:'activityLogsSection' },
-  { buttonId:'toggleQuestionBankEditorBtn', bodyId:'questionBankEditorBody', sectionId:'questionBankSection' }
+  { buttonId:'toggleQuestionBankEditorBtn', bodyId:'questionBankEditorBody', sectionId:'questionBankSection' },
+  { buttonId:'toggleStudentsManagerBtn', bodyId:'studentsManagerBody', sectionId:'studentsManagerSection' }
 ];
 
 function setCollapsed(targetId, button, collapsed){
@@ -448,7 +449,7 @@ function ensureAdminShortcutUI(){
   const grid = document.getElementById('adminShortcutsGrid') || gridCard.querySelector('.admin-shortcuts-grid');
   const iconMap = {
     studentCloudSection:'☁️', studentAnalyticsSection:'📊', levelVisibilitySection:'👁️', timerSettingsSection:'⏱️', quizAccessSection:'🔐', teacherTestSection:'🧪',
-    homeworkBuilderSection:'📘', homeworkReportsSection:'🧾', bulkQuestionsSection:'📥', classManagerSection:'🏫', accountManagerSection:'👥', activityLogsSection:'📝', questionBankSection:'📚'
+    homeworkBuilderSection:'📘', homeworkReportsSection:'🧾', bulkQuestionsSection:'📥', classManagerSection:'🏫', accountManagerSection:'👥', activityLogsSection:'📝', questionBankSection:'📚', studentsManagerSection:'🧑‍🎓'
   };
   if (sticky && !sticky.children.length) {
     ADMIN_COLLAPSIBLE_CONFIGS.forEach(cfg => {
