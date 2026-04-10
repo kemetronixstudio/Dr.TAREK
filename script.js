@@ -3306,7 +3306,14 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
 (function(){
+  function adminPanelVisible(){
+    var panel = document.getElementById('adminPanel');
+    if (!panel) return false;
+    return !panel.classList.contains('hidden') && panel.style.display !== 'none' && !panel.hidden;
+  }
+
   function ensureStudentsManagerVisible(){
+    if (!adminPanelVisible()) return;
     var section = document.getElementById('studentsManagerSection');
     var body = document.getElementById('studentsManagerBody');
     var button = document.getElementById('toggleStudentsManagerBtn');
@@ -3346,30 +3353,28 @@ document.addEventListener('DOMContentLoaded', function(){
       });
     });
 
-    if (button && body){
-      if (button.dataset.studentsManagerToggleWired !== '1'){
-        button.dataset.studentsManagerToggleWired = '1';
-        button.addEventListener('click', function(e){
-          e.preventDefault();
-          e.stopPropagation();
-          var collapsed = body.classList.contains('collapsed-body') || body.hidden || body.style.display === 'none';
-          if (collapsed){
-            body.classList.remove('collapsed-body');
-            body.hidden = false;
-            body.style.display = 'block';
-            button.textContent = 'Collapse';
-            button.dataset.collapsed = '0';
-            button.setAttribute('aria-expanded', 'true');
-          } else {
-            body.classList.add('collapsed-body');
-            body.hidden = true;
-            body.style.display = 'none';
-            button.textContent = 'Expand';
-            button.dataset.collapsed = '1';
-            button.setAttribute('aria-expanded', 'false');
-          }
-        });
-      }
+    if (button && body && button.dataset.studentsManagerToggleWired !== '1'){
+      button.dataset.studentsManagerToggleWired = '1';
+      button.addEventListener('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        var collapsed = body.classList.contains('collapsed-body') || body.hidden || body.style.display === 'none';
+        if (collapsed){
+          body.classList.remove('collapsed-body');
+          body.hidden = false;
+          body.style.display = 'block';
+          button.textContent = 'Collapse';
+          button.dataset.collapsed = '0';
+          button.setAttribute('aria-expanded', 'true');
+        } else {
+          body.classList.add('collapsed-body');
+          body.hidden = true;
+          body.style.display = 'none';
+          button.textContent = 'Expand';
+          button.dataset.collapsed = '1';
+          button.setAttribute('aria-expanded', 'false');
+        }
+      });
     }
   }
 
@@ -3401,6 +3406,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function afterAdminReady(){
+    if (!adminPanelVisible()) return;
     ensureStudentsManagerVisible();
     wireStudentsManagerDirect();
     patchExpandAll();
@@ -3408,13 +3414,15 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   document.addEventListener('DOMContentLoaded', function(){
-    afterAdminReady();
+    wireStudentsManagerDirect();
+    patchExpandAll();
+    wrapApplySectionPermissions();
     var loginBtn = document.getElementById('adminLoginBtn');
     if (loginBtn && loginBtn.dataset.studentsManagerLoginWired !== '1'){
       loginBtn.dataset.studentsManagerLoginWired = '1';
       loginBtn.addEventListener('click', function(){
-        window.setTimeout(afterAdminReady, 200);
-        window.setTimeout(afterAdminReady, 800);
+        window.setTimeout(afterAdminReady, 300);
+        window.setTimeout(afterAdminReady, 900);
       });
     }
   });
