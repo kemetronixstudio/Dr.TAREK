@@ -40,7 +40,7 @@
         <button type="button" class="shortcut-chip" data-shortcut-target="classManagerSection"><span class="shortcut-icon">🏫</span><span class="shortcut-text">Class Manager</span></button>
         <button type="button" class="shortcut-chip" data-shortcut-target="accountManagerSection"><span class="shortcut-icon">👥</span><span class="shortcut-text">Access Accounts</span></button>
         <button type="button" class="shortcut-chip" data-shortcut-target="activityLogsSection"><span class="shortcut-icon">📝</span><span class="shortcut-text">Activity Logs</span></button>
-        <button type="button" class="shortcut-chip" data-shortcut-target="questionBankSection"><span class="shortcut-icon">📚</span><span class="shortcut-text">Question Bank Editor</span></button>
+        <button type="button" class="shortcut-chip" data-shortcut-target="questionBankSection"><span class="shortcut-icon">📚</span><span class="shortcut-text">Question Bank Editor</span></button><button type="button" class="shortcut-chip" data-shortcut-target="studentsManagerSection"><span class="shortcut-icon">🧑‍🎓</span><span class="shortcut-text">Students</span></button>
       </div>
     </section>
     <section class="card admin-table-card" id="adminSecuritySection"><div class="section-head"><h2>Admin Security</h2><div class="section-head-actions"><button class="ghost-btn" id="adminLogoutBtn" type="button">Logout</button></div></div><div class="editor-grid"><input id="selfCurrentPassword" type="password" placeholder="Current password"><input id="selfNewPassword" type="password" placeholder="New password"><button class="main-btn" id="selfChangePasswordBtn" type="button">Change My Password</button></div><div id="adminSecurityStatus" class="muted-note"></div><p class="muted-note">Login is now protected with temporary lockout after too many wrong attempts, and homework/report actions require authenticated admin access.</p></section><div class="admin-top-grid">
@@ -325,5 +325,24 @@
       </div>
     </section>
   </div></section>
+
+<section class="card admin-table-card collapsible-section" data-section-key="studentsManager" id="studentsManagerSection">
+  <div class="section-head"><h2>Students Manager</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleStudentsManagerBtn" type="button">Expand</button></div></div>
+  <div id="studentsManagerBody" class="admin-collapsible-body collapsed-body">
+    <div class="editor-grid">
+      <input id="studentNameInput" placeholder="Student name">
+      <select id="studentGradeInput"><option value="KG1">KG1</option><option value="KG2">KG2</option><option value="GRADE1">Grade 1</option><option value="GRADE2">Grade 2</option><option value="GRADE3">Grade 3</option><option value="GRADE4">Grade 4</option><option value="GRADE5">Grade 5</option><option value="GRADE6">Grade 6</option></select>
+      <input id="studentClassInput" placeholder="Class name">
+      <button class="main-btn" id="saveStudentBtn" type="button">Add Student</button>
+    </div>
+    <div class="editor-grid">
+      <input id="studentSearchInput" placeholder="Search by name, ID, class or grade">
+      <button class="ghost-btn" id="studentSearchBtn" type="button">Search</button>
+      <div id="studentsStatus" class="muted-note"></div>
+    </div>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>PIN</th><th>Name</th><th>Grade</th><th>Class</th><th>Action</th></tr></thead><tbody id="studentsTableBody"></tbody></table></div>
+  </div>
+</section>
+
 </main>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script><script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><script src="script.js"></script><script src="ui-language-patch.js"></script><script src="custom-classes.js"></script><script src="grades-extension.js"></script><script src="backend-access.js"></script><script src="student-cloud-admin.js"></script><script src="homework-admin.js"></script><script src="quiz-bulk-package.js"></script><script src="kg1-grade6-support.js"></script><script src="hobby-upgrades.js"></script><script src="next-upgrade-pack.js"></script><script src="final-polish-pack.js"></script><script src="adaptive-access-admin.js"></script><script src="runtime-ui-fixes.js"></script><script src="latest-admin-dynamic-fix.js"></script></body></html>

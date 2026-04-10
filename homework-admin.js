@@ -258,6 +258,37 @@
     }
   }
 
+
+  async function renderStudents(){
+    const body = $('studentsTableBody');
+    const search = String($('studentSearchInput')?.value || '').trim();
+    if (!body) return;
+    try {
+      const data = await api(`?action=list-students&q=${encodeURIComponent(search)}`);
+      const rows = Array.isArray(data.rows) ? data.rows : [];
+      body.innerHTML = rows.map((row) => `<tr><td>${esc(row.studentId)}</td><td>${esc(row.pin)}</td><td>${esc(row.name)}</td><td>${esc(row.grade)}</td><td>${esc(row.className)}</td><td><button class="ghost-btn small-btn delete-student-btn" data-id="${esc(row.id)}" type="button">Delete</button></td></tr>`).join('') || '<tr><td colspan="6">No students yet.</td></tr>';
+      const st = $('studentsStatus'); if (st) st.textContent = `${rows.length} student(s).`;
+    } catch (error) {
+      if (body) body.innerHTML = '<tr><td colspan="6">Could not load students.</td></tr>';
+      const st = $('studentsStatus'); if (st) st.textContent = error.message || 'Could not load students.';
+    }
+  }
+
+  async function saveStudentFromAdmin(){
+    const name = String($('studentNameInput')?.value || '').trim();
+    const grade = String($('studentGradeInput')?.value || 'KG1').trim();
+    const className = String($('studentClassInput')?.value || '').trim();
+    if (!name || !className) { const st = $('studentsStatus'); if (st) st.textContent = 'Enter student name and class.'; return; }
+    try {
+      await api('?action=save-student', { method:'POST', body: JSON.stringify({ name, grade, className }) });
+      $('studentNameInput').value = '';
+      $('studentClassInput').value = '';
+      await renderStudents();
+    } catch (error) {
+      const st = $('studentsStatus'); if (st) st.textContent = error.message || 'Could not save student.';
+    }
+  }
+
   function saveHomework(){
     const data = formData();
     const status = $('homeworkAdminStatus');
@@ -309,7 +340,13 @@
     $('exportHomeworkReportsExcelBtn')?.addEventListener('click', exportHomeworkExcel);
     ['homeworkAnalyticsGradeFilter','homeworkAnalyticsClassFilter','homeworkAnalyticsFromDate','homeworkAnalyticsToDate'].forEach((id) => $(id)?.addEventListener('change', () => { renderReports(); renderHomeworkAnalytics(); }));
     $('loadReuseHomeworkBtn')?.addEventListener('click', () => loadHomeworkIntoForm($('reuseHomeworkSelect')?.value || ''));
-    document.addEventListener('click', (e) => {
+  $('saveStudentBtn')?.addEventListener('click', saveStudentFromAdmin);
+  $('studentSearchBtn')?.addEventListener('click', renderStudents);
+  $('studentSearchInput')?.addEventListener('keydown', (e) => { if (e.key === 'Enter') renderStudents(); });
+    document.addEventListener('click', async (e) => {
+const delStudent = e.target.closest('.delete-student-btn');
+if (delStudent) { try { await api('?action=delete-student', { method:'DELETE', body: JSON.stringify({ id: delStudent.dataset.id || '' }) }); await renderStudents(); } catch (error) { const st = $('studentsStatus'); if (st) st.textContent = error.message || 'Could not delete student.'; } return; }
+
       const questionCheck = e.target.closest('.homework-question-check');
       if (questionCheck) {
         const key = String(questionCheck.value || '');

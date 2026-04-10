@@ -21,18 +21,30 @@
   }
 
   function studentIdentity(){
-    const name = String($('homeworkStudentName')?.value || '').trim();
     const studentId = String($('homeworkStudentId')?.value || '').trim();
-    const grade = String($('homeworkStudentGrade')?.value || 'KG1').trim();
-    const className = String($('homeworkStudentClass')?.value || '').trim();
-    if (!name) throw new Error('Please enter student name.');
-    if (!className) throw new Error('Please enter class name.');
-    return { name, studentId, grade, className, isGuest:false };
+    const pin = String($('homeworkStudentPin')?.value || '').trim();
+    if (!studentId) throw new Error('Please enter student ID.');
+    if (!pin) throw new Error('Please enter PIN.');
+    const verified = state && state.identity ? state.identity : null;
+    if (verified && verified.studentId === studentId && verified.pin === pin) return verified;
+    return { studentId, pin };
+  }
+
+  async function verifyStudent(showStatus){
+    const studentId = String($('homeworkStudentId')?.value || '').trim();
+    const pin = String($('homeworkStudentPin')?.value || '').trim();
+    const data = await api('identify-student', { method:'POST', body: JSON.stringify({ studentId, pin }) });
+    state = state || {};
+    state.identity = Object.assign({}, data.student || {}, { pin });
+    const box = $('homeworkVerifiedBox');
+    if (box) box.textContent = `Verified: ${data.student.name} - ${data.student.grade} / ${data.student.className}`;
+    if (showStatus) setStatus('Student verified.');
+    return state.identity;
   }
 
   async function renderAssignments(){
     try {
-      const identity = studentIdentity();
+      const identity = await verifyStudent(false);
       const data = await api('available', { method:'POST', body: JSON.stringify({ identity }) });
       availableRows = Array.isArray(data.rows) ? data.rows : [];
       $('homeworkAvailableList').innerHTML = availableRows.map((hw) => {
@@ -51,7 +63,7 @@
   }
 
   function updateQuizHead(){
-    $('homeworkStudentPreview').textContent = state.identity.name;
+    $('homeworkStudentPreview').textContent = `${state.identity.name} (${state.identity.studentId})`;
     $('homeworkTitlePreview').textContent = state.assignment.title;
     $('homeworkQuestionProgress').textContent = `${state.index + 1} / ${state.assignment.questions.length}`;
     $('homeworkAnsweredValue').textContent = String(state.answers.filter((a) => a && a.chosen).length);
@@ -202,7 +214,7 @@
 
   async function startHomework(id){
     try {
-      const identity = studentIdentity();
+      const identity = state && state.identity ? state.identity : await verifyStudent(false);
       const assignment = availableRows.find((row) => row.id === id);
       const passwordField = document.querySelector(`[data-homework-password-for="${CSS.escape(String(id || ''))}"]`);
       const password = assignment && assignment.usePassword ? String(passwordField?.value || '').trim() : '';
