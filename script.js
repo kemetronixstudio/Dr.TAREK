@@ -386,6 +386,7 @@ function saveAccessAccountFromAdmin(){
 }
 
 const ADMIN_COLLAPSIBLE_CONFIGS = [
+
   { buttonId:'toggleStudentCloudBtn', bodyId:'studentCloudBody', sectionId:'studentCloudSection' },
   { buttonId:'toggleStudentAnalyticsBtn', bodyId:'studentAnalyticsBody', sectionId:'studentAnalyticsSection' },
   { buttonId:'toggleLevelVisibilityBtn', bodyId:'levelVisibilityBody', sectionId:'levelVisibilitySection' },
@@ -398,7 +399,8 @@ const ADMIN_COLLAPSIBLE_CONFIGS = [
   { buttonId:'toggleClassManagerBtn', bodyId:'classManagerBody', sectionId:'classManagerSection' },
   { buttonId:'toggleAccountManagerBtn', bodyId:'accountManagerBody', sectionId:'accountManagerSection' },
   { buttonId:'toggleActivityLogsBtn', bodyId:'activityLogsBody', sectionId:'activityLogsSection' },
-  { buttonId:'toggleQuestionBankEditorBtn', bodyId:'questionBankEditorBody', sectionId:'questionBankSection' }
+  { buttonId:'toggleQuestionBankEditorBtn', bodyId:'questionBankEditorBody', sectionId:'questionBankSection' },
+  { buttonId:'toggleStudentsManagerBtn', bodyId:'studentsManagerBody', sectionId:'studentsManagerSection' }
 ];
 
 function setCollapsed(targetId, button, collapsed){
@@ -3231,38 +3233,46 @@ try {
 try { applyTranslations(); } catch (e) {}
 
 
-document.addEventListener('DOMContentLoaded', function () {
-  const studentsSection = document.getElementById('studentsManagerSection');
-  const studentsBody = document.getElementById('studentsManagerBody');
-  const studentsShortcut = document.getElementById('studentsManagerShortcut');
-  const studentsToggle = document.getElementById('toggleStudentsManagerBtn');
-  const expandAllBtn = document.getElementById('expandAllAdminBtn');
+document.addEventListener('DOMContentLoaded', function(){
+  var studentsSection = document.getElementById('studentsManagerSection');
+  var studentsBody = document.getElementById('studentsManagerBody');
+  var studentsToggle = document.getElementById('toggleStudentsManagerBtn');
+  var studentShortcuts = document.querySelectorAll('[data-shortcut-target="studentsManagerSection"]');
 
   if (studentsSection) {
     studentsSection.style.display = 'block';
     studentsSection.hidden = false;
   }
-
   if (studentsBody) {
     studentsBody.style.display = 'block';
     studentsBody.hidden = false;
     studentsBody.classList.remove('collapsed-body');
   }
 
-  if (studentsShortcut && studentsSection && studentsBody) {
-    studentsShortcut.addEventListener('click', function (event) {
-      event.preventDefault();
-      studentsBody.style.display = 'block';
-      studentsBody.hidden = false;
-      studentsBody.classList.remove('collapsed-body');
-      studentsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  studentShortcuts.forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      if (studentsSection) {
+        studentsSection.style.display = 'block';
+        studentsSection.hidden = false;
+      }
+      if (studentsBody) {
+        studentsBody.style.display = 'block';
+        studentsBody.hidden = false;
+        studentsBody.classList.remove('collapsed-body');
+      }
+      if (studentsSection && studentsSection.scrollIntoView) {
+        studentsSection.scrollIntoView({ behavior:'smooth', block:'start' });
+      }
     });
-  }
+  });
 
   if (studentsToggle && studentsBody) {
-    studentsToggle.addEventListener('click', function () {
-      const isHidden = studentsBody.style.display === 'none' || studentsBody.hidden;
-      if (isHidden) {
+    studentsToggle.addEventListener('click', function(e){
+      e.preventDefault();
+      var hidden = studentsBody.style.display === 'none' || studentsBody.hidden;
+      if (hidden) {
         studentsBody.style.display = 'block';
         studentsBody.hidden = false;
         studentsBody.classList.remove('collapsed-body');
@@ -3275,17 +3285,138 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  if (expandAllBtn) {
-    expandAllBtn.addEventListener('click', function () {
-      if (studentsBody) {
-        studentsBody.style.display = 'block';
-        studentsBody.hidden = false;
-        studentsBody.classList.remove('collapsed-body');
+  Array.prototype.forEach.call(document.querySelectorAll('button'), function(btn){
+    var label = (btn.textContent || '').trim().toLowerCase();
+    if (label === 'expand all') {
+      btn.addEventListener('click', function(){
+        if (studentsSection) {
+          studentsSection.style.display = 'block';
+          studentsSection.hidden = false;
+        }
+        if (studentsBody) {
+          studentsBody.style.display = 'block';
+          studentsBody.hidden = false;
+          studentsBody.classList.remove('collapsed-body');
+        }
+      });
+    }
+  });
+});
+
+
+
+(function(){
+  function ensureStudentsManagerVisible(){
+    var section = document.getElementById('studentsManagerSection');
+    var body = document.getElementById('studentsManagerBody');
+    var button = document.getElementById('toggleStudentsManagerBtn');
+    if (section){
+      section.classList.remove('hidden');
+      section.hidden = false;
+      section.style.display = 'block';
+    }
+    if (body){
+      body.classList.remove('collapsed-body');
+      body.hidden = false;
+      body.style.display = 'block';
+    }
+    if (button){
+      button.textContent = 'Collapse';
+      button.dataset.collapsed = '0';
+      button.setAttribute('aria-expanded', 'true');
+    }
+  }
+
+  function wireStudentsManagerDirect(){
+    var section = document.getElementById('studentsManagerSection');
+    var body = document.getElementById('studentsManagerBody');
+    var button = document.getElementById('toggleStudentsManagerBtn');
+    var shortcuts = document.querySelectorAll('[data-shortcut-target="studentsManagerSection"], #studentsManagerShortcut');
+
+    shortcuts.forEach(function(btn){
+      if (btn.dataset.studentsManagerDirectWired === '1') return;
+      btn.dataset.studentsManagerDirectWired = '1';
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        ensureStudentsManagerVisible();
+        if (section && section.scrollIntoView) {
+          section.scrollIntoView({ behavior:'smooth', block:'start' });
+        }
+      });
+    });
+
+    if (button && body){
+      if (button.dataset.studentsManagerToggleWired !== '1'){
+        button.dataset.studentsManagerToggleWired = '1';
+        button.addEventListener('click', function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          var collapsed = body.classList.contains('collapsed-body') || body.hidden || body.style.display === 'none';
+          if (collapsed){
+            body.classList.remove('collapsed-body');
+            body.hidden = false;
+            body.style.display = 'block';
+            button.textContent = 'Collapse';
+            button.dataset.collapsed = '0';
+            button.setAttribute('aria-expanded', 'true');
+          } else {
+            body.classList.add('collapsed-body');
+            body.hidden = true;
+            body.style.display = 'none';
+            button.textContent = 'Expand';
+            button.dataset.collapsed = '1';
+            button.setAttribute('aria-expanded', 'false');
+          }
+        });
       }
-      if (studentsSection) {
-        studentsSection.style.display = 'block';
-        studentsSection.hidden = false;
-      }
+    }
+  }
+
+  function patchExpandAll(){
+    document.querySelectorAll('button').forEach(function(btn){
+      var label = (btn.textContent || '').trim().toLowerCase();
+      if (label !== 'expand all') return;
+      if (btn.dataset.studentsManagerExpandAllWired === '1') return;
+      btn.dataset.studentsManagerExpandAllWired = '1';
+      btn.addEventListener('click', function(){
+        window.setTimeout(function(){
+          ensureStudentsManagerVisible();
+        }, 0);
+      });
     });
   }
-});
+
+  function wrapApplySectionPermissions(){
+    var original = window.applySectionPermissions;
+    if (typeof original !== 'function' || original.__studentsWrapped) return;
+    var wrapped = function(account){
+      try { original.call(this, account); } catch (e) {}
+      ensureStudentsManagerVisible();
+      wireStudentsManagerDirect();
+      patchExpandAll();
+    };
+    wrapped.__studentsWrapped = true;
+    window.applySectionPermissions = wrapped;
+  }
+
+  function afterAdminReady(){
+    ensureStudentsManagerVisible();
+    wireStudentsManagerDirect();
+    patchExpandAll();
+    wrapApplySectionPermissions();
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    afterAdminReady();
+    var loginBtn = document.getElementById('adminLoginBtn');
+    if (loginBtn && loginBtn.dataset.studentsManagerLoginWired !== '1'){
+      loginBtn.dataset.studentsManagerLoginWired = '1';
+      loginBtn.addEventListener('click', function(){
+        window.setTimeout(afterAdminReady, 200);
+        window.setTimeout(afterAdminReady, 800);
+      });
+    }
+  });
+})();
+
