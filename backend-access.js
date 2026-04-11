@@ -329,7 +329,7 @@
     }
     const account = accountCache.find(function(item){ return normalizeUser(item.user) === normalizeUser(user); });
     if (!account) return;
-    const nextPass = window.prompt(lang()==='ar' ? 'أدخل كلمة المرور الجديدة' : 'New password:', '');
+    const nextPass = prompt(lang()==='ar' ? 'أدخل كلمة المرور الجديدة' : 'New password:', '');
     if (!nextPass) return;
     try {
       const payload = await api('?action=change-password', { method: 'POST', body: JSON.stringify({ user: account.user, pass: nextPass }) });

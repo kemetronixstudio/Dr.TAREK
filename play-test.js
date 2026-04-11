@@ -141,7 +141,6 @@ function resolvePlayQuestionImage(image){
   const playImageSrc = resolvePlayQuestionImage(q.image);
   if (playImageWrap && playImage){
     if (playImageSrc){
-      playImage.onerror = function(){ this.removeAttribute('src'); if (playImageWrap) playImageWrap.classList.add('hidden'); };
       playImage.src = playImageSrc;
       playImage.alt = q.text || 'Question image';
       playImageWrap.classList.remove('hidden');

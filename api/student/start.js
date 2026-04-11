@@ -1,4 +1,3 @@
-const { applyCors } = require('../../lib/api-security');
 const backend = require('../../lib/student-cloud-backend');
 
 module.exports = async function handler(req, res) {
