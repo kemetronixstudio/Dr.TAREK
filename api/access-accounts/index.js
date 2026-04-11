@@ -27,7 +27,6 @@ function readBody(req) {
   } catch (e) {
     return {};
   }
-}') : (req.body || {});
 }
 
 module.exports = async function handler(req, res) {
