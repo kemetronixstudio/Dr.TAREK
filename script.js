@@ -3478,3 +3478,69 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   }
 });
+
+
+
+document.addEventListener('DOMContentLoaded', function(){
+  var themeBtn = document.getElementById('themeMenuBtn');
+  var themeDrop = document.getElementById('themeMenuDropdown');
+  if (!themeBtn || !themeDrop || themeBtn.dataset.dropdownWired === '1') return;
+  themeBtn.dataset.dropdownWired = '1';
+
+  var themeMap = {
+    lion: 'jungle',
+    globe: 'ocean',
+    rocket: 'space'
+  };
+
+  function closeThemeMenu(){
+    themeDrop.classList.add('hidden');
+    themeBtn.setAttribute('aria-expanded', 'false');
+  }
+
+  function openThemeMenu(){
+    themeDrop.classList.remove('hidden');
+    themeBtn.setAttribute('aria-expanded', 'true');
+  }
+
+  function syncThemeButton(){
+    try {
+      var current = (typeof getTheme === 'function' ? getTheme() : (localStorage.getItem('kgKidsTheme') || 'jungle'));
+      var emoji = current === 'ocean' ? '🌍' : (current === 'space' ? '🚀' : '🦁');
+      themeBtn.textContent = emoji;
+    } catch (e) {}
+  }
+
+  themeBtn.addEventListener('click', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    if (themeDrop.classList.contains('hidden')) openThemeMenu();
+    else closeThemeMenu();
+  });
+
+  themeDrop.querySelectorAll('[data-theme-style]').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      var key = btn.getAttribute('data-theme-style') || '';
+      var mapped = themeMap[key] || 'jungle';
+      try {
+        if (typeof applyTheme === 'function') applyTheme(mapped);
+        else localStorage.setItem('kgKidsTheme', mapped);
+      } catch (err) {
+        try { localStorage.setItem('kgKidsTheme', mapped); } catch (e2) {}
+      }
+      syncThemeButton();
+      closeThemeMenu();
+    });
+  });
+
+  document.addEventListener('click', function(e){
+    if (!themeDrop.contains(e.target) && e.target !== themeBtn){
+      closeThemeMenu();
+    }
+  });
+
+  syncThemeButton();
+});
+
