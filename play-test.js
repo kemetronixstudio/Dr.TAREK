@@ -1,3 +1,14 @@
+
+function resolvePlayQuestionImage(image){
+  if (typeof normalizeQuestionImage === 'function') return normalizeQuestionImage(image);
+  const value = String(image || '').trim();
+  if (!value) return '';
+  if (/^(https?:)?\/\//i.test(value) || value.startsWith('data:') || value.startsWith('/')) return value;
+  const clean = value.replace(/^\.\//, '').replace(/^\/+/, '');
+  if (/^(assets\/|svg\/|img\/|icons\/|quiz-bulk\/)/i.test(clean)) return '/' + clean;
+  return '/assets/' + clean;
+}
+
 (function(){
   const API = '/api/student/play';
   const STORAGE_KEY = 'kgPlayTestSessionV9';

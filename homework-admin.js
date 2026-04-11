@@ -1,3 +1,13 @@
+
+function normalizeAdminImagePath(value){
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  if (/^(https?:)?\/\//i.test(raw) || raw.startsWith('data:') || raw.startsWith('/')) return raw;
+  const clean = raw.replace(/^\.\//, '').replace(/^\/+/, '');
+  if (/^assets\//i.test(clean)) return clean;
+  if (/^(quiz-bulk|svg|img|icons)\//i.test(clean)) return 'assets/' + clean;
+  return 'assets/quiz-bulk/' + clean;
+}
 (function(){
   if (typeof document === 'undefined' || !document.body || document.body.dataset.page !== 'admin') return;
   const API = '/api/homework';

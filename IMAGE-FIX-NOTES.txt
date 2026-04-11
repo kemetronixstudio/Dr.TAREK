@@ -1,0 +1,9 @@
+Image fixes applied:
+1. Play mode now has an image element in play.html.
+2. play-test.js now renders question images.
+3. homework.js now uses stronger image path normalization compatible with script.js logic.
+4. admin image paths are normalized toward assets/quiz-bulk/... when plain filenames are entered.
+
+Still important:
+- Actual image files must exist on the server/repo.
+- Best path format remains: assets/quiz-bulk/filename.png
