@@ -1,3 +1,11 @@
+
+function withCors(handler){
+  return async function(req, res){
+    applyCors(req, res);
+    return handler(req, res);
+  };
+}
+
 const backend = require('../../lib/access-accounts-backend');
 const { applyCors, setAuthCookie, checkRateLimit } = require('../../lib/api-security');
 
@@ -29,7 +37,7 @@ function readBody(req) {
   }
 }
 
-module.exports = async function handler(req, res) {
+module.exports = withCors(async function handler(req, res) {
   if (applyCors(req, res)) return;
   try {
     const action = getAction(req);

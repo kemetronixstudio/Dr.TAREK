@@ -1,7 +1,15 @@
+
+function withCors(handler){
+  return async function(req, res){
+    applyCors(req, res);
+    return handler(req, res);
+  };
+}
+
 const { applyCors } = require('../../lib/api-security');
 const backend = require('../../lib/student-cloud-backend');
 
-module.exports = async function handler(req, res) {
+module.exports = withCors(async function handler(req, res) {
   if (applyCors(req, res)) return;
   if (req.method !== 'POST') {
     res.statusCode = 405;

@@ -1,7 +1,16 @@
+
+function withCors(handler){
+  return async function(req, res){
+    applyCors(req, res);
+    return handler(req, res);
+  };
+}
+
+const { applyCors } = require('../../lib/api-security');
 const backend = require('../../lib/student-cloud-backend');
 const accessBackend = require('../../lib/access-accounts-backend');
 
-module.exports = async function handler(req, res) {
+module.exports = withCors(async function handler(req, res) {
   if (applyCors(req, res)) return;
   const url = new URL(req.url, 'http://localhost');
   const action = String(url.searchParams.get('action') || '').trim().toLowerCase();
