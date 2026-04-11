@@ -1,5 +1,9 @@
 const CACHE = 'kg-quiz-v1001-security-hardening';
 const ASSETS = [
+  ./remove-snapshot.js,
+  ./final-ui-fixes.js,
+  ./final-runtime-fixes.js,
+  ./cleanup-audit-pack.js,
   "./",
   "./index.html",
   "./kg1.html",

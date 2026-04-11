@@ -1,0 +1,16 @@
+Applied fixes:
+- Removed hardcoded frontend admin credentials from script.js
+- Removed phone number from frontend pages and prompt messages
+- Imported applyCors in api/student/start.js and api/student/submit.js
+- Cleaned service-worker duplicate play.html and added missing cache entries
+- Added placeholder icon/grade assets for missing referenced files
+- Hardened token verification with timingSafeEqual and safer token split
+- Disabled plaintext password fallback in access backend
+- Added login rate limit use in api/access-accounts/index.js
+- Added JSON readBody guard
+- Unified quiz access/custom question storage key versions
+- Added image onerror fallback in play/homework image rendering
+
+Important:
+- Set ACCESS_ACCOUNTS_SESSION_SECRET in Vercel environment variables.
+- Quiz access passwords are still a client-managed feature; this build reduces exposure but a server-side move would be stronger long-term.

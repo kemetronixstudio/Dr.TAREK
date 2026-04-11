@@ -96,6 +96,7 @@
     const imageSrc = resolveQuestionImage(q.image);
     if (imageWrap && imageEl) {
       if (imageSrc) {
+        imageEl.onerror = function(){ this.removeAttribute('src'); if (imageWrap) imageWrap.classList.add('hidden'); };
         imageEl.src = imageSrc;
         imageEl.alt = q.text || 'Question image';
         imageWrap.classList.remove('hidden');

@@ -22,7 +22,12 @@ function getAction(req) {
 }
 
 function readBody(req) {
-  return typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
+  try {
+    return typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
+  } catch (e) {
+    return {};
+  }
+}') : (req.body || {});
 }
 
 module.exports = async function handler(req, res) {
