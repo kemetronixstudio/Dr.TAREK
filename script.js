@@ -3428,3 +3428,35 @@ document.addEventListener('DOMContentLoaded', function(){
   });
 })();
 
+
+
+document.addEventListener('DOMContentLoaded', function(){
+  var themeBtn = document.getElementById('themeMenuBtn');
+  var themeDrop = document.getElementById('themeMenuDropdown');
+  if (themeBtn && themeDrop && !themeBtn.dataset.dropdownWired){
+    themeBtn.dataset.dropdownWired = '1';
+    themeBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      themeDrop.classList.toggle('hidden');
+      themeBtn.setAttribute('aria-expanded', themeDrop.classList.contains('hidden') ? 'false' : 'true');
+    });
+    document.addEventListener('click', function(e){
+      if (!themeDrop.contains(e.target) && e.target !== themeBtn){
+        themeDrop.classList.add('hidden');
+        themeBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+    themeDrop.querySelectorAll('[data-theme-style]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        try {
+          var val = btn.getAttribute('data-theme-style') || '';
+          localStorage.setItem('themeStyle', val);
+        } catch (e) {}
+        themeDrop.classList.add('hidden');
+        themeBtn.textContent = btn.textContent || '🦁';
+        document.dispatchEvent(new CustomEvent('drtarek-theme-select', { detail:{ theme: btn.getAttribute('data-theme-style') } }));
+      });
+    });
+  }
+});

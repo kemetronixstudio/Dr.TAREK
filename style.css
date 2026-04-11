@@ -2785,3 +2785,13 @@ body[data-page="homework"] .next-row{display:flex;justify-content:center;gap:12p
 
 .parent-metrics{margin-top:12px}
 body[data-page="parent"] .setup-card{margin-bottom:18px}
+
+
+/* compact theme menu + parent icon */
+.compact-header-actions{display:flex;align-items:center;gap:12px}
+.theme-menu-wrap{position:relative}
+.theme-menu-btn{width:64px;height:64px;border-radius:22px;border:3px solid rgba(255,179,71,.8);background:#fff;box-shadow:0 10px 24px rgba(0,0,0,.08);font-size:28px;cursor:pointer}
+.theme-menu-dropdown{position:absolute;top:74px;right:0;background:#fff;border-radius:20px;padding:10px;display:flex;flex-direction:column;gap:10px;box-shadow:0 16px 36px rgba(0,0,0,.12);z-index:30}
+.theme-menu-dropdown.hidden{display:none}
+.tiny-parent-link.icon-btn,.compact-header-actions .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:22px;background:#fff;box-shadow:0 10px 24px rgba(0,0,0,.08);text-decoration:none;font-size:28px;border:0;color:inherit;cursor:pointer}
+#homeworkAnalyticsSection{display:none !important}
