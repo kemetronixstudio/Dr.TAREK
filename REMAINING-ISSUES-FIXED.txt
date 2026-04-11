@@ -1,0 +1,11 @@
+Fixed in this ZIP:
+1. Removed duplicate ./play.html entry from service-worker.js
+2. Unified quiz access/custom questions storage keys to:
+   - kgEnglishQuizAccessV29
+   - kgEnglishCustomQuestionsV23
+3. Removed phone number from kg1.html, kg2.html, and class.html
+4. Replaced native prompt() usage with askTextInput() helper in script.js and backend-access.js
+5. Reduced quiz password exposure by preferring sessionStorage over localStorage and migrating old data
+
+Note:
+Quiz access remains client-managed because of current architecture, but this build reduces persistence and exposure.

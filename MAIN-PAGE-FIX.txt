@@ -1,0 +1,6 @@
+Fixed:
+- Restored the missing home page hero/cards section (Play, Homework, KG1, KG2).
+- Kept the compact theme dropdown.
+- Kept Parent Dashboard as a small icon beside the theme icon.
+Cause:
+- A previous home-page patch accidentally removed the hero cards block while moving the Parent Dashboard UI.

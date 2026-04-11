@@ -1,0 +1,1 @@
+This build restores the full original homework.js and patches only resolveQuestionImage(). It also adds the play image element to play.html and wires image rendering in play-test.js.

@@ -1,0 +1,20 @@
+Fixed in this ZIP:
+- Students Manager moved inside the admin panel, so it no longer appears on login screen.
+- Students shortcut and Expand All wiring patched to work after login.
+- Students Manager visibility fix now runs after admin login, not before.
+- Duplicate style attribute on studentsManagerBody cleaned if present.
+
+Previously fixed in the hardened build:
+- service worker missing asset list
+- manifest purpose fix
+- .bak files removed
+- admin XSS issue
+- shared secure cookie helper usage
+- login rate limiting
+- homework auth/security hardening groundwork
+- hobby-safe API cleanup
+
+Not fully built in this ZIP:
+- parent dashboard
+- full analytics charts UI
+- exact CDN SRI hashes

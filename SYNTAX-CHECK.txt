@@ -1,0 +1,31 @@
+/mnt/data/drtarek_strict_remaining_fix/script.js
+/mnt/data/drtarek_strict_remaining_fix/script.js:2310
+    const nextPass = await askTextInput(getLang()==='ar' ? 'أدخل كلمة المرور الجديدة' : 'New password:', account.pass || '');
+                     ^^^^^
+
+SyntaxError: await is only valid in async functions and the top level bodies of modules
+[90m    at wrapSafe (node:internal/modules/cjs/loader:1662:18)[39m
+[90m    at checkSyntax (node:inter
+
+/mnt/data/drtarek_strict_remaining_fix/service-worker.js
+/mnt/data/drtarek_strict_remaining_fix/service-worker.js:3
+  ./remove-snapshot.js,
+  ^
+
+SyntaxError: Unexpected token '.'
+[90m    at wrapSafe (node:internal/modules/cjs/loader:1662:18)[39m
+[90m    at checkSyntax (node:internal/main/check_syntax:78:3)[39m
+
+Node.js v22.16.0
+
+
+/mnt/data/drtarek_strict_remaining_fix/api/access-accounts/index.js
+/mnt/data/drtarek_strict_remaining_fix/api/access-accounts/index.js:30
+}') : (req.body || {});
+ ^^^^^^^^^^^^^^^^^^^^^^
+
+SyntaxError: Invalid or unexpected token
+[90m    at wrapSafe (node:internal/modules/cjs/loader:1662:18)[39m
+[90m    at checkSyntax (node:internal/main/check_syntax:78:3)[39m
+
+Node.js v22.16.0

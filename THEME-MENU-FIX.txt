@@ -1,0 +1,8 @@
+Fixed theme dropdown:
+- mapped lion -> jungle
+- mapped globe -> ocean
+- mapped rocket -> space
+- now calls applyTheme() directly
+- theme button emoji updates to selected theme
+Cause:
+- previous dropdown stored data-theme-style values that did not match the app's real theme keys.

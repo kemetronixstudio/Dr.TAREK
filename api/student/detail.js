@@ -1,0 +1,33 @@
+const backend = require('../../lib/student-cloud-backend');
+const access = require('../../lib/access-accounts-backend');
+const { applyCors, setAuthCookie } = require('../../lib/api-security');
+
+
+module.exports = async function handler(req, res) {
+  if (applyCors(req, res)) return;
+  if (req.method !== 'GET') {
+    res.statusCode = 405;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ ok: false, error: 'Method not allowed' }));
+    return;
+  }
+  try {
+    const auth = await access.requireAuthorized(req, 'dashboard');
+    if (!auth.ok) {
+      res.statusCode = auth.status;
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({ ok: false, error: auth.error }));
+      return;
+    }
+    setAuthCookie(req, res, auth.token);
+    const url = new URL(req.url, 'http://localhost');
+    const result = await backend.detailFor(url.searchParams.get('key') || '');
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ ...result, token: auth.token, account: auth.account }));
+  } catch (error) {
+    res.statusCode = error.status || 500;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ ok: false, error: error.message || 'Request failed' }));
+  }
+};

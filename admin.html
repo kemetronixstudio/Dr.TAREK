@@ -1,0 +1,355 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Cairo:wght@400;600;700;800&family=Noto+Naskh+Arabic:wght@600;700&display=swap" rel="stylesheet"><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" sizes="192x192" href="assets/icons/dreamers-192.png"><link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png"><meta name="theme-color" content="#ffd54f"><link rel="stylesheet" href="style.css"><title>Teacher Dashboard</title></head><body data-page="admin">
+<div class="floating-shapes"></div>
+<header class="top-shell subpage-top-shell"><a class="back-link top-home-link" href="index.html" data-i18n="homeBtn">⬅ Home</a><div class="teacher-topline" data-i18n="teacherTopline">Dr. Tarek English</div><div class="admin-session-mini" id="adminSessionMini"></div><div class="lang-switch"><button class="lang-btn active" data-lang="en">EN</button><button class="lang-btn" data-lang="ar">AR</button></div></header>
+<main class="container page-wrap">
+  <div class="nav-row nav-row-hidden"></div>
+  <section class="card admin-login-card" id="adminLoginCard">
+    <h1 data-i18n="teacherDashboard">Teacher Dashboard</h1>
+    <p data-i18n="adminIntro">Use one of the admin accounts to manage records and questions.</p>
+    <div class="admin-accounts-note"><strong data-i18n="adminsLabel">Admins:</strong> <span data-i18n="adminsNames">KEMETRONIX / Dr. Tarek</span></div>
+    <input id="adminUser" data-placeholder-i18n="adminNamePlaceholder" placeholder="Admin name">
+    <input id="adminPass" data-placeholder-i18n="passwordPlaceholder" placeholder="Password" type="password">
+    <button class="main-btn" id="adminLoginBtn" data-i18n="openDashboard">Open Dashboard</button>
+    
+  </section>
+
+  <section id="adminPanel" class="hidden"><div id="adminDashboardContent">
+    <div class="admin-shortcuts-sticky" id="adminStickyShortcuts">
+      <button type="button" class="shortcut-icon-btn" data-shortcut-target="levelVisibilitySection" title="Level Visibility">👁️</button>
+      <button type="button" class="shortcut-icon-btn" data-shortcut-target="timerSettingsSection" title="Timer Settings">⏱️</button>
+      <button type="button" class="shortcut-icon-btn" data-shortcut-target="quizAccessSection" title="Quiz Access Password">🔐</button>
+      <button type="button" class="shortcut-icon-btn" data-shortcut-target="teacherTestSection" title="Teacher Test Builder">🧪</button>
+      <button type="button" class="shortcut-icon-btn" data-shortcut-target="homeworkBuilderSection" title="Homework Builder">📘</button>
+      <button type="button" class="shortcut-icon-btn" data-shortcut-target="homeworkReportsSection" title="Homework Reports">🧾</button>
+      <button type="button" class="shortcut-icon-btn" data-shortcut-target="bulkQuestionsSection" title="Bulk Question Import">📥</button>
+      <button type="button" class="shortcut-icon-btn" data-shortcut-target="classManagerSection" title="Class Manager">🏫</button>
+      <button type="button" class="shortcut-icon-btn" data-shortcut-target="accountManagerSection" title="Access Accounts">👥</button>
+      <button type="button" class="shortcut-icon-btn" data-shortcut-target="activityLogsSection" title="Activity Logs">📝</button>
+      <button type="button" class="shortcut-icon-btn" data-shortcut-target="questionBankSection" title="Question Bank Editor">📚</button>
+      <button type="button" class="shortcut-icon-btn" data-shortcut-target="studentsManagerSection" title="Students Manager">🧑‍🎓</button>
+    </div>
+    <section class="card admin-shortcuts-card">
+      <div class="section-head"><h2>Quick Access</h2></div>
+      <div class="admin-shortcuts-grid" id="adminShortcutsGrid">
+        <button type="button" class="shortcut-chip" data-shortcut-target="levelVisibilitySection"><span class="shortcut-icon">👁️</span><span class="shortcut-text">Level Visibility</span></button>
+        <button type="button" class="shortcut-chip" data-shortcut-target="timerSettingsSection"><span class="shortcut-icon">⏱️</span><span class="shortcut-text">Timer Settings</span></button>
+        <button type="button" class="shortcut-chip" data-shortcut-target="quizAccessSection"><span class="shortcut-icon">🔐</span><span class="shortcut-text">Quiz Access Password</span></button>
+        <button type="button" class="shortcut-chip" data-shortcut-target="teacherTestSection"><span class="shortcut-icon">🧪</span><span class="shortcut-text">Teacher Test Builder</span></button>
+        <button type="button" class="shortcut-chip" data-shortcut-target="homeworkBuilderSection"><span class="shortcut-icon">📘</span><span class="shortcut-text">Homework Builder</span></button>
+        <button type="button" class="shortcut-chip" data-shortcut-target="homeworkReportsSection"><span class="shortcut-icon">🧾</span><span class="shortcut-text">Homework Reports</span></button>
+        <button type="button" class="shortcut-chip" data-shortcut-target="bulkQuestionsSection"><span class="shortcut-icon">📥</span><span class="shortcut-text">Bulk Question Import</span></button>
+        <button type="button" class="shortcut-chip" data-shortcut-target="classManagerSection"><span class="shortcut-icon">🏫</span><span class="shortcut-text">Class Manager</span></button>
+        <button type="button" class="shortcut-chip" data-shortcut-target="accountManagerSection"><span class="shortcut-icon">👥</span><span class="shortcut-text">Access Accounts</span></button>
+        <button type="button" class="shortcut-chip" data-shortcut-target="activityLogsSection"><span class="shortcut-icon">📝</span><span class="shortcut-text">Activity Logs</span></button>
+        <button type="button" class="shortcut-chip" data-shortcut-target="questionBankSection"><span class="shortcut-icon">📚</span><span class="shortcut-text">Question Bank Editor</span></button>
+        <button type="button" class="shortcut-chip" id="studentsManagerShortcut" data-shortcut-target="studentsManagerSection"><span class="shortcut-icon">🧑‍🎓</span><span class="shortcut-text">Students</span></button>
+      </div>
+    </section>
+    <section class="card admin-table-card" id="adminSecuritySection"><div class="section-head"><h2>Admin Security</h2><div class="section-head-actions"><button class="ghost-btn" id="adminLogoutBtn" type="button">Logout</button></div></div><div class="editor-grid"><input id="selfCurrentPassword" type="password" placeholder="Current password"><input id="selfNewPassword" type="password" placeholder="New password"><button class="main-btn" id="selfChangePasswordBtn" type="button">Change My Password</button></div><div id="adminSecurityStatus" class="muted-note"></div><p class="muted-note">Login is now protected with temporary lockout after too many wrong attempts, and homework/report actions require authenticated admin access.</p></section><div class="admin-top-grid">
+      <div class="card metric-card"><span data-i18n="totalStudents">Total Students</span><strong id="metricStudents">0</strong></div>
+      <div class="card metric-card"><span data-i18n="totalAttempts">Total Attempts</span><strong id="metricAttempts">0</strong></div>
+      <div class="card metric-card"><span data-i18n="averageScore">Average Score</span><strong id="metricAverage">0%</strong></div>
+      <div class="card metric-card"><span data-i18n="mostMissedSkill">Most Missed Skill</span><strong id="metricWeak">-</strong></div>
+    </div>
+    <div class="admin-grid">
+      <section class="card admin-table-card" data-section-key="dashboard">
+        <div class="section-head admin-table-head"><h2 data-i18n="studentProgress">Student Progress</h2><div class="admin-tools"><select id="dashboardDateFilter" class="date-filter-select"><option value="all" data-i18n="allDates">All Dates</option></select><button class="ghost-btn" id="exportJpegBtn" data-i18n="exportJpeg">Export JPEG</button><button class="ghost-btn" id="exportExcelBtn" data-i18n="exportExcel">Export Excel</button><button class="ghost-btn" id="exportDataBtn" data-i18n="exportJson">Export JSON</button><button class="ghost-btn danger-btn" id="resetDashboardDataBtn" data-i18n="resetData">Reset Data</button></div></div>
+        <div class="table-wrap"><table><thead><tr><th data-i18n="nameLabel">Name</th><th data-i18n="grade">Grade</th><th data-i18n="attempts">Attempts</th><th data-i18n="bestScore">Best</th><th data-i18n="lastScore">Last</th><th data-i18n="weakAreas">Weak Areas</th></tr></thead><tbody id="studentTableBody"></tbody></table></div>
+      </section>
+      <section class="card admin-table-card" data-section-key="dashboard">
+        <div class="section-head"><h2 data-i18n="mostMissedQuestions">Most Missed Questions</h2></div>
+        <div class="table-wrap"><table><thead><tr><th data-i18n="questionLabel">Question</th><th data-i18n="missesLabel">Misses</th></tr></thead><tbody id="missedTableBody"></tbody></table></div>
+      </section>
+    </div>
+
+    <section class="card admin-table-card collapsible-section" data-section-key="dashboard" id="studentCloudSection">
+      <div class="section-head"><h2>Cloud Student Records</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleStudentCloudBtn" type="button">Expand</button><button class="ghost-btn" id="refreshStudentCloudBtn" type="button">Refresh</button><button class="ghost-btn" id="exportStudentCloudExcelBtn" type="button">Export Student Excel</button></div></div>
+      <div id="studentCloudBody" class="admin-collapsible-body collapsed-body">
+      <p class="muted-note">Search cloud-saved student attempts by student name, student ID, or class. Teachers and admins can open the full saved answers, write teacher notes, and export records to Excel.</p>
+      <div class="editor-grid">
+        <input id="studentCloudSearch" placeholder="Search by name or student ID">
+        <input id="studentCloudClassFilter" placeholder="Filter by class">
+        <select id="studentCloudStatusFilter"><option value="">All statuses</option><option value="completed">Completed</option><option value="in-progress">In Progress</option></select>
+        <button class="main-btn" id="studentCloudSearchBtn" type="button">Search Cloud Records</button>
+      </div>
+      <div id="studentCloudStatus" class="muted-note"></div>
+      <div class="table-wrap"><table><thead><tr><th>Name</th><th>Student ID</th><th>Class</th><th>Grade</th><th>Quiz</th><th>Score</th><th>Note</th><th>Updated</th><th>Open</th></tr></thead><tbody id="studentCloudTableBody"></tbody></table></div>
+      <div id="studentCloudDetail" class="stored-questions question-editor-list"></div>
+      </div>
+    </section>
+
+    <section class="card admin-table-card collapsible-section" data-section-key="dashboard" id="studentAnalyticsSection">
+      <div class="section-head"><h2>Class Analytics</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleStudentAnalyticsBtn" type="button">Expand</button><button class="ghost-btn" id="refreshStudentAnalyticsBtn" type="button">Refresh Analytics</button></div></div>
+      <div id="studentAnalyticsBody" class="admin-collapsible-body collapsed-body">
+      <div id="studentAnalyticsStatus" class="muted-note"></div>
+      <div class="admin-top-grid mini-metrics">
+        <div class="card metric-card"><span>Completed Attempts</span><strong id="studentAnalyticsAttempts">0</strong></div>
+        <div class="card metric-card"><span>Cloud Students</span><strong id="studentAnalyticsStudents">0</strong></div>
+        <div class="card metric-card"><span>Classes</span><strong id="studentAnalyticsClasses">0</strong></div>
+        <div class="card metric-card"><span>Average</span><strong id="studentAnalyticsAverage">0%</strong></div>
+      </div>
+      <div class="admin-grid analytics-grid">
+        <div>
+          <h3>By Class</h3>
+          <div class="table-wrap"><table><thead><tr><th>Class</th><th>Grade</th><th>Students</th><th>Attempts</th><th>Average</th><th>Top Score</th></tr></thead><tbody id="classAnalyticsTableBody"></tbody></table></div>
+        </div>
+        <div>
+          <div class="admin-subhead with-tools"><h3>Student Leaderboard</h3><button class="ghost-btn danger-btn" id="resetPlayLeaderboardBtn" type="button">Reset Live Leaderboard</button></div>
+          <div class="table-wrap"><table><thead><tr><th>#</th><th>Name</th><th>Student ID</th><th>Class</th><th>Best</th><th>Average</th><th>Attempts</th></tr></thead><tbody id="studentLeaderboardTableBody"></tbody></table></div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section class="card admin-table-card collapsible-section" data-section-key="teacherTest" id="homeworkAnalyticsSection" style="display:none !important;">
+      <div class="section-head"><h2>Homework Analytics</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleHomeworkAnalyticsBtn" type="button">Expand</button><button class="ghost-btn" id="refreshHomeworkAnalyticsBtn" type="button">Refresh</button><button class="ghost-btn" id="exportHomeworkReportsExcelBtn" type="button">Export Homework Excel</button></div></div>
+      <div id="homeworkAnalyticsBody" class="admin-collapsible-body collapsed-body">
+      <div class="editor-grid">
+        <select id="homeworkAnalyticsGradeFilter"><option value="">All grades</option><option value="KG1">KG1</option><option value="KG2">KG2</option></select>
+        <input id="homeworkAnalyticsClassFilter" placeholder="Filter by class">
+        <input id="homeworkAnalyticsFromDate" type="date">
+        <input id="homeworkAnalyticsToDate" type="date">
+      </div>
+      <div id="homeworkAnalyticsStatus" class="muted-note"></div>
+      <div class="admin-top-grid mini-metrics">
+        <div class="card metric-card"><span>Assignments</span><strong id="hwMetricAssignments">0</strong></div>
+        <div class="card metric-card"><span>Submissions</span><strong id="hwMetricSubmissions">0</strong></div>
+        <div class="card metric-card"><span>Students</span><strong id="hwMetricStudents">0</strong></div>
+        <div class="card metric-card"><span>On-time Rate</span><strong id="hwMetricOnTime">0%</strong></div>
+      </div>
+      <div class="admin-grid analytics-grid">
+        <div><h3>Daily Trend (last 14 days)</h3><div id="homeworkTrendBars" class="simple-bar-chart"></div></div>
+        <div><h3>Top Homework</h3><div class="table-wrap"><table><thead><tr><th>Homework</th><th>Submissions</th><th>Average</th><th>Avg Wrong</th></tr></thead><tbody id="homeworkTopTableBody"></tbody></table></div></div>
+      </div>
+      <div><h3>Class Breakdown</h3><div class="table-wrap"><table><thead><tr><th>Class</th><th>Grade</th><th>Students</th><th>Submissions</th><th>Average</th></tr></thead><tbody id="homeworkClassBreakdownBody"></tbody></table></div></div>
+      </div>
+    </section>
+
+    <section class="card admin-level-card collapsible-section" data-section-key="levelVisibility" id="levelVisibilitySection">
+      <div class="section-head"><h2 data-i18n="levelVisibility">Level Visibility</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleLevelVisibilityBtn" type="button">Expand</button><button class="ghost-btn" id="resetLevelsBtn" data-i18n="showAllLevels">Show All Levels</button></div></div>
+      <div id="levelVisibilityBody" class="admin-collapsible-body collapsed-body">
+      <p class="muted-note" data-i18n="chooseWhichLevels">Choose which quiz levels students can see on KG1 and KG2 pages.</p>
+      <div id="adminLevelVisibility" class="level-visibility-grid"></div>
+      <div class="action-row"><button class="main-btn" id="saveLevelsBtn" data-i18n="saveLevelVisibility">Save Level Visibility</button></div>
+      </div>
+    </section>
+    <section class="card admin-level-card collapsible-section" data-section-key="timerSettings" id="timerSettingsSection">
+      <div class="section-head"><h2 data-i18n="timerSettings">Timer Settings</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleTimerSettingsBtn" type="button">Expand</button><button class="ghost-btn" id="resetTimerSettingsBtn" data-i18n="turnTimersOn">Turn Timers On</button></div></div>
+      <div id="timerSettingsBody" class="admin-collapsible-body collapsed-body">
+      <p class="muted-note" data-i18n="timerInfo">Turn the timer on or off for each grade. When timer is off, students answer without countdown and each correct answer gives fixed points.</p>
+      <div id="adminTimerSettings" class="level-visibility-grid"></div>
+      <div class="action-row"><button class="main-btn" id="saveTimerSettingsBtn" data-i18n="saveTimerSettings">Save Timer Settings</button></div>
+      </div>
+    </section>
+
+    <section class="card admin-level-card collapsible-section" data-section-key="quizAccess" id="quizAccessSection">
+      <div class="section-head"><h2 data-i18n="quizAccessPassword">Quiz Access Password</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleQuizAccessBtn" type="button">Expand</button><button class="ghost-btn" id="clearQuizPasswordBtn" data-i18n="noPassword">No Password</button></div></div>
+      <div id="quizAccessBody" class="admin-collapsible-body collapsed-body">
+      <p class="muted-note" data-i18n="setPasswordInfo">Set a password for KG1 or KG2. Students will be asked for it before entering the quiz. Leave blank to disable password.</p>
+      <div id="adminQuizAccess" class="admin-quiz-access-grid"></div>
+      <div class="action-row"><button class="main-btn" id="saveQuizPasswordBtn" data-i18n="saveQuizPassword">Save Quiz Password</button></div>
+      </div>
+    </section>
+    <section class="card admin-level-card collapsible-section" data-section-key="teacherTest" id="teacherTestSection">
+      <div class="section-head"><h2 data-i18n="teacherTestBuilder">Teacher Test Builder</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleTeacherTestBtn" type="button">Expand</button><button class="ghost-btn" id="clearTeacherTestBtn" data-i18n="clearTest">Clear Test</button></div></div>
+      <div id="teacherTestBody" class="admin-collapsible-body collapsed-body">
+      <p class="muted-note" data-i18n="teacherTestInfo">Create a named test for KG1 or KG2. Choose random questions or paste exact question texts line by line.</p>
+      <div class="editor-grid">
+        <input id="testGrade" data-placeholder-i18n="gradePlaceholder" placeholder="Grade (KG1 or KG2)">
+        <input id="testName" data-placeholder-i18n="testName" placeholder="Test name">
+        <select id="testMode"><option value="random" data-i18n="randomQuestions">Random Questions</option><option value="manual" data-i18n="chooseByQuestionText">Choose by Question Text</option><option value="select" data-i18n="chooseExistingQuestions">Choose Existing Questions</option></select>
+        <input id="testCount" data-placeholder-i18n="howManyQuestions" placeholder="How many questions" type="number" min="1" max="50">
+        <textarea id="testQuestionList" class="full" data-placeholder-i18n="manualModePaste" placeholder="For manual mode: paste exact question texts, one per line"></textarea>
+        <div id="teacherQuestionPickerWrap" class="full teacher-question-picker hidden">
+          <div class="teacher-picker-head">
+            <strong data-i18n="chooseExistingQuestions">Choose Existing Questions</strong>
+            <div class="teacher-picker-actions">
+              <button type="button" class="ghost-btn small-btn" id="selectAllTeacherQuestionsBtn" data-i18n="selectAll">Select All</button>
+              <button type="button" class="ghost-btn small-btn" id="clearTeacherQuestionsBtn" data-i18n="clear">Clear</button>
+            </div>
+          </div>
+          <div id="teacherQuestionPickerList" class="teacher-question-picker-list"></div>
+        </div>
+      </div>
+      <div class="editor-grid v382-test-tools"><input id="cloneTestNameInput" placeholder="New cloned test name"><button class="ghost-btn" id="cloneTeacherTestBtn">Clone Current Test</button><button class="danger-btn" id="archiveTeacherTestBtn">Archive Current Test</button></div>
+      <div class="action-row"><button class="main-btn" id="saveTeacherTestBtn" data-i18n="saveTeacherTest">Save Teacher Test</button></div>
+      </div>
+    </section>
+    <section class="card admin-level-card collapsible-section" data-section-key="teacherTest" id="homeworkBuilderSection">
+      <div class="section-head"><h2>Homework Builder</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleHomeworkBuilderBtn" type="button">Expand</button></div></div>
+      <div id="homeworkBuilderBody" class="admin-collapsible-body collapsed-body">
+      <p class="muted-note">Create homework for one or many classes, choose the date, set timer or password, and define tries from 0 to 5. Students will answer without seeing instant correct or wrong feedback.</p>
+      <div class="editor-grid">
+        <input id="homeworkTitle" placeholder="Homework title">
+        <select id="homeworkGrade"><option value="KG1">KG1</option><option value="KG2">KG2</option><option value="GRADE1">Grade 1</option><option value="GRADE2">Grade 2</option><option value="GRADE3">Grade 3</option><option value="GRADE4">Grade 4</option><option value="GRADE5">Grade 5</option><option value="GRADE6">Grade 6</option></select>
+        <input id="homeworkClasses" placeholder="Classes, separated by commas">
+        <input id="homeworkDate" type="date">
+        <select id="homeworkMode"><option value="select">Choose Existing Questions</option><option value="manual">Enter New Questions</option></select>
+        <select id="homeworkTryLimit"><option value="0">0 tries</option><option value="1">1 try</option><option value="2">2 tries</option><option value="3">3 tries</option><option value="4">4 tries</option><option value="5">5 tries</option></select>
+        <label class="level-toggle admin-toggle-row"><input type="checkbox" id="homeworkTimerToggle"><span>Use timer</span></label>
+        <input id="homeworkTimerMinutes" type="number" min="1" max="180" placeholder="Timer minutes">
+        <label class="level-toggle admin-toggle-row"><input type="checkbox" id="homeworkPasswordToggle"><span>Use password</span></label>
+        <input id="homeworkPassword" type="text" placeholder="Homework password">
+        <textarea id="homeworkQuestionList" class="full" placeholder="Manual mode: enter one question per line using this format: Question | Option 1 | Option 2 | Option 3 | Option 4 | Correct answer"></textarea>
+        <div id="homeworkQuestionPickerWrap" class="full teacher-question-picker">
+          <div class="teacher-picker-head">
+            <strong data-i18n="availableQuestionsLabel">Available Questions</strong>
+            <div class="teacher-picker-actions">
+              <input id="homeworkQuestionSearch" class="mini-search-input" placeholder="Search questions">
+              <button type="button" class="ghost-btn small-btn" id="searchHomeworkQuestionsBtn">Search</button>
+              <button type="button" class="ghost-btn small-btn" id="selectAllHomeworkQuestionsBtn">Select All</button>
+              <button type="button" class="ghost-btn small-btn" id="clearHomeworkQuestionsBtn">Clear</button>
+            </div>
+          </div>
+          <div id="homeworkQuestionPickerStatus" class="muted-note"></div>
+          <div id="homeworkQuestionPickerList" class="teacher-question-picker-list"></div>
+        </div>
+      </div>
+      <div class="action-row wrap-row">
+        <button class="main-btn" id="saveHomeworkBtn" type="button">Save Homework</button>
+        <button class="ghost-btn" id="clearHomeworkBtn" type="button">Clear Homework Form</button>
+      </div>
+      <div class="editor-grid">
+        <select id="reuseHomeworkSelect"><option value="">Reuse saved homework</option></select>
+        <button class="ghost-btn" id="loadReuseHomeworkBtn" type="button">Load Saved Homework</button>
+      </div>
+      <div id="homeworkAdminStatus" class="muted-note"></div>
+      <div id="homeworkAdminList" class="stored-questions question-editor-list"></div>
+      </div>
+    </section>
+
+    <section class="card admin-table-card collapsible-section" data-section-key="teacherTest" id="homeworkReportsSection">
+      <div class="section-head"><h2>Homework Reports</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleHomeworkReportsBtn" type="button">Expand</button><button class="ghost-btn" id="refreshHomeworkReportsBtn" type="button">Refresh</button></div></div>
+      <div id="homeworkReportsBody" class="admin-collapsible-body collapsed-body">
+      <p class="muted-note">See every homework submission with student name, class, time, answers, and wrong answers. Tries are now checked on the server, so the same student cannot bypass the limit by changing browser or device.</p>
+      <div class="editor-grid">
+        <input id="homeworkReportSearch" placeholder="Search by student, student ID, or homework title">
+        <input id="homeworkReportClassFilter" placeholder="Filter by class">
+        <button class="main-btn" id="homeworkReportSearchBtn" type="button">Search Homework Reports</button>
+      </div>
+      <div id="homeworkReportStatus" class="muted-note"></div>
+      <div class="table-wrap"><table><thead><tr><th>Student</th><th>Student ID</th><th>Class</th><th>Grade</th><th>Homework</th><th>Score</th><th>Percent</th><th>Wrong</th><th>Try</th><th>Submitted</th><th>Open</th></tr></thead><tbody id="homeworkReportTableBody"></tbody></table></div>
+      <div id="homeworkReportDetail" class="stored-questions question-editor-list"></div>
+      </div>
+    </section>
+
+    <section class="card admin-level-card collapsible-section" data-section-key="bulkQuestions" id="bulkQuestionsSection">
+      <div class="section-head"><h2 data-i18n="bulkQuestionsTitle">Bulk Question Import</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleBulkQuestionsBtn" type="button">Expand</button></div></div>
+      <div id="bulkQuestionsBody" class="admin-collapsible-body collapsed-body">
+      <p class="muted-note" data-i18n="bulkQuestionsInfo">Download the ready Excel form, fill it with questions, then upload it to add many questions at once.</p>
+      <div class="action-row wrap-row">
+        <a class="ghost-btn" id="downloadBulkTemplateBtn" href="bulk-questions-template.xlsx" download data-i18n="downloadExcelForm">Download Excel Form</a>
+        
+        <label class="file-label inline-file"><span data-i18n="uploadFilledForm">Upload Filled Form</span><input type="file" id="bulkQuestionUpload" accept=".xlsx,.xls"></label>
+      </div>
+      <div id="bulkImportStatus" class="muted-note"></div>
+      </div>
+    </section>
+
+    
+    <section class="card admin-level-card collapsible-section" data-section-key="classManager" id="classManagerSection">
+      <div class="section-head"><h2 data-i18n="classManagerTitle">Class Manager</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleClassManagerBtn" type="button">Expand</button></div></div>
+      <div id="classManagerBody" class="admin-collapsible-body collapsed-body">
+      <p class="muted-note" data-i18n="classManagerInfo">Create extra classes like Class 1 or Class 2. You can build them from existing questions or upload a filled question file for the class.</p>
+      <div class="editor-grid">
+        <input id="classNameInput" data-placeholder-i18n="classNamePlaceholder" placeholder="Class name (example: Class 1)">
+        <input id="classDescInput" data-placeholder-i18n="classDescPlaceholder" placeholder="Short description for home page">
+        <select id="classSourceMode">
+          <option value="existing" data-i18n="existingQuestions">Use existing questions</option>
+          <option value="upload" data-i18n="uploadQuestions">Upload question file</option>
+        </select>
+        <input id="classQuestionCount" data-placeholder-i18n="classQuestionCountPlaceholder" placeholder="Question count shown on test builder (optional)">
+        <label class="level-toggle admin-toggle-row"><input type="checkbox" id="classHiddenToggle"><span data-i18n="hideClassFromHome">Hide class from main page</span></label>
+      </div>
+      <div id="classExistingWrap" class="teacher-question-picker">
+        <div class="action-row wrap-row">
+          <button class="ghost-btn" id="selectAllClassQuestionsBtn" data-i18n="selectAll">Select All</button>
+          <button class="ghost-btn" id="clearClassQuestionsBtn" data-i18n="clear">Clear</button>
+        </div>
+        <div id="classQuestionPickerList" class="teacher-question-picker-list"></div>
+      </div>
+      <div id="classUploadWrap" class="hidden">
+        <label class="file-label inline-file"><span data-i18n="uploadFilledForm">Upload Filled Form</span><input type="file" id="classQuestionUpload" accept=".xlsx,.xls,.csv"></label>
+      </div>
+      <div class="action-row wrap-row">
+        <button class="main-btn" id="saveClassBtn" data-i18n="saveClass">Save Class</button>
+      </div>
+      <div id="customClassesList" class="stored-questions question-editor-list"></div>
+      </div>
+    </section>
+
+
+    <section class="card admin-level-card collapsible-section" data-section-key="accountManager" id="accountManagerSection">
+      <div class="section-head"><h2 data-i18n="accessAccounts">Access Accounts</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleAccountManagerBtn" type="button">Expand</button></div></div>
+      <div id="accountManagerBody" class="admin-collapsible-body collapsed-body">
+      <p class="muted-note" data-i18n="accessAccountsInfo">Create admin or user accounts. User accounts only see the sections you allow.</p>
+      <div class="editor-grid">
+        <input id="accessAccountUser" data-placeholder-i18n="usernamePlaceholder" placeholder="Username">
+        <input id="accessAccountPass" data-placeholder-i18n="passwordPlaceholder" placeholder="Password" type="password">
+        <select id="accessAccountRole"><option value="user" data-i18n="staffRole">Staff</option><option value="admin" data-i18n="adminRole">Admin</option></select>
+      </div>
+      <div id="accessPermissionsWrap" class="permissions-grid"></div>
+      <div class="action-row access-account-actions"><button class="main-btn" id="saveAccessAccountBtn" type="button" data-i18n="saveAccessAccount">Save Account</button><button class="ghost-btn" id="clearAccessAccountBtn" type="button" data-i18n="clearAccessAccountForm">Clear Form</button></div>
+      <div id="accessAccountsStatus" class="account-status-note" aria-live="polite"></div>
+      <div id="accessAccountsList" class="stored-questions"></div>
+      </div>
+    </section>
+
+
+    <section class="card admin-table-card collapsible-section" data-section-key="accountManager" id="activityLogsSection">
+      <div class="section-head"><h2>Activity Logs</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleActivityLogsBtn" type="button">Expand</button><button class="ghost-btn" id="refreshAccessLogsBtn">Refresh Logs</button></div></div>
+      <div id="activityLogsBody" class="admin-collapsible-body collapsed-body">
+      <p class="muted-note">Track login, create, edit, delete, and password actions for admins and staff accounts.</p>
+      <div id="accessLogsList" class="stored-questions question-editor-list"></div>
+      </div>
+    </section>
+
+    <section class="card admin-editor-card collapsible-section" data-section-key="questionBank" id="questionBankSection">
+      <div class="section-head"><h2 data-i18n="questionBankEditor">Question Bank Editor</h2><div class="editor-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleQuestionBankEditorBtn" type="button">Expand</button><button class="ghost-btn" id="showStoredQuestionsBtn" data-i18n="refreshQuestionList">Refresh Question List</button></div></div>
+      <div id="questionBankEditorBody" class="admin-collapsible-body collapsed-body">
+      <div class="editor-grid">
+        <select id="newQGrade"><option value="">Select grade</option><option value="KG1">KG1</option><option value="KG2">KG2</option></select>
+        <select id="newQSkill"><option value="">Select skill</option><option value="Vocabulary">Vocabulary</option><option value="Phonics">Phonics</option><option value="Alphabet">Alphabet</option><option value="Grammar">Grammar</option><option value="Reading">Reading</option><option value="Body Parts">Body Parts</option><option value="School Vocabulary">School Vocabulary</option></select>
+        <select id="newQType"><option value="">Select type</option><option value="Choice">Choice</option><option value="TrueFalse">True / False</option><option value="Picture">Picture</option></select>
+        <input id="newQText" placeholder="Question text">
+        <input id="newQOptions" placeholder="Options separated by |">
+        <input id="newQAnswer" placeholder="Correct answer">
+        <input id="newQDifficulty" placeholder="Difficulty 1-3">
+        <input id="newQImage" placeholder="Image filename or leave blank">
+        <label class="file-label"><span data-i18n="uploadImage">Upload image</span><input type="file" id="newQImageFile" accept="image/*"></label>
+      </div>
+      <div class="action-row"><button class="main-btn" id="addQuestionBtn" data-i18n="addQuestion">Add Question</button></div>
+      <div class="section-head sub-head"><h3 data-i18n="modifyExistingQuestions">Modify Existing Questions</h3><div class="editor-filters"><button class="level-btn active" data-filter-grade="all">All</button><button class="level-btn" data-filter-grade="KG1">KG1</button><button class="level-btn" data-filter-grade="KG2">KG2</button></div></div>
+      <div class="editor-grid v382-filters"><input id="qSearchInput" placeholder="Search questions"><input id="qSkillFilterInput" placeholder="Filter by skill"><input id="qClassFilterInput" placeholder="Filter by class e.g. KG1 or Class 1"></div>
+      <div class="toolbar v384-search-tools"><button class="main-btn" id="runQuestionSearchBtn">Search</button><button class="ghost-btn" id="clearQuestionSearchBtn">Clear Filters</button><span class="search-results-note" id="questionSearchStatus">Search results appear below automatically.</span></div>
+      <p class="muted-note" data-i18n="editQuestionNote">Edit any question below, then press save. Changes are stored locally and apply directly inside the app.</p>
+      <div id="storedQuestionsWrap"><div class="search-results-meta"><strong id="questionResultsCount">0 questions found</strong><span id="questionNoResults" class="hidden">No questions found.</span></div><div id="storedQuestionsList" class="stored-questions question-editor-list"></div></div>
+      </div>
+    </section>
+
+<section class="card admin-table-card" data-section-key="studentsManager" id="studentsManagerSection" style="display:block !important;">
+  <div class="section-head"><h2>Students Manager</h2><div class="section-head-actions"><button class="ghost-btn collapse-toggle-btn" id="toggleStudentsManagerBtn" type="button">Expand</button></div></div>
+  <div id="studentsManagerBody" class="admin-collapsible-body" style="display:block !important;">
+    <div class="editor-grid">
+      <input id="studentNameInput" placeholder="Student name">
+      <select id="studentGradeInput"><option value="KG1">KG1</option><option value="KG2">KG2</option><option value="GRADE1">Grade 1</option><option value="GRADE2">Grade 2</option><option value="GRADE3">Grade 3</option><option value="GRADE4">Grade 4</option><option value="GRADE5">Grade 5</option><option value="GRADE6">Grade 6</option></select>
+      <input id="studentClassInput" placeholder="Class name">
+      <button class="main-btn" id="saveStudentBtn" type="button">Add Student</button>
+    </div>
+    <div class="editor-grid">
+      <input id="studentSearchInput" placeholder="Search by name, ID, class or grade">
+      <button class="ghost-btn" id="studentSearchBtn" type="button">Search</button>
+      <div id="studentsStatus" class="muted-note"></div>
+    </div>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>PIN</th><th>Name</th><th>Grade</th><th>Class</th><th>Action</th></tr></thead><tbody id="studentsTableBody"></tbody></table></div>
+  </div>
+</section>
+
+</div></section>
+
+
+
+
+
+</main>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script><script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><script src="script.js"></script><script src="ui-language-patch.js"></script><script src="custom-classes.js"></script><script src="grades-extension.js"></script><script src="backend-access.js"></script><script src="student-cloud-admin.js"></script><script src="homework-admin.js"></script><script src="quiz-bulk-package.js"></script><script src="kg1-grade6-support.js"></script><script src="hobby-upgrades.js"></script><script src="next-upgrade-pack.js"></script><script src="final-polish-pack.js"></script><script src="adaptive-access-admin.js"></script><script src="runtime-ui-fixes.js"></script><script src="latest-admin-dynamic-fix.js"></script></body></html>
