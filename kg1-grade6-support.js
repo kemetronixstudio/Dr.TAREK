@@ -4,7 +4,7 @@
   const KEY_CLASSES = 'kgEnglishCustomClassesV29';
   const KEY_CUSTOM_Q = 'kgEnglishCustomQuestionsV23';
   const KEY_TESTS = 'kgEnglishTeacherTestsV23';
-  const KEY_LEVEL_VIS = 'kgEnglishLevelVisibilityV21';
+  const KEY_LEVEL_VIS = 'kgEnglishLevelVisibilityV7';
   const KEY_TIMER = 'kgEnglishTimerSettingsV21';
   const KEY_ACCESS = 'kgEnglishQuizAccessV29';
   const BUILTIN_KEYS = ['kg1','kg2','grade1','grade2','grade3','grade4','grade5','grade6'];

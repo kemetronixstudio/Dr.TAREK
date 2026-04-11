@@ -1,0 +1,5 @@
+Fixed in this ZIP:
+- Unified LevelVisibility storage key to: kgEnglishLevelVisibilityV7
+- Unified DeletedQuestions storage key to: kgEnglishDeletedQuestionsV2
+
+This removes the last known storage-slot conflicts from the audit.

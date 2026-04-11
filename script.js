@@ -369,7 +369,7 @@ const storeKeys = {
   cert:'kgEnglishCertificateV7',
   customQuestions:'kgEnglishCustomQuestionsV23',
   questionOverrides:'kgEnglishQuestionOverridesV7',
-  deletedQuestions:'kgEnglishDeletedQuestionsV1',
+  deletedQuestions:'kgEnglishDeletedQuestionsV2',
   levelVisibility:'kgEnglishLevelVisibilityV7',
   attemptsLog:'kgEnglishAttemptsLogV22',
   timerSettings:'kgEnglishTimerSettingsV23',
