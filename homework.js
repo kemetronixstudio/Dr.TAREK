@@ -73,18 +73,191 @@
   }
 
   function resolveQuestionImage(image){
-  if (typeof normalizeQuestionImage === 'function') return normalizeQuestionImage(image);
-  const value = String(image || '').trim();
-  if (!value) return '';
-  if (/^(https?:)?\/\//i.test(value) || value.startsWith('data:') || value.startsWith('/')) return value;
+    if (typeof normalizeQuestionImage === 'function') return normalizeQuestionImage(image);
+    const value = String(image || '').trim();
+    if (!value) return '';
+    if (/^(https?:)?\/\//i.test(value) || value.startsWith('data:') || value.startsWith('/')) return value;
 
-  const clean = value.replace(/^\.\//, '').replace(/^\/+/, '');
-  if (/^assets\//i.test(clean)) return '/' + clean;
-  if (/^(quiz-bulk|svg|img|icons)\//i.test(clean)) return '/assets/' + clean;
+    const clean = value.replace(/^\.\//, '').replace(/^\/+/, '');
+    if (/^assets\//i.test(clean)) return '/' + clean;
+    if (/^(quiz-bulk|svg|img|icons)\//i.test(clean)) return '/assets/' + clean;
+    if (/^[^\/]+\.[a-z0-9]+$/i.test(clean)) return '/assets/quiz-bulk/' + clean;
 
-  if (/^[^\/]+\.[a-z0-9]+$/i.test(clean)) {
-    return '/assets/quiz-bulk/' + clean;
+    return '/assets/' + clean;
   }
 
-  return '/assets/' + clean;
+  function renderQuestion(){
+    const q = state.assignment.questions[state.index];
+    if (!q) return finishHomework(false);
+    updateQuizHead();
+    $('homeworkQuestionText').textContent = q.text || 'Question';
+    const imageWrap = $('homeworkQuestionMediaWrap');
+    const imageEl = $('homeworkQuestionImage');
+    const imageSrc = resolveQuestionImage(q.image);
+    if (imageWrap && imageEl) {
+      if (imageSrc) {
+        imageEl.src = imageSrc;
+        imageEl.alt = q.text || 'Question image';
+        imageWrap.classList.remove('hidden');
+      } else {
+        imageEl.removeAttribute('src');
+        imageWrap.classList.add('hidden');
+      }
+    }
+    $('homeworkOptionsWrap').innerHTML = (q.options || []).map((opt, idx) => `<button type="button" class="option-btn" data-option="${idx}">${esc(opt)}</button>`).join('');
+    document.querySelectorAll('#homeworkOptionsWrap .option-btn').forEach((btn) => {
+      btn.addEventListener('click', function(){
+        if (state.answers[state.index]) return;
+        chooseAnswer(this.textContent || '');
+      });
+    });
+  }
+
+  function chooseAnswer(choice){
+    const q = state.assignment.questions[state.index];
+    state.answers[state.index] = {
+      index: state.index,
+      questionText: q.text,
+      chosen: String(choice || '').trim(),
+      answeredAt: new Date().toISOString()
+    };
+    document.querySelectorAll('#homeworkOptionsWrap .option-btn').forEach((btn) => {
+      btn.disabled = true;
+      btn.classList.add(String(btn.textContent || '').trim() === String(choice || '').trim() ? 'selected' : 'disabled');
+    });
+    updateQuizHead();
+    window.clearTimeout(state.autoNextTimer);
+    state.autoNextTimer = window.setTimeout(() => {
+      if (!state || state.submitting) return;
+      if (state.index >= state.assignment.questions.length - 1) finishHomework(false);
+      else nextQuestion(true);
+    }, 650);
+  }
+
+  function nextQuestion(skipPrompt){
+    if (!state.answers[state.index]) {
+      if (!skipPrompt) alert('Please choose an answer first.');
+      return;
+    }
+    window.clearTimeout(state.autoNextTimer);
+    state.index += 1;
+    if (state.index >= state.assignment.questions.length) return finishHomework(false);
+    renderQuestion();
+  }
+
+  function stopTimer(){
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+    if (state && state.autoNextTimer) {
+      clearTimeout(state.autoNextTimer);
+      state.autoNextTimer = null;
+    }
+  }
+
+  function startTimer(){
+    stopTimer();
+    if (!state.assignment.useTimer || !state.timeLeft) {
+      state.timeLeft = null;
+      updateQuizHead();
+      return;
+    }
+    updateQuizHead();
+    timer = setInterval(() => {
+      state.timeLeft -= 1;
+      updateQuizHead();
+      if (state.timeLeft <= 0) finishHomework(true);
+    }, 1000);
+  }
+
+  async function finishHomework(timeUp){
+    if (!state || state.submitting) return;
+    state.submitting = true;
+    stopTimer();
+    try {
+      const submitData = await api('submit', {
+        method:'POST',
+        body: JSON.stringify({
+          identity: state.identity,
+          homeworkId: state.assignment.id,
+          token: state.token,
+          answers: state.answers,
+          timeUp: !!timeUp
+        })
+      });
+
+      if (studentCloud && typeof studentCloud.submitResult === 'function') {
+        try {
+          await studentCloud.submitResult({
+            identity: state.identity,
+            quizKey: `HOMEWORK|${state.assignment.id}|${submitData.submission.id}`,
+            result: submitData.result,
+            state: {
+              completed: true,
+              currentIndex: state.index,
+              selectedCount: state.assignment.questions.length,
+              selectedLevelLabel: state.assignment.title,
+              questions: state.assignment.questions,
+              answers: submitData.result.answers
+            }
+          });
+        } catch (error) {}
+      }
+
+      $('homeworkQuizSection').classList.add('hidden');
+      $('homeworkDoneSection').classList.remove('hidden');
+      $('homeworkDoneText').textContent = timeUp
+        ? `Homework submitted automatically when time ended. Try ${submitData.submission.triesUsed} saved in reports.`
+        : `Homework submitted successfully. Try ${submitData.submission.triesUsed} saved in reports.`;
+      await renderAssignments();
+    } catch (error) {
+      setStatus(error.message || 'Could not submit homework.');
+    } finally {
+      state.submitting = false;
+    }
+  }
+
+  async function startHomework(id){
+    try {
+      const identity = state && state.identity ? state.identity : await verifyStudent(false);
+      const assignment = availableRows.find((row) => row.id === id);
+      const passwordField = document.querySelector(`[data-homework-password-for="${CSS.escape(String(id || ''))}"]`);
+      const password = assignment && assignment.usePassword ? String(passwordField?.value || '').trim() : '';
+      if (assignment && assignment.usePassword && !password) throw new Error('Please enter the homework password.');
+      const data = await api('start', {
+        method:'POST',
+        body: JSON.stringify({
+          identity,
+          homeworkId: id,
+          password: password || ''
+        })
+      });
+      state = {
+        identity,
+        assignment: data.assignment,
+        token: data.token,
+        index: 0,
+        answers: [],
+        timeLeft: data.assignment.useTimer ? Number(data.assignment.timerMinutes || 0) * 60 : null,
+        submitting: false,
+        autoNextTimer: null
+      };
+      $('homeworkStartCard').classList.add('hidden');
+      $('homeworkDoneSection').classList.add('hidden');
+      $('homeworkQuizSection').classList.remove('hidden');
+      setStatus('');
+      renderQuestion();
+      startTimer();
+    } catch (error) {
+      setStatus(error.message || 'Could not start homework.');
+    }
+  }
+
+  $('loadHomeworkBtn')?.addEventListener('click', renderAssignments);
+  $('homeworkNextBtn')?.addEventListener('click', nextQuestion);
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.homework-open-btn');
+    if (btn) startHomework(btn.dataset.id);
+  });
 })();
