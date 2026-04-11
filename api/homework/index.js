@@ -10,7 +10,7 @@ module.exports = async function handler(req, res){
     const url = new URL(req.url || '/api/homework', 'http://localhost');
     const action = String(url.searchParams.get('action') || '').trim().toLowerCase();
     const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
-    const isStudentAction = action === 'available' || action === 'start' || action === 'submit' || action === 'identify-student';
+    const isStudentAction = action === 'available' || action === 'start' || action === 'submit' || action === 'identify-student' || action === 'parent-summary';
     if (!isStudentAction) {
       const auth = await access.requireAuthorized(req, 'teacherTest');
       if (!auth.ok) {
@@ -57,6 +57,10 @@ module.exports = async function handler(req, res){
     if (req.method === 'POST') {
       if (action === 'identify-student') {
         const data = await backend.identifyStudent(body);
+        res.statusCode = 200; res.end(JSON.stringify(data)); return;
+      }
+      if (action === 'parent-summary') {
+        const data = await backend.parentSummary(body);
         res.statusCode = 200; res.end(JSON.stringify(data)); return;
       }
       if (action === 'save-student') {
