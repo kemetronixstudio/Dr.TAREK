@@ -1,0 +1,289 @@
+{
+  "cleanUrls": false,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src 'self' https://your-backend-domain.example; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/data/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/pages/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/assets/:path*",
+      "destination": "/assets/:path*"
+    },
+    {
+      "source": "/quiz-bulk/:path*",
+      "destination": "/quiz-bulk/:path*"
+    },
+    {
+      "source": "/grades/:path*",
+      "destination": "/grades/:path*"
+    },
+    {
+      "source": "/pages/:path*",
+      "destination": "/pages/:path*"
+    },
+    {
+      "source": "/about",
+      "destination": "/pages/about.html"
+    },
+    {
+      "source": "/courses",
+      "destination": "/pages/courses.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/pages/contact.html"
+    },
+    {
+      "source": "/students",
+      "destination": "/pages/students.html"
+    },
+    {
+      "source": "/parents",
+      "destination": "/pages/parents.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/pages/admin.html"
+    },
+    {
+      "source": "/student-dashboard",
+      "destination": "/pages/student-dashboard.html"
+    },
+    {
+      "source": "/student-courses",
+      "destination": "/pages/student-courses.html"
+    },
+    {
+      "source": "/student-assignments",
+      "destination": "/pages/student-assignments.html"
+    },
+    {
+      "source": "/student-attendance",
+      "destination": "/pages/student-attendance.html"
+    },
+    {
+      "source": "/student-grades",
+      "destination": "/pages/student-grades.html"
+    },
+    {
+      "source": "/student-certificates",
+      "destination": "/pages/student-certificates.html"
+    },
+    {
+      "source": "/student-notifications",
+      "destination": "/pages/student-notifications.html"
+    },
+    {
+      "source": "/student-profile",
+      "destination": "/pages/student-profile.html"
+    },
+    {
+      "source": "/parent-dashboard",
+      "destination": "/pages/parent-dashboard.html"
+    },
+    {
+      "source": "/parent-attendance",
+      "destination": "/pages/parent-attendance.html"
+    },
+    {
+      "source": "/parent-homework",
+      "destination": "/pages/parent-homework.html"
+    },
+    {
+      "source": "/parent-grades",
+      "destination": "/pages/parent-grades.html"
+    },
+    {
+      "source": "/parent-teacher-notes",
+      "destination": "/pages/parent-teacher-notes.html"
+    },
+    {
+      "source": "/parent-notifications",
+      "destination": "/pages/parent-notifications.html"
+    },
+    {
+      "source": "/admin-dashboard",
+      "destination": "/pages/admin-dashboard.html"
+    },
+    {
+      "source": "/admin-command-center",
+      "destination": "/pages/admin-command-center.html"
+    },
+    {
+      "source": "/admin-students-manager",
+      "destination": "/pages/admin-students-manager.html"
+    },
+    {
+      "source": "/admin-class-manager",
+      "destination": "/pages/admin-class-manager.html"
+    },
+    {
+      "source": "/admin-question-bank",
+      "destination": "/pages/admin-question-bank.html"
+    },
+    {
+      "source": "/admin-analytics",
+      "destination": "/pages/admin-analytics.html"
+    },
+    {
+      "source": "/admin-logs",
+      "destination": "/pages/admin-logs.html"
+    },
+    {
+      "source": "/admin-security",
+      "destination": "/pages/admin-security.html"
+    },
+    {
+      "source": "/teacher-dashboard",
+      "destination": "/pages/teacher-dashboard.html"
+    },
+    {
+      "source": "/teacher-classes",
+      "destination": "/pages/teacher-classes.html"
+    },
+    {
+      "source": "/teacher-homework",
+      "destination": "/pages/teacher-homework.html"
+    },
+    {
+      "source": "/teacher-quizzes",
+      "destination": "/pages/teacher-quizzes.html"
+    },
+    {
+      "source": "/teacher-gradebook",
+      "destination": "/pages/teacher-gradebook.html"
+    },
+    {
+      "source": "/teacher-live-sessions",
+      "destination": "/pages/teacher-live-sessions.html"
+    },
+    {
+      "source": "/management-dashboard",
+      "destination": "/pages/management-dashboard.html"
+    },
+    {
+      "source": "/management-command-center",
+      "destination": "/pages/management-command-center.html"
+    },
+    {
+      "source": "/management-students-manager",
+      "destination": "/pages/management-students-manager.html"
+    },
+    {
+      "source": "/management-class-manager",
+      "destination": "/pages/management-class-manager.html"
+    },
+    {
+      "source": "/management-analytics",
+      "destination": "/pages/management-analytics.html"
+    },
+    {
+      "source": "/management-logs",
+      "destination": "/pages/management-logs.html"
+    },
+    {
+      "source": "/assistant-dashboard",
+      "destination": "/pages/assistant-dashboard.html"
+    },
+    {
+      "source": "/assistant-students-support",
+      "destination": "/pages/assistant-students-support.html"
+    },
+    {
+      "source": "/assistant-class-support",
+      "destination": "/pages/assistant-class-support.html"
+    },
+    {
+      "source": "/assistant-notifications",
+      "destination": "/pages/assistant-notifications.html"
+    },
+    {
+      "source": "/assistant-session-support",
+      "destination": "/pages/assistant-session-support.html"
+    },
+    {
+      "source": "/assistant-reports",
+      "destination": "/pages/assistant-reports.html"
+    },
+    {
+      "source": "/quizzes",
+      "destination": "/pages/quizzes.html"
+    },
+    {
+      "source": "/admin-quiz-suite",
+      "destination": "/pages/admin-quiz-suite.html"
+    },
+    {
+      "source": "/quiz-kg1",
+      "destination": "/pages/quiz-kg1.html"
+    },
+    {
+      "source": "/quiz-kg2",
+      "destination": "/pages/quiz-kg2.html"
+    },
+    {
+      "source": "/quiz-runner",
+      "destination": "/pages/quiz-runner.html"
+    }
+  ]
+}
